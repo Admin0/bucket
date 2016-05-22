@@ -42,7 +42,7 @@ a:hover  {
 }
 
 #nav_bg {
-    position: fixed;    z-index: 2;
+    position: fixed;    z-index: 4;
     display: none;
     left:0; top:0;
     transition: .25s background;
