@@ -148,14 +148,46 @@ function card_wrapping() {
 
 function showMovie(src) {
     var url = src.replace("watch?v=", "embed/");
-    $("body").append("<div id='movie_wrap'><iframe class='shadow' width='560' height='315' src='" + url + "?rel=0&amp;showinfo=0'  frameborder='0' allowfullscreen></iframe></movie>")
+    $("body").append("<div id='movie_wrap'><iframe class='shadow' width='560' height='315' src='" + url + "?rel=0&amp;showinfo=0'  frameborder='0' allowfullscreen></iframe></div>")
     $("#movie_wrap").fadeIn(500);
     $("#movie_wrap").on("click",function(){
         $(this).fadeOut(500,function(){$(this).remove();})
     })
+    $("#movie_wrap > iframe").css({
+        "height": $("#movie_wrap > iframe").width()*315/560 + "px",
+        "top":"calc(50% - " + $("#movie_wrap > iframe").width()*315/560/2 + "px)"
+    });
+}
+
+function showImg(src)   {
+    $("body").append("<div id='img_wrap'><img class='shadow' src='" + src + "'></img></div>")
+    $("#img_wrap").fadeIn(500);;
+    $("#img_wrap").on("click",function(){
+        $(this).fadeOut(500,function(){$(this).remove();})
+    })
+
+    if($("#img_wrap > img").height()>=$(window).height()){
+        $("#img_wrap > img").css({"width":"initial","height":"90%","top":"5%"});
+    } else {
+        $("#img_wrap > img").css("top", function(){
+            return "calc(50% - " + $(this).height()/2 + "px)"
+        });
+    }
+}
+
+function imgReady() {
+    $("a[src]").each(function(){
+        var src = $(this).attr("src");
+        $(this).on("click",function(){showImg(src)});
+        $(this).parent().after("<img src='"+src+"' hide />");   //이미지를 미리 불러와야 클릭했을 떄 높이 조절이 되는고얌
+    });
+    $("img").on("click",function(){
+        showImg($(this).attr("src"));
+    });
 }
 
 $(function() {
+    imgReady();
     nav_create();
     scroll_smooth();
     coloring();
