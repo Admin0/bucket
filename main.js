@@ -166,7 +166,7 @@ function showImg(src)   {
         $(this).fadeOut(500,function(){$(this).remove();})
     })
 
-    if($("#img_wrap > img").height()>=$(window).height()){
+    if($("#img_wrap > img").height()>=$(window).height()*.9){
         $("#img_wrap > img").css({"width":"initial","height":"90%","top":"5%"});
     } else {
         $("#img_wrap > img").css("top", function(){

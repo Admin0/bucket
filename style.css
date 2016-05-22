@@ -84,9 +84,7 @@ nav h3 a    { padding-left: 1.5em; font-weight: normal; color:#777;}
 nav h4 a    { padding-left:   3em; }
 
 h1{ text-transform: uppercase;}
-h2 {
-	cursor: pointer;
-}
+h2 {}
 
 section	{
 }
