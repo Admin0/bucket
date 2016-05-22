@@ -2,7 +2,7 @@
 
 실행 페이지: http://admin0.github.io/bucket/
 
-
+맘대로 갖다 쓰셈. 님들의 영혼을 양껏 살찌우셈.
 
 
 ## UPDATE LOG
