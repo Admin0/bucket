@@ -1,11 +1,48 @@
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+
 body {
     max-width: 600px ;
     margin: auto;
     padding: 1em;
     background: #e5e5e5;
-    font-size: 12px;
+    font-family: 'Noto Sans KR', sans-serif;
+    /*font-size: 12px;*/
 }
 
+nav {
+    position: fixed;
+    top:2em;
+    /*left: calc(49em + 4em);*/
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
+    transition: .25s;
+    border-radius: 3px;
+    padding: 1em;
+    width: 10em; max-height: calc(100% - 6em);
+    overflow-y: auto; overflow-x: hidden;
+    margin-left: -13em;
+}
+
+nav a       { font-size: .75em; display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+nav h2      { }
+nav h2:first-of-type { margin-top:0; }
+nav h3      { margin: .25em 0;}
+nav h4      { margin: .25em 0;}
+nav h3 a    { padding-left: 1.5em; }
+nav h4 a    { padding-left:   3em; }
+
+a {
+    text-decoration: none;
+    color: #000;
+    transition:.25s;padding: .5em .75em;
+    margin: -0.75em -.75em;
+}
+a:hover  {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
+    background:#fff;
+    z-index:10;position: relative;
+}
+h1{text-align: center; text-transform: uppercase;}
 h2 {
 	cursor: pointer;
 }
@@ -56,6 +93,7 @@ dd ul li {
 input[checked] + * {
     font-weight: bold;
     color: #000;
+    text-decoration: none;
 }
 
 input[failed] {
@@ -68,6 +106,7 @@ input[failed]+* {
 
 input[failed]+*::after {
     content: " - 실패";
+    color:#F44336;
 }
 
 .date {
