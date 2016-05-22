@@ -6,14 +6,17 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="main.js"></script>
 </head>
 
 <body>
-    <p style="display:none;
-	overflow: hidden;"> 은하수 보기 줍 다음 목록 줍기 조류 조류 - 천연기념물 조류 - 맹금류 포유류 파충류 외계인 미아 노숙자 도둑, 강도 및 범죄자 시체 문화 정작가님 나가신다 - 저자 목록에 이름이 올라간 책 출판. 베스트 셀러 - 단일 서적으로 100,000 부 이상 판매. 스테디 셀러 - 시리즈로 100만 부 이상 판매. ___ 음식 아악! - 기억 잃을 때까지 술 마시기. 탄수화물 중독 - 다음 항목 달성. 중국에서 국수 먹기. 일본에서 우동 먹기. 베트남에서 쌀국수 먹기. 이탈리아에서 파스타 먹기. 영국에서 감자튀김 먹기. 단백질 중독. 일본에서 돈까스 먹기. 미국에서 스테이크 먹기. 중국에서 챠슈 먹기. 몽골에서 양갈비 뜯기. 독일에서 소시지 먹기. 미식가 캐비어 먹기. 푸아그라 먹기. 그리고 또 뭐시기냐... 알콜 중독 러시아에서 보드카 마시기. 독일에서 맥주 마시기. 일본에서 정종 마시기. 프랑스에서 와인 마시기. 중국에서 고량주 마시기. 악기 1인 밴드 - 다음 악기로 최소한 한가지 곡 완주. 기타. 바이올린. 트럼팻. 피아노. 드럼. 외국인 펜팔 친구 만들고 일 년 이상 관계 유지하기. 돈 자산 첫 월급 - 통장 잔고 100 만 원. 작지만 큰 걸음 - 통장 잔고 500 만 원. 게임에선 쉬웠는데 - 통장 잔고 1,000 만 원. 티끌 모아 태산 - 통장 잔고 5,000 만 원. 10년 안에 가능? - 통장 잔고 1 억 원. 로또 당첨 - 통장 잔고 10 억 원. 지름신 강림 1,000 만 원 이상의 가치가 있는 것 구입. 내집마련? 1 억 원 이상의 가치가 있는 것 구입. 서버변경 외국에 부동산 소유. 세워만 놔도 멋지잖아? 다음 목록 소유 기타. 천체 망원경. </p>
-    <h1>Buket List</h1>
+    <header>
+        <h1>Bucket List</h1>
+        <i id="nav_on" onclick="$('nav, #nav_bg').addClass('on');" class="material-icons">menu</i>
+    </header>
+    <div id="nav_bg" onclick="$('nav, #nav_bg').removeClass('on');"></div>
     <div class="card_div">
         <div class="card">
             <div class="front">
@@ -314,11 +317,6 @@
         </dl>
     </section>
     <h3 id="엔터테인">엔터테인</h3>
-    <section> </section>
-    <dl>
-        <input type="checkbox" checked> <dt></dt>
-        <dd>공모전 당선.<span class="date">2011.07.</span> </dd>
-    </dl>
     <section>
         <dl>
             <input type="checkbox" checked> <dt>사이버 세상의 주민</dt>
@@ -458,6 +456,53 @@
 			</dd>
         </dl>
     </section>
+    <pre style="display:none;
+    overflow: hidden;">
+은하수 보기
+줍 다음 목록 줍기 조류
+조류 - 천연기념물
+조류 - 맹금류
+포유류
+파충류
+외계인
+미아
+노숙자
+도둑, 강도 및 범죄자
+시체
+
+문화
+정작가님 나가신다 - 저자 목록에 이름이 올라간 책 출판.
+베스트 셀러 - 단일 서적으로 100,000 부 이상 판매.
+스테디 셀러 - 시리즈로 100만 부 이상 판매. ___
+
+음식 아악! - 기억 잃을 때까지 술 마시기.
+
+탄수화물 중독 - 다음 항목 달성.
+중국에서 국수 먹기. 일본에서 우동 먹기.
+베트남에서 쌀국수 먹기.
+이탈리아에서 파스타 먹기.
+영국에서 감자튀김 먹기.
+
+단백질 중독. 일본에서 돈까스 먹기.
+미국에서 스테이크 먹기.
+중국에서 챠슈 먹기.
+몽골에서 양갈비 뜯기.
+독일에서 소시지 먹기.
+
+미식가 캐비어 먹기.
+푸아그라 먹기.
+그리고 또 뭐시기냐...
+
+알콜 중독 러시아에서 보드카 마시기.
+독일에서 맥주 마시기.
+일본에서 정종 마시기.
+프랑스에서 와인 마시기.
+중국에서 고량주 마시기.
+
+악기 1인 밴드 - 다음 악기로 최소한 한가지 곡 완주.
+기타. 바이올린. 트럼팻. 피아노. 드럼.
+
+외국인 펜팔 친구 만들고 일 년 이상 관계 유지하기. 돈 자산 첫 월급 - 통장 잔고 100 만 원. 작지만 큰 걸음 - 통장 잔고 500 만 원. 게임에선 쉬웠는데 - 통장 잔고 1,000 만 원. 티끌 모아 태산 - 통장 잔고 5,000 만 원. 10년 안에 가능? - 통장 잔고 1 억 원. 로또 당첨 - 통장 잔고 10 억 원. 지름신 강림 1,000 만 원 이상의 가치가 있는 것 구입. 내집마련? 1 억 원 이상의 가치가 있는 것 구입. 서버변경 외국에 부동산 소유. 세워만 놔도 멋지잖아? 다음 목록 소유 기타. 천체 망원경. </pre>
 </body>
 
 </html>

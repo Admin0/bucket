@@ -8,6 +8,9 @@ function nav_create() {
         .appendTo($("nav"));
         // .appendTo($("#in-page"));
     })
+
+    //for mobile
+    $("nav a").on("click",function(){ $("nav, #nav_bg").removeClass("on"); });
 }
 
 function scroll_smooth() {
@@ -68,25 +71,46 @@ function scroll_smooth() {
     });
 }
 
+
+$(document).scroll(function() {
+    if (document.height === null) {
+        pageYOffset = document.documentElement.scrollTop;
+    }
+    if($( document ).width()>=600){
+        if (pageYOffset >= 89.88) {
+            $("nav").css({"position":"fixed",   "top":"1em", "max-height": "calc(100% -  4em)"});
+        } else{
+            $("nav").css({"position":"absolute","top":"7em", "max-height": "calc(100% - 10em)"});
+        }
+    }
+});
+
+
 color = {
     "length":15,
     "material_50":[
-        "FFEBEE", "FCE4EC", "F3E5F5", "EDE7F6", "E8EAF6",
-        "E3F2FD", "E1F5FE", "E0F7FA", "E0F2F1", "E8F5E9",
-        "F1F8E9", "F9FBE7", "FFFDE7", "FFF8E1", "FFF3E0",
-        "FBE9E7", "EFEBE9", "FAFAFA", "EFEBE9"
+        "#FFEBEE", "#FCE4EC", "#F3E5F5", "#EDE7F6", "#E8EAF6",
+        "#E3F2FD", "#E1F5FE", "#E0F7FA", "#E0F2F1", "#E8F5E9",
+        "#F1F8E9", "#F9FBE7", "#FFFDE7", "#FFF8E1", "#FFF3E0",
+        "#FBE9E7", "#EFEBE9", "#FAFAFA", "#EFEBE9"
     ],
     "material_500":[
-        "F44336","E91E63","9C27B0","673AB7","3F51B5",
-        "2196F3","03A9F4","00BCD4","009688","4CAF50",
-        "8BC34A","CDDC39","FFEB3B","FFC107","FF9800",
-        "FF5722","795548","9E9E9E","607D8B"
+        "#F44336", "#E91E63", "#9C27B0", "#673AB7", "#3F51B5",
+        "#2196F3", "#03A9F4", "#00BCD4", "#009688", "#4CAF50",
+        "#8BC34A", "#CDDC39", "#FFEB3B", "#FFC107", "#FF9800",
+        "#FF5722", "#795548", "#9E9E9E", "#607D8B"
     ],
     "material_a100": [
-        "FF8A80", "FF80AB", "EA80FC", "B388FF", "8C9EFF",
-        "82B1FF", "80D8FF", "84FFFF", "A7FFEB", "B9F6CA",
-        "CCFF90", "F4FF81", "FFFF8D", "FFE57F", "FFD180",
-        "FF9E80", "D7CCC8", "F5F5F5", "CFD8DC"
+        "#FF8A80", "#FF80AB", "#EA80FC", "#B388FF", "#8C9EFF",
+        "#82B1FF", "#80D8FF", "#84FFFF", "#A7FFEB", "#B9F6CA",
+        "#CCFF90", "#F4FF81", "#FFFF8D", "#FFE57F", "#FFD180",
+        "#FF9E80", "#D7CCC8", "#F5F5F5", "#CFD8DC"
+    ],
+    "font": [
+        "#FF8A80", "#FF80AB", "#EA80FC", "#B388FF", "#8C9EFF",
+        "#82B1FF", "#80D8FF", "#84FFFF", "#A7FFEB", "#B9F6CA",
+        "#CCFF90", "#F4FF81", "#FFFF8D", "#FFE57F", "#FFD180",
+        "#FF9E80", "#D7CCC8", "#F5F5F5", "#CFD8DC"
     ]
 }
 function dice(n, s, b) {
@@ -110,7 +134,13 @@ function dice(n, s, b) {
 }
 var color_i = dice(1, color.length, 0);
 
+function coloring() {
+    $("header").css({"background":color.material_500[color_i]});
+    $("input").css({"color":color.material_500[color_i]})
+}
+
 $(function() {
     nav_create();
     scroll_smooth();
+    coloring();
 });
