@@ -272,6 +272,7 @@ input[checked]::before {
         position: fixed!important;
         top: 0!important; left: 0;
         border-radius: 0;
+        min-height: calc(100% - 2em)!important;
         height: calc(100% - 2em)!important;
     }
     nav.on {
