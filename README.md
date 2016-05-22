@@ -1,8 +1,9 @@
-# BUCKET LIST
+# BUCKET LIST by JinH
 
-실행 페이지: http://admin0.github.io/bucket/
+- 실행 페이지: http://admin0.github.io/bucket/
+- 블로그: http://jinh.tistory.com/
 
-맘대로 갖다 쓰셈. 님들의 영혼을 양껏 살찌우셈.
+맘대로 갖다 쓰셈. 님들의 영혼을 양껏 살찌우셈. 그럼 난 만족함.
 
 
 ## UPDATE LOG

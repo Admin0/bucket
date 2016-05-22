@@ -136,11 +136,28 @@ var color_i = dice(1, color.length, 0);
 
 function coloring() {
     $("header").css({"background":color.material_500[color_i]});
-    $("input").css({"color":color.material_500[color_i]})
+    $("input, a:not(nav a)").css({"color":color.material_500[color_i]})
+}
+
+function card_wrapping() {
+    $(".card").each(function(){
+        $(this).after("<div class='card_wrap'></div>")
+        $(this).appendTo($(this).next());
+    })
+}
+
+function showMovie(src) {
+    var url = src.replace("watch?v=", "embed/");
+    $("body").append("<div id='movie_wrap'><iframe class='shadow' width='560' height='315' src='" + url + "?rel=0&amp;showinfo=0'  frameborder='0' allowfullscreen></iframe></movie>")
+    $("#movie_wrap").fadeIn(500);
+    $("#movie_wrap").on("click",function(){
+        $(this).fadeOut(500,function(){$(this).remove();})
+    })
 }
 
 $(function() {
     nav_create();
     scroll_smooth();
     coloring();
+    card_wrapping();
 });

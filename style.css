@@ -11,17 +11,34 @@ body {
 }
 
 header{
-position: absolute;  color:#fff;
+    position: absolute;  color:#fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
-width: 100%;
-left: 0;
-top: 0;
-z-index: 2; background: #fff;}
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 3; background: #fff;text-align: center;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    color: #000;
+    transition:.25s;padding: .5em .75em;
+    margin: -0.75em -.75em;
+}
+
+a:hover  {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
+    background:#fff;
+    z-index:10;position: relative;
+}
+
 #nav_on {
     padding: .5em; display: none;
     border-radius: 50%;
-    width: 1em;    top: -2em;
-    position: relative;
+    width: 1em;    top: 0;
+    position: absolute;;
 }
 
 #nav_bg {
@@ -32,8 +49,18 @@ z-index: 2; background: #fff;}
     width: 100%; height: 100%;
 }
 
+#to_github  {
+    padding: .5em;
+    border-radius: 50%;
+    width: 1em;
+    top: 0;
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+}
+
 nav {
-    position: fixed; z-index: 3;
+    position: fixed; z-index: 4;
     /*top:2em;*/
     top:7em;
     /*left: calc(49em + 4em);*/
@@ -49,25 +76,14 @@ nav {
 }
 
 nav a       { font-size: .75em; display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
-nav h2      { }
+nav h2      { margin:.5em 0 0;}
 nav h2:first-of-type { margin-top:0; }
-nav h3      { margin: .25em 0;}
+nav h3      { margin: .25em 0; font-size: 1.4em; margin:0;}
 nav h4      { margin: .25em 0;}
-nav h3 a    { padding-left: 1.5em; }
+nav h3 a    { padding-left: 1.5em; font-weight: normal; color:#777;}
 nav h4 a    { padding-left:   3em; }
 
-a {
-    text-decoration: none;
-    color: #000;
-    transition:.25s;padding: .5em .75em;
-    margin: -0.75em -.75em;
-}
-a:hover  {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
-    background:#fff;
-    z-index:10;position: relative;
-}
-h1{text-align: center; text-transform: uppercase;}
+h1{ text-transform: uppercase;}
 h2 {
 	cursor: pointer;
 }
@@ -75,7 +91,7 @@ h2 {
 section	{
 }
 
-dl, .back {
+dl {
     padding: 1em;
     border-radius: 2px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, .2);
@@ -105,8 +121,7 @@ dd + input {
 dd ul {
     list-style: none;
     padding: 0;
-    -webkit-columns: 15em;
-    columns: 15em;
+    column-count: 2;
 }
 
 dd ul li {
@@ -162,22 +177,27 @@ input[checked]::before {
 
 .date {
     float: right;
+    color: #aaa;
 }
 
 /*-------------------------------------------*/
 
-.card_div {
+.card_wrap {
     perspective: 1000;
     -webkit-perspective: 1000;
     position: relative;
 }
 
+.card_wrap:hover {
+    z-index: 2;
+}
+
 	/* flip the pane when hovered */
-.card_div:hover .card, .card_div.hover .card {
+.card_wrap:hover .card, .card_wrap.hover .card {
     transform: rotateY(180deg);
 }
 
-.card_div, .front, .back {
+.card_wrap, .front, .back {
 }
 
 /* flip speed goes here */
@@ -209,24 +229,44 @@ input[checked]::before {
     transform: rotateX(-180deg);
     position: absolute;
     padding: 0;
+
+    padding: 1em 2em;
+    border-radius: 2px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, .2);
+    background: white;
+    max-width:calc(100% - 4em);
 }
 
-.back * {
-    margin: 1em;
-}
-
-.card_div:hover .card  {
+.card_wrap:hover .card  {
     transform: rotateX(180deg);
+}
+
+#movie_wrap {
+    display: none;
+    position: fixed; z-index: 3;
+    top:0; left:0; width:100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+#movie_wrap > iframe {
+    width: 800px;
+    height: 450px;    top: calc(50% - 225px);
+    position: relative;
+}
+
+.shadow {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
+    border-radius: 3px;
 }
 
 @media handheld, only screen and (max-device-width: 480px), only screen and (max-device-width: 320px), screen and (max-width: 600px)	{
     body    {margin-top: 2em;}
-    header  {
+    header  {font-size: .75em;
         position: fixed;
-        height:3em;
+        /*height:3em;*/
     }
 
-    header h1 {position: relative; margin: 0.25em; font-size: 1.5em;}
+    header h1 {position: relative; margin: 0.25em; }
     #nav_on { display: block; }
     nav {
         position: fixed!important;
