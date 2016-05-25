@@ -143,7 +143,7 @@ var color_i = dice(1, color.length, 0);
 function coloring() {
     $("header").css({"background":color.material_700[color_i]});
     $("#sub_header").css({"background":color.material_500[color_i]});
-    $("input, a:not(nav a)").css({"color":color.material_500[color_i]})
+    $("dl .material-icons, a:not(nav a)").css({"color":color.material_500[color_i]})
 }
 
 function card_wrapping() {
@@ -195,7 +195,7 @@ function imgReady() {
 
 function columns(){
     var columns = Math.floor(($(document).width() - 256 - 32)/400);
-    if(column_only_mode || columns<=0 ){columns = 1}
+    if(column_only_mode=="true" || columns<=0 ){columns = 1}
     $("section").css({"column-count":columns});
     if(columns==1){
         $(".card").each(function(){
@@ -217,9 +217,9 @@ function columns(){
     // $("body").css({"width":400*columns+"px"});
 }
 
-if(window.localStorage['column_only_mode']==null){
-    window.localStorage['column_only_mode'] = false;
-}
+// if(window.localStorage['column_only_mode']==null){
+// }
+    window.localStorage['column_only_mode'] = "false";
 var column_only_mode = window.localStorage['column_only_mode'];
 
 $( window ).resize(function() {
@@ -230,19 +230,16 @@ $( window ).resize(function() {
 
 function filter(){
 
-$("#column_bt").on("click",function(){
-    if(column_only_mode == false){
-        column_only_mode = true;
-    }else{
-        column_only_mode = false;
-    }
-    columns();
-    window.localStorage['column_only_mode'] = column_only_mode;
-});
+    $("#column_bt").on("click",function(){
+        if(column_only_mode == "false"){
+            column_only_mode = "true";
+        }else{
+            column_only_mode = "false";
+        }
+        columns();
+        window.localStorage['column_only_mode'] = column_only_mode;
+    });
 
-$("#sub_header .filter_bt").on("click",function(){
-    $("#sub_header .filter_bt").removeClass("on");
-    $(this).addClass("on");
     function hide_all(){
         $("input").each(function(){
             if($(this).parent().parent().parent().attr('class')=='card') {
@@ -254,7 +251,8 @@ $("#sub_header .filter_bt").on("click",function(){
             }
         });
     }
-    if($(this).attr("id")=="filter_11"){    //show all
+
+    function filter_11(){
         $("input").each(function(){
             if($(this).parent().parent().parent().attr('class')=='card') {
                 $(this).parent().parent().parent().css({"display":"inline-block"});
@@ -264,7 +262,9 @@ $("#sub_header .filter_bt").on("click",function(){
                 console.log("DL");
             }
         });
-    }else if($(this).attr("id")=="filter_10"){  //show acheieved
+    }
+
+    function filter_10(){
         hide_all();
         $("input[checked]").each(function(){
             if($(this).parent().parent().parent().attr('class')=='card') {
@@ -275,7 +275,9 @@ $("#sub_header .filter_bt").on("click",function(){
                 console.log("DL");
             }
         });
-    }else{  //show notyet
+    }
+
+    function filter_01(){
         hide_all();
         $("input:not([checked])").each(function(){
             if($(this).parent().parent().parent().attr('class')=='card') {
@@ -287,14 +289,46 @@ $("#sub_header .filter_bt").on("click",function(){
             }
         });
     }
-});
+
+    if(window.localStorage['filter'] == "filter_10"){
+        $("#sub_header .filter_bt").removeClass("on");
+        $("#filter_10").addClass("on");
+        filter_10();
+    }else if(window.localStorage['filter'] == "filter_01") {
+        $("#sub_header .filter_bt").removeClass("on");
+        $("#filter_01").addClass("on");
+        filter_01();
+    }else {
+        // filter_11();
+    }
+
+    $("#sub_header .filter_bt").on("click",function(){
+        $("#sub_header .filter_bt").removeClass("on");
+        $(this).addClass("on");
+        if($(this).attr("id")=="filter_11"){    //show all
+            window.localStorage['filter'] = "filter_11";
+            filter_11();
+        }else if($(this).attr("id")=="filter_10"){  //show acheieved
+            window.localStorage['filter'] = "filter_10";
+            filter_10();
+        }else{  //show notyet
+            window.localStorage['filter'] = "filter_01";
+            filter_01();
+        }
+    });
+}
+
+function checkbox(){
+    $("input[checked]").before("<i class='material-icons'>check_box</i>");
+    $("input:not([checked])").before("<i class='material-icons'>check_box_outline_blank</i>");
 }
 
 $(function() {
     imgReady();
     nav_create();
     scroll_smooth();
-    coloring();
+    checkbox();
     columns();
     filter();
+    coloring();
 });
