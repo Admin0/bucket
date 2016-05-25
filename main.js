@@ -3,7 +3,7 @@ function nav_create() {
     // $("nav").prepend("<section id='in-page'></section>");
     $("h2,h3").each(function(){
         $(this).clone()
-        .html("<a href='#"+$(this).attr("id")+"'>"+$(this).text()+"</a>")
+        .html("<a href='#"+$(this).attr("id")+"'>"+$(this).html()+"</a>")
         .attr("id",null)
         .appendTo($("nav"));
         // .appendTo($("#in-page"));
@@ -47,7 +47,7 @@ function scroll_smooth() {
                 target_bg = target.css("background-color");
             }
 
-            target_position = target.offset().top - 15;
+            target_position = target.offset().top - 56;
 
             $('html, body').animate({
                 scrollTop: target_position
@@ -57,7 +57,7 @@ function scroll_smooth() {
         }
 
         scroll(target, event);
-        bg_change(target, "#"+color.material_a100[color_i - 1], ".25s");
+        bg_change(target, color.material_a100[color_i - 1], ".25s");
         // toast("원래 자리로 가려면 더블클릭");
 
         // document.ondblclick = function(event) {
@@ -72,18 +72,18 @@ function scroll_smooth() {
 }
 
 
-$(document).scroll(function() {
-    if (document.height === null) {
-        pageYOffset = document.documentElement.scrollTop;
-    }
-    if($( document ).width()>=600){
-        if (pageYOffset >= 89.88) {
-            $("nav").css({"position":"fixed",   "top":"1em", "max-height": "calc(100% -  4em)"});
-        } else{
-            $("nav").css({"position":"absolute","top":"7em", "max-height": "calc(100% - 10em)"});
-        }
-    }
-});
+// $(document).scroll(function() {
+//     if (document.height === null) {
+//         pageYOffset = document.documentElement.scrollTop;
+//     }
+//     if($( document ).width()>=600){
+//         if (pageYOffset >= 89.88) {
+//             $("nav").css({"position":"fixed",   "top":"1em", "max-height": "calc(100% -  4em)"});
+//         } else{
+//             $("nav").css({"position":"absolute","top":"7em", "max-height": "calc(100% - 10em)"});
+//         }
+//     }
+// });
 
 
 color = {
@@ -99,6 +99,12 @@ color = {
         "#2196F3", "#03A9F4", "#00BCD4", "#009688", "#4CAF50",
         "#8BC34A", "#CDDC39", "#FFEB3B", "#FFC107", "#FF9800",
         "#FF5722", "#795548", "#9E9E9E", "#607D8B"
+    ],
+    "material_700":[
+        "#D32F2F", "#C2185B", "#7B1FA2", "#512DA8", "#303F9F",
+        "#1976D2", "#0288D1", "#0097A7", "#00796B", "#388E3C",
+        "#689F38", "#AFB42B", "#FBC02D", "#FFA000", "#F57C00",
+        "#E64A19", "#5D4037", "#616161", "#455A64"
     ],
     "material_a100": [
         "#FF8A80", "#FF80AB", "#EA80FC", "#B388FF", "#8C9EFF",
@@ -135,7 +141,8 @@ function dice(n, s, b) {
 var color_i = dice(1, color.length, 0);
 
 function coloring() {
-    $("header").css({"background":color.material_500[color_i]});
+    $("header").css({"background":color.material_700[color_i]});
+    $("#sub_header").css({"background":color.material_500[color_i]});
     $("input, a:not(nav a)").css({"color":color.material_500[color_i]})
 }
 
@@ -186,10 +193,38 @@ function imgReady() {
     });
 }
 
+function columns(){
+    var columns = Math.floor(($(document).width() - 256 - 32)/400);
+    if(columns<=0){columns = 1}
+    $("section").css({"column-count":columns});
+    // $("body").css({"width":400*columns+"px"});
+}
+$( window ).resize(function() {
+    columns();
+});
+
+function filter(){
+$("#sub_header .filter_bt").on("click",function(){
+    console.log("dddd");
+    $("#sub_header .filter_bt").removeClass("on");
+    $(this).addClass("on");
+    if($(this).attr("id")=="filter_11"){    //show all
+        $("input").parent().parent().css({"display":"inline-block"});
+    }else if($(this).attr("id")=="filter_10"){  //show acheieved
+        $("input:not([checked])").parent().parent().css({"display":"none"});
+            $("input[checked]").parent().parent().css({"display":"inline-block"});
+    }else{  //show notyet
+        $("input[checked]").parent().parent().css({"display":"none"});
+            $("input:not([checked])").parent().parent().css({"display":"inline-block"});
+    }
+});
+}
+
 $(function() {
     imgReady();
     nav_create();
     scroll_smooth();
     coloring();
-    card_wrapping();
+    columns();
+    filter();
 });

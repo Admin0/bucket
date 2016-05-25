@@ -13,62 +13,66 @@
 
 <body>
     <header>
-        <h1>Bucket List 2.0</h1>
+        <h1>Bucket List 2.5</h1>
         <i id="nav_on" onclick="$('nav, #nav_bg').addClass('on');" class="material-icons">menu</i>
         <!-- <i id="to_github" onclick="window.open('https://github.com/Admin0/bucket')" class="material-icons" title="go to github">code</i> -->
         <svg id="to_github" onclick="window.open('https://github.com/Admin0/bucket')" style="width:24px;height:24px" viewBox="0 0 24 24">
             <path fill="#ffffff" d="M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H14.85C14.5,21.92 14.5,21.24 14.5,21V18.26C14.5,17.33 14.17,16.72 13.81,16.41C16.04,16.16 18.38,15.32 18.38,11.5C18.38,10.39 18,9.5 17.35,8.79C17.45,8.54 17.8,7.5 17.25,6.15C17.25,6.15 16.41,5.88 14.5,7.17C13.71,6.95 12.85,6.84 12,6.84C11.15,6.84 10.29,6.95 9.5,7.17C7.59,5.88 6.75,6.15 6.75,6.15C6.2,7.5 6.55,8.54 6.65,8.79C6,9.5 5.62,10.39 5.62,11.5C5.62,15.31 7.95,16.17 10.17,16.42C9.89,16.67 9.63,17.11 9.54,17.76C8.97,18 7.5,18.45 6.63,16.93C6.63,16.93 6.1,15.97 5.1,15.9C5.1,15.9 4.12,15.88 5,16.5C5,16.5 5.68,16.81 6.14,17.97C6.14,17.97 6.73,19.91 9.5,19.31V21C9.5,21.24 9.5,21.92 9.14,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2Z" />
         </svg>
     </header>
-    <div id="nav_bg" onclick="$('nav, #nav_bg').removeClass('on');"></div>
-    <div class="card">
-        <div class="front">
-            <dl>
-                <input type="checkbox" checked> <dt>그거 먹는건가요?</dt>
-                <dd>버킷리스트 만들기. <span class="date">2014.10.03.</span> </dd>
-            </dl>
+    <div id="sub_header">
+        <div class="filter_bt on" id="filter_11">
+            전체
+            <span class="ink_bar"></span>
         </div>
-        <div class="back">
-            <p>만들었다. 버킷리스트!</p>
+        <div class="filter_bt" id="filter_10">
+            달성
+            <span class="ink_bar"></span>
+        </div>
+        <div class="filter_bt" id="filter_01">
+            미달성
+            <span class="ink_bar"></span>
         </div>
     </div>
+
+    <div id="nav_bg" onclick="$('nav, #nav_bg').removeClass('on');"></div>
+    <div style="text-align:center;">
+        <div class="card">
+            <div class="front">
+                <dl>
+                    <input type="checkbox" checked> <dt>그거 먹는건가요?</dt>
+                    <dd>버킷리스트 만들기. <span class="date">2014.10.03.</span> </dd>
+                </dl>
+            </div>
+            <div class="back">
+                <p>만들었다. 버킷리스트!</p>
+            </div>
+        </div>
+    </div>
+
     <h2 id="휴식">휴식, 취미</h2>
+
+    <h3 id="여행"><i class="material-icons">nature_people</i>여행</h3>
     <section>
-        <dl>
-            <input type="checkbox"> <dt>이건 하지도 않을 거 면서</dt>
-            <dd>일주일 단식.<span class="date"></span> </dd>
-            <input type="checkbox"> <dt>자연인</dt>
-            <dd>일주일간 문명의 혜택 없이 생존.<span class="date"></span> </dd>
-            <input type="checkbox"> <dt>윌슨!</dt>
-            <dd>한 달간 고립된 장소에서 생존.<span class="date"></span> </dd>
-        </dl>
-        <dl>
-            <input type="checkbox"> <dt>생존본능</dt>
-            <dd>재난 속에서 살아남기.<span class="date"></span> </dd>
-            <input type="checkbox"> <dt>생명의 은인</dt>
-            <dd>다른 사람의 목숨 구하기.<span class="date"></span> </dd>
-        </dl>
-        <dl>
-            <input type="checkbox"> <dt>미지와의 조우</dt>
-            <dd>은하수 보기.<span class="date"></span> </dd>
-            <input type="checkbox"> <dt>우주보다 가까운 곳에</dt>
-            <dd>오로라 관측하기.<span class="date"></span> </dd>
-            <input type="checkbox"> <dt>의외로 가까운 곳에</dt>
-            <dd>심해 탐측하기.<span class="date"></span> </dd>
-        </dl>
-    </section>
-    <h3 id="여행">여행</h3>
-    <section>
-        <dl>
-            <input type="checkbox" checked> <dt>기념품은 감귤 초콜렛</dt>
-            <dd>해발 1,000 m 이상인 땅 밟기.<span class="date"></span> </dd>
-            <input type="checkbox"> <dt>실은 등산 싫어함</dt>
-            <dd>해발 5,000 m 이상인 땅 밟기.<span class="date"></span> </dd>
-            <input type="checkbox" failed> <dt>있긴 한 건가?</dt>
-            <dd>해발 10,000 m 이상인 땅 밟기.<span class="date">없었다... 에베레스트 높이가 해발 8848 km.</span> </dd>
-            <input type="checkbox"> <dt>대기권 돌파</dt>
-            <dd>우주 여행.<span class="date"></span> </dd>
-        </dl>
+        <div class="card">
+            <div class="front">
+                <dl>
+                    <input type="checkbox" checked> <dt>기념품은 감귤 초콜렛</dt>
+                    <dd>해발 1,000 m 이상인 땅 밟기.<span class="date"></span> </dd>
+                    <input type="checkbox"> <dt>실은 등산 싫어함</dt>
+                    <dd>해발 5,000 m 이상인 땅 밟기.<span class="date"></span> </dd>
+                    <input type="checkbox" failed> <dt>있긴 한 건가?</dt>
+                    <dd>해발 10,000 m 이상인 땅 밟기.<span class="date">없었다... 에베레스트 높이가 해발 8848 km.</span> </dd>
+                    <input type="checkbox"> <dt>대기권 돌파</dt>
+                    <dd>우주 여행.<span class="date"></span> </dd>
+                </dl>
+            </div>
+            <div class="back">
+                <p>
+                    최고 기록 한라산 1,947m
+                </p>
+            </div>
+        </div>
         <div class="card">
             <div class="front">
                 <dl>
@@ -85,32 +89,63 @@
                 <p>아무튼, 야무지게 1,000 km 이상을 내달리면서 성공적으로 완주. <a onclick="showMovie('https://www.youtube.com/watch?v=NGM8jJC_FV4')">동영상</a>으로도 남김!</p>
             </div>
         </div>
+        <div class="card">
+            <div class="front">
+                <dl>
+                    <input type="checkbox"> <dt>다음 국가 여행</dt>
+                    <dd>
+                        <ul>
+                            <li><input type="checkbox"> <dt>미국</dt> </li>
+                            <li><input type="checkbox"> <dt>영국</dt> </li>
+                            <li><input type="checkbox"> <dt>프랑스</dt> </li>
+                            <li><input type="checkbox"> <dt>이탈리아</dt> </li>
+                            <li><input type="checkbox"> <dt>일본</dt> </li>
+                            <li><input type="checkbox"> <dt>중국</dt> </li>
+                            <li><input type="checkbox"> <dt>호주</dt> </li>
+                            <li><input type="checkbox"> <dt>러시아</dt> </li>
+                            <li><input type="checkbox"> <dt>뉴질랜드</dt> </li>
+                            <li><input type="checkbox"> <dt>캐나다</dt> </li>
+                            <li><input type="checkbox"> <dt>브라질</dt> </li>
+                        </ul>
+                    </dd>
+                </dl>
+            </div>
+            <div class="back">
+                <p>
+                    려권도 없는 나애 우울한 인셍애 무슨 볼일이시조?
+                </p>
+            </div>
+        </div>
 
-        <dl>
-            <input type="checkbox" checked> <dt>1박2일</dt>
-            <dd>영하의 날씨에 길바닥에서 야외취침.<span class="date">2015.</span> </dd>
-        </dl>
+        <div class="card">
+            <div class="front">
+                <dl>
+                    <input type="checkbox"> <dt>미지와의 조우</dt>
+                    <dd>은하수 보기.<span class="date"></span> </dd>
+                    <input type="checkbox"> <dt>우주보다 가까운 곳에</dt>
+                    <dd>오로라 관측하기.<span class="date"></span> </dd>
+                    <input type="checkbox"> <dt>의외로 가까운 곳에</dt>
+                    <dd>심해 탐측하기.<span class="date"></span> </dd>
+                </dl>
+            </div>
+            <div class="back">
+                <p>
 
-        <dl>
-            <input type="checkbox"> <dt>다음 국가 여행</dt>
-            <dd>
-                <ul>
-                    <li><input type="checkbox"> <dt>미국</dt> </li>
-                    <li><input type="checkbox"> <dt>영국</dt> </li>
-                    <li><input type="checkbox"> <dt>프랑스</dt> </li>
-                    <li><input type="checkbox"> <dt>이탈리아</dt> </li>
-                    <li><input type="checkbox"> <dt>일본</dt> </li>
-                    <li><input type="checkbox"> <dt>중국</dt> </li>
-                    <li><input type="checkbox"> <dt>호주</dt> </li>
-                    <li><input type="checkbox"> <dt>러시아</dt> </li>
-                    <li><input type="checkbox"> <dt>뉴질랜드</dt> </li>
-                    <li><input type="checkbox"> <dt>캐나다</dt> </li>
-                    <li><input type="checkbox"> <dt>브라질</dt> </li>
-                </ul>
-            </dd>
-        </dl>
+                </p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="front">
+
+            </div>
+            <div class="back">
+                <p>
+
+                </p>
+            </div>
+        </div>
     </section>
-    <h3 id="커뮤니티">커뮤니티</h3>
+    <h3 id="커뮤니티"><i class="material-icons">group</i>커뮤니티</h3>
     <section>
         <dl>
             <input type="checkbox" checked> <dt>사이버 세상의 주민</dt>
@@ -144,7 +179,7 @@
             </div>
         </div>
     </section>
-    <h3 id="컴퓨터">컴퓨터</h3>
+    <h3 id="컴퓨터"><i class="material-icons">computer</i>컴퓨터</h3>
     <section>
         <div class="card">
             <div class="front">
@@ -161,10 +196,10 @@
         </div>
         <div class="card">
             <div class="front">
-            <dl>
-                <input type="checkbox" checked> <dt>태세 전환</dt>
-                <dd>모바일 앱 만들기. <span class="date">2013.02.28.</span> </dd>
-            </dl>
+                <dl>
+                    <input type="checkbox" checked> <dt>태세 전환</dt>
+                    <dd>모바일 앱 만들기. <span class="date">2013.02.28.</span> </dd>
+                </dl>
             </div>
             <div class="back">
                 <p>
@@ -193,7 +228,7 @@
             <dd>단일 유투브 동영상 조회수 10,000,000 회<span class="date"></span> </dd>
         </dl>
     </section>
-    <h3 id="예술">예술</h3>
+    <h3 id="예술"><i class="material-icons">color_lens</i>예술</h3>
     <section>
         <dl>
             <input type="checkbox"> <dt>브레멘 음악대</dt>
@@ -223,8 +258,57 @@
         </div>
     </section>
     <h2 id="health">건강</h2>
+    <h3 id="survival"><i class="material-icons">explore</i>생존</h3>
     <section>
-        <h3 id="running">유산소</h3>
+        <div class="card">
+            <div class="front">
+                <dl>
+                    <input type="checkbox"> <dt>이건 하지도 않을 거 면서</dt>
+                    <dd>일주일 단식.<span class="date"></span> </dd>
+                    <input type="checkbox"> <dt>자연인</dt>
+                    <dd>일주일간 문명의 혜택 없이 생존.<span class="date"></span> </dd>
+                    <input type="checkbox"> <dt>윌슨!</dt>
+                    <dd>한 달간 고립된 장소에서 생존.<span class="date"></span> </dd>
+                </dl>
+            </div>
+            <div class="back">
+                <p>
+                    1. 이런식으로 카드가 돌아가면서
+                </p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="front">
+                <dl>
+                    <input type="checkbox"> <dt>생존본능</dt>
+                    <dd>재난 속에서 살아남기.<span class="date"></span> </dd>
+                    <input type="checkbox"> <dt>생명의 은인</dt>
+                    <dd>다른 사람의 목숨 구하기.<span class="date"></span> </dd>
+                </dl>
+            </div>
+            <div class="back">
+                <p>
+                    2. 다른 내용을 볼수가 있읍니다
+                </p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="front">
+                <dl>
+                    <input type="checkbox" checked> <dt>1박2일</dt>
+                    <dd>영하의 날씨에 길바닥에서 야외취침.<span class="date">2015.</span> </dd>
+                </dl>
+            </div>
+            <div class="back">
+                <p>
+                    자전거 여행에 침낭을 괜히 싸메고 간 게 아니라구.
+                </p>
+            </div>
+        </div>
+    </section>
+    <h3 id="running"><i class="material-icons">directions_bike</i>유산소</h3>
+    <section>
         <div class="card">
             <div class="front">
                 <dl>
@@ -270,7 +354,10 @@
             <input type="checkbox"> <dt>지구 한 바퀴</dt>
             <dd>걷고 달린 거리 누적 40,000 km.<span class="date"></span> </dd>
         </dl>
-        <h3 id="fitness">무산소</h3>
+
+    </section>
+    <h3 id="fitness"><i class="material-icons">directions_walk</i>무산소</h3>
+    <section>
         <dl>
             <input type="checkbox"> <dt>4대 운동 1</dt>
             <dd>푸시 업 연속 100 회.<span class="date"></span> </dd>
@@ -286,26 +373,26 @@
             <dd>100 kg 이상의 역기 허리 높이까지 들어올리기.<span class="date"></span> </dd>
             <input type="checkbox"> <dt>역기 2</dt>
             <dd>몸무게의 두 배 무게의 역기 허리 높이까지 들어올리기.</dd> <span class="date"></span> </dl>
-        <dl>
-            <input type="checkbox"> <dt>복근</dt>
-            <dd>복근 만들기.<span class="date"></span> </dd>
+            <dl>
+                <input type="checkbox"> <dt>복근</dt>
+                <dd>복근 만들기.<span class="date"></span></dd>
+            </dl>
         </dl>
-        <h3 id="other">기타</h3>
+
+    </section>
+    <h3 id="other"><i class="material-icons">whatshot</i>기타</h3>
+    <section>
         <dl>
             <input type="checkbox"> <dt>제우스</dt>
             <dd>다음 운동 배우기.
                 <ul>
-                    <li>
-                        <input type="checkbox"> <dt>아틀라스</dt> </li>
-                    <li>
-                        <input type="checkbox"> <dt>포세이돈</dt> </li>
-                    <li>
-                        <input type="checkbox"> <dt>켄타우로스</dt> </li>
-                    <li>
-                        <input type="checkbox"> <dt>오리온</dt> </li>
-                    <li>
-                        <input type="checkbox"> <dt>이카루스</dt> </li>
-                </ul><span class="date"></span> </dd>
+                    <li><input type="checkbox"> <dt>아틀라스</dt> </li>
+                    <li><input type="checkbox"> <dt>포세이돈</dt> </li>
+                    <li><input type="checkbox"> <dt>켄타우로스</dt> </li>
+                    <li><input type="checkbox"> <dt>오리온</dt> </li>
+                    <li><input type="checkbox"> <dt>이카루스</dt> </li>
+                </ul><span class="date"></span>
+            </dd>
         </dl>
         <dl>
             <input type="checkbox"> <dt>아틀라스</dt>
@@ -323,12 +410,9 @@
             <input type="checkbox"> <dt>운동 업적 1</dt>
             <dd>다음 기구가 필요한 운동 배우기.
                 <ul>
-                    <li>
-                        <input type="checkbox" checked><span>자전거</span><span class="date"></span> </li>
-                    <li>
-                        <input type="checkbox"><span>스케이트 보드</span><span class="date"></span> </li>
-                    <li>
-                        <input type="checkbox"><span>스노우 보드 혹은 스키</span><span class="date"></span> </li>
+                    <li><input type="checkbox" checked><span>자전거</span><span class="date"></span> </li>
+                    <li><input type="checkbox"><span>스케이트 보드</span><span class="date"></span> </li>
+                    <li><input type="checkbox"><span>스노우 보드 혹은 스키</span><span class="date"></span> </li>
                 </ul>
             </dd>
         </dl>
@@ -356,7 +440,7 @@
             <dd>24시간 연속 자기.</dd>
         </dl>
     </section>
-    <h3 id="dmat">음식</h3>
+    <h3 id="dmat"><i class="material-icons">restaurant</i>음식</h3>
     <section>
         <div class="card">
             <div class="front">
@@ -374,7 +458,7 @@
     </section>
     <h2 id="learn">배움</h2>
     <section>
-        <h3 id="high">고등 교육</h3>
+        <h3 id="high"><i class="material-icons">school</i>고등 교육</h3>
         <dl>
             <input type="checkbox" failed> <dt>공략집 독파</dt>
             <dd>학점 4.0 이상인 상태로 졸업.<span class="date">2014.08.</span> </dd>
@@ -391,7 +475,9 @@
             <input type="checkbox" checked> <dt>듀얼코어</dt>
             <dd>시험기간 동안 공부 외에 뭔가 의미있는 일 하기.<span class="date">2013.</span> </dd>
         </dl>
-        <h3 id="license">자격</h3>
+    </section>
+    <section>
+        <h3 id="license"><i class="material-icons">book</i>자격</h3>
         <div class="card">
             <div class="front">
                 <dl>
@@ -472,7 +558,11 @@
                 <p>같은 해 가을. 기사 3회차에 화공기사 시험이 없음! 뭐야이게... 그래서 적당해 보이던 산업안전기사에 도전. 필기 무난하게 합격. 실기는... 한 문제 차이로 탈락. 으아아아ㅏ앙ㅇㅇ아아아앙 안 돼! 현실을 받아들이지 못하고 산업인력공단 고객의 소리에 시험채점 잘못됐다고 깽판침(실은 예의바르게 재채점 문의). 답변에 재채점 결과 적나라하게 알려주며 재차 능욕당하고 쓸쓸히 다음 시험 준비. 으아아아아ㅓ랑머ㅏ감ㄱ! 시험공부 안 한 과거의 나 존나 패고싶다!</p>
             </div>
         </div>
-        <h3 id="언어">언어</h3>
+
+    </section>
+    <h3 id="언어"><i class="material-icons">public</i>언어</h3>
+    <section>
+
         <dl>
             <input type="checkbox"> <dt>모범 시민</dt>
             <dd>한국어 능력 검증.<span class="date"></span> </dd>
@@ -497,10 +587,8 @@
             <input type="checkbox"> <dt>애국자</dt>
             <dd>한국어와 한국사 능력 검증.<span class="date"></span>
                 <ul>
-                    <li>
-                        <input type="checkbox"><span>한국어</span><span class="date"></span> </li>
-                    <li>
-                        <input type="checkbox"><span>한국사</span><span class="date"></span> </li>
+                    <li><input type="checkbox"><span>한국어</span><span class="date"></span> </li>
+                    <li><input type="checkbox"><span>한국사</span><span class="date"></span> </li>
                 </ul>
             </dd>
         </dl>
@@ -511,7 +599,7 @@
     </section>
 
     <h2 id="money">돈</h2>
-    <h3 id="hob">직업</h3>
+    <h3 id="hob"><i class="material-icons">account_balance_wallet</i>직업</h3>
     <section>
         <dl>
             <input type="checkbox" checked> <dt>바늘 구멍</dt>
@@ -536,8 +624,8 @@
             <dd>면접 전형 탈락.<span class="date">2014.</span></dd>
         </dl>
         <dl>
-            <input type="checkbox"> <dt>이래도 헬조센이 아닙니까?</dt>
-            <dd>정규직 전환 실패.<span class="date"></span></dd>
+            <input type="checkbox"> <dt>이맛헬</dt>
+            <dd>인턴 후 정규직 전환 실패.<span class="date"></span></dd>
         </dl>
         <dl>
             <input type="checkbox" checked> <dt>갓수</dt>
@@ -606,7 +694,7 @@
             <dd>월 100 만원 이상 소득을 얻는 투잡 하기.<span class="date"></span> </dd>
         </dl>
     </section>
-    <h3 id="소유">소유</h3>
+    <h3 id="소유"><i class="material-icons">motorcycle</i>소유</h3>
     <section>
         <dl>
             <input type="checkbox"> <dt>세워만 놔도 멋지잖아?</dt>
@@ -630,52 +718,52 @@
     </section>
     <pre style="display:none;
     overflow: hidden;">
-은하수 보기
-줍 다음 목록 줍기 조류
-조류 - 천연기념물
-조류 - 맹금류
-포유류
-파충류
-외계인
-미아
-노숙자
-도둑, 강도 및 범죄자
-시체
+    은하수 보기
+    줍 다음 목록 줍기 조류
+    조류 - 천연기념물
+    조류 - 맹금류
+    포유류
+    파충류
+    외계인
+    미아
+    노숙자
+    도둑, 강도 및 범죄자
+    시체
 
-문화
-정작가님 나가신다 - 저자 목록에 이름이 올라간 책 출판.
-베스트 셀러 - 단일 서적으로 100,000 부 이상 판매.
-스테디 셀러 - 시리즈로 100만 부 이상 판매. ___
+    문화
+    정작가님 나가신다 - 저자 목록에 이름이 올라간 책 출판.
+    베스트 셀러 - 단일 서적으로 100,000 부 이상 판매.
+    스테디 셀러 - 시리즈로 100만 부 이상 판매. ___
 
-음식
+    음식
 
-탄수화물 중독 - 다음 항목 달성.
-중국에서 국수 먹기. 일본에서 우동 먹기.
-베트남에서 쌀국수 먹기.
-이탈리아에서 파스타 먹기.
-영국에서 감자튀김 먹기.
+    탄수화물 중독 - 다음 항목 달성.
+    중국에서 국수 먹기. 일본에서 우동 먹기.
+    베트남에서 쌀국수 먹기.
+    이탈리아에서 파스타 먹기.
+    영국에서 감자튀김 먹기.
 
-단백질 중독. 일본에서 돈까스 먹기.
-미국에서 스테이크 먹기.
-중국에서 챠슈 먹기.
-몽골에서 양갈비 뜯기.
-독일에서 소시지 먹기.
+    단백질 중독. 일본에서 돈까스 먹기.
+    미국에서 스테이크 먹기.
+    중국에서 챠슈 먹기.
+    몽골에서 양갈비 뜯기.
+    독일에서 소시지 먹기.
 
-미식가 캐비어 먹기.
-푸아그라 먹기.
-그리고 또 뭐시기냐...
+    미식가 캐비어 먹기.
+    푸아그라 먹기.
+    그리고 또 뭐시기냐...
 
-알콜 중독 러시아에서 보드카 마시기.
-독일에서 맥주 마시기.
-일본에서 정종 마시기.
-프랑스에서 와인 마시기.
-중국에서 고량주 마시기.
+    알콜 중독 러시아에서 보드카 마시기.
+    독일에서 맥주 마시기.
+    일본에서 정종 마시기.
+    프랑스에서 와인 마시기.
+    중국에서 고량주 마시기.
 
-외국인 펜팔 친구 만들고 일 년 이상 관계 유지하기.
+    외국인 펜팔 친구 만들고 일 년 이상 관계 유지하기.
 
-돈 자산
+    돈 자산
 
-첫 월급 - 통장 잔고 100 만 원. 작지만 큰 걸음 - 통장 잔고 500 만 원. 게임에선 쉬웠는데 - 통장 잔고 1,000 만 원. 티끌 모아 태산 - 통장 잔고 5,000 만 원. 10년 안에 가능? - 통장 잔고 1 억 원. 로또 당첨 - 통장 잔고 10 억 원.  </pre>
+    첫 월급 - 통장 잔고 100 만 원. 작지만 큰 걸음 - 통장 잔고 500 만 원. 게임에선 쉬웠는데 - 통장 잔고 1,000 만 원. 티끌 모아 태산 - 통장 잔고 5,000 만 원. 10년 안에 가능? - 통장 잔고 1 억 원. 로또 당첨 - 통장 잔고 10 억 원.  </pre>
 </body>
 
 </html>
