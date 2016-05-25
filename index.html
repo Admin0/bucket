@@ -22,16 +22,22 @@
     </header>
     <div id="sub_header">
         <div class="filter_bt on" id="filter_11">
-            전체
+            <i class="material-icons">indeterminate_check_box</i><span>전체</span>
             <span class="ink_bar"></span>
         </div>
         <div class="filter_bt" id="filter_10">
-            달성
+            <i class="material-icons">check_box</i><span>달성</span>
             <span class="ink_bar"></span>
         </div>
         <div class="filter_bt" id="filter_01">
-            미달성
+            <i class="material-icons">check_box_outline_blank</i><span>미달성</span>
             <span class="ink_bar"></span>
+        </div>
+
+
+        <div class="" id="column_bt">
+            <i class="material-icons">view_column</i>
+            <!-- <span class="ink_bar"></span> -->
         </div>
     </div>
 
@@ -69,7 +75,7 @@
             </div>
             <div class="back">
                 <p>
-                    최고 기록 한라산 1,947m
+                    최고 기록 = 한라산 1,947m
                 </p>
             </div>
         </div>
@@ -112,28 +118,20 @@
             </div>
             <div class="back">
                 <p>
-                    려권도 없는 나애 우울한 인셍애 무슨 볼일이시조?
+                    려권도 없는 나애 우울한 인생애 무슨 볼일이시조?
                 </p>
             </div>
         </div>
 
-        <div class="card">
-            <div class="front">
-                <dl>
-                    <input type="checkbox"> <dt>미지와의 조우</dt>
-                    <dd>은하수 보기.<span class="date"></span> </dd>
-                    <input type="checkbox"> <dt>우주보다 가까운 곳에</dt>
-                    <dd>오로라 관측하기.<span class="date"></span> </dd>
-                    <input type="checkbox"> <dt>의외로 가까운 곳에</dt>
-                    <dd>심해 탐측하기.<span class="date"></span> </dd>
-                </dl>
-            </div>
-            <div class="back">
-                <p>
+        <dl>
+            <input type="checkbox"> <dt>미지와의 조우</dt>
+            <dd>은하수 보기.<span class="date"></span> </dd>
+            <input type="checkbox"> <dt>우주보다 가까운 곳에</dt>
+            <dd>오로라 관측하기.<span class="date"></span> </dd>
+            <input type="checkbox"> <dt>의외로 가까운 곳에</dt>
+            <dd>심해 탐측하기.<span class="date"></span> </dd>
+        </dl>
 
-                </p>
-            </div>
-        </div>
         <div class="card">
             <div class="front">
 
@@ -190,7 +188,7 @@
             </div>
             <div class="back">
                 <p>
-                    그전까지 HTML을 좀 만지작 거리긴 했음. 아무튼 프로그래밍이라 할만한 건 2008년 C#으로 간단한 계산 해주는 앱 만든 거. 그리고 Javascript도 좀 할 줄 알고, JAVA로 안드로이드 앱도 만듦.
+                    2008년 처음으로 윈도용 응용프로그램을 만듦. 계산기 같은 거였는데, C#으로 만들었음.
                 </p>
             </div>
         </div>
@@ -429,7 +427,7 @@
             </div>
             <div class="back">
                 <p>
-                    금장 받을 때 딸려온 <a src="images/헌혈금장.jpg">포장증</a>을 첨부한다.
+                    <img src="images/헌혈금장.jpg"/>
                 </p>
             </div>
         </div>
@@ -457,8 +455,8 @@
         </div>
     </section>
     <h2 id="learn">배움</h2>
+    <h3 id="high"><i class="material-icons">school</i>고등 교육</h3>
     <section>
-        <h3 id="high"><i class="material-icons">school</i>고등 교육</h3>
         <dl>
             <input type="checkbox" failed> <dt>공략집 독파</dt>
             <dd>학점 4.0 이상인 상태로 졸업.<span class="date">2014.08.</span> </dd>
@@ -468,16 +466,16 @@
             <dd>복수전공 혹은 부전공 갖기.<span class="date">2014.08.</span> </dd>
         </dl>
         <dl>
-            <input type="checkbox" checked> <dt>인생도 게임처럼, 만렙찍고 시작</dt>
+            <input type="checkbox" checked> <dt>만렙찍고 시작</dt>
             <dd>4년제 대학교 졸업.<span class="date">2014.08.</span> </dd>
         </dl>
         <dl>
             <input type="checkbox" checked> <dt>듀얼코어</dt>
-            <dd>시험기간 동안 공부 외에 뭔가 의미있는 일 하기.<span class="date">2013.</span> </dd>
+            <dd>시험기간 동안 공부 외에 뭔가 의미있는 일 하기.<span class="date">2013.</span></dd>
         </dl>
     </section>
+    <h3 id="license"><i class="material-icons">book</i>자격</h3>
     <section>
-        <h3 id="license"><i class="material-icons">book</i>자격</h3>
         <div class="card">
             <div class="front">
                 <dl>
@@ -506,7 +504,7 @@
             </div>
             <div class="back">
                 <p>
-                    [MOS 2010 MASTER]는 누가 뭐래도 국제 자격증이란 말야 ㅠㅠ
+                    MOS 2010 MASTER. 취득 비용만큼은 여느 국제자격증에 뒤지지않음.
                 </p>
             </div>
         </div>

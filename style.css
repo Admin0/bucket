@@ -22,14 +22,14 @@ header{
 }
 
 #sub_header {
-    width:100%; height: 48px;position: fixed;
+    width:calc(100% - 256px); height: 48px;position: fixed;
     top: 48px;
     z-index: 3;
     box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
     left: 256px;
     color:#fff;
 }
-#sub_header .filter_bt {
+#sub_header .filter_bt, #column_bt {
     position: relative;
     font-size: 16px;
     display: inline-block;
@@ -41,8 +41,12 @@ header{
     position: absolute;
     background: #fff;
     height: 3px;
-    bottom: 0;
+    bottom: 3px;
     left: 0;
+}
+
+#column_bt{
+    float: right;
 }
 
 section {width:100%;text-align: center;}
@@ -117,9 +121,10 @@ nav h4      { margin: .25em 0;}
 nav h2 a, nav h3 a    { padding-left: 1.5em; }
 nav h4 a    { padding-left:   3em; }
 
-h2,h3   {color: rgba(0,0,0,0.54);}
+h2,h3   {color: rgba(0,0,0,0.54); max-width: 600px; }
 h1{ text-transform: uppercase;     font-size: 22px;
-    margin: 8px 0;}
+    margin: 8px 0;
+}
 h2 {}
 
     h3 .material-icons {vertical-align: bottom;font-size: 1.25em!important;}
@@ -190,7 +195,7 @@ input{
     font-family: 'Material Icons';
     font-weight: normal;
     font-style: normal;
-    font-size: 1.5em;
+    font-size: 24px;
     line-height: 1;
     letter-spacing: normal;
     text-transform: none;
@@ -202,11 +207,11 @@ input{
     -webkit-font-smoothing: antialiased;
 }
 
-input::before {
+input:before {
     content: "check_box_outline_blank";
 }
 
-input[checked]::before {
+input[checked]:before {
     content: "check_box";
 }
 
@@ -231,12 +236,12 @@ section > dl    {
     width: 100%;
     max-width: 600px;
     text-align: left;
-    margin: 0 0 1em;
+    margin: 0 auto 1em;
+    position: relative;
 }
 
 .card:hover {
     z-index: 2;
-    position: relative;
 }
 
 .card:hover .front  {
@@ -250,13 +255,6 @@ section > dl    {
 .card_wrap, .front, .back {
 }
 
-/* flip speed goes here */
-.card {
- /* half of height */
-    /*position: relative;*/
-}
-
-/* hide back of pane during swap */
 .front, .back {
     transition: .5s;
     transform-style: preserve-3d;
@@ -278,11 +276,11 @@ section > dl    {
     top: 0;
     position:absolute;
     transform: rotateX(-180deg);
-    padding: 1em 2em;
+    padding: 1em 1.5em;
     border-radius: 3px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, .2);
     background: white;
-    max-width:calc(100% - 4em);
+    max-width:calc(100% - 3em);
 }
 .back p     {margin: 12px 0;}
 #movie_wrap, #img_wrap {
@@ -310,6 +308,8 @@ img[hide]   {display: none;}
     width: 90%;
     position: relative;
 }
+
+.material-icons{vertical-align: middle;margin-right: .5em;}
 
 @media handheld, only screen and (max-device-width: 480px), only screen and (max-device-width: 320px), screen and (max-width: 600px)	{
     body    {
