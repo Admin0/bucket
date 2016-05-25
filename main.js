@@ -203,7 +203,7 @@ function columns(){
                 $(this).css({"display":"block"});
             }
         });
-        $("h2,h3").css({"margin":".75em auto"});
+        $("h2,h3").css({"margin":".75em auto","max-width":"600px"});
         $("#column_bt i").text("view_column");
     }else{
         $(".card").each(function(){
@@ -211,15 +211,12 @@ function columns(){
                 $(this).css({"display":"inline-block"});
             }
         });
-        $("h2,h3").css({"margin":".75em 0"});
+        $("h2,h3").css({"margin":".75em 0","max-width":"100%"});
         $("#column_bt i").text("view_stream");
     }
     // $("body").css({"width":400*columns+"px"});
 }
 
-// if(window.localStorage['column_only_mode']==null){
-// }
-    window.localStorage['column_only_mode'] = "false";
 var column_only_mode = window.localStorage['column_only_mode'];
 
 $( window ).resize(function() {

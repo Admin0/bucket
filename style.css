@@ -310,6 +310,10 @@ img[hide]   {display: none;}
     }
 
     header h1 {position: relative; margin: 0.25em; }
+    #sub_header{left:0;width: 100%;}
+    #sub_header .filter_bt, #column_bt{padding: 12px 18px;}
+    #sub_header i {margin: 0;}
+    #sub_header .filter_bt span:not(.ink_bar){display: none;}
     #nav_on { display: block; }
     nav {
         left: -256px;
