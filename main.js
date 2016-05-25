@@ -47,7 +47,7 @@ function scroll_smooth() {
                 target_bg = target.css("background-color");
             }
 
-            target_position = target.offset().top - 56;
+            target_position = target.offset().top - 114;
 
             $('html, body').animate({
                 scrollTop: target_position
