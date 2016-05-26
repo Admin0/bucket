@@ -9,11 +9,13 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="http://code.jquery.com/jquery-1.9.0.js"></script>
     <script src="main.js"></script>
+    <script src="masonry.pkgd.min.js"></script>
+    <script src="packery.pkgd.min.js"></script>
 </head>
 
 <body>
     <header>
-        <h1>Bucket List 2.5</h1>
+        <h1>Bucket List 2.8</h1>
         <i id="nav_on" onclick="$('nav, #nav_bg').addClass('on');" class="material-icons">menu</i>
         <!-- <i id="to_github" onclick="window.open('https://github.com/Admin0/bucket')" class="material-icons" title="go to github">code</i> -->
         <svg id="to_github" onclick="window.open('https://github.com/Admin0/bucket')" style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -43,6 +45,8 @@
 
     <div id="nav_bg" onclick="$('nav, #nav_bg').removeClass('on');"></div>
     <div style="text-align:center;">
+        <div style="clear:both;">
+        </div>
         <div class="card">
             <div class="front">
                 <dl>
@@ -131,17 +135,6 @@
             <input type="checkbox"> <dt>의외로 가까운 곳에</dt>
             <dd>심해 탐측하기.<span class="date"></span> </dd>
         </dl>
-
-        <div class="card">
-            <div class="front">
-
-            </div>
-            <div class="back">
-                <p>
-
-                </p>
-            </div>
-        </div>
     </section>
     <h3 id="커뮤니티"><i class="material-icons">group</i>커뮤니티</h3>
     <section>

@@ -3,7 +3,7 @@
 body {
     /*max-width: 600px;*/
     margin: auto;
-    padding: 1em;
+    padding: 1em 0;
     background: #e5e5e5;
     font-family: 'Noto Sans KR', sans-serif;
     /*font-size: 12px;*/
@@ -99,7 +99,6 @@ nav {
     /*left: calc(49em + 4em);*/
     background: #fff;
     box-shadow: 2px 0 5px rgba(0, 0, 0, .25);
-    transition: .25s;
     /*border-radius: 3px;*/
     padding-top: 48px;
     height: calc(100% - 48px);
@@ -125,10 +124,12 @@ h2,h3   {color: rgba(0,0,0,0.54); max-width: 600px; }
 h1{ text-transform: uppercase;     font-size: 22px;
     margin: 8px 0;
 }
-h2 {}
+h2 {
 
-    h3 .material-icons {vertical-align: bottom;font-size: 1.25em!important;}
-    h3 .material-icons    {margin-right: 1em;}
+}
+
+h3 .material-icons {vertical-align: bottom;font-size: 1.25em!important;}
+h3 .material-icons    {margin-right: 1em;}
 
 dl {
     padding: 1em;
@@ -194,13 +195,13 @@ input[failed]+*::after {
     color:#F44336;
 }
 
-dl .material-icons{margin: 0;}
+dl .material-icons{margin: -8px 0;}
 /*input:before {
-    content: "check_box_outline_blank";
+content: "check_box_outline_blank";
 }
 
 input[checked]:before {
-    content: "check_box";
+content: "check_box";
 }*/
 
 
@@ -211,42 +212,50 @@ input[checked]:before {
 
 /*-------------------------------------------*/
 
-section > dl    {
+/*section > dl    {
     display: inline-block; text-align: left;
-    margin:0 0 1em;
+    margin:1em;
     width: calc(100% - 2em); max-width: calc(600px - 2em);
-}
+    transition: .25s;
+}*/
 
-.card {
+.card_wrap{
     perspective: 1000;
     -webkit-perspective: 1000;
-    display: inline-block;
     width: 100%;
-    max-width: 600px;
+    /*max-width: 600px;*/
+    display: inline-block;
+    margin: 0 1em 1em 0;
+    /*transition: .25s;*/
     text-align: left;
-    margin: 0 auto 1em;
+}
+
+.card_wrap:hover{z-index: 2;}
+
+.card_wrap.hide{display: none; margin:0;}
+
+.card {
+    transition: .5s;
+    transform-style: preserve-3d;
+    transform-origin: 100% 50% 0;
+    text-align: left;
+    width: 100%;
     position: relative;
 }
 
 .card:hover {
+}
+.card_wrap:hover .card  {
     z-index: 2;
-}
-
-.card:hover .front  {
     transform: rotateX(180deg);
-}
-
-.card:hover .back  {
-    transform: rotateX(0);
 }
 
 .card_wrap, .front, .back {
 }
 
+
+
 .front, .back {
-    transition: .5s;
-    transform-style: preserve-3d;
-    transform-origin: 100% 50% 0;
     backface-visibility: hidden;
     left: 0;
     width: 100%;
@@ -255,19 +264,20 @@ section > dl    {
 /* front pane, placed above back */
 .front {
     z-index: 2;
-	/* for firefox 31 */
+    /* for firefox 31 */
     /*transform: rotateX(0deg);*/
 }
 
 /* back, initially hidden pane */
 .back {
-    top: 0;
+    bottom: 0;
     position:absolute;
     transform: rotateX(-180deg);
     padding: 1em 1.5em;
     border-radius: 3px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, .2);
     background: white;
+    z-index: 2;
     max-width:calc(100% - 3em);
 }
 .back p     {margin: 12px 0;}

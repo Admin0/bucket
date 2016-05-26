@@ -146,13 +146,6 @@ function coloring() {
     $("dl .material-icons, a:not(nav a)").css({"color":color.material_500[color_i]})
 }
 
-function card_wrapping() {
-    $(".card").each(function(){
-        $(this).after("<div class='card_wrap'></div>")
-        $(this).appendTo($(this).next());
-    })
-}
-
 function showMovie(src) {
     var url = src.replace("watch?v=", "embed/");
     $("body").append("<div id='movie_wrap'><iframe class='shadow' width='560' height='315' src='" + url + "?rel=0&amp;showinfo=0'  frameborder='0' allowfullscreen></iframe></div>")
@@ -194,27 +187,42 @@ function imgReady() {
 }
 
 function columns(){
+
     var columns = Math.floor(($(document).width() - 256 - 32)/400);
     if(column_only_mode=="true" || columns<=0 ){columns = 1}
-    $("section").css({"column-count":columns});
+    var c_w = $("body").width() / columns ;
+    console.log(columns);
+
     if(columns==1){
-        $(".card").each(function(){
+        $(".card_wrap").each(function(){
             if($(this).css("display")!="none"){
-                $(this).css({"display":"block"});
+                $(this).css({"float":"none","width": "600px","position":"initial"});
             }
         });
         $("h2,h3").css({"margin":".75em auto","max-width":"600px"});
         $("#column_bt i").text("view_column");
     }else{
-        $(".card").each(function(){
+        $(".card_wrap:first").css({"width":"600px"});
+        $(".card_wrap").not(":first").each(function(){
             if($(this).css("display")!="none"){
-                $(this).css({"display":"inline-block"});
+                $(this).css({"float":"left","width":c_w - 16 * (columns - 1) + "px"});
             }
         });
-        $("h2,h3").css({"margin":".75em 0","max-width":"100%"});
-        $("#column_bt i").text("view_stream");
+        setTimeout(function(){
+            $('section').masonry({
+                // options
+                itemSelector: '.card_wrap'
+            });
+            $("#column_bt i").text("view_stream");
+        },1);
+        // $('section').masonry({
+        //     // options
+        //     itemSelector: '.card_wrap'
+        // });
+        // $("#column_bt i").text("view_stream");
     }
     // $("body").css({"width":400*columns+"px"});
+    card();
 }
 
 var column_only_mode = window.localStorage['column_only_mode'];
@@ -239,52 +247,31 @@ function filter(){
 
     function hide_all(){
         $("input").each(function(){
-            if($(this).parent().parent().parent().attr('class')=='card') {
-                $(this).parent().parent().parent().css({"display":"none"});
-                console.log("card");
-            } else if($(this).parent().prop("tagName")=="DL"){
-                $(this).parent().css({"display":"none"});
-                console.log("DL");
+            if($(this).parent().parent().parent().parent().attr('class')=='card_wrap') {
+                $(this).parent().parent().parent().parent().addClass("hide");
+                // console.log("card");
+            } else if($(this).parent().parent().attr('class')=='card_wrap'){
+                $(this).parent().parent().addClass("hide");
+                // console.log("DL");
             }
         });
     }
 
     function filter_11(){
-        $("input").each(function(){
-            if($(this).parent().parent().parent().attr('class')=='card') {
-                $(this).parent().parent().parent().css({"display":"inline-block"});
-                console.log("card");
-            } else if($(this).parent().prop("tagName")=="DL"){
-                $(this).parent().css({"display":"inline-block"});
-                console.log("DL");
-            }
-        });
+        $("input").parent().parent().parent().parent().removeClass("hide");
+        $("input").parent().parent().removeClass("hide");
     }
 
     function filter_10(){
         hide_all();
-        $("input[checked]").each(function(){
-            if($(this).parent().parent().parent().attr('class')=='card') {
-                $(this).parent().parent().parent().css({"display":"inline-block"});
-                console.log("card");
-            } else if($(this).parent().prop("tagName")=="DL"){
-                $(this).parent().css({"display":"inline-block"});
-                console.log("DL");
-            }
-        });
+        $("input[checked]").parent().parent().parent().parent().removeClass("hide");
+        $("input[checked]").parent().parent().removeClass("hide");
     }
 
     function filter_01(){
         hide_all();
-        $("input:not([checked])").each(function(){
-            if($(this).parent().parent().parent().attr('class')=='card') {
-                $(this).parent().parent().parent().css({"display":"inline-block"});
-                console.log("card");
-            } else if($(this).parent().prop("tagName")=="DL"){
-                $(this).parent().css({"display":"inline-block"});
-                console.log("DL");
-            }
-        });
+        $("input:not([checked])").parent().parent().parent().parent().removeClass("hide");
+        $("input:not([checked])").parent().parent().removeClass("hide");
     }
 
     if(window.localStorage['filter'] == "filter_10"){
@@ -312,7 +299,9 @@ function filter(){
             window.localStorage['filter'] = "filter_01";
             filter_01();
         }
+        columns();
     });
+
 }
 
 function checkbox(){
@@ -320,12 +309,29 @@ function checkbox(){
     $("input:not([checked])").before("<i class='material-icons'>check_box_outline_blank</i>");
 }
 
+function card_wrap(){
+    $(".card").each(function(){
+        $(this).after("<div class='card_wrap'></div>")
+        $(this).appendTo($(this).next());
+    });
+    $("dl").each(function(){
+        if($(this).parent().prop("tagName")=="SECTION"){
+            $(this).after("<div class='card_wrap'></div>")
+            $(this).appendTo($(this).next());
+        }
+    });
+}
+
+function card(){
+}
+
 $(function() {
+    card_wrap();
     imgReady();
     nav_create();
     scroll_smooth();
     checkbox();
-    columns();
     filter();
+    columns();
     coloring();
 });
