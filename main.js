@@ -142,7 +142,12 @@ var color_i = dice(1, color.length, 0);
 
 function coloring() {
     $("header").css({"background":color.material_700[color_i]});
-    $("#sub_header").css({"background":color.material_500[color_i]});
+    $("#sub_header .filter_bt, #column_bt").hover(function(){
+        $(this).css({"background":color.material_700[color_i]});
+    },function(){
+        $(this).css({"background":color.material_500[color_i]});
+    })
+    $("#sub_header > #line1").css({"background":color.material_500[color_i]});
     $("dl .material-icons, a:not(nav a)").css({"color":color.material_500[color_i]})
 }
 
@@ -189,40 +194,42 @@ function imgReady() {
 function columns(){
     if(column_only_mode=="true"){
         $("body").removeClass("columns");
-        $(".card_wrap").not(":first").css({"width":"600px"});
+        $(".card_wrap").not(":first").css({"max-width":"600px"});
         setTimeout(function(){
-            $('section').masonry({
+            $('section.sub').masonry({
                 // options
                 itemSelector: '.card_wrap',
                 columnWidth: $("body").width()
             });
+            headline();
         },100);
-
-        $("#column_bt i").text("view_column");
+        $("#column_bt i").text("dashboard");
     }else{
         $("body").addClass("columns");
-        var columns = Math.floor($("body").width()/400);
+        var columns = Math.floor($("body").width()/500);
         if(columns<=1 ){
             $("body").removeClass("columns");
-            $(".card_wrap").not(":first").css({"width":"600px"});
+            $(".card_wrap").not(":first").css({"max-width":"600px"});
             setTimeout(function(){
-                $('section').masonry({
+                $('section.sub').masonry({
                     // options
                     itemSelector: '.card_wrap',
                     columnWidth: $("body").width()
                 });
+                headline();
             },100);
         }else{
             // $("body").addClass("columns");
             var c_w = $("body").width() / columns ;
-            $(".card_wrap").not(":first").css({"width":c_w - 16 * (columns - 1) + "px"});
+            $(".card_wrap").not(":first").css({"max-width":c_w - 16 + "px"});
             console.log("columns: "+columns);
             setTimeout(function(){
-                $('section').masonry({
+                $('section.sub').masonry({
                     // options
                     itemSelector: '.card_wrap',
                     columnWidth: c_w
                 });
+                headline();
             },100);
             $("#column_bt i").text("view_stream");
         }
@@ -276,6 +283,12 @@ function filter(){
         $("input:not([checked])").parent().parent().removeClass("hide");
     }
 
+    function filter_00(){
+        hide_all();
+        $("input[failed]").parent().parent().parent().parent().removeClass("hide");
+        $("input[failed]").parent().parent().removeClass("hide");
+    }
+
     if(window.localStorage['filter'] == "filter_10"){
         $("#sub_header .filter_bt").removeClass("on");
         $("#filter_10").addClass("on");
@@ -284,6 +297,10 @@ function filter(){
         $("#sub_header .filter_bt").removeClass("on");
         $("#filter_01").addClass("on");
         filter_01();
+    }else if(window.localStorage['filter'] == "filter_00") {
+        $("#sub_header .filter_bt").removeClass("on");
+        $("#filter_00").addClass("on");
+        filter_00();
     }else {
         // filter_11();
     }
@@ -297,18 +314,44 @@ function filter(){
         }else if($(this).attr("id")=="filter_10"){  //show acheieved
             window.localStorage['filter'] = "filter_10";
             filter_10();
-        }else{  //show notyet
+        }else if($(this).attr("id")=="filter_01"){  //show notyet
             window.localStorage['filter'] = "filter_01";
             filter_01();
+        }else if($(this).attr("id")=="filter_00"){  //show notyet
+            window.localStorage['filter'] = "filter_00";
+            filter_00();
         }
         columns();
     });
 
 }
 
+function headline(){
+
+    $("section.sup > h3").each(function(){
+        if($(this).next().height()==0){
+            $(this).css("display","none");
+        }else{
+            $(this).css("display","block");
+        };
+    });
+    $("h2:not(nav h2)").each(function(){
+        if($(this).next().height()==0){
+            $(this).css("display","none");
+        }else{
+            $(this).css("display","block");
+        };
+    });
+}
+
 function checkbox(){
     $("input[checked]").before("<i class='material-icons'>check_box</i>");
-    $("input:not([checked])").before("<i class='material-icons'>check_box_outline_blank</i>");
+    $("input:not([checked]):not([failed])").before("<i class='material-icons'>check_box_outline_blank</i>");
+    $("input[failed]").before("<i class='material-icons'>priority_high</i>");
+
+    $("a[href]:not(nav a)").prepend("<i class='material-icons'>open_in_new</i>");
+    $("a[onclick]").prepend("<i class='material-icons'>theaters</i>");
+    $("a[src]").prepend("<i class='material-icons'>photo</i>");
 }
 
 function card_wrap(){
@@ -317,7 +360,7 @@ function card_wrap(){
         $(this).appendTo($(this).next());
     });
     $("dl").each(function(){
-        if($(this).parent().prop("tagName")=="SECTION"){
+        if($(this).parent().attr("class")=="sub"){
             $(this).after("<div class='card_wrap'></div>")
             $(this).appendTo($(this).next());
         }
@@ -325,6 +368,8 @@ function card_wrap(){
 }
 
 $(function() {
+    $("h1").append("<span id='percentage'>" + ($("input[checked]").length / ($("input").length - $("input[failed]").length) * 100).toFixed(1) + "%</span><span id='percentage_tail'>(" +
+    $("input[checked]").length + "/" + ($("input").length - $("input[failed]").length) + ")</span>");
     card_wrap();
     imgReady();
     nav_create();
