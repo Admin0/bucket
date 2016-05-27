@@ -1,13 +1,47 @@
 function nav_create() {
-    $("body").prepend("<nav></nav>");
+    $("body").prepend("<nav><div id='nav'></div><div id='nav_footer'><i class='material-icons'>chevron_left</i></div></nav>");
     // $("nav").prepend("<section id='in-page'></section>");
     $("h2,h3").each(function(){
         $(this).clone()
         .html("<a href='#"+$(this).attr("id")+"'>"+$(this).html()+"</a>")
         .attr("id",null)
-        .appendTo($("nav"));
+        .appendTo($("#nav"));
         // .appendTo($("#in-page"));
     })
+
+    var nav_w = 256;
+    var nav_w_folded = 68;
+
+    function nav_expand(){
+        $("nav, body, #sub_header, #nav_footer > i").removeClass("fold");
+        // $("nav").removeClass("fold");
+        window.localStorage['nav_fold'] = "false";
+        // $("body").css({"padding-left":"calc(1em + "+nav_w+"px)"});
+        // $("#sub_header").css({"width":"calc(100% - "+nav_w+"px)","padding-left":nav_w+"px"});
+        // $("#nav_footer > i").css({"transform":"rotate(0)"});
+    }
+
+    function nav_fold(){
+        $("nav, body, #sub_header, #nav_footer > i").addClass("fold");
+        window.localStorage['nav_fold'] = "true";
+        // $("body").css({"padding-left":"calc(1em + "+nav_w_folded+"px)"});
+        // $("#sub_header").css({"width":"calc(100% - "+nav_w_folded+"px)","padding-left":nav_w_folded+"px"});
+        // $("#nav_footer > i").css({"transform":"rotate(180deg)"});
+    }
+
+    if(window.localStorage['nav_fold'] == "true"){
+        nav_fold();
+    }else{
+        nav_expand();
+    }
+    $("#nav_footer").on("click",function(){
+        if(window.localStorage['nav_fold'] != "true"){
+            nav_fold()
+        }else{
+            nav_expand();
+        }
+        columns();
+    });
 
     //for mobile
     $("nav a").on("click",function(){ $("nav, #nav_bg").removeClass("on"); });
@@ -238,7 +272,7 @@ function columns(){
 
 var column_only_mode = window.localStorage['column_only_mode'];
 
-$( window ).resize(function() {
+$(window).resize(function() {
         columns();
 });
 
