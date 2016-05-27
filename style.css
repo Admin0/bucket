@@ -10,6 +10,11 @@ body {
     margin-top: 96px;
     color:rgba(0,0,0,0.87);
     padding-left: calc(1em + 256px);
+    max-width: 600px;
+}
+
+body.columns{
+    max-width: 100%;
 }
 
 header{
@@ -223,7 +228,7 @@ content: "check_box";
     perspective: 1000;
     -webkit-perspective: 1000;
     width: 100%;
-    /*max-width: 600px;*/
+    max-width: 600px;
     display: inline-block;
     margin: 0 1em 1em 0;
     /*transition: .25s;*/
