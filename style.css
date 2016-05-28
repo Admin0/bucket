@@ -231,6 +231,8 @@ h2 {
 
 h3 .material-icons {vertical-align: bottom;font-size: 1.25em!important;}
 h3 .material-icons    {margin-right: 1em;}
+h4{margin:2em 0 0;}
+h4:first-of-type {margin-top: .5em;}
 
 dl {
     padding: 1em;
@@ -394,7 +396,7 @@ content: "check_box";
 .back {
     bottom: 0;
     position:absolute;
-    padding: 0 1em;
+    padding: .5em 1em;
     transform: rotateX(-180deg);
     border-radius: 3px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, .2);
@@ -402,10 +404,8 @@ content: "check_box";
     z-index: 2;
     max-width:calc(100% - 2em);
 }
-/*.back > p { margin: 0; }*/
-.back > p:only-child { margin: 26px 0; }
-
-/*.back p     { margin: 12px 0; }*/
+.back > p { margin: .5em 0; }
+.back > p:only-child { margin: 18px 0 }
 
 #movie_wrap, #img_wrap {
     display: none;
