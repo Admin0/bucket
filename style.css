@@ -40,6 +40,7 @@ header{
     left: 0;
     padding-left: 256px;
     transition: .5s;
+    background: #aaa;
 }
 #sub_header.fold{
     width:calc(100% - 68px);
@@ -149,6 +150,7 @@ nav #nav{
     width: 100%;
     height: calc(100% - 46px);
     overflow-y: auto;
+    transition: .5s;
 }
 nav a       {
     margin: -.5em 0;
@@ -188,12 +190,18 @@ nav.fold #nav::-webkit-scrollbar { display: none; }
 nav.fold #nav a   {color:transparent;}
 nav #nav a i   {color: rgba(0,0,0,0.54);}
 nav.fold #nav a i   {color: rgba(0,0,0,0.54);}
-nav #nav h2   {transition: .45s;}
-nav.fold #nav h2   {transition: .75s;}
-nav.fold #nav h2   { margin-top: -50px; }
+nav #nav h2, nav #nav h3   {transition: .5s;}
+nav #nav h2   { margin: 16px 0 0; position: relative; }
+nav.fold #nav h2   { margin: -16px 0 -16px; }
+nav #nav h2:not(:first-child):before   {top: 20px;
+    position: absolute;
+    content:"";
+    height: 1px;
+    width: 100%;
+ }
+nav.fold #nav h2:before{box-shadow: 0 1px 0 rgba(0,0,0,0.12) inset; }
 nav.fold #nav h2 a:hover   { background: initial; }
-nav.fold #nav h2 + h3 {box-shadow: 0 1px 0 rgba(0,0,0,0.12) inset; padding-top: 16px;}
-nav.fold #nav h2 + h3:first-of-type {box-shadow: none;}
+nav.fold #nav h2 {}
 
 h2,h3   { color: rgba(0,0,0,0.54); }
 h1      { text-transform: uppercase;     font-size: 22px;
@@ -231,6 +239,9 @@ dl {
     box-shadow: 0px 2px 4px rgba(0, 0, 0, .2);
     background: white;
     width: calc(100% - 2em);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 dl dl {
@@ -242,11 +253,13 @@ dt {
     /*font-size: 1.25em;*/
     color: #777;
     display: inline;
+    /*margin: -25px 0 0 27px;*/
 }
 
 dd {
     font-size: .9em;
     color: #aaa;
+    white-space: normal;
 }
 
 dd + input {
@@ -266,6 +279,17 @@ dd ul li {
     text-overflow: ellipsis;
 }
 
+.back ol {
+    column-count: 2; column-gap: 3em; padding-left:1em;
+}
+.back ol li span{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+    margin: -4px 0;
+}
 input{
     display: none;
 }
@@ -301,6 +325,11 @@ content: "check_box";
 .date {
     float: right;
     color: #aaa;
+    /*position: absolute;
+    right: 16px;
+    background: #fff;
+    backface-visibility: hidden;
+    padding-left: .5em;*/
 }
 
 /*-------------------------------------------*/
@@ -407,6 +436,9 @@ img[hide]   {display: none;}
 .material-icons{vertical-align: text-bottom; margin-right: .5em;}
 dl .material-icons, .back .material-icons{margin-right: 0;}
 a:not(nav a) > .material-icons{margin: 0;}
+
+#tooltip,#tooltip_nav	{ color:#fff; position:fixed; top:0; visibility: hidden; opacity:0; background:#212121; transition:.5s opacity;  z-index: 2; padding:1ex; border-radius: 3px; max-width:400px; z-index: 4;box-shadow: 0 2px 5px rgba(0, 0, 0, .25);}
+#tooltip_before,#tooltip_nav_before	{ border-color: #212121 transparent transparent transparent;  border-width: 1ex 1ex 0 1ex;  border-style: solid;  content: " ";  position: absolute; left: calc(50% - .5em); bottom:-.9ex; }
 
 @media handheld, only screen and (max-device-width: 480px), only screen and (max-device-width: 320px), screen and (max-width: 600px)	{
     body    {

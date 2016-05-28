@@ -14,11 +14,7 @@ function nav_create() {
 
     function nav_expand(){
         $("nav, body, #sub_header, #nav_footer > i").removeClass("fold");
-        // $("nav").removeClass("fold");
         window.localStorage['nav_fold'] = "false";
-        // $("body").css({"padding-left":"calc(1em + "+nav_w+"px)"});
-        // $("#sub_header").css({"width":"calc(100% - "+nav_w+"px)","padding-left":nav_w+"px"});
-        // $("#nav_footer > i").css({"transform":"rotate(0)"});
     }
 
     function nav_fold(){
@@ -36,12 +32,27 @@ function nav_create() {
     }
     $("#nav_footer").on("click",function(){
         if(window.localStorage['nav_fold'] != "true"){
-            nav_fold()
+            nav_fold();
         }else{
             nav_expand();
         }
         columns();
     });
+
+    $('body').append('<div id="tooltip_nav"><div id="tooltip_nav_text"></div><div id="tooltip_nav_before"></div></div>');
+    $("#tooltip_nav").css({"background":color.material_700[color_i]});
+    $("#tooltip_nav").append($("#tooltip_before"));
+    $("#nav h3").hover(function(){
+        if($("nav").attr("class")=="fold"){
+            if (document.height === null) {pageYOffset = document.documentElement.scrollTop;}
+            $('#tooltip_nav_text').html($(this).children("a").children("span").text());
+            $('#tooltip_nav').css({ 'visibility':'visible', 'opacity':1,
+            'top':$(this).offset().top - pageYOffset  + 'px',
+            'left':68 + 16 + 'px'});
+            $("#tooltip_nav_before").css({"border-color":"transparent " + color.material_700[color_i] + " transparent transparent", "border-width": "1ex 1ex 1ex 0","left":"-.9ex","bottom":"calc(50% - .5em)"});
+        }
+    },
+    function(){$('#tooltip_nav').css({ 'visibility':'hidden' , 'opacity':0 });});
 
     //for mobile
     $("nav a").on("click",function(){ $("nav, #nav_bg").removeClass("on"); });
@@ -119,6 +130,32 @@ function scroll_smooth() {
 //     }
 // });
 
+function title_tooltip(){
+    $('[title]').attr( {
+        'data-title': function() { return this.title; },'title': null } );
+        $('body').append('<div id="tooltip"><div id="tooltip_text"></div><div id="tooltip_before"></div></div>');
+        $("#tooltip").css({"background":color.material_700[color_i]});
+        $("#tooltip").append($("#tooltip_before"));
+        $("#tooltip_before").css({"border-color":color.material_700[color_i]+" transparent transparent transparent"});
+        $('[data-title]').each(function(){
+            $(this).hover(
+                function(){
+                    console.log($(this).attr('data-title'));
+                    if (document.height === null) {pageYOffset = document.documentElement.scrollTop;}
+                    var left = $(this).offset().left + ( $(this).outerWidth() - $('#tooltip').outerWidth() )/2;
+                    if(left<=0){
+                        left=0;
+                    }
+                    $('#tooltip_text').html($(this).attr('data-title'))
+                    $('#tooltip').css({ 'visibility':'visible', 'opacity':1,
+                    'top':$(this).offset().top - $(this).outerHeight() - pageYOffset - 12  + 'px',
+                    'left':left + 'px'});
+                },
+                function(){$('#tooltip').css({ 'visibility':'hidden' , 'opacity':0 });}
+            );
+        }
+    );
+}
 
 color = {
     "length":15,
@@ -399,11 +436,18 @@ function card_wrap(){
             $(this).appendTo($(this).next());
         }
     });
+    $(".back li").each(function(){
+        $(this).replaceWith('<li><span>' + $(this).html() +'</span></li>');
+    });
+}
+
+function percentage(){
+    $("h1").append("<span id='percentage'>" + ($("input[checked]").length / ($("input").length - $("input[failed]").length) * 100).toFixed(1) + "%</span><span id='percentage_tail'>(" +
+    $("input[checked]").length + "/" + ($("input").length - $("input[failed]").length) + ")</span>");
 }
 
 $(function() {
-    $("h1").append("<span id='percentage'>" + ($("input[checked]").length / ($("input").length - $("input[failed]").length) * 100).toFixed(1) + "%</span><span id='percentage_tail'>(" +
-    $("input[checked]").length + "/" + ($("input").length - $("input[failed]").length) + ")</span>");
+    percentage();
     card_wrap();
     imgReady();
     nav_create();
@@ -411,5 +455,6 @@ $(function() {
     checkbox();
     filter();
     columns();
+    title_tooltip();
     coloring();
 });
