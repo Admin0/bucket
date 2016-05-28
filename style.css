@@ -281,6 +281,9 @@ dd ul {
     list-style: none;
     padding: 0;
     column-count: 2;
+}
+
+dd:last-child ul {
     margin-bottom: 0;
 }
 
@@ -293,7 +296,7 @@ dd ul li {
 .back ol {
     column-count: 2; column-gap: 3em; padding-left:1em;
 }
-.back ol li span{
+.back ol li span {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -301,6 +304,7 @@ dd ul li {
     width: 100%;
     margin: 0 0 -5px;
 }
+
 input{
     display: none;
 }
@@ -386,12 +390,10 @@ content: "check_box";
 .card_wrap, .front, .back {
 }
 
-
-
 .front, .back {
     backface-visibility: hidden;
     left: 0;
-    width: 100%;
+    /*width: 100%;*/
 }
 
 /* front pane, placed above back */
@@ -405,6 +407,7 @@ content: "check_box";
 .back {
     bottom: 0;
     position:absolute;
+    width: 100%;
     padding: .5em 1em;
     transform: rotateX(-180deg);
     border-radius: 3px;

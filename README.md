@@ -21,6 +21,9 @@
 
 ## 오픈소스 라이선스
 
+### Material icons
+The icons are available under the [CC-BY license](https://creativecommons.org/licenses/by/4.0/).
+
 ### Masonry
 
 Copyright © 2016 David DeSandro

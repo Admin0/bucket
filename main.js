@@ -330,34 +330,41 @@ function filter(){
         $("input").each(function(){
             if($(this).parent().parent().parent().parent().attr('class')=='card_wrap') {
                 $(this).parent().parent().parent().parent().addClass("hide");
-                // console.log("card");
+                // console.log(".card");
+            } else if($(this).parent().parent().parent().attr('class')=='card_wrap'){
+                $(this).parent().parent().parent().addClass("hide");
+                // console.log("dl.card");
             } else if($(this).parent().parent().attr('class')=='card_wrap'){
                 $(this).parent().parent().addClass("hide");
-                // console.log("DL");
+                // console.log("dl");
             }
         });
     }
 
     function filter_11(){
         $("input").parent().parent().parent().parent().removeClass("hide");
+        $("input").parent().parent().parent().removeClass("hide");
         $("input").parent().parent().removeClass("hide");
     }
 
     function filter_10(){
         hide_all();
         $("input[checked]").parent().parent().parent().parent().removeClass("hide");
+        $("input[checked]").parent().parent().parent().removeClass("hide");
         $("input[checked]").parent().parent().removeClass("hide");
     }
 
     function filter_01(){
         hide_all();
         $("input:not([checked])").parent().parent().parent().parent().removeClass("hide");
+        $("input:not([checked])").parent().parent().parent().removeClass("hide");
         $("input:not([checked])").parent().parent().removeClass("hide");
     }
 
     function filter_00(){
         hide_all();
         $("input[failed]").parent().parent().parent().parent().removeClass("hide");
+        $("input[failed]").parent().parent().parent().removeClass("hide");
         $("input[failed]").parent().parent().removeClass("hide");
     }
 
@@ -421,7 +428,8 @@ function checkbox(){
     $("input:not([checked]):not([failed])").before("<i class='material-icons'>check_box_outline_blank</i>");
     $("input[failed]").before("<i class='material-icons'>priority_high</i>");
 
-    $("a[href]:not(nav a)").prepend("<i class='material-icons'>open_in_new</i>");
+    $("a[href]:not(nav a):not([href^='images/'])").prepend("<i class='material-icons'>open_in_new</i>");
+    $("a[href^='images/']").prepend("<i class='material-icons'>save</i>");
     $("a[onclick]").prepend("<i class='material-icons'>theaters</i>");
     $("a[src]").prepend("<i class='material-icons'>photo</i>");
 }
@@ -450,12 +458,12 @@ function percentage(){
 $(function() {
     percentage();
     card_wrap();
-    imgReady();
     nav_create();
     scroll_smooth();
     checkbox();
     filter();
     columns();
     title_tooltip();
+    imgReady();
     coloring();
 });
