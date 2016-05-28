@@ -1,5 +1,7 @@
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 
+::selection{background: rgba(0, 0, 0, 0.15);}
+
 body {
     max-width: 600px;
     margin: auto;
@@ -61,6 +63,7 @@ header{
     display: inline-block;
     padding: 12px 24px;
     cursor: pointer;
+    transition: .25s;
 }
 #sub_header .filter_bt .ink_bar {
     position: absolute;
@@ -191,17 +194,23 @@ nav.fold #nav a   {color:transparent;}
 nav #nav a i   {color: rgba(0,0,0,0.54);}
 nav.fold #nav a i   {color: rgba(0,0,0,0.54);}
 nav #nav h2, nav #nav h3   {transition: .5s;}
-nav #nav h2   { margin: 16px 0 0; position: relative; }
-nav.fold #nav h2   { margin: -16px 0 -16px; }
-nav #nav h2:not(:first-child):before   {top: 20px;
+nav #nav h2   {
+    height: 40px;
+    margin: 16px 0 0;
+    position: relative;
+}
+nav.fold #nav h2   {
+    margin: 16px 0 14px;
+    height: 3px;
+}
+nav #nav h2:not(:first-child):before   {
     position: absolute;
     content:"";
-    height: 1px;
+    height: 3px;
     width: 100%;
  }
 nav.fold #nav h2:before{box-shadow: 0 1px 0 rgba(0,0,0,0.12) inset; }
-nav.fold #nav h2 a:hover   { background: initial; }
-nav.fold #nav h2 {}
+nav.fold #nav h2 a   { opacity: 0; width:0; }
 
 h2,h3   { color: rgba(0,0,0,0.54); }
 h1      { text-transform: uppercase;     font-size: 22px;
@@ -252,7 +261,7 @@ dl dl {
 }
 
 dt {
-    /*font-size: 1.25em;*/
+    font-size: 16px;
     color: #777;
     display: inline;
     /*margin: -25px 0 0 27px;*/
@@ -290,7 +299,7 @@ dd ul li {
     overflow: hidden;
     display: inline-block;
     width: 100%;
-    margin: -4px 0;
+    margin: 0 0 -5px;
 }
 input{
     display: none;

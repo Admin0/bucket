@@ -30,6 +30,7 @@ function nav_create() {
     }else{
         nav_expand();
     }
+
     $("#nav_footer").on("click",function(){
         if(window.localStorage['nav_fold'] != "true"){
             nav_fold();
@@ -52,7 +53,7 @@ function nav_create() {
             $("#tooltip_nav_before").css({"border-color":"transparent " + color.material_700[color_i] + " transparent transparent", "border-width": "1ex 1ex 1ex 0","left":"-.9ex","bottom":"calc(50% - .5em)"});
         }
     },
-    function(){$('#tooltip_nav').css({ 'visibility':'hidden' , 'opacity':0 });});
+    function(){$('#tooltip_nav').css({ 'visibility':'hidden' , 'opacity':"0" });});
 
     //for mobile
     $("nav a").on("click",function(){ $("nav, #nav_bg").removeClass("on"); });
@@ -102,7 +103,7 @@ function scroll_smooth() {
         }
 
         scroll(target, event);
-        bg_change(target, color.material_a100[color_i - 1], ".25s");
+        bg_change(target, color.material_a100[color_i], ".25s");
         // toast("원래 자리로 가려면 더블클릭");
 
         // document.ondblclick = function(event) {
