@@ -1,4 +1,5 @@
 # BUCKET LIST by JinH
+--------------------------------------------
 
 - 실행 페이지: http://admin0.github.io/bucket/
 - 블로그: http://jinh.tistory.com/
@@ -9,6 +10,7 @@
 
 
 ## UPDATE LOG
+--------------------------------------
 - **2016.05. ver.2.8** 우와 정말 데단해!
 - **2016.05. ver.2.5** 약간 머티리얼 디자인스럽게.
 - **2016.05. ver.2.0** 그동안 달성한 거 체크박스 채우고, 디자인을 갈고닦음.
@@ -20,7 +22,7 @@
 
 
 ## 오픈소스 라이선스
-
+----------------------------------
 ### Material icons
 The icons are available under the [CC-BY license](https://creativecommons.org/licenses/by/4.0/).
 
