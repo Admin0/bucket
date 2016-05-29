@@ -6,7 +6,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="http://code.jquery.com/jquery-1.9.0.js"></script>
     <script src="main.js"></script>
     <script src="masonry.pkgd.min.js"></script>
@@ -96,7 +95,7 @@
                 </div>
             </div>
             <div class="card"><!-- 왜때문에 자전이죠? 내가 패달질을 계속 해야하는데? -->
-                <dl class="front">
+                <dl class="front" id="왜때문에_자전이죠">
                     <input type="checkbox" checked> <dt>왜때문에 자전이죠? 내가 패달질을 계속 해야하는데?</dt>
                     <dd>자전거 여행하기<span class="date">2014.12.29.</span> </dd>
                     <input type="checkbox" checked> <dt>그래, 걷는 것 보단 낫잖아!</dt>
@@ -192,29 +191,22 @@
                     </p>
                 </div>
             </div>
-            <div class="card"><!-- 치느님 영접 -->
-                <dl class="front">
-                    <input type="checkbox"> <dt>치느님 영접</dt>
-                    <dd>전국 각지의 이름난 치킨 먹으러 떠나기.<span class="date"></span>
-                        <ul>
-                            <li><input type="checkbox"> <dt>부여 시골통닭</dt></li>
-                            <li><input type="checkbox"> <dt>광주 양동통닭</dt></li>
-                            <li><input type="checkbox"> <dt>제주 백양닭집</dt></li>
-                            <li><input type="checkbox"> <dt>부산 거인통닭</dt></li>
-                            <li><input type="checkbox"> <dt>대구 뉴욕통닭</dt></li>
-                            <li><input type="checkbox"> <dt>순천 풍미통닭</dt></li>
-                            <li><input type="checkbox"> <dt>조치원 신흥파닭</dt></li>
-                            <li><input type="checkbox"> <dt>의성 삼미마늘닭</dt></li>
-                            <li><input type="checkbox"> <dt>원주 진미통닭</dt></li>
-                        </ul>
-                    </dd>
-                </dl>
-                <div class="back">
-                    <p>
-                        아직 어디를 돌아다녀야 할지 못 정했다.
-                    </p>
-                </div>
-            </div>
+            <dl class="front"><!-- 치느님 영접 -->
+                <input type="checkbox"> <dt>치느님 영접</dt>
+                <dd>전국 각지의 이름난 치킨집 10군데 이상 순례하기.<span class="date"></span>
+                    <ul>
+                        <li><input type="checkbox"> <dt>부여 시골통닭</dt></li>
+                        <li><input type="checkbox"> <dt>광주 양동통닭</dt></li>
+                        <li><input type="checkbox"> <dt>제주 백양닭집</dt></li>
+                        <li><input type="checkbox"> <dt>부산 거인통닭</dt></li>
+                        <li><input type="checkbox"> <dt>대구 뉴욕통닭</dt></li>
+                        <li><input type="checkbox"> <dt>순천 풍미통닭</dt></li>
+                        <li><input type="checkbox"> <dt>조치원 신흥파닭</dt></li>
+                        <li><input type="checkbox"> <dt>의성 삼미마늘닭</dt></li>
+                        <li><input type="checkbox"> <dt>원주 진미통닭</dt></li>
+                    </ul>
+                </dd>
+            </dl>
         </section>
 
         <h3 id="rest_etc"><i class="material-icons">wc</i><span>기타</span></h3>
@@ -419,15 +411,13 @@
                     </dl>
                 </div>
                 <div class="back">
-                    <div style="display:flex;" class="img">
+                    <div class="img">
                         <div style="flex:263"><img src="images/shirt0.jpg" /></div>
-                        <div style="flex:26"></div>
                         <div style="flex:263"><img src="images/shirt1.jpg" /></div>
-                        <div style="flex:26"></div>
                         <div style="flex:473"><img src="images/shirt2.jpg" /></div>
                     </div>
                     <p>
-                        이거 말고도 몇 장 더 만들었지만, 역시 집에서밖에 입을 수가 없었다 ㅋ
+                        다른 디자인으로도 몇 장 더 만들었지만, 역시 집에서밖에 입을 수가 없었다 ㅋ
                     </p>
                 </div>
             </div>
@@ -455,21 +445,14 @@
                     <p>방문자 300만을 찍은 이후에 방치하고 있다.</p>
                 </div>
             </div>
-            <div class="card"><!-- 오늘은 선물 받은 ~을 -->
-                <div class="front">
-                    <dl>
-                        <input type="checkbox" checked> <dt>"오늘은 선물 받은 ~을" → "~은 업체에서 줬다"</dt>
-                        <dd>대가를 받고 게시물 작성. <span class="date">2011.06.25.</span> </dd>
-                        <input type="checkbox"> <dt>"비밀 아이템" → "공짜로 줘서 쓰긴 하지만 난생 처음 본 제품"</dt>
-                        <dd>대가를 받고 게시물 작성 10회.<span class="date"></span> </dd>
-                        <input type="checkbox"> <dt>"편하게 휴대 가능" → "양이 적음"</dt>
-                        <dd>대가를 받고 게시물 작성 100회. <span class="date"></span> </dd>
-                    </dl>
-                </div>
-                <div class="back">
-                    <p>대외비^^</p>
-                </div>
-            </div>
+            <dl><!-- 오늘은 선물 받은 ~을 -->
+                <input type="checkbox" checked> <dt>"오늘은 선물 받은 ~을" → "~은 업체에서 줬다"</dt>
+                <dd>대가를 받고 게시물 작성. <span class="date">2011.06.25.</span> </dd>
+                <input type="checkbox"> <dt>"비밀 아이템" → "공짜로 줘서 쓰긴 하지만 난생 처음 본 제품"</dt>
+                <dd>대가를 받고 게시물 작성 10회.<span class="date"></span> </dd>
+                <input type="checkbox"> <dt>"편하게 휴대 가능" → "양이 적음"</dt>
+                <dd>대가를 받고 게시물 작성 100회. <span class="date"></span> </dd>
+            </dl>
 
             <div class="card"><!-- 친구는 인터넷 친구가 있어요 -->
                 <dl class="front">
@@ -579,7 +562,7 @@
                         근데... 다음날 부터 메달이 엄청나게 갖고 싶어서 일이 손에 안 잡힘! 으악!!!!
                     </p>
                     <p>
-                        그래서 메달 받기 프로젝트에 돌입. 처음엔 단축마라톤 참가상으로 받아낼 생각이였지만 저질 체력으로 인한 지구력 부족으로 포기. 인터넷 찾아보던 중 자전거로 인천에서 부산까지 가면 메달준다고 하길래 바로 자전거 구입함.
+                        그래서 메달 받기 프로젝트에 돌입. 처음엔 단축마라톤 참가상으로 받아낼 생각이였지만 저질 체력으로 인한 지구력 부족으로 포기. 인터넷 찾아보던 중 <a href="#왜때문에_자전이죠">자전거로 인천에서 부산까지</a> 가면 메달준다고 하길래 바로 자전거 구입함.
                     </p>
                     <p>
                         결국 <a src="images/bike_trip.jpg">메달 받아서 잘 모셔놓음^^</a> 해피엔딩.
@@ -595,21 +578,14 @@
     <section class="sup">
         <h3 id="survival"><i class="material-icons">explore</i><span>생존</span></h3>
         <section class="sub">
-            <div class="card"><!-- 이건 하지도 않을 거 면서 -->
-                <div class="front">
-                    <dl>
-                        <input type="checkbox"> <dt>이건 하지도 않을 거 면서</dt>
-                        <dd>일주일 단식.<span class="date"></span> </dd>
-                        <input type="checkbox"> <dt>자연인</dt>
-                        <dd>일주일간 문명의 혜택 없이 생존.<span class="date"></span> </dd>
-                        <input type="checkbox"> <dt>윌슨!</dt>
-                        <dd>한 달간 고립된 장소에서 생존.<span class="date"></span> </dd>
-                    </dl>
-                </div>
-                <div class="back">
-                    <p>만 48시간 단식이 최고기록. 하늘이 노래지길래 급히 고기를 먹어줌.</p>
-                </div>
-            </div>
+            <dl><!-- 이건 하지도 않을 거 면서 -->
+                <input type="checkbox"> <dt>이건 하지도 않을 거 면서</dt>
+                <dd>일주일 단식.<span class="date"></span> </dd>
+                <input type="checkbox"> <dt>자연인</dt>
+                <dd>일주일간 문명의 혜택 없이 생존.<span class="date"></span> </dd>
+                <input type="checkbox"> <dt>윌슨!</dt>
+                <dd>한 달간 고립된 장소에서 생존.<span class="date"></span> </dd>
+            </dl>
             <div class="card"><!-- 생존본능 -->
                 <div class="front">
                     <dl>
@@ -722,25 +698,16 @@
         </section>
         <h3 id="fitness"><i class="material-icons">fitness_center</i><span>무산소</span></h3>
         <section class="sub">
-            <div class="card"><!-- 풀 업 -->
-                <div class="front">
-                    <dl>
-                        <input type="checkbox"> <dt>4대 운동 1</dt>
-                        <dd>푸시 업 연속 100 회.<span class="date"></span> </dd>
-                        <input type="checkbox"> <dt>4대 운동 2</dt>
-                        <dd>풀 업 연속 50 회.<span class="date"></span> </dd>
-                        <input type="checkbox"> <dt>4대 운동 3</dt>
-                        <dd>스쿼트 연속 250 회.<span class="date"></span> </dd>
-                        <input type="checkbox"> <dt>4대 운동 4</dt>
-                        <dd>시트 업 연속 500 회.<span class="date"></span> </dd>
-                    </dl>
-                </div>
-                <div class="back">
-                    <p>
-                        일단 푸시 업 30번 정도 해 봄. 갈 길이 멀다.
-                    </p>
-                </div>
-            </div>
+            <dl><!-- 풀 업 -->
+                <input type="checkbox"> <dt>4대 운동 1</dt>
+                <dd>푸시 업 연속 100 회.<span class="date"></span> </dd>
+                <input type="checkbox"> <dt>4대 운동 2</dt>
+                <dd>풀 업 연속 50 회.<span class="date"></span> </dd>
+                <input type="checkbox"> <dt>4대 운동 3</dt>
+                <dd>스쿼트 연속 250 회.<span class="date"></span> </dd>
+                <input type="checkbox"> <dt>4대 운동 4</dt>
+                <dd>시트 업 연속 500 회.<span class="date"></span> </dd>
+            </dl>
             <dl>
                 <input type="checkbox"> <dt>1:1</dt>
                 <dd>100 kg 이상의 역기 허리 높이까지 들어올리기.<span class="date"></span> </dd>
@@ -801,9 +768,7 @@
                     </dl>
                 </div>
                 <div class="back">
-                    <p>
-                        <img src="images/blood_donation.jpg"/>
-                    </p>
+                    <img src="images/blood_donation.jpg"/>
                 </div>
             </div>
             <dl><!-- 불면증 -->
@@ -1043,7 +1008,7 @@
                 <div class="front">
                     <dl>
                         <input type="checkbox"> <dt>꿀알바</dt>
-                        <dd>다음 목록의 아르바이트 체험.<span class="date"></span>
+                        <dd>꿀이 흘러넘치는 아르바이트 체험.<span class="date"></span>
                             <ul>
                                 <li><input type="checkbox" checked><dt>사무 보조</dt></li>
                                 <li><input type="checkbox" checked><dt>재택 문서 작성</dt></li>
@@ -1053,7 +1018,7 @@
                             </ul>
                         </dd>
                         <input type="checkbox"> <dt>극한알바</dt>
-                        <dd>다음 목록의 하기 꺼려지는 아르바이트 꾹 참고 체험.<span class="date"></span>
+                        <dd>하기 꺼려지는 아르바이트 꾹 참고 체험.<span class="date"></span>
                             <ul>
                                 <li><input type="checkbox" checked><dt>택배 상하차</dt></li>
                                 <li><input type="checkbox"><dt>인형 탈</dt></li>
@@ -1098,18 +1063,11 @@
                     </dl>
                 </div>
                 <div class="back">
-                    <p>
-                        안드로이드 앱을 만들어서 마켓에 올리면서, 사업자 등록을 했다.
-                    </p>
-                    <p>
-                        국민연금관리공단에서 귀신같이 신고 사실을 알고 전화가 오더라. "직업을 갖고 계신것으로 확인되어 국민연금 납부 대상자가 되셨습니다."
-                    </p>
-                    <p>
-                        사업자 등록만 했을 뿐 실질적인 소득이 없다고 하소연하자, 담당자 왈: "그럼 6개월의 유예기간을 드리겠습니다."
-                    </p>
-                    <p>
-                        정확히 6개월 뒤 똑같은 전화가 와서 소오름 돋음;; 결국 이걸 유지하고있을 필요성을 느끼지 못하고 폐업신고함.
-                    </p>
+                    <p>요약: </p>
+                    <p>1. 안드로이드 앱 만들어서 마켓에 올리면서, 사업자 등록 함.</p>
+                    <p>2. 국민연금관리공단에서 전화 옴: "직업을 갖고 계신것으로 확인되어 국민연금 납부 대상자가 되셨습니다."</p>
+                    <p>3. "...아, 실질적인 소득이 없으시다고요. 그럼 6개월의 유예기간을 드리겠습니다."</p>
+                    <p>4. 정확히 6개월 뒤 똑같은 전화가 와서 소오름 돋음;; 결국 이걸 유지하고있을 필요성을 느끼지 못하고 폐업신고함.</p>
                 </div>
             </div>
 

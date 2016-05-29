@@ -1,4 +1,6 @@
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+@import url(https://fonts.googleapis.com/css?family=Black+Ops+One);
 
 ::selection{background: rgba(0, 0, 0, 0.15);}
 
@@ -258,6 +260,7 @@ dl {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: .25s;
 }
 
 dl dl {
@@ -330,8 +333,12 @@ input[failed]+* {
 }
 
 input[failed]+*::after {
-    content: " - 실패";
-    color:#F44336;
+    content: "FAILED!";
+    /*content: "실패";*/
+    display: inline-block; transform: rotate(15deg);
+    border: 3px solid #f44336; line-height: 1; padding: 0px 2px;
+    font-family: 'Black Ops One', cursive; color:#F44336;
+    float: right;
 }
 
 /*input:before {
@@ -417,19 +424,24 @@ content: "check_box";
     /*padding: .5em 1em;*/
     transform: rotateX(-180deg);
     border-radius: 3px;
-    box-shadow: 0px 5px 12px rgba(0, 0, 0, .2);
     background: white;
     z-index: 2;
     max-width:calc(100% - 0);
 }
+.back, dl:not(.card):hover { box-shadow: 0px 5px 12px rgba(0, 0, 0, .2); }
+
 .back > *:not(img) { margin: .5em 1em; }
 .back > *:first-child:not(img) { margin: 1em 1em .5em; }
 .back > *:last-child:not(img) { margin: .5em 1em 1em; }
-.back > *:only-child:not(img) { margin: 26px 1em }
-
+.back > *:only-child:not(img):not(ol) { margin: 26px 1em }
 
 .back > img:first-child{ border-top-left-radius:3px; border-top-right-radius:3px; }
 .back > img:last-child{ border-bottom-left-radius:3px; border-bottom-right-radius:3px; }
+.back > .img { display:flex; margin:0!important; }
+.back > .img:first-child > div:first-child > img{ border-top-left-radius:3px; }
+.back > .img:first-child > div:last-child > img{ border-top-right-radius:3px; }
+.back > .img:last-child > div:first-child > img{ border-bottom-left-radius:3px; }
+.back > .img:last-child > div:last-child > img{ border-bottom-right-radius:3px; }
 
 #movie_wrap, #img_wrap {
     display: none;
@@ -449,7 +461,7 @@ content: "check_box";
     border-radius: 3px;
 }
 
-img {width: 100%; cursor: pointer;margin-bottom: -5px;}
+img {width: 100%; cursor: pointer;margin-bottom: -6px;}
 
 img[hide]   {display: none;}
 
