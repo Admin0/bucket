@@ -81,11 +81,10 @@ header{
 }
 #sub_header .filter_bt.on{color:rgba(255, 255, 255, 0.98);}
 
-
-
 #column_bt{
     float: right;
 }
+#column_bt i {margin: 0;}
 
 section.sub {width:100%;text-align: center;}
 
@@ -131,6 +130,12 @@ a:hover  {
     position: absolute;
     right: 0;
     cursor: pointer;
+    fill:rgba(255, 255, 255, 0.75);
+    transition: .25s;
+}
+#to_github:hover{
+    fill:rgba(255, 255, 255, 0.98);
+    background: rgba(0, 0, 0, 0.10);
 }
 
 nav {
@@ -494,8 +499,8 @@ a:not(nav a) > .material-icons{margin: 0;}
     h1  #percentage_tail{display: none;}
 
     #sub_header{padding-left:0!important; width: 100%!important;}
-    #sub_header .filter_bt, #column_bt{padding: 12px 18px;}
-    #sub_header i {margin: 0;}
+    #sub_header .filter_bt, #column_bt {padding: 12px 18px;}
+    #sub_header i, #column_bt i {margin: 0;}
     #sub_header .filter_bt span:not(.ink_bar){display: none;}
 
     #nav_on { display: block; }
