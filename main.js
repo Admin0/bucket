@@ -59,13 +59,20 @@ function nav_create() {
     $("nav a").on("click",function(){ $("nav, #nav_bg").removeClass("on"); });
 }
 
+function toast(icon, msg, time) {
+    $('#toast').remove();
+    $('body').append('<div id="toast" class="shadow"><i class="material-icons">' + icon + '</i>' + msg + '</div>');
+    $('#toast').css("left","calc(1em + " + $("nav").width() + "px)");
+    $('#toast').hide().fadeIn(500, function(){  $('#toast').delay(time).fadeOut(500, function(){ $('#toast').remove(); }); });
+}
+
 function scroll_smooth() {
     $("a[href^='#']").click(function(event) {
         event.preventDefault();
 
-        if (document.height === null) {
-            pageYOffset = document.documentElement.scrollTop;
-        }
+        if (document.height === null) { pageYOffset = document.documentElement.scrollTop; }
+        var isNotNav = true;
+        if ($(this).parent().prop("tagName")=="H3"||$(this).parent().prop("tagName")=="H2") { isNotNav = false; }
 
         var target = $(this.hash);
         var target_reverse = $(this);
@@ -93,7 +100,11 @@ function scroll_smooth() {
                 target_bg = target.css("background-color");
             }
 
-            target_position = target.offset().top - 114;
+            if (isNotNav) {
+                target_position = target.offset().top - event.pageY + pageYOffset + target.height() / 2;
+            } else {
+                target_position = target.offset().top - 114;
+            }
 
             $('html, body').animate({
                 scrollTop: target_position
@@ -104,19 +115,20 @@ function scroll_smooth() {
 
         scroll(target, event);
         bg_change(target, color.material_a100[color_i], ".25s");
-        // toast("원래 자리로 가려면 더블클릭");
 
-        // document.ondblclick = function(event) {
-        //     if (reversible) {
-        //         scroll(target_reverse, event);
-        //         bg_change(target_reverse, "#ffeb3b", ".25s");
-        //         reversible = false;
-        //     }
-        // };
+        if (isNotNav) {
+            toast("refresh", "원래 자리로 가려면 더블 클릭", 2000);
+            document.ondblclick = function(event) {
+                if (reversible) {
+                    scroll(target_reverse, event);
+                    bg_change(target_reverse, "#ffeb3b", ".25s");
+                    reversible = false;
+                }
+            };
+        }
         // alert(target_reverse.offset().top);
     });
 }
-
 
 // $(document).scroll(function() {
 //     if (document.height === null) {
@@ -428,8 +440,9 @@ function checkbox(){
     $("input:not([checked]):not([failed])").before("<i class='material-icons'>check_box_outline_blank</i>");
     $("input[failed]").before("<i class='material-icons'>priority_high</i>");
 
-    $("a[href]:not(nav a):not([href$='sharing'])").prepend("<i class='material-icons'>open_in_new</i>");
+    $("a[href]:not(nav a):not([href$='sharing']):not([href^='#'])").prepend("<i class='material-icons'>open_in_new</i>");
     $("a[href$='sharing']").prepend("<i class='material-icons'>save</i>");
+    $("a[href^='#']:not(nav a)").prepend("<i class='material-icons'>find_in_page</i>");
     $("a[onclick]").prepend("<i class='material-icons'>theaters</i>");
     $("a[src]").prepend("<i class='material-icons'>photo</i>");
 }

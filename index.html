@@ -104,7 +104,7 @@
                 </dl>
                 <div class="back">
                     <p>
-                        요약: 메달 받으려고 자전거 구입. 존나 달림. 목표 달성. 자전거 창고에 쳐박음.
+                        요약: <a href="#주인공_되기">메달</a> 받으려고 자전거 구입. 존나 달림. 목표 달성. 자전거 창고에 쳐박음.
                     </p>
                     <p>아무튼, 야무지게 1,000 km 이상을 내달리면서 성공적으로 완주. <a onclick="showMovie('https://www.youtube.com/watch?v=NGM8jJC_FV4')">동영상</a>으로도 남김!</p>
                 </div>
@@ -147,7 +147,7 @@
                 </dl>
                 <div class="back">
                     <p>
-                        시골에서도 은하수가 안 보이던데???
+                        광해지도랑 별자리표 다찾아놨다. 조만간 은하수 본다...
                     </p>
                 </div>
             </div>
@@ -362,9 +362,10 @@
                     </ol>
                 </div>
             </div>
+
             <div class="card"><!-- 32인치 모니터 -->
                 <div class="front">
-                    <dl>
+                    <dl id="압도적_스케일">
                         <input type="checkbox"> <dt>압도적 스케일</dt>
                         <dd>32인치 모니터 구입후 최신 게임 즐기기.<span class="date"></span> </dd>
                     </dl>
@@ -373,6 +374,12 @@
                     <p>2016년 현재 최저가 15만원. 개껌값이군. 단지 백수라는 자격지심 때문에 아직 참고있는 중이다.</p>
                 </div>
             </div>
+
+            <dl class="" id="이제_양손이_다_찍히는군"><!-- 이제 양손이 다 찍히는군 -->
+                <input type="checkbox"> <dt>이제 양손이 다 찍히는군</dt>
+                <dd>액션 캠 구입 후 역동적인 동영상 촬영하기.<span class="date"></span></dd>
+            </dl>
+
         </section>
 
         <h3 id="예술"><i class="material-icons">color_lens</i><span>예술</span></h3>
@@ -412,7 +419,7 @@
                     </dl>
                 </div>
                 <div class="back">
-                    <div style="display:flex;">
+                    <div style="display:flex;" class="img">
                         <div style="flex:263"><img src="images/shirt0.jpg" /></div>
                         <div style="flex:26"></div>
                         <div style="flex:263"><img src="images/shirt1.jpg" /></div>
@@ -559,7 +566,7 @@
             </div>
             <div class="card"><!-- 메달을 받아서 자신의 쓸모있음을 증명하기. -->
                 <div class="front">
-                    <dl>
+                    <dl id="주인공_되기">
                         <input type="checkbox" checked> <dt>주인공 되기</dt>
                         <dd>메달을 받아서 자신의 쓸모있음을 증명하기.<span class="date">2015.</span> </dd>
                     </dl>
@@ -1159,9 +1166,9 @@
                 <input type="checkbox"> <dt>세워만 놔도 멋지잖아?</dt>
                 <dd>다음의 별 쓸모 없으면서도 바라보면 흐믓해지는 물건 소유.
                     <ul>
-                        <li><input type="checkbox" checked> <span>기타</span> </li>
-                        <li><input type="checkbox" checked> <span>자전거</span> </li>
-                        <li><input type="checkbox"> <span>천체 망원경</span> </li>
+                        <li><input type="checkbox" checked> <dt>기타</dt> </li>
+                        <li><input type="checkbox" checked> <dt>자전거</dt> </li>
+                        <li><input type="checkbox"> <dt>천체 망원경</dt> </li>
                     </ul> <span class="date"></span>
                 </dd>
             </dl>
@@ -1174,17 +1181,25 @@
                 <dd>외국에 부동산 소유.<span class="date"></span> </dd>
 
             </dl>
+            <div class="card">
+                <dl class="front"><!-- 다음의 전자제품들 갖기. -->
+                    <input type="checkbox"> <dt>전자 제품 소유</dt>
+                    <dd>다음의 전자제품을 갖기<span class="date"></span>
+                        <ul>
+                            <li><input type="checkbox"> <dt>E-ink 단말기<span class="date"></span></dt></li>
+                            <li><input type="checkbox"> <dt>드론<span class="date"></span></dt></li>
+                            <li><input type="checkbox"> <dt>32인치 모니터<span class="date"></span></dt></li>
+                            <li><input type="checkbox"> <dt>액션 캠<span class="date"></span></dt></li>
+                        </ul>
+                    </dd>
+                </dl>
+                <div class="back">
+                    <p>사고 난 다음은 아래의 항목에 도전하라.</p>
+                    <p><a href="#압도적_스케일">32인치 모니터</a>, <a href="#이제_양손이_다_찍히는군">액션 캠</a>
+                    </p>
+                </div>
+            </div>
 
-            <dl class=""><!-- 다음의 전자제품들 갖기. -->
-                <input type="checkbox"> <dt>전자 제품 소유 업적 1</dt>
-                <dd>다음의 전자제품들 갖기.<span class="date"></span>
-                    <ul>
-                        <li><input type="checkbox"> <span>E-ink 단말기</span><span class="date"></span></li>
-                        <li><input type="checkbox"> <span>드론</span><span class="date"></span></li>
-                        <li><input type="checkbox"> <span>액션캠</span><span class="date"></span></li>
-                    </ul>
-                </dd>
-            </dl>
         </section>
     </section>
 

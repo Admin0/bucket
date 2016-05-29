@@ -269,7 +269,8 @@ dt {
 
 dd {
     font-size: .9em;
-    color: #aaa;
+    /*color: #aaa;*/
+    color: rgba(0,0,0,0.5);
     white-space: normal;
 }
 
@@ -408,16 +409,22 @@ content: "check_box";
     bottom: 0;
     position:absolute;
     width: 100%;
-    padding: .5em 1em;
+    /*padding: .5em 1em;*/
     transform: rotateX(-180deg);
     border-radius: 3px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, .2);
+    box-shadow: 0px 5px 12px rgba(0, 0, 0, .2);
     background: white;
     z-index: 2;
-    max-width:calc(100% - 2em);
+    max-width:calc(100% - 0);
 }
-.back > p { margin: .5em 0; }
-.back > p:only-child { margin: 18px 0 }
+.back > *:not(img) { margin: .5em 1em; }
+.back > *:first-child:not(img) { margin: 1em 1em .5em; }
+.back > *:last-child:not(img) { margin: .5em 1em 1em; }
+.back > *:only-child:not(img) { margin: 26px 1em }
+
+
+.back > img:first-child{ border-top-left-radius:3px; border-top-right-radius:3px; }
+.back > img:last-child{ border-bottom-left-radius:3px; border-bottom-right-radius:3px; }
 
 #movie_wrap, #img_wrap {
     display: none;
@@ -437,7 +444,8 @@ content: "check_box";
     border-radius: 3px;
 }
 
-img {width: 100%; cursor: pointer;}
+img {width: 100%; cursor: pointer;margin-bottom: -5px;}
+
 img[hide]   {display: none;}
 
 #img_wrap > img {
@@ -451,6 +459,19 @@ a:not(nav a) > .material-icons{margin: 0;}
 
 #tooltip,#tooltip_nav	{ color:#fff; position:fixed; top:0; visibility: hidden; opacity:0; background:#212121; transition:.5s opacity;  z-index: 2; padding:1ex; border-radius: 3px; max-width:400px; z-index: 4;box-shadow: 0 2px 5px rgba(0, 0, 0, .25);}
 #tooltip_before,#tooltip_nav_before	{ border-color: #212121 transparent transparent transparent;  border-width: 1ex 1ex 0 1ex;  border-style: solid;  content: " ";  position: absolute; left: calc(50% - .5em); bottom:-.9ex; }
+
+#toast      {
+    position: fixed;
+    background-color:#424242;
+    color:rgba(255,255,255,.9);
+    /*font-size: 1.25em;*/
+    padding: 1em 1.5em 1em .75em;
+    min-width: 350px;
+    max-width: calc(100% - 2em);
+    /*right:1em;*/
+    bottom: 1em;
+    z-index: 4;
+}
 
 @media handheld, only screen and (max-device-width: 480px), only screen and (max-device-width: 320px), screen and (max-width: 600px)	{
     body    {
