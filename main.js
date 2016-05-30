@@ -401,9 +401,9 @@ function filter(){
 
     function filter_01(){
         hide_all();
-        $("input:not([checked])").parent().parent().parent().parent(".card_wrap").removeClass("hide");
-        $("input:not([checked])").parent().parent().parent(".card_wrap").removeClass("hide");
-        $("input:not([checked])").parent().parent(".card_wrap").removeClass("hide");
+        $("input:not([checked]):not([failed]").parent().parent().parent().parent(".card_wrap").removeClass("hide");
+        $("input:not([checked]):not([failed]").parent().parent().parent(".card_wrap").removeClass("hide");
+        $("input:not([checked]):not([failed]").parent().parent(".card_wrap").removeClass("hide");
         if(window.localStorage['strict_filtering'] == "true"){
             $("input:not([checked]):not([failed])").prev().removeClass("hide");
             $("input:not([checked]):not([failed])").next().removeClass("hide");

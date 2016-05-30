@@ -1,6 +1,8 @@
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
 @import url(https://fonts.googleapis.com/css?family=Black+Ops+One);
+@import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
+
 ::-moz-selection {
     background: rgba(0, 0, 0, .15)
 }
@@ -281,7 +283,7 @@ border-left: 1px solid rgba(0,0,0,0.1);
     right: 0;
     margin-right: 12px;}
 #setting_bt:hover i:not(.setting_arrow) {
-    transform: rotate(-15deg);
+    transform: rotate(-30deg);
     right: 8px;
 }
 #setting_bt i.setting_arrow {
@@ -569,13 +571,14 @@ input[failed] + dt {
 
 input[failed] + dt + dd:after {
     content: "FAILED";
+    /*content: "실패했습니다";*/
     display: inline-block;
     -webkit-transform: rotate(15deg);
     -ms-transform: rotate(15deg);
     transform: rotate(15deg);
     border: 3px solid #f44336;
     line-height: 1;
-    font-family: 'Black Ops One', cursive;
+    font-family: 'Black Ops One', 'Hanna', cursive;
     color: #F44336;
     border-width: 4px 0;
     position: absolute;
@@ -583,6 +586,7 @@ input[failed] + dt + dd:after {
     /*right: -.5em;*/
     margin-left: -3em;
     font-size: 1.5em;
+    padding: 2px 0 0px;
     backface-visibility: hidden;
 }
 
