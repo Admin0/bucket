@@ -829,7 +829,7 @@ screen and (max-width:600px) {
         padding-left: 0!important;
         width: 100%!important
     }
-    #column_bt,
+    #column_bt  {display: none;}
     #sub_header .filter_bt {
         padding: 12px 18px
     }
@@ -865,4 +865,10 @@ screen and (max-width:600px) {
     nav #nav_footer {
         display: none
     }
+
+    #setting {
+        z-index: 4;
+        left: inherit!important;
+    }
+    #setting_bg.on{z-index: 4;}
 }
