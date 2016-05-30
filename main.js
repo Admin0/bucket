@@ -1,5 +1,5 @@
 function nav_create() {
-    $("body").prepend("<nav><div id='nav'></div><div id='nav_footer'><i class='material-icons'>chevron_left</i></div></nav>");
+    // $("body").prepend("<nav><div id='nav_header'></div><div id='nav'></div><div id='nav_footer'><i class='material-icons'>chevron_left</i></div></nav>");
     // $("nav").prepend("<section id='in-page'></section>");
     $("h2,h3").each(function(){
         $(this).clone()
@@ -47,6 +47,28 @@ function nav_create() {
         if($("nav").attr("class")=="fold"){
             if (document.height === null) {pageYOffset = document.documentElement.scrollTop;}
             $('#tooltip_nav_text').html($(this).children("a").children("span").text());
+            $('#tooltip_nav').css({ 'visibility':'visible', 'opacity':1,
+            'top':$(this).offset().top - pageYOffset  + 'px',
+            'left':68 + 16 + 'px'});
+            $("#tooltip_nav_before").css({"border-color":"transparent " + color.material_700[color_i] + " transparent transparent", "border-width": "1ex 1ex 1ex 0","left":"-.9ex","bottom":"calc(50% - .5em)"});
+        }
+    },
+    function(){$('#tooltip_nav').css({ 'visibility':'hidden' , 'opacity':"0" });});
+    $("#nav #setting_bt").hover(function(){
+        if($("nav").attr("class")=="fold"){
+            if (document.height === null) {pageYOffset = document.documentElement.scrollTop;}
+            $('#tooltip_nav_text').html("설정");
+            $('#tooltip_nav').css({ 'visibility':'visible', 'opacity':1,
+            'top':$(this).offset().top - pageYOffset  + 'px',
+            'left':68 + 16 + 'px'});
+            $("#tooltip_nav_before").css({"border-color":"transparent " + color.material_700[color_i] + " transparent transparent", "border-width": "1ex 1ex 1ex 0","left":"-.9ex","bottom":"calc(50% - .5em)"});
+        }
+    },
+    function(){$('#tooltip_nav').css({ 'visibility':'hidden' , 'opacity':"0" });});
+    $("#nav #to_github").hover(function(){
+        if($("nav").attr("class")=="fold"){
+            if (document.height === null) {pageYOffset = document.documentElement.scrollTop;}
+            $('#tooltip_nav_text').html("소스 보기");
             $('#tooltip_nav').css({ 'visibility':'visible', 'opacity':1,
             'top':$(this).offset().top - pageYOffset  + 'px',
             'left':68 + 16 + 'px'});
@@ -117,7 +139,7 @@ function scroll_smooth() {
         bg_change(target, color.material_a100[color_i], ".25s");
 
         if (isNotNav) {
-            toast("refresh", "원래 자리로 가려면 더블 클릭", 2000);
+            toast("refresh", "원래 자리로 가려면 더블 클릭", 2500);
             document.ondblclick = function(event) {
                 if (reversible) {
                     scroll(target_reverse, event);
@@ -232,7 +254,7 @@ function coloring() {
         $(this).css({"background":color.material_500[color_i]});
     })
     $("#sub_header > #line1").css({"background":color.material_500[color_i]});
-    $("dl .material-icons, a:not(nav a)").css({"color":color.material_500[color_i]})
+    $("dl .material-icons, a:not(nav a), #to_github, #to_github > i").css({"color":color.material_500[color_i],"fill":color.material_500[color_i]})
 }
 
 function showMovie(src) {
@@ -350,13 +372,21 @@ function filter(){
                 $(this).parent().parent().addClass("hide");
                 // console.log("dl");
             }
+            if(window.localStorage['strict_filtering'] == "true"){
+                if($(this).parent().parent().attr("id")!="setting"){
+                    $(this).prev().addClass("hide");
+                    $(this).next().addClass("hide");
+                    $(this).next().next().addClass("hide");
+                }
+            } else {
+                $("input").parent().children().removeClass("hide");
+            }
         });
     }
 
     function filter_11(){
-        $("input").parent().parent().parent().parent().removeClass("hide");
-        $("input").parent().parent().parent().removeClass("hide");
-        $("input").parent().parent().removeClass("hide");
+        $(".card_wrap").removeClass("hide");
+        $("input").parent().children().removeClass("hide");
     }
 
     function filter_10(){
@@ -364,6 +394,9 @@ function filter(){
         $("input[checked]").parent().parent().parent().parent().removeClass("hide");
         $("input[checked]").parent().parent().parent().removeClass("hide");
         $("input[checked]").parent().parent().removeClass("hide");
+        $("input[checked]").prev().removeClass("hide");
+        $("input[checked]").next().removeClass("hide");
+        $("input[checked]").next().next().removeClass("hide");
     }
 
     function filter_01(){
@@ -371,6 +404,9 @@ function filter(){
         $("input:not([checked])").parent().parent().parent().parent().removeClass("hide");
         $("input:not([checked])").parent().parent().parent().removeClass("hide");
         $("input:not([checked])").parent().parent().removeClass("hide");
+        $("input:not([checked]):not([failed])").prev().removeClass("hide");
+        $("input:not([checked]):not([failed])").next().removeClass("hide");
+        $("input:not([checked]):not([failed])").next().next().removeClass("hide");
     }
 
     function filter_00(){
@@ -378,6 +414,9 @@ function filter(){
         $("input[failed]").parent().parent().parent().parent().removeClass("hide");
         $("input[failed]").parent().parent().parent().removeClass("hide");
         $("input[failed]").parent().parent().removeClass("hide");
+        $("input[failed]").prev().removeClass("hide");
+        $("input[failed]").next().removeClass("hide");
+        $("input[failed]").next().next().removeClass("hide");
     }
 
     if(window.localStorage['filter'] == "filter_10"){
@@ -468,7 +507,49 @@ function percentage(){
     $("input[checked]").length + "/" + ($("input").length - $("input[failed]").length) + ")</span>");
 }
 
+function setting(){
+    function check_setting(){
+        $("#setting input").each(function(){
+            // $(this)
+        });
+
+        $("#strict_filtering input").prev("i").remove();
+        if(window.localStorage['strict_filtering'] == "true"){
+            $("#strict_filtering input").attr("checked",true);
+        }else {
+            $("#strict_filtering input").attr("checked",false);
+        }
+
+        $("#setting input[checked]").before("<i class='material-icons'>check_box</i>");
+        $("#setting input:not([checked]):not([failed])").before("<i class='material-icons'>check_box_outline_blank</i>");
+        $("#setting .material-icons").css({"color":color.material_500[color_i]});
+
+        $("#setting input").next().next().next(".off").removeClass("hide");
+        $("#setting input").next().next(".on").removeClass("hide");
+        $("#setting input[checked]").next().next().next(".off").addClass("hide");
+        $("#setting input:not([checked])").next().next(".on").addClass("hide");
+    }
+    $("#setting_bt").on("click", function(){
+        // $(this).css("color",color.material_500[color_i]);
+        $('#tooltip_nav').css({ 'visibility':'hidden' , 'opacity':"0" });
+        $("#setting, #setting_bg").toggleClass("on");
+        $("#setting").css({"top":$("#setting_bt").offset().top - pageYOffset,"left":$("#nav").width()-16});
+        check_setting();
+    });
+    $("#strict_filtering").on("click",function(){
+        if(window.localStorage['strict_filtering'] == "true"){
+            window.localStorage['strict_filtering'] = "false"
+        }else {
+            window.localStorage['strict_filtering'] = "true"
+        }
+        filter();
+        columns();
+        check_setting();
+    });
+}
+
 $(function() {
+    setting();
     percentage();
     card_wrap();
     nav_create();

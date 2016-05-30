@@ -74,7 +74,7 @@ header {
     position: relative;
     font-size: 16px;
     display: inline-block;
-    padding: 12px 24px;
+    padding: 16px 24px;
     cursor: pointer;
     -webkit-transition: .25s;
     transition: .25s
@@ -141,7 +141,7 @@ a:hover {
     position: absolute
 }
 
-#nav_bg {
+#nav_bg, #setting_bg {
     position: fixed;
     z-index: 3;
     left: 0;
@@ -156,32 +156,19 @@ a:hover {
     opacity: 0;
     filter: alpha(opacity=0)
 }
-
-#to_github {
-    padding: .5em;
-    border-radius: 50%;
-    width: 1em;
-    top: 0;
-    position: absolute;
-    right: 0;
-    cursor: pointer;
-    fill: rgba(255, 255, 255, .75);
-    -webkit-transition: .25s;
-    transition: .25s
+#setting_bg {background: rgba(0, 0, 0, 0);}
+#setting_bg.on {
+    visibility: visible;
+    opacity: 1;
+    filter: alpha(opacity=100)
 }
-
-#to_github:hover {
-    fill: rgba(255, 255, 255, .98);
-    background: rgba(0, 0, 0, .1)
-}
-
 nav {
-    display: -webkit-box;
+    /*display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
-    display: flex;
+    display: flex;*/
     position: fixed;
-    z-index: 4;
+    z-index: 3;
     top: 0;
     left: 0;
     width: 256px;
@@ -245,6 +232,121 @@ nav h4 a {
     padding-left: 3em
 }
 
+nav #nav_header {
+    display: flex;justify-content: space-between;
+    background: #fafafa;
+    -webkit-box-shadow: 0 -1px 0 rgba(0,0,0,0.12) inset!important;
+    box-shadow: 0 -1px 0 rgba(0,0,0,0.12) inset!important;
+    position: relative;
+    padding: 10px 0;
+    color: rgba(0, 0, 0, .54);white-space: nowrap;
+        transition: .5s;
+}
+nav.fold #nav_header {  padding: 10px 0 46px; }
+#to_github {
+    cursor: pointer;
+    -webkit-transition: .25s;
+    transition: .25s;
+    width:100%;
+    padding: 6px 8px 6px 22px;
+    color: rgba(0,0,0,0.54);
+    display: inline-block;
+    overflow: hidden;text-overflow: ellipsis;white-space: nowrap;    width: calc(100% - 82px);
+
+}
+#to_github i {fill: rgba(0, 0, 0, .54);}
+#to_github:hover{background: rgba(158, 158, 158, .2); }
+
+nav.fold #to_github{width:100%; text-overflow: clip;   }
+
+@keyframes setting_bt_unfold {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+#setting_bt {
+border-left: 1px solid rgba(0,0,0,0.1);
+    /*width: 20px;*/
+    height: 20px;
+    width: 48px;
+    padding: 8px 0;
+    /*margin: 0 4px;*/
+    display: inline-block;
+    transition: 0s;
+    text-align: center;
+    cursor: pointer;
+    animation-name: setting_bt_unfold;
+    animation-duration: 1s;
+}
+#setting_bt i {transition: .25s; position: absolute; font-size: 1.25em!important;
+    right: 0;
+    margin-right: 12px;}
+#setting_bt:hover i:not(.setting_arrow) {
+    transform: rotate(-15deg);
+    right: 8px;
+}
+#setting_bt i.setting_arrow {
+    visibility: hidden;
+    opacity: 0;
+}
+#setting_bt:hover i.setting_arrow {
+    visibility: visible;
+    opacity: 1;
+    right: -8px;
+}
+nav.fold #nav_header {
+    /*display: block;*/
+}
+nav #nav_header span {opacity: 1; transition: .25s;}
+nav.fold #nav_header span {
+    opacity: 0;
+}
+@keyframes setting_bt_fold {
+    0% {opacity: 0; margin-top: -28px;}
+    25% {opacity: 0; margin-top: -28px;}
+    100% {opacity: 1; margin-top: 0;}
+}
+nav.fold #setting_bt {
+    width: 68px;
+    top: 46px;
+    position: absolute;
+    left: 0;
+    animation-name: setting_bt_fold;
+    animation-duration: .5s;
+}
+nav.fold #setting_bt i {
+    right: 14px;
+}
+nav.fold #setting_bt:hover i:not(.setting_arrow) {
+    right: 22px;
+}
+nav.fold #setting_bt:hover i.setting_arrow {
+    right: 4px;
+}
+nav.fold #setting_bt:hover {
+    background: rgba(158, 158, 158, .2);
+}
+
+#setting {
+    background: #fff;
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,0.2),0 4px 5px 0 rgba(0,0,0,0.14),0 1px 10px 0 rgba(0,0,0,0.12);
+    z-index: 3;
+    max-width:calc(450px - 2em);
+    margin: auto;
+    transition: .25s opacity;
+    opacity: 1;
+    visibility: visible;
+    position: fixed;
+    padding: .5em 0;
+}
+#setting:not(.on){
+    /*height: 0;*/
+    display: block!important;
+    opacity: 0;
+    visibility: hidden;
+}
+#setting .setting_item { cursor:pointer; padding: .5em 1em; transition: .25s; }
+#setting .setting_item:hover { background: rgba(158, 158, 158, .2); }
+
 nav #nav_footer {
     cursor: pointer;
     -webkit-box-flex: 0;
@@ -263,7 +365,7 @@ nav #nav_footer {
     z-index: 2;
     border-top: 1px solid rgba(0, 0, 0, .1)
 }
-
+nav #nav_footer:hover{background-color: rgba(158,158,158,0.2);}
 nav #nav_footer i {
     margin: 10px 22px;
     float: right;
@@ -297,7 +399,7 @@ nav.fold #nav a i {
 nav #nav h2,
 nav #nav h3 {
     -webkit-transition: .5s;
-    transition: .5s
+    transition: .5s;
 }
 
 nav #nav h2 {
@@ -310,15 +412,17 @@ nav.fold #nav h2 {
     margin: 16px 0 14px;
     height: 3px
 }
-
-nav #nav h2:not(:first-child):before {
+nav.fold #nav h2:first-of-type {
+    margin: 16px 0 6px;
+}
+nav #nav h2:not(:first-of-type):before {
     position: absolute;
     content: "";
     height: 3px;
     width: 100%
 }
 
-nav.fold #nav h2:before {
+nav.fold #nav h2:not(:first-of-type):before {
     box-shadow: 0 1px 0 rgba(0, 0, 0, .12) inset
 }
 
@@ -327,6 +431,7 @@ nav.fold #nav h2 a {
     filter: alpha(opacity=0);
     width: 0
 }
+
 
 h2,
 h3 {
@@ -447,7 +552,7 @@ input {
     display: none
 }
 
-input[checked]+* {
+input[checked] + dt {
     font-weight: 700;
     color: #000;
     text-decoration: none
@@ -458,22 +563,32 @@ input[failed] {
     filter: alpha(opacity=0)
 }
 
-input[failed]+* {
-    text-decoration: line-through
+input[failed] + dt {
+    /*text-decoration: line-through*/
 }
 
-input[failed]+:after {
-    content: "FAILED!";
+input[failed] + dt + dd:after {
+    content: "FAILED";
     display: inline-block;
     -webkit-transform: rotate(15deg);
     -ms-transform: rotate(15deg);
     transform: rotate(15deg);
     border: 3px solid #f44336;
     line-height: 1;
-    padding: 0 2px;
     font-family: 'Black Ops One', cursive;
     color: #F44336;
-    float: right
+    border-width: 4px 0;
+    position: absolute;
+    margin-top: -.75em;
+    /*right: -.5em;*/
+    margin-left: -3em;
+    font-size: 1.5em;
+    backface-visibility: hidden;
+}
+
+.hide {
+    display: none!important;
+    margin: 0!important;
 }
 
 .date {
@@ -495,10 +610,10 @@ input[failed]+:after {
     z-index: 2
 }
 
-.card_wrap.hide {
+/*.card_wrap.hide {
     display: none;
     margin: 0
-}
+}*/
 
 .card {
     -webkit-transition: .5s;
@@ -733,7 +848,7 @@ screen and (max-width:600px) {
         z-index: 4;
         box-shadow: none;
         padding-top: 0;
-        height: calc(100% - 0)
+        height: 100%
     }
     nav.on {
         left: 0;
