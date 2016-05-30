@@ -372,51 +372,55 @@ function filter(){
                 $(this).parent().parent().addClass("hide");
                 // console.log("dl");
             }
-            if(window.localStorage['strict_filtering'] == "true"){
-                if($(this).parent().parent().attr("id")!="setting"){
+            if(window.localStorage['strict_filtering'] == "true" && $(this).parent().parent().attr("id")!="setting"){
                     $(this).prev().addClass("hide");
                     $(this).next().addClass("hide");
                     $(this).next().next().addClass("hide");
-                }
             } else {
-                $("input").parent().children().removeClass("hide");
+                $(".card_wrap *.hide").removeClass("hide");
             }
         });
     }
 
     function filter_11(){
         $(".card_wrap").removeClass("hide");
-        $("input").parent().children().removeClass("hide");
+        $("input").parent().children(".hide").removeClass("hide");
     }
 
     function filter_10(){
         hide_all();
-        $("input[checked]").parent().parent().parent().parent().removeClass("hide");
-        $("input[checked]").parent().parent().parent().removeClass("hide");
-        $("input[checked]").parent().parent().removeClass("hide");
-        $("input[checked]").prev().removeClass("hide");
-        $("input[checked]").next().removeClass("hide");
-        $("input[checked]").next().next().removeClass("hide");
+        $("input[checked]").parent().parent().parent().parent(".card_wrap").removeClass("hide");
+        $("input[checked]").parent().parent().parent(".card_wrap").removeClass("hide");
+        $("input[checked]").parent().parent(".card_wrap").removeClass("hide");
+        if(window.localStorage['strict_filtering'] == "true"){
+            $("input[checked]").prev().removeClass("hide");
+            $("input[checked]").next().removeClass("hide");
+            $("input[checked]").next().next().removeClass("hide");
+        }
     }
 
     function filter_01(){
         hide_all();
-        $("input:not([checked])").parent().parent().parent().parent().removeClass("hide");
-        $("input:not([checked])").parent().parent().parent().removeClass("hide");
-        $("input:not([checked])").parent().parent().removeClass("hide");
-        $("input:not([checked]):not([failed])").prev().removeClass("hide");
-        $("input:not([checked]):not([failed])").next().removeClass("hide");
-        $("input:not([checked]):not([failed])").next().next().removeClass("hide");
+        $("input:not([checked])").parent().parent().parent().parent(".card_wrap").removeClass("hide");
+        $("input:not([checked])").parent().parent().parent(".card_wrap").removeClass("hide");
+        $("input:not([checked])").parent().parent(".card_wrap").removeClass("hide");
+        if(window.localStorage['strict_filtering'] == "true"){
+            $("input:not([checked]):not([failed])").prev().removeClass("hide");
+            $("input:not([checked]):not([failed])").next().removeClass("hide");
+            $("input:not([checked]):not([failed])").next().next().removeClass("hide");
+        }
     }
 
     function filter_00(){
         hide_all();
-        $("input[failed]").parent().parent().parent().parent().removeClass("hide");
-        $("input[failed]").parent().parent().parent().removeClass("hide");
-        $("input[failed]").parent().parent().removeClass("hide");
-        $("input[failed]").prev().removeClass("hide");
-        $("input[failed]").next().removeClass("hide");
-        $("input[failed]").next().next().removeClass("hide");
+        $("input[failed]").parent().parent().parent().parent(".card_wrap").removeClass("hide");
+        $("input[failed]").parent().parent().parent(".card_wrap").removeClass("hide");
+        $("input[failed]").parent().parent(".card_wrap").removeClass("hide");
+        if(window.localStorage['strict_filtering'] == "true"){
+            $("input[failed]").prev().removeClass("hide");
+            $("input[failed]").next().removeClass("hide");
+            $("input[failed]").next().next().removeClass("hide");
+        }
     }
 
     if(window.localStorage['filter'] == "filter_10"){
