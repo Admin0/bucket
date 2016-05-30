@@ -3,13 +3,9 @@
 @import url(https://fonts.googleapis.com/css?family=Black+Ops+One);
 @import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
 
-::-moz-selection {
-    background: rgba(0, 0, 0, .15)
-}
+::-moz-selection { background: rgba(0, 0, 0, 0) }
 
-::selection {
-    background: rgba(0, 0, 0, .15)
-}
+::selection { background: rgba(0, 0, 0, 0) }
 
 body {
     max-width: 600px;
