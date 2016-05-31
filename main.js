@@ -46,7 +46,7 @@ function nav_create() {
     $("#nav h3").hover(function(){
         if($("nav").attr("class")=="fold"){
             if (document.height === null) {pageYOffset = document.documentElement.scrollTop;}
-            $('#tooltip_nav_text').html($(this).children("a").children("span").text());
+            $('#tooltip_nav_text').html($(this).children("a").children("span:nth(0)").text());
             $('#tooltip_nav').css({ 'visibility':'visible', 'opacity':1,
             'top':$(this).offset().top - pageYOffset  + 'px',
             'left':68 + 16 + 'px'});
@@ -345,7 +345,7 @@ function columns(){
 var column_only_mode = window.localStorage['column_only_mode'];
 
 $(window).resize(function() {
-        columns();
+    columns();
 });
 
 function filter(){
@@ -373,9 +373,9 @@ function filter(){
                 // console.log("dl");
             }
             if(window.localStorage['strict_filtering'] == "true" && $(this).parent().parent().attr("id")!="setting"){
-                    $(this).prev().addClass("hide");
-                    $(this).next().addClass("hide");
-                    $(this).next().next().addClass("hide");
+                $(this).prev().addClass("hide");
+                $(this).next().addClass("hide");
+                $(this).next().next().addClass("hide");
             } else {
                 $(".card_wrap *.hide").removeClass("hide");
             }
@@ -507,8 +507,18 @@ function card_wrap(){
 }
 
 function percentage(){
-    $("h1").append("<span id='percentage'>" + ($("input[checked]").length / ($("input").length - $("input[failed]").length) * 100).toFixed(1) + "%</span><span id='percentage_tail'>(" +
+    $("h1").append("<class class='percentage'>" + ($("input[checked]").length / ($("input").length - $("input[failed]").length) * 100).toFixed(0) + "% (" +
     $("input[checked]").length + "/" + ($("input").length - $("input[failed]").length) + ")</span>");
+
+    $("h2:not(nav h2)").each(function(){
+        var i = $("h2").index(this);
+        $(this).append( "<span class='percentage'>" + ($("h2:nth(" + i + ") + section.sup input[checked]").length / $("h2:nth(" + i + ") + section.sup input").length * 100).toFixed(0) + "%</span>" );
+    });
+
+    $("h3:not(nav h3)").each(function(){
+        var i = $("h3").index(this);
+        $(this).append( "<span class='percentage'>" + ($("h3:nth(" + i + ") + section.sub input[checked]").length / $("h3:nth(" + i + ") + section.sub input").length * 100).toFixed(0) + "%</span>" );
+    });
 }
 
 function setting(){
