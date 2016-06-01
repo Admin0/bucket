@@ -255,6 +255,9 @@ function coloring() {
     })
     $("#sub_header > #line1").css({"background":color.material_500[color_i]});
     $("dl .material-icons, a:not(nav a), #to_github, #to_github > i").css({"color":color.material_500[color_i],"fill":color.material_500[color_i]})
+
+    $("link[rel~='icon']").attr("href", "images/favicon" + color_i + ".ico");
+    $("meta[name='theme-color']").attr("content", color.material_700[color_i]);
 }
 
 function showMovie(src) {
@@ -298,19 +301,7 @@ function imgReady() {
 }
 
 function columns(){
-    if(column_only_mode=="true"){
-        $("body").removeClass("columns");
-        $(".card_wrap").not(":first").css({"max-width":"600px"});
-        setTimeout(function(){
-            $('section.sub').masonry({
-                // options
-                itemSelector: '.card_wrap',
-                columnWidth: $("body").width()
-            });
-            headline();
-        },100);
-        $("#column_bt i").text("dashboard");
-    }else{
+    if(column_only_mode!="true"){
         $("body").addClass("columns");
         var columns = Math.floor($("body").width()/500);
         if(columns<=1 ){
@@ -339,6 +330,18 @@ function columns(){
             },100);
             $("#column_bt i").text("view_stream");
         }
+    }else{
+        $("body").removeClass("columns");
+        $(".card_wrap").not(":first").css({"max-width":"600px"});
+        setTimeout(function(){
+            $('section.sub').masonry({
+                // options
+                itemSelector: '.card_wrap',
+                columnWidth: $("body").width()
+            });
+            headline();
+        },100);
+        $("#column_bt i").text("dashboard");
     }
 }
 
