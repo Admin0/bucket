@@ -4,13 +4,14 @@
 <head>
     <title>BUCKET LIST</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="theme-color" content="#212121" />
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="shortcut icon" href="images/favicon.ico">
     <script src="http://code.jquery.com/jquery-1.9.0.js"></script>
     <script src="main.js"></script>
     <script src="masonry.pkgd.min.js"></script>
+    <script src="prefixfree.min.js"></script>
 </head>
 
 <body>
@@ -268,12 +269,12 @@
                     </dl>
                 </div>
                 <div class="back">
-                    <p>
-                        말이 <a src="images/nope0.jpg" alt="" />짧다</a>?<br/>
-                        아니, <a src="images/nope1.jpg" alt="" />한 손</a>은 사진을 찍을 건데?<br/>
-                        싫은데? <a src="images/nope2.jpg" alt="" />상단부의 껌</a>을 먼저 먹을 건데?<br/>
-                        사나이는 <a src="images/nope3.jpg" alt="" />가이드라인</a>따위는 필요없다고.
-                    </p>
+                    <div class="img">
+                        <img src="images/nope0.jpg" />
+                        <img src="images/nope1.jpg" />
+                        <img src="images/nope2.jpg" />
+                        <img src="images/nope3.jpg" />
+                    </div>
                     <p>휴... 나란 남자... 넘나 나쁜 남자인 것!</p>
                 </div>
             </div>
@@ -337,7 +338,7 @@
                 <input type="checkbox"> <dt>무료 앱에 광고를 넣는 게 좋다</dt>
                 <dd>앱 다운로드 합계 1,000,000 회.<span class="date"></span> </dd>
             </dl>
-            <div class="card"><!-- 32인치 모니터 -->
+            <div class="card"><!-- 내가 막 뭐라도 된 듯 -->
                 <div class="front">
                     <dl>
                         <input type="checkbox" checked> <dt>내가 막 뭐라도 된 듯</dt>
@@ -437,9 +438,9 @@
                 </div>
                 <div class="back">
                     <div class="img">
-                        <div style="flex:263"><img src="images/shirt0.jpg" /></div>
-                        <div style="flex:263"><img src="images/shirt1.jpg" /></div>
-                        <div style="flex:473"><img src="images/shirt2.jpg" /></div>
+                        <img src="images/shirt0.jpg" />
+                        <img src="images/shirt1.jpg" />
+                        <img src="images/shirt2.jpg" />
                     </div>
                     <p>
                         다른 디자인으로도 몇 장 더 만들었지만, 역시 집에서밖에 입을 수가 없었다 ㅋ

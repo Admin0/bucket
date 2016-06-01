@@ -295,8 +295,22 @@ function imgReady() {
         $(this).on("click",function(){showImg(src)});
         $(this).parent().after("<img src='"+src+"' hide />");   //이미지를 미리 불러와야 클릭했을 떄 높이 조절이 되는고얌
     });
-    $("img").on("click",function(){
+
+    $("img").on("click",function(){                             //이미지를 클릭하면 크게 보이는 고얌
         showImg($(this).attr("src"));
+    });
+
+    $(".img img").wrap("<div></div>");                          //.img로 묶인 이미지를 높이에 맞게 정렬
+    $(".img").each(function(){
+        var obj = new Array();
+        var i = $(".img").index(this);
+        $(this).children().each(function(){
+            obj.push([$(this).children("img").width(),$(this).children("img").height()]);
+        });
+        $(this).children().each(function(){
+            var j = $(".img:nth(" + i + ") > div").index(this);
+            $(this).css( {"flex" : 100 * obj[j][0] * obj[0][1] / obj[j][1] } );
+        });
     });
 }
 

@@ -692,27 +692,27 @@ dl:not(.card):hover {
     border-bottom-right-radius: 3px
 }
 
-.back>.img {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
+.back > .img {
     display: flex;
+    overflow: hidden;
     margin: 0!important
 }
-
-.back>.img:first-child>div:first-child>img {
+.back > .img > div {
+    flex: 1;
+}
+.back > .img:first-child>div:first-child>img {
     border-top-left-radius: 3px
 }
 
-.back>.img:first-child>div:last-child>img {
+.back > .img:first-child>div:last-child>img {
     border-top-right-radius: 3px
 }
 
-.back>.img:last-child>div:first-child>img {
+.back > .img:last-child>div:first-child>img {
     border-bottom-left-radius: 3px
 }
 
-.back>.img:last-child>div:last-child>img {
+.back > .img:last-child>div:last-child>img {
     border-bottom-right-radius: 3px
 }
 
