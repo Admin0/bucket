@@ -299,7 +299,7 @@ function imgReady() {
     $("img").on("click",function(){                             //이미지를 클릭하면 크게 보이는 고얌
         showImg($(this).attr("src"));
     });
-    
+
     var obj, flex, i, j;
     $(".img img").wrap("<div></div>");                          //.img로 묶인 이미지를 높이에 맞게 정렬
     $(".img").each(function(){
@@ -307,6 +307,7 @@ function imgReady() {
         i = $(".img").index(this);
         $(this).children().each(function(){
             obj.push([$(this).children("img").width(),$(this).children("img").height()]);
+            console.log(i+"번 값 저장: " + $(this).children("img").width() + ", " + $(this).children("img").height());
         });
         $(this).children().each(function(){
             j = $(".img:nth(" + i + ") > div").index(this);
