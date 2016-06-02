@@ -299,18 +299,20 @@ function imgReady() {
     $("img").on("click",function(){                             //이미지를 클릭하면 크게 보이는 고얌
         showImg($(this).attr("src"));
     });
-
+    
+    var obj, flex, i, j;
     $(".img img").wrap("<div></div>");                          //.img로 묶인 이미지를 높이에 맞게 정렬
     $(".img").each(function(){
-        var obj = new Array();
-        var i = $(".img").index(this);
+        obj = new Array();
+        i = $(".img").index(this);
         $(this).children().each(function(){
             obj.push([$(this).children("img").width(),$(this).children("img").height()]);
         });
         $(this).children().each(function(){
-            var j = $(".img:nth(" + i + ") > div").index(this);
-            console.log(i+"번 .img의 "+j+"번째 img 정렬")
-            $(this).css( {"flex" : 100 * obj[j][0] * obj[0][1] / obj[j][1] } );
+            j = $(".img:nth(" + i + ") > div").index(this);
+            flex = 100 * obj[j][0] * obj[0][1] / obj[j][1];
+            console.log(i+"번 .img의 "+j+"번째 img 정렬: " + flex);
+            $(this).css( {"flex" : flex } );
         });
     });
 }
