@@ -16,7 +16,7 @@ function nav_create() {
         $("nav, #sub_header, #nav_footer > i").removeClass("fold");
         setTimeout(function(){
             $("body").removeClass("fold");
-        },500);
+        },300);
         window.localStorage['nav_fold'] = "false";
     }
 
@@ -24,7 +24,7 @@ function nav_create() {
         $("nav, #sub_header, #nav_footer > i").addClass("fold");
         setTimeout(function(){
             $("body").addClass("fold");
-        },500);
+        },300);
         window.localStorage['nav_fold'] = "true";
     }
 
@@ -40,7 +40,7 @@ function nav_create() {
         }else{
             nav_expand();
         }
-        setTimeout(function(){columns();},500);
+        setTimeout(function(){columns();},300);
         // columns();
     });
 
@@ -600,6 +600,6 @@ $(document).ready(function(){
 $(window).load(function() {
     setTimeout(function () {
         columns();
-    }, 500);
+    }, 300);
     imgReady();
 });

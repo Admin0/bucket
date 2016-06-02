@@ -47,8 +47,8 @@ header {
     box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
     left: 0;
     padding-left: 256px;
-    -webkit-transition: .5s;
-    transition: .5s;
+    -webkit-transition: .3s;
+    transition: .3s;
     background: #aaa
 }
 
@@ -144,8 +144,7 @@ li a:hover  { position: inherit; box-shadow: none; background: rgba(0, 0, 0, .05
     z-index: 3;
     left: 0;
     top: 0;
-    -webkit-transition: .5s;
-    transition: .5s;
+    transition: .3s;
     width: 100%;
     height: 100%;
     display: block;
@@ -176,16 +175,14 @@ nav {
     height: calc(100% - 48px);
     overflow-y: auto;
     overflow-x: hidden;
-    -webkit-transition: .5s;
-    transition: .5s
+    transition: .3s
 }
 
 nav #nav {
     width: 100%;
     height: calc(100% - 46px);
     overflow-y: auto;
-    -webkit-transition: .5s;
-    transition: .5s
+    transition: .3s
 }
 
 nav a {
@@ -239,13 +236,12 @@ nav #nav_header {
     position: relative;
     padding: 10px 0;
     color: rgba(0, 0, 0, .54);white-space: nowrap;
-        transition: .5s;
+        transition: .3s;
 }
 nav.fold #nav_header {  padding: 10px 0 46px; }
 #to_github {
     cursor: pointer;
-    -webkit-transition: .25s;
-    transition: .25s;
+    transition: .3s;
     width:100%;
     padding: 6px 8px 6px 22px;
     color: rgba(0,0,0,0.54);
@@ -274,9 +270,9 @@ border-left: 1px solid rgba(0,0,0,0.1);
     text-align: center;
     cursor: pointer;
     animation-name: setting_bt_unfold;
-    animation-duration: 1s;
+    animation-duration: .3s;
 }
-#setting_bt i {transition: .25s; position: absolute; font-size: 1.25em!important;
+#setting_bt i {transition: .3s; position: absolute; font-size: 1.25em!important;
     right: 0;
     margin-right: 12px;}
 #setting_bt:hover i:not(.setting_arrow) {
@@ -295,7 +291,7 @@ border-left: 1px solid rgba(0,0,0,0.1);
 nav.fold #nav_header {
     /*display: block;*/
 }
-nav #nav_header span {opacity: 1; transition: .25s;}
+nav #nav_header span {opacity: 1; transition: .3s;}
 nav.fold #nav_header span {
     opacity: 0;
 }
@@ -310,7 +306,7 @@ nav.fold #setting_bt {
     position: absolute;
     left: 0;
     animation-name: setting_bt_fold;
-    animation-duration: .5s;
+    animation-duration: .3s;
 }
 nav.fold #setting_bt i {
     right: 14px;
@@ -368,8 +364,7 @@ nav #nav_footer:hover{background-color: rgba(158,158,158,0.2);}
 nav #nav_footer i {
     margin: 10px 22px;
     float: right;
-    -webkit-transition: .5s;
-    transition: .5s
+    transition: .3s
 }
 
 nav.fold #nav_footer i {
@@ -397,8 +392,7 @@ nav.fold #nav a i {
 
 nav #nav h2,
 nav #nav h3 {
-    -webkit-transition: .5s;
-    transition: .5s;
+    transition: .3s;
 }
 
 nav #nav h2 {
