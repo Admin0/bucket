@@ -302,18 +302,17 @@ function imgReady() {
 
     var obj, flex, i, j;
     $(".img img").wrap("<div></div>");                          //.img로 묶인 이미지를 높이에 맞게 정렬
-    // setTimeout(,100);
     $(".img").each(function(){
         obj = new Array();
         i = $(".img").index(this);
         $(this).children().each(function(){
             obj.push([$(this).children("img").width(),$(this).children("img").height()]);
-            console.log(i+"번 값 저장: " + $(this).children("img").width() + ", " + $(this).children("img").height());
+            // console.log(i+"번 값 저장: " + $(this).children("img").width() + ", " + $(this).children("img").height());
         });
         $(this).children().each(function(){
             j = $(".img:nth(" + i + ") > div").index(this);
             flex = 100 * obj[j][0] * obj[0][1] / obj[j][1];
-            console.log(i+"번 .img의 "+j+"번째 img 정렬: " + flex);
+            // console.log(i+"번 .img의 "+j+"번째 img 정렬: " + flex);
             $(this).css( {"flex" : flex } );
         });
     });
@@ -325,6 +324,7 @@ function columns(){
         var columns = Math.floor($("body").width()/500);
         if(columns<=1 ){
             $("body").removeClass("columns");
+            $("#column_bt").addClass("hide");
             $(".card_wrap").not(":first").css({"max-width":"600px"});
             // setTimeout(function(){
             $('section.sub').masonry({
@@ -336,6 +336,7 @@ function columns(){
             // },100);
         }else{
             // $("body").addClass("columns");
+            $("#column_bt").removeClass("hide");
             var c_w = $("body").width() / columns ;
             $(".card_wrap").not(":first").css({"max-width":c_w - 16 + "px"});
             console.log("columns: "+columns);
@@ -365,10 +366,6 @@ function columns(){
 }
 
 var column_only_mode = window.localStorage['column_only_mode'];
-
-$(window).resize(function() {
-    columns();
-});
 
 function filter(){
 
@@ -584,6 +581,9 @@ function setting(){
     });
 }
 
+$(window).resize(function() {
+    columns();
+});
 
 $(document).ready(function(){
         setting();
