@@ -1,4 +1,4 @@
-# BUCKET LIST by JinH
+# ![icon](images/favicon.ico)BUCKET LIST by JinH
 
 - 실행 페이지: http://admin0.github.io/bucket/
 - 블로그: http://jinh.tistory.com/
