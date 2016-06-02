@@ -143,11 +143,11 @@ function scroll_smooth() {
         bg_change(target, color.material_a100[color_i], ".25s");
 
         if (isNotNav) {
-            toast("refresh", "원래 자리로 가려면 더블 클릭", 2500);
+            toast("refresh", "원래 자리로 가려면 더블 클릭.", 2500);
             document.ondblclick = function(event) {
                 if (reversible) {
                     scroll(target_reverse, event);
-                    bg_change(target_reverse, "#ffeb3b", ".25s");
+                    bg_change(target_reverse, color.material_a100[color_i], ".25s");
                     reversible = false;
                 }
             };
@@ -217,12 +217,6 @@ color = {
         "#E64A19", "#5D4037", "#616161", "#455A64"
     ],
     "material_a100": [
-        "#FF8A80", "#FF80AB", "#EA80FC", "#B388FF", "#8C9EFF",
-        "#82B1FF", "#80D8FF", "#84FFFF", "#A7FFEB", "#B9F6CA",
-        "#CCFF90", "#F4FF81", "#FFFF8D", "#FFE57F", "#FFD180",
-        "#FF9E80", "#D7CCC8", "#F5F5F5", "#CFD8DC"
-    ],
-    "font": [
         "#FF8A80", "#FF80AB", "#EA80FC", "#B388FF", "#8C9EFF",
         "#82B1FF", "#80D8FF", "#84FFFF", "#A7FFEB", "#B9F6CA",
         "#CCFF90", "#F4FF81", "#FFFF8D", "#FFE57F", "#FFD180",
@@ -579,6 +573,7 @@ function setting(){
         }else {
             window.localStorage['strict_filtering'] = "true"
         }
+        toast("save", "설정이 저장되었습니다.", 1000);
         filter();
         columns();
         check_setting();
@@ -603,6 +598,8 @@ $(document).ready(function(){
 });
 
 $(window).load(function() {
-    columns();
+    setTimeout(function () {
+        columns();
+    }, 500);
     imgReady();
 });

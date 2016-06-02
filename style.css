@@ -4,8 +4,6 @@
 @import url(https://fonts.googleapis.com/css?family=Black+Ops+One);
 @import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
 
-::-moz-selection { background: rgba(0, 0, 0, 0) }
-
 ::selection { background: rgba(0, 0, 0, 0) }
 
 body {
@@ -118,7 +116,6 @@ a {
     text-decoration: none;
     font-weight: 700;
     color: #000;
-    -webkit-transition: .25s;
     transition: .25s;
     padding: .5em .75em;
     margin: -.75em
@@ -127,9 +124,11 @@ a {
 a:hover {
     box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
     background: #fff;
-    z-index: 10;
-    position: relative
+    position: relative;
 }
+
+li a        { padding: 0; margin: 0; }
+li a:hover  { position: inherit; box-shadow: none; background: rgba(0, 0, 0, .05); }
 
 #nav_on {
     padding: .5em;
@@ -532,17 +531,13 @@ dd ul li {
     text-overflow: ellipsis
 }
 
-.back ol {
-    -webkit-column-count: 2;
-    -moz-column-count: 2;
+.back ol, .back ul {
     column-count: 2;
-    -webkit-column-gap: 3em;
-    -moz-column-gap: 3em;
     column-gap: 3em;
     padding-left: 1em
 }
-
-.back ol li span {
+.back ul {list-style: none;}
+.back li span {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
