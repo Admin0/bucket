@@ -594,6 +594,7 @@ $(document).ready(function(){
         checkbox();
         filter();
         title_tooltip();
+        columns();
         coloring();
 });
 
