@@ -326,40 +326,40 @@ function columns(){
         if(columns<=1 ){
             $("body").removeClass("columns");
             $(".card_wrap").not(":first").css({"max-width":"600px"});
-            setTimeout(function(){
-                $('section.sub').masonry({
-                    // options
-                    itemSelector: '.card_wrap',
-                    columnWidth: $("body").width()
-                });
-                headline();
-            },100);
-        }else{
-            // $("body").addClass("columns");
-            var c_w = $("body").width() / columns ;
-            $(".card_wrap").not(":first").css({"max-width":c_w - 16 + "px"});
-            console.log("columns: "+columns);
-            setTimeout(function(){
-                $('section.sub').masonry({
-                    // options
-                    itemSelector: '.card_wrap',
-                    columnWidth: c_w
-                });
-                headline();
-            },100);
-            $("#column_bt i").text("view_stream");
-        }
-    }else{
-        $("body").removeClass("columns");
-        $(".card_wrap").not(":first").css({"max-width":"600px"});
-        setTimeout(function(){
+            // setTimeout(function(){
             $('section.sub').masonry({
                 // options
                 itemSelector: '.card_wrap',
                 columnWidth: $("body").width()
             });
             headline();
-        },100);
+            // },100);
+        }else{
+            // $("body").addClass("columns");
+            var c_w = $("body").width() / columns ;
+            $(".card_wrap").not(":first").css({"max-width":c_w - 16 + "px"});
+            console.log("columns: "+columns);
+            // setTimeout(function(){
+            $('section.sub').masonry({
+                // options
+                itemSelector: '.card_wrap',
+                columnWidth: c_w
+            });
+            headline();
+            // },100);
+            $("#column_bt i").text("view_stream");
+        }
+    }else{
+        $("body").removeClass("columns");
+        $(".card_wrap").not(":first").css({"max-width":"600px"});
+        // setTimeout(function(){
+        $('section.sub').masonry({
+            // options
+            itemSelector: '.card_wrap',
+            columnWidth: $("body").width()
+        });
+        headline();
+        // },100);
         $("#column_bt i").text("dashboard");
     }
 }
