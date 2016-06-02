@@ -20,9 +20,6 @@ function nav_create() {
     function nav_fold(){
         $("nav, body, #sub_header, #nav_footer > i").addClass("fold");
         window.localStorage['nav_fold'] = "true";
-        // $("body").css({"padding-left":"calc(1em + "+nav_w_folded+"px)"});
-        // $("#sub_header").css({"width":"calc(100% - "+nav_w_folded+"px)","padding-left":nav_w_folded+"px"});
-        // $("#nav_footer > i").css({"transform":"rotate(180deg)"});
     }
 
     if(window.localStorage['nav_fold'] == "true"){
@@ -37,7 +34,8 @@ function nav_create() {
         }else{
             nav_expand();
         }
-        columns();
+        setTimeout(columns,250);
+        // columns();
     });
 
     $('body').append('<div id="tooltip_nav"><div id="tooltip_nav_text"></div><div id="tooltip_nav_before"></div></div>');
