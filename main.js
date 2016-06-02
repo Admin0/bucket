@@ -203,7 +203,7 @@ color = {
     "material_500":[
         "#F44336", "#E91E63", "#9C27B0", "#673AB7", "#3F51B5",
         "#2196F3", "#03A9F4", "#00BCD4", "#009688", "#4CAF50",
-        "#8BC34A", "#CDDC39", "#FFEB3B", "#FFC107", "#FF9800",
+        "#8BC34A", "#CDDC39", "#FDD835", "#FFC107", "#FF9800",  //yellow:600
         "#FF5722", "#795548", "#9E9E9E", "#607D8B"
     ],
     "material_700":[
@@ -309,6 +309,7 @@ function imgReady() {
         });
         $(this).children().each(function(){
             var j = $(".img:nth(" + i + ") > div").index(this);
+            console.log(i+"번 .img의 "+j+"번째 img 정렬")
             $(this).css( {"flex" : 100 * obj[j][0] * obj[0][1] / obj[j][1] } );
         });
     });
