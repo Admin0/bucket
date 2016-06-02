@@ -13,12 +13,18 @@ function nav_create() {
     var nav_w_folded = 68;
 
     function nav_expand(){
-        $("nav, body, #sub_header, #nav_footer > i").removeClass("fold");
+        $("nav, #sub_header, #nav_footer > i").removeClass("fold");
+        setTimeout(function(){
+            $("body").removeClass("fold");
+        },500);
         window.localStorage['nav_fold'] = "false";
     }
 
     function nav_fold(){
-        $("nav, body, #sub_header, #nav_footer > i").addClass("fold");
+        $("nav, #sub_header, #nav_footer > i").addClass("fold");
+        setTimeout(function(){
+            $("body").addClass("fold");
+        },500);
         window.localStorage['nav_fold'] = "true";
     }
 
@@ -34,7 +40,7 @@ function nav_create() {
         }else{
             nav_expand();
         }
-        setTimeout(columns,250);
+        setTimeout(function(){columns();},500);
         // columns();
     });
 
