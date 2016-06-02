@@ -300,27 +300,9 @@ function imgReady() {
         showImg($(this).attr("src"));
     });
 
-    // var obj, flex, i, j;
-    // $(".img img").wrap("<div></div>");                          //.img로 묶인 이미지를 높이에 맞게 정렬
-    // $(".img").each(function(){
-    //     obj = new Array();
-    //     i = $(".img").index(this);
-    //     $(this).children().each(function(){
-    //         obj.push([$(this).children("img").width(),$(this).children("img").height()]);
-    //         console.log(i+"번 값 저장: " + $(this).children("img").width() + ", " + $(this).children("img").height());
-    //     });
-    //     $(this).children().each(function(){
-    //         j = $(".img:nth(" + i + ") > div").index(this);
-    //         flex = 100 * obj[j][0] * obj[0][1] / obj[j][1];
-    //         console.log(i+"번 .img의 "+j+"번째 img 정렬: " + flex);
-    //         $(this).css( {"flex" : flex } );
-    //     });
-    // });
-}
-
-$(".img").ready(function(){
     var obj, flex, i, j;
     $(".img img").wrap("<div></div>");                          //.img로 묶인 이미지를 높이에 맞게 정렬
+    // setTimeout(,100);
     $(".img").each(function(){
         obj = new Array();
         i = $(".img").index(this);
@@ -335,7 +317,7 @@ $(".img").ready(function(){
             $(this).css( {"flex" : flex } );
         });
     });
-});
+}
 
 function columns(){
     if(column_only_mode!="true"){
@@ -602,16 +584,20 @@ function setting(){
     });
 }
 
-$(function() {
-    setting();
-    percentage();
-    card_wrap();
-    nav_create();
-    scroll_smooth();
-    checkbox();
-    filter();
+
+$(document).ready(function(){
+        setting();
+        percentage();
+        card_wrap();
+        nav_create();
+        scroll_smooth();
+        checkbox();
+        filter();
+        title_tooltip();
+        coloring();
+});
+
+$(window).load(function() {
     columns();
-    title_tooltip();
     imgReady();
-    coloring();
 });
