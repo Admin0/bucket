@@ -88,8 +88,20 @@ function nav_create() {
 function toast(icon, msg, time) {
     $('#toast').remove();
     $('body').append('<div id="toast" class="shadow"><i class="material-icons">' + icon + '</i>' + msg + '</div>');
-    $('#toast').css("left","calc(1em + " + $("nav").width() + "px)");
-    $('#toast').hide().fadeIn(500, function(){  $('#toast').delay(time).fadeOut(500, function(){ $('#toast').remove(); }); });
+    $('#toast').css("left","calc(1em + " + $("nav").width() + "px)").addClass("on").removeClass("off");
+
+    setTimeout(function(){
+        setTimeout(function(){
+            $("#toast").addClass("off").removeClass("on");
+            console.log("boji");
+            setTimeout(function(){$("#toast").remove()},300);
+        }, time);
+    }, 300);
+
+    // $('#toast').hide().fadeIn(300, function(){
+    //     $(this).delay(time).fadeOut(300, function(){ $(this).remove();
+    //     });
+    // });
 }
 
 function scroll_smooth() {

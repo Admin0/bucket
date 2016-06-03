@@ -797,6 +797,22 @@ a:not(nav a)>.material-icons {
     bottom: 1em;
     z-index: 4
 }
+@keyframes snackbar_on {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+#toast.on {
+    animation-name: snackbar_on;
+    animation-duration: .3s;
+}
+@keyframes snackbar_off {
+    0% {opacity: 1;}
+    100% {opacity: 0;}
+}
+#toast.off {
+    animation-name: snackbar_off;
+    animation-duration: .3s;
+}
 
 @media handheld,
 only screen and (max-device-width:480px),
@@ -865,4 +881,29 @@ screen and (max-width:600px) {
         left: inherit!important;
     }
     #setting_bg.on{z-index: 4;}
+
+    #toast {
+        padding: 1em 1.5em 1em .75em;
+        min-width: 100%;
+        max-width: 100%;
+        bottom: 0; left:0!important;
+        z-index: 4;
+    }
+    @keyframes snackbar_on {
+        0% {bottom: -56px;}
+        100% {bottom: 0;}
+    }
+    #toast.on {
+        animation-name: snackbar_on;
+        animation-duration: .3s;
+    }
+    @keyframes snackbar_off {
+        0% {bottom: 0;}
+        100% {bottom: -56px;}
+    }
+    #toast.off {
+        bottom:  -56px;
+        animation-name: snackbar_off;
+        animation-duration: .3s;
+    }
 }
