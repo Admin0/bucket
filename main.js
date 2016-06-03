@@ -512,8 +512,8 @@ function checkbox(){
     $("input:not([checked]):not([failed])").before("<i class='material-icons'>check_box_outline_blank</i>");
     $("input[failed]").before("<i class='material-icons'>priority_high</i>");
 
-    $("a[href]:not(nav a):not([href$='sharing']):not([href^='#'])").prepend("<i class='material-icons'>open_in_new</i>");
-    $("a[href$='sharing']").prepend("<i class='material-icons'>save</i>");
+    $("a[href]:not(nav a):not([href$='.zip']):not([href^='#'])").prepend("<i class='material-icons'>open_in_new</i>");
+    $("a[href$='.zip']").prepend("<i class='material-icons'>save</i>");
     $("a[href^='#']:not(nav a)").prepend("<i class='material-icons'>find_in_page</i>");
     $("a[onclick]").prepend("<i class='material-icons'>theaters</i>");
     $("a[src]").prepend("<i class='material-icons'>photo</i>");
