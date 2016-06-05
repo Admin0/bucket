@@ -304,6 +304,7 @@
     <section class="sup">
         <h3 id="제작"><i class="material-icons">build</i><span>제작</span></h3>
         <section class="sub">
+
             <div class="card"><!-- 그래, 이건 집에서만 입자 -->
                 <div class="front">
                     <dl>
@@ -322,20 +323,36 @@
                     </p>
                 </div>
             </div>
+
             <dl class=""><!-- 가구 만들기. -->
                 <input type="checkbox" > <dt>!nameless</dt>
                 <dd>가구 만들기.<span class="date"></span></dd>
                 <input type="checkbox" > <dt>!nameless</dt>
                 <dd>건물 짓기.<span class="date"></span></dd>
             </dl>
+
             <dl class=""><!-- 로켓 날리기. -->
                 <input type="checkbox" > <dt>대학 나온 보람이 있네</dt>
-                <dd>로켓 날리기.<span class="date"></span></dd>
+                <dd>연료를 이용해 추진하는 로켓 만들고, 날리기.<span class="date"></span></dd>
             </dl>
+
             <dl class=""><!-- 이글루 만들기. -->
-                <input type="checkbox" > <dt>!nameless</dt>
-                <dd>이글루 만들기.<span class="date"></span></dd>
+                <input type="checkbox" > <dt>눈 내린다!</dt>
+                <dd>사람 크기의 눈사람 만든 뒤 어깨동무하고 셀카찍기.<span class="date"></span></dd>
+                <input type="checkbox" > <dt>너무 많이 오는데?</dt>
+                <dd>사람이 들어갈 수 있는 크기의 이글루 만들기.<span class="date"></span></dd>
             </dl>
+
+            <div class="card"><!-- 뭔가 일이 진행되는 느낌 -->
+                <dl class="front">
+                    <input type="checkbox"> <dt>뭔가 일이 진행되는 느낌</dt>
+                    <dd>뒷면 사진을 참고하여 멋지게 벽을 꾸미기.<span class="date"></span></dd>
+                </dl>
+                <div class="back">
+                        <img src="http://www.bolumrehberi.com/images/tv-show/True-Detective/true_detective_wallpaper_1920x1080_05.jpg" />
+                </div>
+            </div>
+
         </section>
 
         <h3 id="컴퓨터"><i class="material-icons">computer</i><span>컴퓨터</span></h3>
@@ -398,10 +415,10 @@
                 </div>
             </div>
 
-            <div class="card"><!-- 겜돌이 -->
+            <div class="card"><!-- 도전 과제 100% 달성하기. -->
                 <div class="front">
                     <dl>
-                        <input type="checkbox" checked> <dt>겜돌이</dt>
+                        <input type="checkbox" checked> <dt>강박 관념</dt>
                         <dd>1개의 게임에서 도전 과제 100% 달성하기.<span class="date">2014.01.02.</span> </dd>
                         <input type="checkbox" checked> <dt>편집증</dt>
                         <dd>10개의 게임에서 도전 과제 100% 달성하기.<span class="date">2015.</span> </dd>
@@ -410,12 +427,11 @@
                     </dl>
                 </div>
                 <div class="back">
-                    <p>관대한 갓스팀에서 무료로 뿌린 Portal을 시작으로, 현재 스팀기준 23개의 게임을 정복함. 모든 게임을 추적하기는 힘드니깐 재밌게 했던 것들만 나열함.</p>
+                    <p>관대한 갓스팀에서 무료로 뿌린 Portal을 시작으로, 현재 스팀기준 23개의 게임을 정복. 아래에 재밌게 했던 것들을 나열함.</p>
                     <ol>
                         <li>Batman: Arkham Asylum</li>
                         <li>BioShock Infinite</li>
                         <li>BioShock Infinite: CinC</li>
-                        <li>BioShock Infinite: BatS 1, 2</li>
                         <li>The Bureau: XCOM Declassified</li>
                         <li>Guacamelee! Gold Edition</li>
                         <li>Guacamelee! Super Turbo Championship Edition</li>
@@ -1189,26 +1205,59 @@
 
             </dl>
 
-<div class="card">
-            <dl class="front"><!-- 다음의 전자제품들 갖기. -->
-                <input type="checkbox"> <dt>전자 제품 소유</dt>
-                <dd>다음의 전자제품을 갖기<span class="date"></span>
+            <div class="card">
+                <dl class="front"><!-- 다음의 전자제품들 갖기. -->
+                    <input type="checkbox"> <dt>유비쿼터스</dt>
+                    <dd>다음의 전자제품을 갖기.<span class="date"></span>
+                        <ul>
+                            <li><input type="checkbox" checked> <dt>MP3 플레이어</dt><span class="date">2011.</span></li>
+                            <li><input type="checkbox" checked> <dt>스마트폰</dt><span class="date">2012.</span></li>
+                            <li><input type="checkbox"> <dt>스마트 워치</dt><span class="date"></span></li>
+                            <li><input type="checkbox"> <dt>테블릿PC</dt><span class="date"></span></li>
+                            <li><input type="checkbox" checked> <dt>디지타이저(그래픽 태블릿)</dt><span class="date">2011.</span></li>
+                            <li><input type="checkbox"> <dt>E-ink 단말기</dt><span class="date"></span></li>
+                            <li><input type="checkbox"> <dt>드론</dt><span class="date"></span></li>
+                            <li><input type="checkbox"> <dt>액션 캠</dt><span class="date"></span></li>
+                            <li><input type="checkbox"> <dt>AR기기</dt><span class="date"></span></li>
+                        </ul>
+                    </dd>
+                    <input type="checkbox"><dt>겜돌이</dt>
+                    <dd>다음 항목을 한 번에 가지고 가상세계를 구하기.<span class="date"></span>
+                        <ul>
+                            <li><input type="checkbox" checked> <dt>고사양 컴퓨터</dt><span class="date">2015.</span></li>
+                            <li><input type="checkbox"> <dt>32 인치 모니터</dt><span class="date"></span></li>
+                            <li><input type="checkbox" checked> <dt>신형 게임 패드</dt><span class="date">2015.</span></li>
+                            <li><input type="checkbox" checked> <dt>신작 게임 타이틀</dt><span class="date">2015.</span></li>
+                        </ul>
+                    </dd>
+                </dl>
+                <div class="back">
                     <ul>
-                        <li><input type="checkbox"> <dt>E-ink 단말기<span class="date"></span></dt></li>
-                        <li><input type="checkbox"> <dt>드론<span class="date"></span></dt></li>
-                        <li><input type="checkbox"> <dt>32인치 모니터<span class="date"></span></dt></li>
-                        <li><input type="checkbox"> <dt>액션 캠<span class="date"></span></dt></li>
-                        <li><input type="checkbox"> <dt>스마트 워치<span class="date"></span></dt></li>
+                        <li><a href="#이제_양손이_다_찍히는군">이제 양손이 다 찍히는군</a></li>
+                        <li><a href="#압도적_스케일">압도적 스케일</a></li>
                     </ul>
-                </dd>
-            </dl>
-            <div class="back">
-                <ul>
-                    <li><a href="#압도적_스케일">압도적 스케일</a> - 32인치 모니터</li>
-                    <li><a href="#이제_양손이_다_찍히는군">이제 양손이 다 찍히는군</a> - 액션 캠액션 캠</li>
-                </ul>
+                </div>
             </div>
-</div>
+
+            <div class="card"><!-- GPS가 내장된 시계 갖기. -->
+                <dl class="front">
+                    <input type="checkbox"> <dt>!nameless</dt>
+                    <dd>GPS가 내장된 시계 갖기.<span class="date"></span> </dd>
+                </dl>
+                <div class="back">
+                    <img src="http://www.bike24.com/i/p/7/2/55927_03_d.jpg"/>
+                </div>
+            </div>
+
+            <div class="card"><!-- 자이로스코프가 내장된 게임 컨트롤러 갖기. -->
+                <dl class="front">
+                    <input type="checkbox"> <dt>!nameless</dt>
+                    <dd>자이로스코프와 가속도계가 내장된 게임 컨트롤러 갖기.<span class="date"></span> </dd>
+                </dl>
+                <div class="back">
+                    <img src="http://ecx.images-amazon.com/images/I/81oyj8wrlCL._SX522_.jpg"/>
+                </div>
+            </div>
 
         </section>
     </section>

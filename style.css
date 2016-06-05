@@ -483,8 +483,7 @@ dl {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    -webkit-transition: .25s;
-    transition: .25s
+    transition: .25s;
 }
 
 dl dl {
@@ -495,41 +494,45 @@ dl dl {
 dt {
     font-size: 16px;
     color: #777;
-    display: inline
+    display: inline;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 dd {
     font-size: .9em;
     color: rgba(0, 0, 0, .5);
-    white-space: normal
+    white-space: normal;
 }
 
 dd+input {
-    margin-top: 1em
+    margin-top: 1em;
 }
 
 dd ul {
     list-style: none;
     padding: 0;
-    -webkit-column-count: 2;
-    -moz-column-count: 2;
-    column-count: 2
+    column-count: 2;
 }
 
 dd:last-child ul {
-    margin-bottom: 0
+    margin-bottom: 0;
 }
 
 dd ul li {
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis
+    text-overflow: ellipsis;
+    display: flex;
 }
+
+dd ul li dt {margin-left: 4px;}
 
 .back ol, .back ul {
     column-count: 2;
     column-gap: 3em;
-    padding-left: 1em
+    padding-left: 1em;
 }
 .back ul {list-style: none;}
 .back li span {
@@ -590,7 +593,7 @@ input[failed] + dt + dd:after {
     float: right;
     color: #aaa
 }
-
+li > .date { float: none; }
 .card_wrap {
     perspective: 1000;
     -webkit-perspective: 1000;

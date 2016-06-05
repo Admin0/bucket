@@ -290,20 +290,21 @@ function showImg(src)   {
         $(this).fadeOut(500,function(){$(this).remove();})
     })
 
-    if($("#img_wrap > img").height()>=$(window).height()*.9){
-        $("#img_wrap > img").css({"width":"initial","height":"90%","top":"5%"});
-    } else {
-        $("#img_wrap > img").css("top", function(){
-            return "calc(50% - " + $(this).height()/2 + "px)"
-        });
-    }
+    $("#img_wrap > img").load(function(){
+        if($("#img_wrap > img").height()>=$(window).height()*.9){
+            $("#img_wrap > img").css({"width":"initial","height":"90%","top":"5%"});
+        } else {
+            $("#img_wrap > img").css("top", function(){
+                return "calc(50% - " + $(this).height()/2 + "px)"
+            });
+        }
+    });
 }
 
 function imgReady() {
     $("a[src]").each(function(){
         var src = $(this).attr("src");
         $(this).on("click",function(){showImg(src)});
-        $(this).parent().after("<img src='"+src+"' hide />");   //이미지를 미리 불러와야 클릭했을 떄 높이 조절이 되는고얌
     });
 
     $("img").on("click",function(){                             //이미지를 클릭하면 크게 보이는 고얌
