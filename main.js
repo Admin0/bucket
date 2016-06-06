@@ -90,10 +90,10 @@ function toast(icon, msg, time) {
     $('body').append('<div id="toast" class="shadow"><i class="material-icons">' + icon + '</i>' + msg + '</div>');
     $('#toast').css("left","calc(1em + " + $("nav").width() + "px)").addClass("on").removeClass("off");
 
+    if ( time==null ) { time = 1500; }
     setTimeout(function(){
         setTimeout(function(){
             $("#toast").addClass("off").removeClass("on");
-            console.log("boji");
             setTimeout(function(){$("#toast").remove()},300);
         }, time);
     }, 300);
@@ -332,10 +332,11 @@ function imgReady() {
 function columns(){
     if(column_only_mode!="true"){
         $("body").addClass("columns");
+        $("#column_bt i").text("view_stream");
         var columns = Math.floor($("body").width()/500);
         if(columns<=1 ){
             $("body").removeClass("columns");
-            $("#column_bt").addClass("hide");
+            $("#column_bt").addClass("disabled");
             $(".card_wrap").not(":first").css({"max-width":"600px"});
             // setTimeout(function(){
             $('section.sub').masonry({
@@ -344,10 +345,11 @@ function columns(){
                 columnWidth: $("body").width()
             });
             headline();
+            // toast("priority_high", "창 너비가 좁아 단일 열로 보여집니다.");
             // },100);
         }else{
             // $("body").addClass("columns");
-            $("#column_bt").removeClass("hide");
+            $("#column_bt").removeClass("disabled");
             var c_w = $("body").width() / columns ;
             $(".card_wrap").not(":first").css({"max-width":c_w - 16 + "px"});
             console.log("columns: "+columns);
@@ -359,10 +361,16 @@ function columns(){
             });
             headline();
             // },100);
-            $("#column_bt i").text("view_stream");
         }
     }else{
         $("body").removeClass("columns");
+        $("#column_bt i").text("dashboard");
+        var columns = Math.floor(($("html").width()-$("nav").width()-152)/500);
+        if(columns<=1 ){
+            $("#column_bt").addClass("disabled");
+        }else{
+            $("#column_bt").removeClass("disabled");
+        }
         $(".card_wrap").not(":first").css({"max-width":"600px"});
         // setTimeout(function(){
         $('section.sub').masonry({
@@ -372,7 +380,6 @@ function columns(){
         });
         headline();
         // },100);
-        $("#column_bt i").text("dashboard");
     }
 }
 
@@ -586,7 +593,7 @@ function setting(){
         }else {
             window.localStorage['strict_filtering'] = "true"
         }
-        toast("save", "설정이 저장되었습니다.", 1000);
+        toast("save", "설정이 저장되었습니다.");
         filter();
         columns();
         check_setting();

@@ -19,11 +19,11 @@ body {
 
 body.columns {
     max-width: 100%;
-    padding-left: calc(1em + 256px)
+    padding-left: calc(1em + 256px);
 }
 
 body.fold {
-    padding: 1em 68px 1em calc(1em + 136px)
+    padding: 1em 68px 1em calc(1em + 136px);
 }
 
 header {
@@ -73,8 +73,7 @@ header {
     display: inline-block;
     padding: 16px 24px;
     cursor: pointer;
-    -webkit-transition: .25s;
-    transition: .25s
+    transition: .25s;
 }
 
 #sub_header .filter_bt .ink_bar {
@@ -99,11 +98,15 @@ header {
 }
 
 #column_bt {
-    float: right
+    float: right;
 }
 
 #column_bt i {
-    margin: 0
+    margin: 0;
+}
+
+.disabled {
+    color: rgba(255, 255, 255, 0.3);
 }
 
 section.sub {
@@ -541,22 +544,21 @@ dd ul li dt {margin-left: 4px;}
     overflow: hidden;
     display: inline-block;
     width: 100%;
-    margin: 0 0 -5px
+    margin: 0 0 -5px;
 }
 
 input {
-    display: none
+    display: none;
 }
 
 input[checked] + dt {
     font-weight: 700;
     color: #000;
-    text-decoration: none
+    text-decoration: none;
 }
 
 input[failed] {
     opacity: 0;
-    filter: alpha(opacity=0)
 }
 
 input[failed] + dt {
@@ -584,14 +586,9 @@ input[failed] + dt + dd:after {
     backface-visibility: hidden;
 }
 
-.hide {
-    display: none!important;
-    margin: 0!important;
-}
-
 .date {
     float: right;
-    color: #aaa
+    color: #aaa;
 }
 li > .date { float: none; }
 .card_wrap {
@@ -601,11 +598,11 @@ li > .date { float: none; }
     max-width: 600px;
     display: inline-block;
     margin: 0 1em 1em 0;
-    text-align: left
+    text-align: left;
 }
 
 .card_wrap:hover {
-    z-index: 2
+    z-index: 2;
 }
 
 /*.card_wrap.hide {
@@ -740,7 +737,7 @@ img {
 }
 
 img[hide] {
-    display: none
+    display: none;
 }
 
 #img_wrap>img {
