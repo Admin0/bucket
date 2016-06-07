@@ -109,6 +109,11 @@ header {
     color: rgba(255, 255, 255, 0.3);
 }
 
+.hide {
+    display: none!important;
+    margin: 0!important;
+}
+
 section.sub {
     width: 100%;
     text-align: center
@@ -605,11 +610,6 @@ li > .date { float: none; }
     z-index: 2;
 }
 
-/*.card_wrap.hide {
-    display: none;
-    margin: 0
-}*/
-
 .card {
     -webkit-transition: .5s;
     transition: .5s;
@@ -734,10 +734,6 @@ img {
     width: 100%;
     cursor: pointer;
     margin-bottom: -6px
-}
-
-img[hide] {
-    display: none;
 }
 
 #img_wrap>img {
