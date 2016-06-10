@@ -105,7 +105,7 @@ function toast(icon, msg, time) {
 }
 
 function scroll_smooth() {
-    $("a[href^='#']").click(function(event) {
+    $("[href^='#']").click(function(event) {
         event.preventDefault();
 
         if (document.height === null) { pageYOffset = document.documentElement.scrollTop; }
@@ -303,7 +303,7 @@ function imgReady() {
             }
         });
     }
-    
+
     $("a[src]").each(function(){
         var src = $(this).attr("src");
         $(this).on("click",function(){showImg(src)});
