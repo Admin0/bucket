@@ -96,11 +96,6 @@ function toast(msg, icon, time) {
     setTimeout(function(){
         $("#toast").addClass("off").removeClass("on", function() { $(this).delay(300).remove(); });
     }, time + 300);
-
-    // $('#toast').hide().fadeIn(300, function(){
-    //     $(this).delay(time).fadeOut(300, function(){ $(this).remove();
-    //     });
-    // });
 }
 
 function scroll_smooth() {
