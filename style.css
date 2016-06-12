@@ -807,6 +807,7 @@ a:not(nav a)>.material-icons {
     100% {opacity: 0;}
 }
 #toast.off {
+    opacity: 0; visibility: none;
     animation-name: snackbar_off;
     animation-duration: .3s;
 }

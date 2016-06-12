@@ -85,18 +85,17 @@ function nav_create() {
     $("nav a").on("click",function(){ $("nav, #nav_bg").removeClass("on"); });
 }
 
-function toast(icon, msg, time) {
+function toast(msg, icon, time) {
+    if ( icon == null ) { icon = "priority_high"; }
+    if ( time == null ) { time = 1500; }
+
     $('#toast').remove();
     $('body').append('<div id="toast" class="shadow"><i class="material-icons">' + icon + '</i>' + msg + '</div>');
     $('#toast').css("left","calc(1em + " + $("nav").width() + "px)").addClass("on").removeClass("off");
 
-    if ( time==null ) { time = 1500; }
     setTimeout(function(){
-        setTimeout(function(){
-            $("#toast").addClass("off").removeClass("on");
-            setTimeout(function(){$("#toast").remove()},300);
-        }, time);
-    }, 300);
+        $("#toast").addClass("off").removeClass("on", function() { $(this).delay(300).remove(); });
+    }, time + 300);
 
     // $('#toast').hide().fadeIn(300, function(){
     //     $(this).delay(time).fadeOut(300, function(){ $(this).remove();
@@ -155,7 +154,7 @@ function scroll_smooth() {
         bg_change(target, color.material_a100[color_i], ".25s");
 
         if (isNotNav) {
-            toast("refresh", "원래 자리로 가려면 더블 클릭.", 2500);
+            toast("원래 자리로 가려면 더블 클릭.", "refresh", 2500);
             document.ondblclick = function(event) {
                 if (reversible) {
                     scroll(target_reverse, event);
@@ -282,7 +281,6 @@ function showMovie(src) {
         "top":"calc(50% - " + $("#movie_wrap > iframe").width()*315/560/2 + "px)"
     });
 }
-
 
 function imgReady() {
 
@@ -595,7 +593,7 @@ function setting(){
         }else {
             window.localStorage['strict_filtering'] = "true"
         }
-        toast("save", "설정이 저장되었습니다.");
+        toast("설정이 저장되었습니다.", "save");
         filter();
         columns();
         check_setting();
