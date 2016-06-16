@@ -235,5 +235,5 @@ dl:not(.card):hover {
     margin-right: 0;
 }
 
-.cccv_bg    { background: #e5e5e5; padding:1em; }
+.cccv_bg    { background: #e5e5e5; padding:1px 1em; }
 .cccv_bg > h2   { margin-top: 0; }
