@@ -620,7 +620,11 @@ function contextmenu() {
         var output = "";
 
         function print() {
-            output += '<link rel="stylesheet" type="text/css" href="http://admin0.github.io/bucket/style_card.css">\n<style>\n\t.card_wrap { margin:auto; display: block; font-size: 16px; }\n</style>';
+            output += '<link rel="stylesheet" type="text/css" href="http://admin0.github.io/bucket/style_card.css">\n<style>\n\t.card_wrap { margin:.5em auto; display: block; font-size: 16px; }\n</style>';
+            output += '\n\n<div class=card_wrap>' + target.html() + '</div>';
+            if(window.localStorage["cccv__background"] == "true"){
+                output = "<div class='cccv_bg'>\n\n" + output + "\n\n</div>"
+            }
             if(window.localStorage["cccv__to_here"] == "true"){
                 var id;
                 if(target.children().attr("id") != null){
@@ -630,11 +634,7 @@ function contextmenu() {
                 } else {
                     id = "";
                 }
-                output += '\n\n<h2><a href="http://admin0.github.io/bucket/'+id+'">버킷리스트 진행 상황</a></h2>';
-            }
-            output += '\n\n<div class=card_wrap>' + target.html() + '</div>';
-            if(window.localStorage["cccv__background"] == "true"){
-                output = "<div class='cccv_bg'>\n\n" + output + "\n\n</div>"
+                output = '<h2><a href="http://admin0.github.io/bucket/'+id+'">버킷리스트</a></h2>\n\n' + output;
             }
             $("#contextmenu > .output").val(output).select();
         }
