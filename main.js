@@ -604,8 +604,8 @@ function contextmenu() {
         var target = $(this);
 
         function output() {
-            var output = '<link rel="stylesheet" type="text/css" href="http://admin0.github.io/bucket/css/card.css">' + '<div class=card_wrap>' + target.html() + '</div>';
-            $("#contextmenu > .output").val(output);
+            var output = '<link rel="stylesheet" type="text/css" href="http://admin0.github.io/bucket/css/card.css">' + '\n\n<div class=card_wrap>' + target.html() + '</div>' + '\n\n<p><a href="http://admin0.github.io/bucket/">http://admin0.github.io/bucket/</a></p>';
+            $("#contextmenu > .output").val(output).select();
         }
 
         function set_location(){
