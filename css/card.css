@@ -20,7 +20,7 @@
     box-shadow: none
 }
 
-.card_wrap dt {
+.card_wrap dt, #setting dt {
     font-size: 16px;
     color: #777;
     display: inline;
@@ -73,11 +73,11 @@
     margin: 0 0 -5px;
 }
 
-.card_wrap input {
+.card_wrap input, #setting input {
     display: none;
 }
 
-.card_wrap input[checked] + dt {
+.card_wrap input[checked] + dt, #setting input[checked] + dt {
     font-weight: 700;
     color: #000;
     text-decoration: none;
@@ -227,4 +227,10 @@ dl:not(.card):hover {
 
 .card_wrap .back > .img:last-child>div:last-child>img {
     border-bottom-right-radius: 3px
+}
+
+.card_wrap .back .material-icons,
+.card_wrap dl .material-icons {
+    vertical-align: text-bottom;
+    margin-right: 0;
 }
