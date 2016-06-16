@@ -169,7 +169,7 @@ function scroll_at_open(){
             $('html, body').animate({
                 scrollTop: $(window.location.href.substring(window.location.href.indexOf("#"))).offset().top - 116
             }, 500);
-        },500)
+        },250)
     }
 }
 
@@ -566,7 +566,7 @@ function percentage(){
 
 function setting(){
 
-    var item = ["strict_filtering", "to_here"];
+    var item = ["strict_filtering", "cccv__to_here", "cccv__background"];
 
     function check_setting(){
 
@@ -620,12 +620,22 @@ function contextmenu() {
         var output = "";
 
         function print() {
-            output += '<link rel="stylesheet" type="text/css" href="http://admin0.github.io/bucket/css/card.css">\n<style>\n\t.card_wrap { margin:auto; display: block; font-size: 16px; }\n</style>';
-            if(window.localStorage["to_here"] == "true"){
-                output += '\n\n<h2><a href="http://admin0.github.io/bucket/">버킷리스트 진행 상황</a></h2>';
+            output += '<link rel="stylesheet" type="text/css" href="http://admin0.github.io/bucket/style_card.css">\n<style>\n\t.card_wrap { margin:auto; display: block; font-size: 16px; }\n</style>';
+            if(window.localStorage["cccv__to_here"] == "true"){
+                var id;
+                if(target.children().attr("id") != null){
+                    id = "#"+target.children().attr("id");
+                } else if(target.children().children().attr("id") != null){
+                    id = "#"+target.children().children().attr("id");
+                } else {
+                    id = "";
+                }
+                output += '\n\n<h2><a href="http://admin0.github.io/bucket/'+id+'">버킷리스트 진행 상황</a></h2>';
             }
             output += '\n\n<div class=card_wrap>' + target.html() + '</div>';
-
+            if(window.localStorage["cccv__background"] == "true"){
+                output = "<div class='cccv_bg'>\n\n" + output + "\n\n</div>"
+            }
             $("#contextmenu > .output").val(output).select();
         }
 
@@ -707,7 +717,7 @@ $(window).load(function() {
     setTimeout(function () {
         columns();
         scroll_at_open();
-    }, 300);
+    }, 0);
     imgReady();
 
 });

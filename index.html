@@ -68,15 +68,22 @@
 
     <div id="setting_bg" onclick="$('#setting, #setting_bg').removeClass('on');"></div>
     <dl id="setting">
+        <div class="setting_title">일반</div>
         <div class="setting_item" id="strict_filtering">
             <input type="checkbox" checked> <dt>엄격한 필터링</dt>
             <dd class="on">묶인 항목과 관계 없이 선택된 항목만을 보여줍니다.</dd>
             <dd class="off">항목이 포함된 카드를 보여줍니다.</dd>
         </div>
-        <div class="setting_item" id="to_here">
+        <div class="setting_title">퍼가기</div>
+        <div class="setting_item" id="cccv__to_here">
             <input type="checkbox" checked> <dt>출처 표시</dt>
-            <dd class="on">오른쪽 버튼 클릭으로 퍼갈 때 카드 위에 제목이 표시됩니다.</dd>
-            <dd class="off">오른쪽 버튼 클릭으로 퍼갈 때 카드만 복사합니다.</dd>
+            <dd class="on">카드 위에 제목이 표시됩니다.</dd>
+            <dd class="off">카드를 구성하는 코드만 복사합니다.</dd>
+        </div>
+        <div class="setting_item" id="cccv__background">
+            <input type="checkbox" checked> <dt>배경 표시</dt>
+            <dd class="on">회색의 배경이 포함됩니다.</dd>
+            <dd class="off">배경을 포함하지 않습니다.</dd>
         </div>
     </dl>
 

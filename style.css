@@ -357,6 +357,7 @@ nav.fold #setting_bt:hover {
 }
 #setting .setting_item { cursor:pointer; padding: .5em 1em; transition: .25s; }
 #setting .setting_item:hover { background: rgba(158, 158, 158, .2); }
+#setting .setting_title { color: rgba(0, 0, 0, .75); margin: 0 1em; }
 
 nav #nav_footer {
     cursor: pointer;
