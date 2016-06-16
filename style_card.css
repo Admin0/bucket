@@ -236,3 +236,4 @@ dl:not(.card):hover {
 }
 
 .cccv_bg    { background: #e5e5e5; padding:1em; }
+.cccv_bg > h2   { margin-top: 0; }
