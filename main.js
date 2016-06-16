@@ -162,6 +162,16 @@ function scroll_smooth() {
     });
 }
 
+function scroll_at_open(){
+
+    if(window.location.href.substring(window.location.href.length-8, window.location.href.length) != window.location.pathname.substring(window.location.pathname.length-8, window.location.pathname.length)){
+
+        $('html, body').animate({
+            scrollTop: $(window.location.href.substring(window.location.href.indexOf("#"))).offset().top - 116
+        }, 500);
+    }
+}
+
 // $(document).scroll(function() {
 //     if (document.height === null) {
 //         pageYOffset = document.documentElement.scrollTop;
@@ -554,17 +564,20 @@ function percentage(){
 }
 
 function setting(){
-    function check_setting(){
-        $("#setting input").each(function(){
-            // $(this)
-        });
 
-        $("#strict_filtering input").prev("i").remove();
-        if(window.localStorage['strict_filtering'] == "true"){
-            $("#strict_filtering input").attr("checked",true);
-        }else {
-            $("#strict_filtering input").attr("checked",false);
-        }
+    var item = ["strict_filtering", "to_here"];
+
+    function check_setting(){
+
+        $("#setting .setting_item input").prev("i").remove();
+
+        for(i=0;i<item.length;i++){
+            if(window.localStorage[ item[i] ] == "true"){
+                $("#" + item[i] + " input").attr("checked",true);
+            }else {
+                $("#" + item[i] + " input").attr("checked",false);
+            }
+        };
 
         $("#setting input[checked]").before("<i class='material-icons'>check_box</i>");
         $("#setting input:not([checked]):not([failed])").before("<i class='material-icons'>check_box_outline_blank</i>");
@@ -582,11 +595,12 @@ function setting(){
         $("#setting").css({"top":$("#setting_bt").offset().top - pageYOffset,"left":$("#nav").width()-16});
         check_setting();
     });
-    $("#strict_filtering").on("click",function(){
-        if(window.localStorage['strict_filtering'] == "true"){
-            window.localStorage['strict_filtering'] = "false"
+    $("#setting > .setting_item").on("click",function(){
+        var i = $("#setting > .setting_item").index(this);
+        if(window.localStorage[item[i]] == "true"){
+            window.localStorage[item[i]] = "false"
         }else {
-            window.localStorage['strict_filtering'] = "true"
+            window.localStorage[item[i]] = "true"
         }
         toast("설정이 저장되었습니다.", "save");
         filter();
@@ -602,9 +616,15 @@ function contextmenu() {
 
         var c = $("#contextmenu");
         var target = $(this);
+        var output = "";
 
-        function output() {
-            var output = '<link rel="stylesheet" type="text/css" href="http://admin0.github.io/bucket/css/card.css">' + '\n\n<div class=card_wrap>' + target.html() + '</div>' + '\n\n<p><a href="http://admin0.github.io/bucket/">http://admin0.github.io/bucket/</a></p>';
+        function print() {
+            output += '<link rel="stylesheet" type="text/css" href="http://admin0.github.io/bucket/css/card.css">\n<style>\n\t.card_wrap { margin:auto; display: block; font-size: 16px; }\n</style>';
+            if(window.localStorage["to_here"] == "true"){
+                output += '\n\n<h2><a href="http://admin0.github.io/bucket/">버킷리스트 진행 상황</a></h2>';
+            }
+            output += '\n\n<div class=card_wrap>' + target.html() + '</div>';
+
             $("#contextmenu > .output").val(output).select();
         }
 
@@ -647,7 +667,7 @@ function contextmenu() {
         }
 
         set_location();
-        output();
+        print();
     })
     $(document).on("click", function() {
         if ($('#contextmenu:hover').length > 0) {
@@ -685,6 +705,8 @@ $(document).ready(function(){
 $(window).load(function() {
     setTimeout(function () {
         columns();
+        scroll_at_open();
     }, 300);
     imgReady();
+
 });

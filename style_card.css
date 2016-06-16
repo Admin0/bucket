@@ -29,7 +29,7 @@
     text-overflow: ellipsis;
 }
 
-.card_wrap dd {
+.card_wrap dd, #setting dd  {
     font-size: .9em;
     color: rgba(0, 0, 0, .5);
     white-space: normal;
@@ -73,7 +73,7 @@
     margin: 0 0 -5px;
 }
 
-.card_wrap input, #setting input {
+.card_wrap input {
     display: none;
 }
 
