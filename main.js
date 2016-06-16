@@ -169,7 +169,7 @@ function scroll_at_open(){
             $('html, body').animate({
                 scrollTop: $(window.location.href.substring(window.location.href.indexOf("#"))).offset().top - 116
             }, 500);
-        },300)
+        },500)
     }
 }
 
