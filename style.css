@@ -3,6 +3,7 @@
 /*@import url(iconfont/material-icons.css);*/
 @import url(https://fonts.googleapis.com/css?family=Black+Ops+One);
 @import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
+@import url(css/card.css);
 
 ::selection { background: rgba(0, 0, 0, 0) }
 
@@ -481,232 +482,6 @@ h4:first-of-type {
     margin-top: .5em
 }
 
-dl {
-    padding: 1em;
-    margin: 0;
-    border-radius: 3px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
-    background: #fff;
-    width: calc(100% - 2em);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    transition: .25s;
-}
-
-dl dl {
-    padding: 0;
-    box-shadow: none
-}
-
-dt {
-    font-size: 16px;
-    color: #777;
-    display: inline;
-    flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-dd {
-    font-size: .9em;
-    color: rgba(0, 0, 0, .5);
-    white-space: normal;
-}
-
-dd+input {
-    margin-top: 1em;
-}
-
-dd ul {
-    list-style: none;
-    padding: 0;
-    column-count: 2;
-}
-
-dd:last-child ul {
-    margin-bottom: 0;
-}
-
-dd ul li {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: flex;
-}
-
-dd ul li dt {margin-left: 4px;}
-
-.back ol, .back ul {
-    column-count: 2;
-    column-gap: 3em;
-    padding-left: 1em;
-}
-.back ul {list-style: none;}
-.back li span {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: inline-block;
-    width: 100%;
-    margin: 0 0 -5px;
-}
-
-input {
-    display: none;
-}
-
-input[checked] + dt {
-    font-weight: 700;
-    color: #000;
-    text-decoration: none;
-}
-
-input[failed] {
-    opacity: 0;
-}
-
-input[failed] + dt {
-    /*text-decoration: line-through*/
-}
-
-input[failed] + dt + dd:after {
-    content: "FAILED";
-    /*content: "실패했습니다";*/
-    display: inline-block;
-    -webkit-transform: rotate(15deg);
-    -ms-transform: rotate(15deg);
-    transform: rotate(15deg);
-    border: 3px solid #f44336;
-    line-height: 1;
-    font-family: 'Black Ops One', 'Hanna', cursive;
-    color: #F44336;
-    border-width: 4px 0;
-    position: absolute;
-    margin-top: -.75em;
-    /*right: -.5em;*/
-    margin-left: -3em;
-    font-size: 1.5em;
-    padding: 2px 0 0px;
-    backface-visibility: hidden;
-}
-
-.date {
-    float: right;
-    color: #aaa;
-}
-li > .date { float: none; }
-.card_wrap {
-    perspective: 1000;
-    -webkit-perspective: 1000;
-    width: 100%;
-    max-width: 600px;
-    display: inline-block;
-    margin: 0 1em 1em 0;
-    text-align: left;
-}
-
-.card_wrap:hover {
-    z-index: 2;
-}
-
-.card {
-    -webkit-transition: .5s;
-    transition: .5s;
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-    -webkit-transform-origin: 100% 50% 0;
-    -ms-transform-origin: 100% 50% 0;
-    transform-origin: 100% 50% 0;
-    text-align: left;
-    width: 100%;
-    position: relative
-}
-
-.card_wrap:hover .card {
-    z-index: 2;
-    -webkit-transform: rotateX(180deg);
-    transform: rotateX(180deg)
-}
-
-.back,
-.front {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    left: 0
-}
-
-.front {
-    z-index: 2
-}
-
-.back {
-    bottom: 0;
-    position: absolute;
-    width: 100%;
-    -webkit-transform: rotateX(-180deg);
-    transform: rotateX(-180deg);
-    border-radius: 3px;
-    background: #fff;
-    z-index: 2;
-    max-width: 100%
-}
-
-.back,
-dl:not(.card):hover {
-    box-shadow: 0 5px 12px rgba(0, 0, 0, .2)
-}
-
-.back>:not(img) {
-    margin: .5em 1em
-}
-
-.back>:first-child:not(img) {
-    margin: 1em 1em .5em
-}
-
-.back>:last-child:not(img) {
-    margin: .5em 1em 1em
-}
-
-.back>:only-child:not(img):not(ol) {
-    margin: 26px 1em
-}
-
-.back>img:first-child {
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px
-}
-
-.back>img:last-child {
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px
-}
-
-.back > .img {
-    display: flex;
-    overflow: hidden;
-    margin: 0!important
-}
-.back > .img > div {
-    flex: 1;
-}
-.back > .img:first-child>div:first-child>img {
-    border-top-left-radius: 3px
-}
-
-.back > .img:first-child>div:last-child>img {
-    border-top-right-radius: 3px
-}
-
-.back > .img:last-child>div:first-child>img {
-    border-bottom-left-radius: 3px
-}
-
-.back > .img:last-child>div:last-child>img {
-    border-bottom-right-radius: 3px
-}
-
 #img_wrap,
 #movie_wrap {
     display: none;
@@ -755,6 +530,12 @@ a:not(nav a)>.material-icons {
     margin: 0
 }
 
+
+
+/* ------------------------------------------------------------------- */
+/* ***** tooltip ***** */
+/* ------------------------------------------------------------------- */
+
 #tooltip,
 #tooltip_nav {
     color: #fff;
@@ -784,6 +565,12 @@ a:not(nav a)>.material-icons {
     bottom: -.9ex
 }
 
+
+
+/* ------------------------------------------------------------------- */
+/* ***** toast ***** */
+/* ------------------------------------------------------------------- */
+
 #toast {
     position: fixed;
     background-color: #424242;
@@ -811,6 +598,47 @@ a:not(nav a)>.material-icons {
     animation-name: snackbar_off;
     animation-duration: .3s;
 }
+
+
+
+/* ------------------------------------------------------------------- */
+/* ***** context-menu ***** */
+/* ------------------------------------------------------------------- */
+
+#contextmenu {
+	z-index:1000;
+	position: fixed;
+	opacity:0;
+	visibility: hidden;
+	cursor: default;
+    color:rgba(0,0,0,.5);
+    background-color:#fff;
+    border: 1px solid #bbb;
+    box-shadow: 0 2px 5px rgba(0,0,0,.25);
+    transition:.25s;
+    transition-property: opacity, transform, margin;
+    top:50%;
+}
+#contextmenu {
+    top:2em; left:-302px;
+    transform: perspective(500px) rotateX(15deg);
+    margin-top:-2em;
+}
+#contextmenu.on {
+    transform: none;
+    transform-origin: 50% 100%;
+    margin-top:0;
+    visibility:visible;
+    opacity:1;
+}
+
+#contextmenu > .output { overflow: hidden; width: 300px; height: 100px; border: none;  padding: .5em; }
+#contextmenu > .output:focus { outline: none; }
+#contextmenu > .output::selection { background: rgba(0, 0, 0, 0.1); }
+
+/* ------------------------------------------------------------------- */
+/* ***** mobile ***** */
+/* ------------------------------------------------------------------- */
 
 @media handheld,
 only screen and (max-device-width:480px),

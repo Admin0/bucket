@@ -96,11 +96,6 @@ function toast(msg, icon, time) {
     setTimeout(function(){
         $("#toast").addClass("off").removeClass("on", function() { $(this).delay(300).remove(); });
     }, time + 300);
-
-    // $('#toast').hide().fadeIn(300, function(){
-    //     $(this).delay(time).fadeOut(300, function(){ $(this).remove();
-    //     });
-    // });
 }
 
 function scroll_smooth() {
@@ -600,6 +595,75 @@ function setting(){
     });
 }
 
+function contextmenu() {
+
+    $(".card_wrap").on("contextmenu", function(event) {
+        event.preventDefault();
+
+        var c = $("#contextmenu");
+        var target = $(this);
+
+        function output() {
+            var output = '<link rel="stylesheet" type="text/css" href="http://admin0.github.io/bucket/css/card.css">' + target.clone().wrap('<p/>').parent().html();
+            $("#contextmenu > .output").val(output);
+        }
+
+        function set_location(){
+
+            var context_x,
+            context_y,
+            con_sub_x,
+            con_sub_y;
+            if ($(document).width() - $("#contextmenu").outerWidth() > event.pageX) {
+                context_x = event.pageX;
+            } else {
+                context_x = $(document).width() - $("#contextmenu").outerWidth();
+            }
+            if ($(window).height() - $("#contextmenu").outerHeight() > event.pageY - $(document).scrollTop()) {
+                context_y = event.pageY - $(document).scrollTop();
+            } else {
+                context_y = $(window).height() - $("#contextmenu").outerHeight();
+            }
+            $("#contextmenu").css({
+                'left': context_x + "px",
+                'top': context_y + "px"
+            }).addClass("on");
+            $('.contextmenu').parent().hover(function() { //하위 메뉴 항목
+                if ($(document).width() - $("#contextmenu").outerWidth() - target.children().last().outerWidth() > event.pageX) {
+                    con_sub_x = 'calc(100% - .5em)';
+                } else {
+                    con_sub_x = 'calc(' + (-target.children().last().outerWidth()) + 'px + .5em)';
+                }
+                if ($(window).height() - target.children().last().outerHeight() - target.position().top > event.pageY - $(document).scrollTop()) {
+                    con_sub_y = '-7px';
+                } else {
+                    con_sub_y = $(window).height() - $("#contextmenu").position().top - target.position().top - target.children().last().outerHeight() + 'px';
+                }
+                target.children().last().css({
+                    'left': con_sub_x,
+                    'top': con_sub_y
+                });
+            });
+        }
+
+        set_location();
+        output();
+    })
+    $(document).on("click", function() {
+        if ($('#contextmenu:hover').length > 0) {
+            if ($('.context_able:hover').length > 0) {
+                //      $('#output_for_contextmenu').html('1');
+                $("#contextmenu").removeClass("on");
+            } else {
+                //      $('#output_for_contextmenu').html('2');
+            }
+        } else {
+            //    $('#output_for_contextmenu').html('3');
+            $("#contextmenu").removeClass("on");
+        }
+    });
+}
+
 $(window).resize(function() {
     columns();
 });
@@ -614,6 +678,7 @@ $(document).ready(function(){
         filter();
         title_tooltip();
         columns();
+        contextmenu();
         coloring();
 });
 
