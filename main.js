@@ -165,10 +165,11 @@ function scroll_smooth() {
 function scroll_at_open(){
 
     if(window.location.href.substring(window.location.href.length-8, window.location.href.length) != window.location.pathname.substring(window.location.pathname.length-8, window.location.pathname.length)){
-
-        $('html, body').animate({
-            scrollTop: $(window.location.href.substring(window.location.href.indexOf("#"))).offset().top - 116
-        }, 500);
+        setTimeout(function(){
+            $('html, body').animate({
+                scrollTop: $(window.location.href.substring(window.location.href.indexOf("#"))).offset().top - 116
+            }, 500);
+        },300)
     }
 }
 
