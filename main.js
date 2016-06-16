@@ -604,7 +604,7 @@ function contextmenu() {
         var target = $(this);
 
         function output() {
-            var output = '<link rel="stylesheet" type="text/css" href="http://admin0.github.io/bucket/css/card.css">' + target.clone().wrap('<p/>').parent().html();
+            var output = '<link rel="stylesheet" type="text/css" href="http://admin0.github.io/bucket/css/card.css">' + '<div class=card_wrap>' + target.html() + '</div>';
             $("#contextmenu > .output").val(output);
         }
 

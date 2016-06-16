@@ -331,6 +331,12 @@ nav.fold #setting_bt:hover {
     background: rgba(158, 158, 158, .2);
 }
 
+
+
+/* ------------------------------------------------------------------- */
+/* ***** tooltip ***** */
+/* ------------------------------------------------------------------- */
+
 #setting {
     background: #fff;
     box-shadow: 0 2px 4px -1px rgba(0,0,0,0.2),0 4px 5px 0 rgba(0,0,0,0.14),0 1px 10px 0 rgba(0,0,0,0.12);
@@ -518,16 +524,11 @@ img {
 
 .material-icons {
     vertical-align: text-bottom;
-    margin-right: .5em
-}
-
-.back .material-icons,
-dl .material-icons {
-    margin-right: 0
+    margin-right: .5em;
 }
 
 a:not(nav a)>.material-icons {
-    margin: 0
+    margin: 0;
 }
 
 
@@ -701,6 +702,8 @@ screen and (max-width:600px) {
     nav #nav_footer {
         display: none
     }
+
+
 
     #setting {
         z-index: 4;
