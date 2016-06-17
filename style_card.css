@@ -77,6 +77,10 @@
     display: none;
 }
 
+/*.card_wrap input + dt:before, #setting input + dt:before {
+    content: "check_box_outline_blank"; 색설정문제로 걍 js에서 처리함
+}*/
+
 .card_wrap input[checked] + dt, #setting input[checked] + dt {
     font-weight: 700;
     color: #000;
@@ -229,11 +233,32 @@ dl:not(.card):hover {
     border-bottom-right-radius: 3px
 }
 
-.card_wrap .back .material-icons,
-.card_wrap dl .material-icons {
-    vertical-align: text-bottom;
+.card_wrap .material-icons {
     margin-right: 0;
+    vertical-align: text-bottom;
 }
+.card_wrap a[href]:before {content: "open_in_new"}
+.card_wrap a[href^='#']:before {content: "find_in_page"}
+.card_wrap a[href$='.zip']:before {content: "save"}
+.card_wrap a[onclick]:before {content: "theaters"}
+.card_wrap a[src]:before {content: "photo"}
+.card_wrap a:before     {
+    vertical-align: text-bottom;
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
 
 .cccv_bg    { background: #e5e5e5; padding:1px 1em; }
 .cccv_bg > h2   { margin-top: 0; }

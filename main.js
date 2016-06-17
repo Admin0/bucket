@@ -204,7 +204,7 @@ function title_tooltip(){
                     }
                     $('#tooltip_text').html($(this).attr('data-title'))
                     $('#tooltip').css({ 'visibility':'visible', 'opacity':1,
-                    'top':$(this).offset().top - $(this).outerHeight() - pageYOffset - 12  + 'px',
+                    'top':$(this).offset().top - $('#tooltip').outerHeight() - pageYOffset - 12  + 'px',
                     'left':left + 'px'});
                 },
                 function(){$('#tooltip').css({ 'visibility':'hidden' , 'opacity':0 });}
@@ -271,7 +271,7 @@ function coloring() {
     $("#sub_header > #line1").css({"background":color.material_500[color_i]});
     $("dl .material-icons, a:not(nav a), #to_github, #to_github > i").css({"color":color.material_500[color_i],"fill":color.material_500[color_i]})
 
-    $("link[rel~='icon']").attr("href", "images/favicon" + color_i + ".ico");
+    $("link[rel~='icon']").attr("href", "img/[favicon]/favicon" + color_i + ".ico");
     $("meta[name='theme-color']").attr("content", color.material_700[color_i]);
 }
 
@@ -526,11 +526,11 @@ function checkbox(){
     $("input:not([checked]):not([failed])").before("<i class='material-icons'>check_box_outline_blank</i>");
     $("input[failed]").before("<i class='material-icons'>priority_high</i>");
 
-    $("a[href]:not(nav a):not([href$='.zip']):not([href^='#'])").prepend("<i class='material-icons'>open_in_new</i>");
-    $("a[href$='.zip']").prepend("<i class='material-icons'>save</i>");
-    $("a[href^='#']:not(nav a)").prepend("<i class='material-icons'>find_in_page</i>");
-    $("a[onclick]").prepend("<i class='material-icons'>theaters</i>");
-    $("a[src]").prepend("<i class='material-icons'>photo</i>");
+    // $("a[href]:not(nav a):not([href$='.zip']):not([href^='#'])").prepend("<i class='material-icons'>open_in_new</i>");
+    // $("a[href$='.zip']").prepend("<i class='material-icons'>save</i>");
+    // $("a[href^='#']:not(nav a)").prepend("<i class='material-icons'>find_in_page</i>");
+    // $("a[onclick]").prepend("<i class='material-icons'>theaters</i>");
+    // $("a[src]").prepend("<i class='material-icons'>photo</i>");
 }
 
 function card_wrap(){
