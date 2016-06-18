@@ -566,7 +566,7 @@ function percentage(){
 
 function setting(){
 
-    var item = ["strict_filtering", "cccv__style", "cccv__to_here", "cccv__background"];
+    var item = ["strict_filtering", "cccv__style", "cccv__to_here"];
 
     function check_setting(){
 
@@ -624,9 +624,6 @@ function contextmenu() {
                 output += '<link rel="stylesheet" type="text/css" href="http://admin0.github.io/bucket/style_card.css">\n<style>\n\t.card_wrap { margin:1em auto; display: block; font-size: 16px; }\n</style>\n\n';
             }
             output += '<div class=card_wrap>' + target.html() + '</div>';
-            if(window.localStorage["cccv__background"] == "true"){
-                output = "<div class='cccv_bg'>\n\n" + output + "\n\n</div>"
-            }
             if(window.localStorage["cccv__to_here"] == "true"){
                 var id;
                 if(target.children().attr("id") != null){
