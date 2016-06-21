@@ -740,10 +740,10 @@ $(window).scroll(function(){
     for(i=$("h3:not(nav h3)").length-1; i>=0; i--){
         var target = $("h3:not(nav h3):nth("+i+")");
         // console.log(target.offset().top);
-        if(target.offset().top < pageYOffset + 256){
+        if(target.offset().top < pageYOffset + 256 && target.css("display") != "none"){
             $("nav h3 a").css({"color":"inherit"});
             $("nav h3:nth("+i+") a").css({"color":color.material_500[color_i]});
-            // console.log(target.text());
+            console.log(target.text());
             break;
         }
     }
