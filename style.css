@@ -199,7 +199,7 @@ nav a {
     margin: -.5em 0;
     font-size: 16px;
     display: block;
-    text-overflow: ellipsis;
+    /*text-overflow: ellipsis;*/
     overflow: hidden;
     white-space: nowrap;
     color: rgba(0, 0, 0, .54);
@@ -391,20 +391,19 @@ nav.fold #nav_footer i {
 }
 
 nav.fold {
-    width: 68px
+    width: 68px;
 }
 
 nav.fold #nav::-webkit-scrollbar {
     display: none
 }
 
-nav.fold #nav a {
-    color: transparent
+nav #nav a > * {
+    transition: .3s;
 }
 
-nav #nav a i,
-nav.fold #nav a i {
-    color: rgba(0, 0, 0, .54)
+nav.fold #nav a span {
+    color: transparent;
 }
 
 nav #nav h2,

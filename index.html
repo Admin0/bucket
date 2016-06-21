@@ -587,16 +587,25 @@
 
         <h3 id="취미_기타"><i class="material-icons">extension</i><span>기타</span></h3>
         <section class="sub">
-            <dl class=""><!-- 재귀함수 -->
-                <input type="checkbox" checked> <dt>재귀함수</dt>
-                <dd>버킷리스트 항목 .25 완료하기.</dd>
-                <input type="checkbox" > <dt>피드백 제어</dt>
-                <dd>버킷리스트 항목 .5 완료하기.</dd>
-                <input type="checkbox" > <dt>악성 버킷리스트</dt>
-                <dd>버킷리스트 항목 .75 완료하기.</dd>
-                <input type="checkbox" failed> <dt>디버깅용 항목</dt>
-                <dd>네, 아름다운 숫자 1 바로 그거입니다.</dd>
-            </dl>
+
+            <div class="card"><!-- 재귀함수 -->
+                <dl class="front" id="재귀함수">
+                    <input type="checkbox" id="재귀함수_25"> <dt>재귀함수</dt>
+                    <dd>버킷리스트 항목 .25 완료하기.<span class="date"></span></dd>
+                    <input type="checkbox" id="재귀함수_50"> <dt>피드백 제어</dt>
+                    <dd>버킷리스트 항목 .5 완료하기.<span class="date"></span></dd>
+                    <input type="checkbox" id="재귀함수_75"> <dt>악성 버킷리스트</dt>
+                    <dd>버킷리스트 항목 .75 완료하기.<span class="date"></span></dd>
+                    <input type="checkbox" failed> <dt>디버깅용 항목</dt>
+                    <dd>네, 아름다운 숫자 1 바로 그거입니다.<span class="date"></span></dd>
+                </dl>
+                <div class="back">
+                    <p>
+                        이 항목은 자동으로 업데이트 됩니다! 와우 놀라워라!
+                    </p>
+                </div>
+            </div>
+
             <div class="card"><!-- 다음 목록 줍기 -->
                 <div class="front">
                     <dl class="">
