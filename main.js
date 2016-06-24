@@ -68,23 +68,23 @@ function dice(n, s, b) {
     }
     return out + b;
 }
-var color_i = dice(1, color.length, -1);
-console.log("COLOR CODE: " + color.name[color_i]);
+color.i = dice(1, color.length, -1);
+if(color.i == 12 /*yellow*/){ color.material_500 = color.material_600; }
+if(color.i == 17 /* grey */){ color.i = 5; }
+console.log("COLOR CODE: " + color.name[color.i]);
 
 function coloring() {
-    if(color_i == 12 /*yellow*/){ color.material_500 = color.material_600; }
-
-    $("header").css({"background":color.material_700[color_i]});
+    $("header").css({"background":color.material_700[color.i]});
     $("#sub_header .filter_bt, #column_bt").hover(function(){
-        $(this).css({"background":color.material_700[color_i]});
+        $(this).css({"background":color.material_700[color.i]});
     },function(){
-        $(this).css({"background":color.material_500[color_i]});
+        $(this).css({"background":color.material_500[color.i]});
     })
-    $("#sub_header > #line1").css({"background":color.material_500[color_i]});
-    $("dl .material-icons, a:not(nav a), #to_github, #to_github > i").css({"color":color.material_500[color_i],"fill":color.material_500[color_i]})
+    $("#sub_header > #line1").css({"background":color.material_500[color.i]});
+    $("dl .material-icons, a:not(nav a), #to_github, #to_github > i").css({"color":color.material_500[color.i],"fill":color.material_500[color.i]})
 
-    $("link[rel~='icon']").attr("href", "img/[favicon]/favicon" + color_i + ".ico");
-    $("meta[name='theme-color']").attr("content", color.material_700[color_i]);
+    $("link[rel~='icon']").attr("href", "img/[favicon]/favicon" + color.i + ".ico");
+    $("meta[name='theme-color']").attr("content", color.material_700[color.i]);
 }
 
 function nav_create() {
@@ -134,7 +134,7 @@ function nav_create() {
     });
 
     $('body').append('<div id="tooltip_nav"><div id="tooltip_nav_text"></div><div id="tooltip_nav_before"></div></div>');
-    $("#tooltip_nav").css({"background":color.material_700[color_i]});
+    $("#tooltip_nav").css({"background":color.material_700[color.i]});
     $("#tooltip_nav").append($("#tooltip_before"));
     $("#nav h3").hover(function(){
         if($("nav").attr("class")=="fold"){
@@ -143,7 +143,7 @@ function nav_create() {
             $('#tooltip_nav').css({ 'visibility':'visible', 'opacity':1,
             'top':$(this).offset().top - pageYOffset  + 'px',
             'left':68 + 16 + 'px'});
-            $("#tooltip_nav_before").css({"border-color":"transparent " + color.material_700[color_i] + " transparent transparent", "border-width": "1ex 1ex 1ex 0","left":"-.9ex","bottom":"calc(50% - .5em)"});
+            $("#tooltip_nav_before").css({"border-color":"transparent " + color.material_700[color.i] + " transparent transparent", "border-width": "1ex 1ex 1ex 0","left":"-.9ex","bottom":"calc(50% - .5em)"});
         }
     },
     function(){$('#tooltip_nav').css({ 'visibility':'hidden' , 'opacity':"0" });});
@@ -154,7 +154,7 @@ function nav_create() {
             $('#tooltip_nav').css({ 'visibility':'visible', 'opacity':1,
             'top':$(this).offset().top - pageYOffset  + 'px',
             'left':68 + 16 + 'px'});
-            $("#tooltip_nav_before").css({"border-color":"transparent " + color.material_700[color_i] + " transparent transparent", "border-width": "1ex 1ex 1ex 0","left":"-.9ex","bottom":"calc(50% - .5em)"});
+            $("#tooltip_nav_before").css({"border-color":"transparent " + color.material_700[color.i] + " transparent transparent", "border-width": "1ex 1ex 1ex 0","left":"-.9ex","bottom":"calc(50% - .5em)"});
         }
     },
     function(){$('#tooltip_nav').css({ 'visibility':'hidden' , 'opacity':"0" });});
@@ -165,7 +165,7 @@ function nav_create() {
             $('#tooltip_nav').css({ 'visibility':'visible', 'opacity':1,
             'top':$(this).offset().top - pageYOffset  + 'px',
             'left':68 + 16 + 'px'});
-            $("#tooltip_nav_before").css({"border-color":"transparent " + color.material_700[color_i] + " transparent transparent", "border-width": "1ex 1ex 1ex 0","left":"-.9ex","bottom":"calc(50% - .5em)"});
+            $("#tooltip_nav_before").css({"border-color":"transparent " + color.material_700[color.i] + " transparent transparent", "border-width": "1ex 1ex 1ex 0","left":"-.9ex","bottom":"calc(50% - .5em)"});
         }
     },
     function(){$('#tooltip_nav').css({ 'visibility':'hidden' , 'opacity':"0" });});
@@ -223,8 +223,10 @@ function scroll_smooth() {
 
             if (isNotNav) {
                 target_position = target.offset().top - event.pageY + pageYOffset + target.height() / 2;
-            } else {
+            } else if(target.css("display") != "none") {
                 target_position = target.offset().top - 114;
+            } else {
+                toast("항목이 없습니다.");
             }
 
             $('html, body').animate({
@@ -235,14 +237,14 @@ function scroll_smooth() {
         }
 
         scroll(target, event);
-        bg_change(target, color.material_a100[color_i], ".25s");
+        bg_change(target, color.material_a100[color.i], ".25s");
 
         if (isNotNav) {
             toast("원래 자리로 가려면 더블 클릭.", "refresh", 2500);
             document.ondblclick = function(event) {
                 if (reversible) {
                     scroll(target_reverse, event);
-                    bg_change(target_reverse, color.material_a100[color_i], ".25s");
+                    bg_change(target_reverse, color.material_a100[color.i], ".25s");
                     reversible = false;
                 }
             };
@@ -279,9 +281,9 @@ function title_tooltip(){
     $('[title]').attr( {
         'data-title': function() { return this.title; },'title': null } );
         $('body').append('<div id="tooltip"><div id="tooltip_text"></div><div id="tooltip_before"></div></div>');
-        $("#tooltip").css({"background":color.material_700[color_i]});
+        $("#tooltip").css({"background":color.material_700[color.i]});
         $("#tooltip").append($("#tooltip_before"));
-        $("#tooltip_before").css({"border-color":color.material_700[color_i]+" transparent transparent transparent"});
+        $("#tooltip_before").css({"border-color":color.material_700[color.i]+" transparent transparent transparent"});
         $('[data-title]').each(function(){
             $(this).hover(
                 function(){
@@ -624,7 +626,7 @@ function setting(){
 
         $("#setting input[checked]").before("<i class='material-icons'>check_box</i>");
         $("#setting input:not([checked]):not([failed])").before("<i class='material-icons'>check_box_outline_blank</i>");
-        $("#setting .material-icons").css({"color":color.material_500[color_i]});
+        $("#setting .material-icons").css({"color":color.material_500[color.i]});
 
         $("#setting input").next().next().next(".off").removeClass("hide");
         $("#setting input").next().next(".on").removeClass("hide");
@@ -632,7 +634,7 @@ function setting(){
         $("#setting input:not([checked])").next().next(".on").addClass("hide");
     }
     $("#setting_bt").on("click", function(){
-        // $(this).css("color",color.material_500[color_i]);
+        // $(this).css("color",color.material_500[color.i]);
         $('#tooltip_nav').css({ 'visibility':'hidden' , 'opacity':"0" });
         $("#setting, #setting_bg").toggleClass("on");
         $("#setting").css({"top":$("#setting_bt").offset().top - pageYOffset,"left":$("#nav").width()-16});
@@ -742,7 +744,7 @@ $(window).scroll(function(){
         // console.log(target.offset().top);
         if(target.offset().top < pageYOffset + 256 && target.css("display") != "none"){
             $("nav h3 a").css({"color":"inherit"});
-            $("nav h3:nth("+i+") a").css({"color":color.material_500[color_i]});
+            $("nav h3:nth("+i+") a").css({"color":color.material_500[color.i]});
             console.log(target.text());
             break;
         }

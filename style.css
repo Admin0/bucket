@@ -343,7 +343,7 @@ nav.fold #setting_bt:hover {
     z-index: 3;
     max-width:calc(450px - 2em);
     margin: auto;
-    transition: .25s opacity;
+    transition: .25s opacity!important;
     opacity: 1;
     visibility: visible;
     position: fixed;
@@ -600,6 +600,7 @@ input {
     opacity: 0; visibility: none;
     animation-name: snackbar_off;
     animation-duration: .3s;
+    z-index: 0;
 }
 
 
@@ -638,6 +639,23 @@ input {
 #contextmenu > .output { overflow: hidden; width: 300px; height: 100px; border: none;  padding: .5em; }
 #contextmenu > .output:focus { outline: none; }
 #contextmenu > .output::selection { background: rgba(0, 0, 0, 0.1); }
+
+
+
+/* ------------------------------------------------------------------- */
+/* ***** target IE ***** */
+/* ------------------------------------------------------------------- */
+
+#ie_alert   {
+    position:fixed; top: 0; left: 0; width: 100%; height: 100%;
+    padding:1em; z-index: 9;
+    background: #fff; background: rgba(255,255,255,.95);
+}
+
+#ie_alert div {
+    max-width: 600px; margin: auto;
+}
+
 
 /* ------------------------------------------------------------------- */
 /* ***** mobile ***** */
