@@ -579,12 +579,18 @@ function card_wrap(){
 }
 
 function percentage(){
+    var percent_total;
+    function  checke_total() {
+        percent_total = ($("input[checked]").length / ($("input").length - $("input[failed]").length) * 100).toFixed(0);
+        if(percent_total >= 75){ $("#재귀함수_75").attr("checked", true); }
+        if(percent_total >= 50){ $("#재귀함수_50").attr("checked", true); }
+        if(percent_total >= 25){ $("#재귀함수_25").attr("checked", true); }
 
-    var percent_total = ($("input[checked]").length / ($("input").length - $("input[failed]").length) * 100).toFixed(0);
-
-    if(percent_total >= 75){ $("#재귀함수_75").attr("checked", true); }
-    if(percent_total >= 50){ $("#재귀함수_50").attr("checked", true); }
-    if(percent_total >= 25){ $("#재귀함수_25").attr("checked", true); }
+        if(percent_total != ($("input[checked]").length / ($("input").length - $("input[failed]").length) * 100).toFixed(0)) {
+            checke_total();
+        }
+    }
+    checke_total();
 
     if(percent_total >= 75){
         $("#재귀함수_75 + dt + dd > .date").text("." + percent_total + " 완료");

@@ -139,16 +139,23 @@ body { background: #e5e5e5; }
 }
 
 .card_wrap:hover {
-    z-index: 2;
+    z-index: 3;
+}
+
+@keyframes unhover {
+    0% {z-index: 2;}
+    99% {z-index: 2;}
+    100% {z-index: 1;}
+}
+
+.card_wrap:not(:hover) {
+    animation-name: unhover;
+    animation-duration: .5s;
 }
 
 .card_wrap .card {
-    -webkit-transition: .5s;
     transition: .5s;
-    -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
-    -webkit-transform-origin: 100% 50% 0;
-    -ms-transform-origin: 100% 50% 0;
     transform-origin: 100% 50% 0;
     text-align: left;
     width: 100%;
@@ -157,13 +164,11 @@ body { background: #e5e5e5; }
 
 .card_wrap:hover .card {
     z-index: 2;
-    -webkit-transform: rotateX(180deg);
     transform: rotateX(180deg)
 }
 
 .card_wrap .back,
 .card_wrap .front {
-    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     left: 0
 }
@@ -176,7 +181,6 @@ body { background: #e5e5e5; }
     bottom: 0;
     position: absolute;
     width: 100%;
-    -webkit-transform: rotateX(-180deg);
     transform: rotateX(-180deg);
     border-radius: 3px;
     background: #fff;
