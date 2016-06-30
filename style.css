@@ -35,7 +35,7 @@ header {
     height: 48px;
     left: 0;
     top: 0;
-    z-index: 4;
+    z-index: 5;
     background: #fff;
     text-align: center
 }
@@ -44,7 +44,7 @@ header {
     width: calc(100% - 256px);
     position: fixed;
     top: 48px;
-    z-index: 3;
+    z-index: 4;
     box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
     left: 0;
     padding-left: 256px;
@@ -150,7 +150,7 @@ li a:hover  { position: inherit; box-shadow: none; background: rgba(0, 0, 0, .05
 
 #nav_bg, #setting_bg {
     position: fixed;
-    z-index: 3;
+    z-index: 4;
     left: 0;
     top: 0;
     transition: .3s;
@@ -174,7 +174,7 @@ nav {
     display: -ms-flexbox;
     display: flex;*/
     position: fixed;
-    z-index: 3;
+    z-index: 4;
     top: 0;
     left: 0;
     width: 256px;
@@ -492,7 +492,7 @@ h4:first-of-type {
 #movie_wrap {
     display: none;
     position: fixed;
-    z-index: 4;
+    z-index: 5;
     top: 0;
     left: 0;
     width: 100%;
@@ -582,7 +582,7 @@ input {
     min-width: 350px;
     max-width: calc(100% - 2em);
     bottom: 1em;
-    z-index: 4
+    z-index: 5;
 }
 @keyframes snackbar_on {
     0% {opacity: 0;}
@@ -702,7 +702,7 @@ screen and (max-width:600px) {
     }
     nav {
         left: -256px;
-        z-index: 4;
+        z-index: 5;
         box-shadow: none;
         padding-top: 0;
         height: 100%
@@ -726,17 +726,17 @@ screen and (max-width:600px) {
 
 
     #setting {
-        z-index: 4;
+        z-index: 5;
         left: inherit!important;
     }
-    #setting_bg.on{z-index: 4;}
+    #setting_bg.on{z-index: 5;}
 
     #toast {
         padding: 1em 1.5em 1em .75em;
         min-width: 100%;
         max-width: 100%;
         bottom: 0; left:0!important;
-        z-index: 4;
+        z-index: 5;
     }
     @keyframes snackbar_on {
         0% {bottom: -56px;}
