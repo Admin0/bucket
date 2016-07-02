@@ -68,7 +68,13 @@ function dice(n, s, b) {
     }
     return out + b;
 }
-color.i = dice(1, color.length, -1);
+
+if(window.localStorage["theme_color"] == "true") {
+    color.i = window.localStorage["theme_color__i"];
+} else {
+    color.i = dice(1, color.length, -1);
+}
+
 if(color.i == 12 /*yellow*/){ color.material_500 = color.material_600; }
 if(color.i == 17 /* grey */){ color.i = 5; }
 console.log("COLOR CODE: " + color.name[color.i]);
@@ -616,10 +622,14 @@ function percentage(){
 
 function setting(){
 
-    var item = ["strict_filtering", "cccv__style", "cccv__to_here"];
+    var item = [
+        "strict_filtering", "theme_color",
+        "cccv", "cccv__style", "cccv__to_here"
+    ];
 
     function check_setting(){
 
+        $("#setting .header").css({"background":color.material_500[color.i]});
         $("#setting .setting_item input").prev("i").remove();
 
         for(i=0;i<item.length;i++){
@@ -638,6 +648,18 @@ function setting(){
         $("#setting input").next().next(".on").removeClass("hide");
         $("#setting input[checked]").next().next().next(".off").addClass("hide");
         $("#setting input:not([checked])").next().next(".on").addClass("hide");
+
+        // 개별 적용
+        if(window.localStorage["theme_color"] == "true"){
+            $("#theme_color dd.on").text("현재 색(" + color.name[color.i] + ")이 테마 색으로 지정되었습니다.");
+        }
+        if(window.localStorage["cccv"] == "false"){
+            $("#cccv__style").addClass("disabled");
+            $("#cccv__to_here").addClass("disabled");
+        } else {
+            $("#cccv__style").removeClass("disabled");
+            $("#cccv__to_here").removeClass("disabled");
+        }
     }
     $("#setting_bt").on("click", function(){
         // $(this).css("color",color.material_500[color.i]);
@@ -647,87 +669,97 @@ function setting(){
         check_setting();
     });
     $("#setting > .setting_item").on("click",function(){
-        var i = $("#setting > .setting_item").index(this);
-        if(window.localStorage[item[i]] == "true"){
-            window.localStorage[item[i]] = "false"
-        }else {
-            window.localStorage[item[i]] = "true"
+        // console.log($(this).hasClass("disabled"));
+        if(!$(this).hasClass("disabled")){
+            var i = $("#setting > .setting_item").index(this);
+            if(window.localStorage[item[i]] == "true"){
+                window.localStorage[item[i]] = "false"
+            }else {
+                window.localStorage[item[i]] = "true"
+            }
+            toast("설정이 저장되었습니다.", "save");
+
+            if($(this)[0] == $("#theme_color")[0] && window.localStorage["theme_color"] == "true"){
+                window.localStorage["theme_color__i"] = color.i;
+            }
+
+            filter();
+            columns();
+            check_setting();
         }
-        toast("설정이 저장되었습니다.", "save");
-        filter();
-        columns();
-        check_setting();
     });
+
 }
 
 function contextmenu() {
-
+    $("body").on("contextmenu", function(event) { event.preventDefault(); });
     $(".card_wrap").on("contextmenu", function(event) {
-        event.preventDefault();
+        // event.preventDefault();
+        if(window.localStorage["cccv"] == "true"){
+            var c = $("#contextmenu");
+            var target = $(this);
+            var output = "";
 
-        var c = $("#contextmenu");
-        var target = $(this);
-        var output = "";
-
-        function print() {
-            if(window.localStorage["cccv__style"] == "true"){
-                output += '<link rel="stylesheet" type="text/css" href="http://admin0.github.io/bucket/style_card.css">\n<style>\n\t.card_wrap { margin:1em auto; display: block; font-size: 16px; }\n</style>\n\n';
-            }
-            output += '<div class=card_wrap>' + target.html() + '</div>';
-            if(window.localStorage["cccv__to_here"] == "true"){
-                var id;
-                if(target.children().attr("id") != null){
-                    id = "#"+target.children().attr("id");
-                } else if(target.children().children().attr("id") != null){
-                    id = "#"+target.children().children().attr("id");
-                } else {
-                    id = "";
+            function print() {
+                if(window.localStorage["cccv__style"] == "true"){
+                    output += '<link rel="stylesheet" type="text/css" href="http://admin0.github.io/bucket/style_card.css">\n<style>\n\t.card_wrap { margin:1em auto; display: block; font-size: 16px; }\n</style>\n\n';
                 }
-                output = '<h2><a href="http://admin0.github.io/bucket/'+id+'">버킷리스트</a></h2>\n\n' + output;
-            }
-            $("#contextmenu > .output").val(output).select();
-        }
-
-        function set_location(){
-
-            var context_x,
-            context_y,
-            con_sub_x,
-            con_sub_y;
-            if ($(document).width() - $("#contextmenu").outerWidth() > event.pageX) {
-                context_x = event.pageX;
-            } else {
-                context_x = $(document).width() - $("#contextmenu").outerWidth();
-            }
-            if ($(window).height() - $("#contextmenu").outerHeight() > event.pageY - $(document).scrollTop()) {
-                context_y = event.pageY - $(document).scrollTop();
-            } else {
-                context_y = $(window).height() - $("#contextmenu").outerHeight();
-            }
-            $("#contextmenu").css({
-                'left': context_x + "px",
-                'top': context_y + "px"
-            }).addClass("on");
-            $('.contextmenu').parent().hover(function() { //하위 메뉴 항목
-                if ($(document).width() - $("#contextmenu").outerWidth() - target.children().last().outerWidth() > event.pageX) {
-                    con_sub_x = 'calc(100% - .5em)';
-                } else {
-                    con_sub_x = 'calc(' + (-target.children().last().outerWidth()) + 'px + .5em)';
+                output += '<div class=card_wrap>' + target.html() + '</div>';
+                if(window.localStorage["cccv__to_here"] == "true"){
+                    var id;
+                    if(target.children().attr("id") != null){
+                        id = "#"+target.children().attr("id");
+                    } else if(target.children().children().attr("id") != null){
+                        id = "#"+target.children().children().attr("id");
+                    } else {
+                        id = "";
+                    }
+                    output = '<h2><a href="http://admin0.github.io/bucket/'+id+'">버킷리스트</a></h2>\n\n' + output;
                 }
-                if ($(window).height() - target.children().last().outerHeight() - target.position().top > event.pageY - $(document).scrollTop()) {
-                    con_sub_y = '-7px';
+                $("#contextmenu > .output").val(output).select();
+            }
+
+            function set_location(){
+
+                var context_x,
+                context_y,
+                con_sub_x,
+                con_sub_y;
+                if ($(document).width() - $("#contextmenu").outerWidth() > event.pageX) {
+                    context_x = event.pageX;
                 } else {
-                    con_sub_y = $(window).height() - $("#contextmenu").position().top - target.position().top - target.children().last().outerHeight() + 'px';
+                    context_x = $(document).width() - $("#contextmenu").outerWidth();
                 }
-                target.children().last().css({
-                    'left': con_sub_x,
-                    'top': con_sub_y
+                if ($(window).height() - $("#contextmenu").outerHeight() > event.pageY - $(document).scrollTop()) {
+                    context_y = event.pageY - $(document).scrollTop();
+                } else {
+                    context_y = $(window).height() - $("#contextmenu").outerHeight();
+                }
+                $("#contextmenu").css({
+                    'left': context_x + "px",
+                    'top': context_y + "px"
+                }).addClass("on");
+                $('.contextmenu').parent().hover(function() { //하위 메뉴 항목
+                    if ($(document).width() - $("#contextmenu").outerWidth() - target.children().last().outerWidth() > event.pageX) {
+                        con_sub_x = 'calc(100% - .5em)';
+                    } else {
+                        con_sub_x = 'calc(' + (-target.children().last().outerWidth()) + 'px + .5em)';
+                    }
+                    if ($(window).height() - target.children().last().outerHeight() - target.position().top > event.pageY - $(document).scrollTop()) {
+                        con_sub_y = '-7px';
+                    } else {
+                        con_sub_y = $(window).height() - $("#contextmenu").position().top - target.position().top - target.children().last().outerHeight() + 'px';
+                    }
+                    target.children().last().css({
+                        'left': con_sub_x,
+                        'top': con_sub_y
+                    });
                 });
-            });
-        }
+            }
 
-        set_location();
-        print();
+            set_location();
+            print();
+        }
     })
     $(document).on("click", function() {
         if ($('#contextmenu:hover').length > 0) {
@@ -751,7 +783,7 @@ $(window).scroll(function(){
         if(target.offset().top < pageYOffset + 256 && target.css("display") != "none"){
             $("nav h3 a").css({"color":"inherit"});
             $("nav h3:nth("+i+") a").css({"color":color.material_500[color.i]});
-            console.log(target.text());
+            // console.log(target.text());
             break;
         }
     }

@@ -150,7 +150,7 @@ li a:hover  { position: inherit; box-shadow: none; background: rgba(0, 0, 0, .05
 
 #nav_bg, #setting_bg {
     position: fixed;
-    z-index: 4;
+    z-index: 5;
     left: 0;
     top: 0;
     transition: .3s;
@@ -355,8 +355,12 @@ nav.fold #setting_bt:hover {
     opacity: 0;
     visibility: hidden;
 }
+#setting .header    { display: none; }
 #setting .setting_item { cursor:pointer; padding: .5em 1em; transition: .25s; }
+#setting .setting_item.disabled     { cursor: default; }
+#setting .setting_item.disabled > * { color: rgba(0, 0, 0, .5)!important; }
 #setting .setting_item:hover { background: rgba(158, 158, 158, .2); }
+#setting .setting_item.disabled:hover { background: none; }
 #setting .setting_title { color: rgba(0, 0, 0, .75); margin: 0 1em; }
 
 nav #nav_footer {
@@ -702,7 +706,7 @@ screen and (max-width:600px) {
     }
     nav {
         left: -256px;
-        z-index: 5;
+        z-index: 6;
         box-shadow: none;
         padding-top: 0;
         height: 100%
@@ -726,10 +730,22 @@ screen and (max-width:600px) {
 
 
     #setting {
-        z-index: 5;
-        left: inherit!important;
+        z-index: 6;
+        top: 0!important; left: 0!important; padding: 0!important;
+        width:100%!important; max-width: 100%; height:100%;
     }
-    #setting_bg.on{z-index: 5;}
+    #setting_bg.on{z-index: 6;}
+    #setting .header    {
+        display: block;
+        margin-bottom: 8px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+    }
+    #setting .header i, #setting .header h2   {
+        color: #fff!important; padding: .5em;
+    }
+    #setting .header h2 { margin:0; padding: 0; }
 
     #toast {
         padding: 1em 1.5em 1em .75em;

@@ -68,13 +68,26 @@
 
     <div id="setting_bg" onclick="$('#setting, #setting_bg').removeClass('on');"></div>
     <dl id="setting">
+        <div class="header">
+            <i class="material-icons" onclick="$('#setting, #setting_bg').removeClass('on');">arrow_back</i><h2>설정</h2>
+        </div>
         <div class="setting_title">일반</div>
         <div class="setting_item" id="strict_filtering">
             <input type="checkbox" checked> <dt>엄격한 필터링</dt>
             <dd class="on">묶인 항목과 관계 없이 선택된 항목만을 보여줍니다.</dd>
             <dd class="off">항목이 포함된 카드를 보여줍니다.</dd>
         </div>
+        <div class="setting_item" id="theme_color">
+            <input type="checkbox" checked> <dt>테마 색</dt>
+            <dd class="on">현재 색이 테마 색으로 지정되었습니다.</dd>
+            <dd class="off">테마 색이 무작위로 변합니다.</dd>
+        </div>
         <div class="setting_title">퍼가기</div>
+        <div class="setting_item" id="cccv">
+            <input type="checkbox" checked> <dt>퍼가기</dt>
+            <dd class="on">안내: 마우스 오른쪽 버튼을 눌러 조의를 표하십시오.</dd>
+            <dd class="off">더이상 귀찮게 굴지 않습니다.</dd>
+        </div>
         <div class="setting_item" id="cccv__style">
             <input type="checkbox" checked> <dt>스타일 포함</dt>
             <dd class="on">이게 빠지면 뒤틀린황천비둘기처럼 보입니다.</dd>
@@ -471,7 +484,7 @@
 
             <dl id="압도적_스케일"><!-- 32인치 모니터 -->
                 <input type="checkbox"> <dt>압도적 스케일</dt>
-                <dd>32인치 모니터 구입후 최신 게임 즐기기.<span class="date"></span> </dd>
+                <dd>32인치 혹은 4K 해상도의 모니터 갖기.<span class="date"></span> </dd>
             </dl>
 
             <dl class="" id="이제_양손이_다_찍히는군"><!-- 이제 양손이 다 찍히는군 -->
@@ -1254,7 +1267,7 @@
                     <dd>다음의 전자기기를 한 번에 가지고 가상세계를 구하기.<span class="date"></span>
                         <ul>
                             <li><input type="checkbox" checked> <dt>고사양 컴퓨터</dt><span class="date">2015.</span></li>
-                            <li><input type="checkbox"> <dt>32 인치 모니터</dt><span class="date"></span></li>
+                            <li><input type="checkbox"> <dt>4K 모니터</dt><span class="date"></span></li>
                             <li><input type="checkbox" checked> <dt>신형 게임 패드</dt><span class="date">2015.</span></li>
                             <li><input type="checkbox" checked> <dt>신작 게임 타이틀</dt><span class="date">2015.</span></li>
                         </ul>
