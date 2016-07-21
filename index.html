@@ -144,8 +144,8 @@
                 </div>
             </div>
             <dl class=""><!-- 여권도 없는 나애 우울한 인생애 무슨 볼일이시조? -->
-                <input type="checkbox"> <dt>!nameless</dt>
-                <dd>여권 만들기.<span class="date"></span> </dd>
+                <input type="checkbox"> <dt>여권도 없는 나애 우울한 인생애 무슨 볼일이시조?</dt>
+                <dd>여권 만들고 첫 번째 해외여행 다녀오기.<span class="date"></span> </dd>
             </dl>
             <div class="card"><!-- 다음 국가 여행 -->
                 <dl class="front">
@@ -205,6 +205,17 @@
                 <input type="checkbox"> <dt>모비딕</dt>
                 <dd>배 위에서 고래 보기.<span class="date"></span> </dd>
             </dl>
+            <div class="card"><!-- 버스킹 -->
+                <dl class="front">
+                    <input type="checkbox"> <dt>버스킹</dt>
+                    <dd>시내버스를 갈아타면서 서울에서 부산까지 일주하기.<span class="date"></span> </dd>
+                </dl>
+                <div class="back">
+                    <p>
+                        강원도랑 전라도 도시 하나씩 찍고가면 추가점수 인정.
+                    </p>
+                </div>
+            </div>
             <dl class=""><!-- 다음의 운송수단 타기. -->
                 <input type="checkbox"> <dt>!nameless</dt>
                 <dd>다음의 도로 교통 수단 타기.<span class="date"></span>
@@ -321,6 +332,17 @@
                     </ul>
                 </dd>
             </dl>
+            <div class="card"><!-- #먹스타그램 -->
+                <dl class="front">
+                    <input type="checkbox"> <dt>#먹스타그램</dt>
+                    <dd>1년 넘게 음식 사진을 찍어 식단 기록하기.<span class="date"></span></dd>
+                </dl>
+                <div class="back">
+                    <p>
+                        이 <a href="https://www.instagram.com/user_no.01/">인스타그램 계정</a>에서 진행정도를 볼 수 있음.
+                    </p>
+                </div>
+            </div>
         </section>
 
         <h3 id="휴식_기타"><i class="material-icons">touch_app</i><span>기타</span></h3>
@@ -378,17 +400,20 @@
                 </div>
             </div>
             <div class="card"><!-- 멋진 크리스마스 보내기. -->
-                <div class="front">
-                    <dl>
-                        <input type="checkbox" checked> <dt>그럼 그렇지...</dt>
-                        <dd>멋진 크리스마스 보내기.<span class="date">2015.12.25.</span></dd>
-                    </dl>
-                </div>
+                <dl class="front">
+                    <input type="checkbox" checked> <dt>그럼 그렇지...</dt>
+                    <dd>멋진 크리스마스 보내기.<span class="date">2015.12.25.</span></dd>
+                </dl>
                 <div class="back">
                     <p>아래 크리스마마스 트리를 만들고 자괴감이 들었다고 한다.</p>
                     <img src="img/그럼_그렇지/christmas.jpg" alt="" />
                 </div>
             </div>
+
+            <dl class="" title="내 꿈을 위한 여행 (피카츄) ♬"><!-- 자, 이제 시작이야 -->
+                <input type="checkbox" > <dt>자, 이제 시작이야 (내 꿈을) ♪</dt>
+                <dd>포켓몬 마스터 되기.<span class="date"></span></dd>
+            </dl>
         </section>
 
     </section>
@@ -505,6 +530,7 @@
                     <p>회사명에 (27세, 무직) 이라고 적어서 신청했더니 회사명이 없는 <a src="img/내가_막_뭐라도_된_듯/google2.jpg">이름표</a>를 뽑아놨더라.</p>
                     <img src="img/내가_막_뭐라도_된_듯/google1.jpg" alt="" />
                     <p>3달 쯤 전에는 구글 행사장 설치 보조 알바하고 있었는데, 감회가 새로웠다.</p>
+                    <p>추가: 이듬해에는 <a src="img/내가_막_뭐라도_된_듯/google3.jpg">(28세, 무직)이 출력된 이름표</a>를 목에 걸고 다니는데 성공.</p>
                 </div>
             </div>
 
@@ -811,14 +837,14 @@
         <h3 id="running"><i class="material-icons">directions_bike</i><span>유산소</span></h3>
         <section class="sub">
             <div class="card"><!-- 포레스트 검프 -->
-                <div class="front">
+                <div class="front" id="포레스트_검프">
                     <dl>
                         <input type="checkbox"> <dt>포레스트 검프</dt>
                         <dd>10 km 거리를 한시간 안에 달리기.<span class="date"></span> </dd>
                     </dl>
                 </div>
                 <div class="back">
-                    <p>10 km 해봤는데, 1시간 넘기고... 발에 물집생김. 어휴 한심...</p>
+                    <p>현 기록 1:13. 뛰고 나서 손가락 끝이 노오래져서 식겁함.</p>
                 </div>
             </div>
             <div class="card"><!-- 마라톤 -->
@@ -944,7 +970,7 @@
             </dl>
             <div class="card"><!-- 문신 -->
                 <dl class="front">
-                    <input type="checkbox"> <dt>!nameless</dt>
+                    <input type="checkbox"> <dt>원산지 표시제</dt>
                     <dd>헤나 혹은 문신하기.<span class="date"></span> </dd>
                 </dl>
                 <div class="back">
@@ -995,40 +1021,22 @@
         </section>
         <h3 id="license"><i class="material-icons">book</i><span>자격</span></h3>
         <section class="sub">
-            <div class="card"><!-- 기사단장 -->
-                <div class="front">
-                    <dl>
-                        <input type="checkbox" checked> <dt>기사지망생</dt>
-                        <dd>기능사 자격 갖기.<span class="date">2012.06.14.</span> </dd>
-                        <input type="checkbox" checked> <dt>수습기사</dt>
-                        <dd>산업기사 자격 갖기.<span class="date">2012.12.12.</span> </dd>
-                        <input type="checkbox" checked> <dt>기사단원</dt>
-                        <dd>기사 자격 갖기.<span class="date">2015.08.21.</span> </dd>
-                        <input type="checkbox"> <dt>기사단장</dt>
-                        <dd>기술사 혹은 기능장 자격증 갖기.<span class="date"></span> </dd>
-                    </dl>
-                </div>
-                <div class="back">
-                    <p>
-                        정보처리기능사, 사무자동화산업기사, 산업안전기사 취득.
-                    </p>
-                </div>
-            </div>
-            <div class="card"><!-- 쌍기사 -->
-                <div class="front">
-                    <dl>
-                        <input type="checkbox" checked> <dt>쌍기사</dt>
-                        <dd>기사 자격 두 개 갖기.<span class="date">2016.07.15.</span> </dd>
-                        <input type="checkbox" > <dt>삼기사</dt>
-                        <dd>기사 자격 세 개 갖기.<span class="date"></span> </dd>
-                    </dl>
-                </div>
-                <div class="back">
-                    <p>
-                        산업안전, 정보처리.
-                    </p>
-                </div>
-            </div>
+            <dl><!-- 기사단장 -->
+                <input type="checkbox" checked> <dt>기사지망생</dt>
+                <dd>기능사 자격 갖기.<span class="date">2012.06.14.</span> </dd>
+                <input type="checkbox" checked> <dt>수습기사</dt>
+                <dd>산업기사 자격 갖기.<span class="date">2012.12.12.</span> </dd>
+                <input type="checkbox" checked> <dt>기사단원</dt>
+                <dd>기사 자격 갖기.<span class="date">2015.08.21.</span> </dd>
+                <input type="checkbox"> <dt>기사단장</dt>
+                <dd>기술사 혹은 기능장 자격증 갖기.<span class="date"></span> </dd>
+            </dl>
+            <dl><!-- 쌍기사 -->
+                <input type="checkbox" checked> <dt>쌍기사</dt>
+                <dd>기사 자격 두 개 갖기.<span class="date">2016.07.15.</span> </dd>
+                <input type="checkbox" > <dt>삼기사</dt>
+                <dd>기사 자격 세 개 갖기.<span class="date"></span> </dd>
+            </dl>
             <div class="card"><!-- 외국에서도 먹어주는 -->
                 <div class="front">
                     <dl>
@@ -1332,7 +1340,7 @@
                             <li><input type="checkbox"> <dt>E-ink 단말기</dt><span class="date"></span></li>
                             <li><input type="checkbox"> <dt>드론</dt><span class="date"></span></li>
                             <li><input type="checkbox"> <dt>액션 캠</dt><span class="date"></span></li>
-                            <li><input type="checkbox"> <dt>AR기기</dt><span class="date"></span></li>
+                            <li><input type="checkbox" checked> <dt>AR기기</dt><span class="date">2016.</span></li>
                             <li><input type="checkbox" checked> <dt>스마트 체중계</dt><span class="date">2016.</span></li>
                         </ul>
                     </dd>

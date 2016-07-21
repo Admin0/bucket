@@ -807,8 +807,8 @@ $(document).ready(function(){
         scroll_smooth();
         checkbox();
         filter();
-        title_tooltip();
         columns();
+        title_tooltip();
         contextmenu();
         coloring();
 });
