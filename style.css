@@ -523,7 +523,7 @@ img {
     margin-bottom: -6px
 }
 
-#img_wrap>img {
+#img_wrap > img {
     width: 90%;
     position: relative
 }
