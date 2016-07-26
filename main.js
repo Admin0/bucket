@@ -301,7 +301,7 @@ function title_tooltip(){
                     }
                     $('#tooltip_text').html($(this).attr('data-title'))
                     $('#tooltip').css({ 'visibility':'visible', 'opacity':1,
-                    'top':$(this).offset().top - $('#tooltip').outerHeight() - pageYOffset - 12  + 'px',
+                    'top':$(this).offset().top - $('#tooltip').outerHeight() /*+ pageYOffset*/ - 16  + 'px',
                     'left':left + 'px'});
                 },
                 function(){$('#tooltip').css({ 'visibility':'hidden' , 'opacity':0 });}
@@ -585,6 +585,23 @@ function card_wrap(){
 }
 
 function percentage(){
+
+    // 세포분열
+    var list_total = ($("input").length - $("input[failed]").length);
+    if(list_total >= 1000){
+        $("#세포분열_1000").attr("checked", true);
+        $("#세포분열_1000 + dt + dd > .date").text(list_total + "개 생성");
+    }
+    if(list_total >= 500){
+        $("#세포분열_500").attr("checked", true);
+        $("#세포분열_500 + dt + dd > .date").text(list_total + "개 생성");
+    }
+    if(list_total >= 100){
+        $("#세포분열_100").attr("checked", true);
+        $("#세포분열_100 + dt + dd > .date").text(list_total + "개 생성");
+    }
+
+    //재귀함수
     var percent_total;
     function  checke_total() {
         percent_total = ($("input[checked]").length / ($("input").length - $("input[failed]").length) * 100).toFixed(0);
