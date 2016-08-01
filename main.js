@@ -670,7 +670,7 @@ function setting(){
         if(window.localStorage["theme_color"] == "true"){
             $("#theme_color dd.on").text("현재 색(" + color.name[color.i] + ")이 테마 색으로 지정되었습니다.");
         }
-        if(window.localStorage["cccv"] == "false"){
+        if(window.localStorage["cccv"] != "true"){
             $("#cccv__style").addClass("disabled");
             $("#cccv__to_here").addClass("disabled");
         } else {
