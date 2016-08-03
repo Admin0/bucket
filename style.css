@@ -654,16 +654,17 @@ input {
 
 
 /* ------------------------------------------------------------------- */
-/* ***** target IE ***** */
+/* ***** target IE or other brower ***** */
 /* ------------------------------------------------------------------- */
 
-#ie_alert   {
+#browser_alert   {
+    display: none;
     position:fixed; top: 0; left: 0; width: 100%; height: 100%;
     padding:1em; z-index: 9;
     background: #fff; background: rgba(255,255,255,.95);
 }
-
-#ie_alert div {
+#browser_alert.on   { display: block; }
+#browser_alert div {
     max-width: 600px; margin: auto;
 }
 
