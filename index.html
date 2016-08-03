@@ -197,7 +197,7 @@
             </div>
             <div class="card"><!-- 여행지에서 사진 대신 그림 그려서 추억 남기기. -->
                 <dl class="front">
-                    <input type="checkbox"> <dt>!nameless</dt>
+                    <input type="checkbox"> <dt>거리의 화가</dt>
                     <dd>여행지에서 사진 대신 그림 그려서 추억 남기기.<span class="date"></span></dd>
                 </dl>
                 <div class="back">
@@ -488,13 +488,13 @@
                 </div>
             </div>
             <div class="card"><!-- 야수 길들이기 -->
-                <dl class="front">
-                    <input type="checkbox" failed> <dt>와갤러식 야수 길들이기</dt>
+                <dl class="front" id="야수_길들이기">
+                    <input type="checkbox" failed> <dt>야수 길들이기</dt>
                     <dd>"야수를 길들여 친구로 만듭니다."<span class="date"></span></dd>
                 </dl>
                 <div class="back">
                     <img src="img/야수_길들이기.jpg" alt="" />
-                    <p title='"야수를 길들이는 데 집중하는 20초 동안은 방어력이 급격히 감소합니다."'>위 개시끼에게 손바닥을 뚫리면서 처참하게 실패.</p>
+                    <p title='"야수를 길들여 친구로 만듭니다. 야수를 길들이는 데 집중하는20초 동안은 방어도가 100%만큼 감소합니다. 만약 이 동안 어떤 이유로든 야수의 주의가 딴데로 돌아가게 된다면 길들이는 것은 실패하게 됩니다. 길들이는 데 성공하면 만족도와 충성도가 매우 낮습니다. 즉시 먹을 것을 줘서 만족도를 높이도록 하십시오."'>위 개시끼에게 손바닥을 뚫리면서 처참하게 실패.</p>
                 </div>
             </div>
             <dl class="" title="내 꿈을 위한 여행 (피카츄) ♬"><!-- 자, 이제 시작이야 -->
@@ -951,7 +951,7 @@
                                 <li><input type="checkbox"> <dt>포켓몬</dt><span class="date"></span></li>
                                 <li><input type="checkbox"> <dt>미아</dt><span class="date"></span></li>
                                 <li><input type="checkbox"> <dt>외국인</dt><span class="date"></span></li>
-                                <li><input type="checkbox"> <dt>외계인</dt><span class="date"></span></li>
+                                <!-- <li><input type="checkbox"> <dt>외계인</dt><span class="date"></span></li> -->
                                 <li><input type="checkbox"> <dt>취객</dt><span class="date"></span></li>
                                 <!-- <li><input type="checkbox"> <dt>노숙자</dt><span class="date"></span></li> -->
                                 <!-- <li><input type="checkbox"> <dt>범죄자</dt><span class="date"></span></li> -->
@@ -962,7 +962,8 @@
                 <div class="back">
                     <p>새줍 같이 쉬운 건 대충 끝났고 이제 어려운 것들만 남았구만.</p>
                     <img src="img/bird.jpg"/>
-                    <p>파충류는 도마뱀을, 포유류는 두더지를 주운 적이 있음.</p>
+                    <p>파충류는 도마뱀을, 포유류는 두더지를 주운 적이 있다.</p>
+                    <p><strong>⚠경고⚠</strong> 야생 동물 길들이기는 당신의 생명을 <a href="#야수_길들이기">위협 할 수</a>도 있습니다.</p>
                 </div>
             </div>
             <div class="card"><!-- 메달을 받아서 자신의 쓸모있음을 증명하기. -->
@@ -1170,7 +1171,7 @@
                     </dl>
                 </div>
                 <div class="back">
-                    <p>걷기 20km/1회 까지는 해봄. 자전거는 100km/하루 정도 가능.</p>
+                    <p>헥헥;;</p>
                 </div>
             </div>
             <div class="card"><!-- 지구 한 바퀴 -->
@@ -1369,12 +1370,16 @@
                 </div>
             </div>
             <dl><!-- 표준 체중 -->
-                <input type="checkbox"> <dt>!nameless</dt>
+                <input type="checkbox"> <dt>체중 슬라이더를 왼쪽으로</dt>
                 <dd>표준 체중(약 65 kg) 몸무게 유지하기.</dd>
             </dl>
             <dl><!-- 펀치머신 -->
-                <input type="checkbox"> <dt>!nameless</dt>
+                <input type="checkbox"> <dt>핵꿀밤</dt>
                 <dd>펀치머신에 800점 이상의 펀치 날리기.</dd>
+            </dl>
+            <dl><!-- 저글링 -->
+                <input type="checkbox"> <dt>!nameless</dt>
+                <dd>3개 이상의 공으로 저글링하기.</dd>
             </dl>
 
         </section>
@@ -1482,6 +1487,30 @@
                 <input type="checkbox" > <dt>!nameless</dt>
                 <dd>화공 기사 자격 갖기.<span class="date"></span> </dd>
             </dl>
+            <dl><!-- 사무직 특성화 -->
+                <input type="checkbox" checked> <dt>사무직 특성화</dt>
+                <dd>사무직 취업에 도움이 될 것 같은 자격증 따기. (실제론 도움 안 됨)<span class="date">2016.</span>
+                    <ul>
+                        <li><input type="checkbox" checked><dt>정보처리</dt><span class="date">2016.</span> </li>
+                        <li><input type="checkbox" checked><dt>사무자동화</dt><span class="date">2012.</span> </li>
+                        <li><input type="checkbox" checked><dt>컴퓨터활용능력</dt><span class="date">2011.</span> </li>
+                        <li><input type="checkbox" checked><dt>워드프로세서</dt><span class="date">2011.</span> </li>
+                        <li><input type="checkbox" checked><dt>MOS</dt><span class="date">2013.</span> </li>
+                    </ul>
+                </dd>
+            </dl>
+            <dl><!-- 사무직 전문가 -->
+                <input type="checkbox" checked> <dt>사무직 전문가</dt>
+                <dd>혹시 모르니 아까 그 자격증들 일단 최고 등급으로 다 따와보셈.<span class="date">2016.</span>
+                    <ul>
+                        <li><input type="checkbox" checked><dt>정보처리기사</dt><span class="date">2016.</span> </li>
+                        <li><input type="checkbox" checked><dt>사무자동화산업기사</dt><span class="date">2012.</span> </li>
+                        <li><input type="checkbox" checked><dt>컴퓨터활용능력1급</dt><span class="date">2011.</span> </li>
+                        <li><input type="checkbox" checked><dt>워드프로세서1급</dt><span class="date">2011.</span> </li>
+                        <li><input type="checkbox" checked><dt>MOS MASTER</dt><span class="date">2013.</span> </li>
+                    </ul>
+                </dd>
+            </dl>
             <div class="card"><!-- 외국에서도 먹어주는 -->
                 <div class="front">
                     <dl>
@@ -1587,8 +1616,8 @@
                 <input type="checkbox"> <dt>애국자</dt>
                 <dd>한국어와 한국사 능력 검증.<span class="date"></span>
                     <ul>
-                        <li><input type="checkbox"><span>한국어</span><span class="date"></span> </li>
-                        <li><input type="checkbox"><span>한국사</span><span class="date"></span> </li>
+                        <li><input type="checkbox"><dt>한국어</dt><span class="date"></span> </li>
+                        <li><input type="checkbox"><dt>한국사</dt><span class="date"></span> </li>
                     </ul>
                 </dd>
             </dl>
@@ -1653,14 +1682,14 @@
                 <dd>인생의 매운맛 경험하기.<span class="date"></span>
                     <ul>
                         <li><input type="checkbox"><dt>이맛헬</dt></li>
-                        <li><input type="checkbox"><dt>이래도 헬조센이 아닙니까?</dt></li>
+                        <li><input type="checkbox"><dt>헬잘알</dt></li>
                     </ul>
                 </dd>
             </dl>
             <dl><!-- 이맛헬 -->
                 <input type="checkbox"> <dt>이맛헬</dt>
                 <dd>인턴 후 정규직 전환 실패.<span class="date"></span></dd>
-                <input type="checkbox"> <dt>이래도 헬조센이 아닙니까?</dt>
+                <input type="checkbox"> <dt>헬잘알</dt>
                 <dd>계약 만료 후 연장 실패.<span class="date"></span></dd>
             </dl>
             <dl><!-- 갓수 -->
@@ -1669,7 +1698,10 @@
                 <input type="checkbox" checked> <dt>잉여 인간</dt>
                 <dd>무직 2년차 되기.<span class="date">2015.01.01.</span></dd>
             </dl>
-
+            <dl><!-- 직무교육 받기. -->
+                <input type="checkbox" checked> <dt>!nameless</dt>
+                <dd>직무교육 받기.<span class="date">2015.09.21.</span> </dd>
+            </dl>
             <div class="card"><!-- 극한알바 -->
                 <div class="front">
                     <dl>
