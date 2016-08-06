@@ -202,7 +202,8 @@ function scroll_smooth() {
         if ($(this).parent().prop("tagName")=="H3"||$(this).parent().prop("tagName")=="H2") { isNotNav = false; }
 
         var target = $(this.hash);
-        var target_reverse = $(this);
+        // var target_reverse = $(this) //old code
+        var target_reverse = $(this).parent("p").parent(".back").prev(".front");
         var target_bg;
         var reversible = true;
 

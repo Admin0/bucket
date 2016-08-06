@@ -520,7 +520,7 @@ h4:first-of-type {
 img {
     width: 100%;
     cursor: pointer;
-    margin-bottom: -6px
+    margin-bottom: -5px
 }
 
 #img_wrap > img {   /* 클릭했을 때 크게 보이는 것 */

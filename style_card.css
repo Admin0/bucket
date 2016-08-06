@@ -250,6 +250,7 @@ dl:not(.card):hover {
 .card_wrap a[href]:before {content: "open_in_new"}
 .card_wrap a[href^='#']:before {content: "find_in_page"}
 .card_wrap a[href$='.zip']:before {content: "save"}
+.card_wrap a[href$='.pdf']:before {content: "insert_drive_file"}
 .card_wrap a[onclick]:before {content: "theaters"}
 .card_wrap a[src]:before {content: "photo"}
 .card_wrap a:before     {
