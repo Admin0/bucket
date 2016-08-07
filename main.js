@@ -202,8 +202,12 @@ function scroll_smooth() {
         if ($(this).parent().prop("tagName")=="H3"||$(this).parent().prop("tagName")=="H2") { isNotNav = false; }
 
         var target = $(this.hash);
-        // var target_reverse = $(this) //old code
-        var target_reverse = $(this).parent("p").parent(".back").prev(".front");
+        var target_reverse;// = $(this) //old code
+        if ( $(this).parent("p").parent(".back").prev(".front").length != 0 ) {
+            target_reverse = $(this).parent("p").parent(".back").prev(".front");
+        } else {
+            target_reverse = $(this);
+        }
         var target_bg;
         var reversible = true;
 
@@ -296,11 +300,11 @@ function title_tooltip(){
                 function(){
                     console.log($(this).attr('data-title'));
                     if (document.height === null) {pageYOffset = document.documentElement.scrollTop;}
+                    $('#tooltip_text').html($(this).attr('data-title'));
                     var left = $(this).offset().left + ( $(this).outerWidth() - $('#tooltip').outerWidth() )/2;
                     if(left<=0){
                         left=0;
                     }
-                    $('#tooltip_text').html($(this).attr('data-title'))
                     $('#tooltip').css({ 'visibility':'visible', 'opacity':1,
                     'top':$(this).offset().top - $('#tooltip').outerHeight() /*+ pageYOffset*/ - 16  + 'px',
                     'left':left + 'px'});
