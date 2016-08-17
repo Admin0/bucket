@@ -559,10 +559,10 @@ input {
     padding: 1ex;
     border-radius: 3px;
     max-width: 400px;
-    z-index: 4;
+    z-index: 3;
     box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
 }
-#tooltip_nav { position: fixed; }
+#tooltip_nav { position: fixed; z-index: 4; }
 
 #tooltip_before,
 #tooltip_nav_before {
