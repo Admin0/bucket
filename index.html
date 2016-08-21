@@ -828,7 +828,7 @@
                 <div class="front">
                     <dl>
                         <input type="checkbox" checked> <dt>참쉽죠?</dt>
-                        <dd>이름있는 기관에서 주최한 공모전 당선.<span class="date">2011.07.04</span></dd>
+                        <dd>이름있는 기관에서 주최한 공모전 당선.<span class="date">2011.07.04.</span></dd>
                     </dl>
                 </div>
                 <div class="back">
@@ -840,6 +840,18 @@
                 <input type="checkbox"> <dt>!nameless</dt>
                 <dd>캔버스에 유화를 그리고 개인 갤러리에 장식하기.<span class="date"></span> </dd>
             </dl>
+            <div class="card"><!-- 작사작곡 -->
+                <div class="front">
+                    <dl>
+                        <input type="checkbox"> <dt>!nameless</dt>
+                        <dd>작사 혹은 작곡 하기.<span class="date"></span></dd>
+                    </dl>
+                </div>
+                <div class="back">
+                    <p>남의 버킷리스트인데 내가 대신 해주기로 함.</p>
+                    <!-- 2016년 SK고용디딤돌 프로그램에서 만난 종욱이의 버킷리스트 -->
+                </div>
+            </div>
 
         </section>
 
@@ -1020,27 +1032,25 @@
                 </div>
             </div>
             <div class="card"><!-- 다음 목록 줍기 -->
-                <div class="front">
-                    <dl class="">
-                        <input type="checkbox"> <dt>~줍</dt>
-                        <dd>다음 목록의 야생 생물 줍기.<span class="date"></span>
-                            <ul>
-                                <li><input type="checkbox" checked> <dt>조류</dt><span class="date"></span></li>
-                                <!-- <li><input type="checkbox"> <dt>조류: 천연기념물</dt><span class="date"></span></li>
-                                <li><input type="checkbox"> <dt>조류: 맹금류</dt><span class="date"></span></li> -->
-                                <li><input type="checkbox" checked> <dt>포유류</dt><span class="date"></span></li>
-                                <li><input type="checkbox" checked> <dt>파충류</dt><span class="date"></span></li>
-                                <li><input type="checkbox"> <dt>포켓몬</dt><span class="date"></span></li>
-                                <li><input type="checkbox"> <dt>미아</dt><span class="date"></span></li>
-                                <li><input type="checkbox"> <dt>외국인</dt><span class="date"></span></li>
-                                <!-- <li><input type="checkbox"> <dt>외계인</dt><span class="date"></span></li> -->
-                                <li><input type="checkbox"> <dt>취객</dt><span class="date"></span></li>
-                                <!-- <li><input type="checkbox"> <dt>노숙자</dt><span class="date"></span></li> -->
-                                <!-- <li><input type="checkbox"> <dt>범죄자</dt><span class="date"></span></li> -->
-                            </ul>
-                        </dd>
-                    </dl>
-                </div>
+                <dl class="front" id="줍">
+                    <input type="checkbox"> <dt>~줍</dt>
+                    <dd>다음 목록의 야생 생물 줍기.<span class="date"></span>
+                        <ul>
+                            <li><input type="checkbox" checked> <dt>조류</dt><span class="date"></span></li>
+                            <!-- <li><input type="checkbox"> <dt>조류: 천연기념물</dt><span class="date"></span></li>
+                            <li><input type="checkbox"> <dt>조류: 맹금류</dt><span class="date"></span></li> -->
+                            <li><input type="checkbox" checked> <dt>포유류</dt><span class="date"></span></li>
+                            <li><input type="checkbox" checked> <dt>파충류</dt><span class="date"></span></li>
+                            <li><input type="checkbox"> <dt>포켓몬</dt><span class="date"></span></li>
+                            <li><input type="checkbox"> <dt>미아</dt><span class="date"></span></li>
+                            <li><input type="checkbox"> <dt>외국인</dt><span class="date"></span></li>
+                            <!-- <li><input type="checkbox"> <dt>외계인</dt><span class="date"></span></li> -->
+                            <li><input type="checkbox"> <dt>취객</dt><span class="date"></span></li>
+                            <!-- <li><input type="checkbox"> <dt>노숙자</dt><span class="date"></span></li> -->
+                            <!-- <li><input type="checkbox"> <dt>범죄자</dt><span class="date"></span></li> -->
+                        </ul>
+                    </dd>
+                </dl>
                 <div class="back">
                     <!-- <p>새줍 같이 쉬운 건 대충 끝났고 이제 어려운 것들만 남았구만.</p> -->
                     <img src="img/~줍/새줍.jpg"/>
@@ -1140,6 +1150,14 @@
             <dl class="front" id=""><!-- 되는데요. -->
                 <input type="checkbox"> <dt>되는데요.</dt>
                 <dd>24인 몫을 혼자서 해내기.<span class="date"></span></dd>
+            </dl>
+            <dl class="front" id=""><!-- 쥬라기 공원 -->
+                <input type="checkbox"> <dt>쥬라기 공원</dt>
+                <dd>화석 발굴하기.<span class="date"></span></dd>
+                <input type="checkbox"> <dt>인디아나 존스</dt>
+                <dd>유적 조사하기.<span class="date"></span></dd>
+                <input type="checkbox"> <dt>라라 크로프트</dt>
+                <dd>유물 발견하기.<span class="date"></span></dd>
             </dl>
         </section>
 
@@ -1484,20 +1502,18 @@
         <h3 id="other"><i class="material-icons">local_hospital</i><span>기타</span></h3>
         <section class="sub">
             <div class="card"><!-- 헌혈증 수집가 -->
-                <div class="front">
-                    <dl>
-                        <input type="checkbox" checked> <dt>헌혈증 수집가</dt>
-                        <dd>헌혈 30회 하고, 헌혈유공장 은장 받기.<span class="date">2013.08.08.</span> </dd>
-                        <input type="checkbox" checked> <dt>팔의 주사자국은 오해입니다</dt>
-                        <dd>헌혈 50회 하고, 헌혈유공장 금장 받기.<span class="date">2014.06.23.</span> </dd>
-                        <input type="checkbox"> <dt>초코파이 덕후</dt>
-                        <dd>헌혈 100회 하고, 헌혈 헌혈유공장 명예장 받기 + 명예의 전당 입성.<span class="date"></span> </dd>
-                        <input type="checkbox"> <dt>B(Rh+)형 남자</dt>
-                        <dd>헌혈 200회 하고, 신설된 헌혈유공장 명예대장 받기.<span class="date"></span> </dd>
-                        <input type="checkbox"> <dt>걸어다니는 수혈팩</dt>
-                        <dd>헌혈 300회 하고, 신설된 헌혈유공장 최고명예대장 받기.<span class="date"></span> </dd>
-                    </dl>
-                </div>
+                <dl class="front" id="헌혈증_수집가">
+                    <input type="checkbox" checked> <dt>헌혈증 수집가</dt>
+                    <dd>헌혈 30회 하고, 헌혈유공장 은장 받기.<span class="date">2013.08.08.</span> </dd>
+                    <input type="checkbox" checked> <dt>팔의 주사자국은 오해입니다</dt>
+                    <dd>헌혈 50회 하고, 헌혈유공장 금장 받기.<span class="date">2014.06.23.</span> </dd>
+                    <input type="checkbox"> <dt>초코파이 덕후</dt>
+                    <dd>헌혈유공장 명예장 받기 (100회) + 명예의 전당 입성.<span class="date"></span> </dd>
+                    <input type="checkbox"> <dt>B(Rh+)형 남자</dt>
+                    <dd>헌혈유공장 명예대장 받기. (200회)<span class="date"></span> </dd>
+                    <input type="checkbox"> <dt>걸어다니는 수혈팩</dt>
+                    <dd>헌혈유공장 최고명예대장 받기. (300회)<span class="date"></span> </dd>
+                </dl>
                 <div class="back">
                     <img src="img/blood_donation.jpg"/>
                 </div>

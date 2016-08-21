@@ -270,8 +270,14 @@ dl:not(.card):hover {
     direction: ltr;
     -webkit-font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
+    width: 1em; /*for not Chrome*/
 }
 
 
 .cccv_bg    { background: #e5e5e5; padding:1px 1em; }
 .cccv_bg > h2   { margin-top: 0; }
+
+
+/* for Blog */
+.article .card .imageblock { margin:0!important; }
+.article .card .imageblock { box-shadow: none!important; }
