@@ -280,4 +280,4 @@ dl:not(.card):hover {
 
 /* for Blog */
 .article .card .imageblock { margin:0!important; }
-.article .card .imageblock { box-shadow: none!important; }
+.article .card .imageblock img { box-shadow: none!important; }
