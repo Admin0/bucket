@@ -249,12 +249,12 @@ dl:not(.card):hover {
     margin-right: 0;
     vertical-align: text-bottom;
 }
-.card_wrap a[href]:before {content: "open_in_new"}
-.card_wrap a[href^='#']:before {content: "find_in_page"}
-.card_wrap a[href$='.zip']:before {content: "save"}
-.card_wrap a[href$='.pdf']:before {content: "insert_drive_file"}
-.card_wrap a[onclick]:before {content: "theaters"}
-.card_wrap a[src]:before {content: "photo"}
+.card_wrap a[href]:before {content: "open_in_new"!important; }
+.card_wrap a[href^='#']:before {content: "find_in_page"!important; }
+.card_wrap a[href$='.zip']:before {content: "save"!important; }
+.card_wrap a[href$='.pdf']:before {content: "insert_drive_file"!important; }
+.card_wrap a[onclick]:before {content: "theaters"!important; }
+.card_wrap a[src]:before {content: "photo"!important; }
 .card_wrap a:before     {
     vertical-align: text-bottom;
     font-family: 'Material Icons';
@@ -281,4 +281,3 @@ dl:not(.card):hover {
 /* for Blog */
 .article .card .imageblock { margin:0!important; }
 .article .card .imageblock img { box-shadow: none!important; }
-.article .card .back a:before { font-family: 'Material Icons'; }
