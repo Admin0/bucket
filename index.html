@@ -518,13 +518,15 @@
             </div>
             <div class="card"><!-- 뒷면 사진에 나온 거 당겨보기. -->
                 <div class="front">
-                    <dl>
-                        <input type="checkbox"> <dt>비상 사태 발생!</dt>
-                        <dd>뒷면 사진에 나온 거 당겨보기.<span class="date"></span></dd>
+                    <dl id="비상_사태_발생">
+                        <input type="checkbox" checked> <dt>비상 사태 발생!</dt>
+                        <dd>뒷면 사진에 나온 거 당겨보기.<span class="date">2016.09.02.</span></dd>
                     </dl>
                 </div>
                 <div class="back">
                     <img src="img/can_i_pull_it.jpg" alt="" />
+                    <p>화학회사에서 인턴하면서 몰래 당겨봄.</p>
+                    <p>(사진은 대학교 실험실 복도에서 찍어놓음)</p>
                 </div>
             </div>
             <div class="card"><!-- 자취하기 -->
@@ -1332,7 +1334,7 @@
 
         <h3 id="running"><i class="material-icons">directions_bike</i><span>야외운동</span></h3>
         <section class="sub">
-            <dl><!-- 제우스 -->
+            <dl id="제우스"><!-- 제우스 -->
                 <input type="checkbox"> <dt>제우스</dt>
                 <dd>운동 배우기.
                     <ul>
@@ -1352,8 +1354,8 @@
                 <dd>수영 배우기.<span class="date"></span> </dd>
                 <input type="checkbox"> <dt>켄타우로스</dt>
                 <dd>승마 배우기.<span class="date"></span> </dd>
-                <input type="checkbox"> <dt>오리온</dt>
-                <dd>수렵 허가증 갖기.<span class="date"></span> </dd>
+                <input type="checkbox"> <dt id="오리온">오리온</dt>
+                <dd>수렵면허 갖기.<span class="date"></span> </dd>
                 <input type="checkbox"> <dt>이카루스</dt>
                 <dd>패러글라이딩 혹은 스카이 다이빙 하기.<span class="date"></span> </dd>
                 <input type="checkbox"> <dt>헤르메스</dt>
@@ -2000,7 +2002,7 @@
                 <dd>직업 갖기.</dd>
             </dl>
             <dl><!-- 신입사원 되기 -->
-                <input type="checkbox"> <dt>요즘엔 다 이렇다더라</dt>
+                <input type="checkbox" checked> <dt>요즘엔 다 이렇다더라</dt>
                 <dd>인턴 혹은 계약직, 파견직 되기.<span class="date"></span> </dd>
                 <input type="checkbox"> <dt>직업 달성 1</dt>
                 <dd>신입사원 되기.<span class="date"></span> </dd>
@@ -2009,6 +2011,8 @@
                 <input type="checkbox"> <dt>직업 달성 3</dt>
                 <dd>과장으로 승진.<span class="date"></span> </dd>
                 <input type="checkbox"> <dt>직업 달성 4</dt>
+                <dd>차장으로 승진.<span class="date"></span> </dd>
+                <input type="checkbox"> <dt>직업 달성 4.5</dt>
                 <dd>부장으로 승진.<span class="date"></span> </dd>
                 <input type="checkbox"> <dt>직업 달성 5</dt>
                 <dd>사장 으로 승진.<span class="date"></span> </dd>

@@ -269,6 +269,7 @@ function scroll_at_open(){
     if(window.location.href.substring(window.location.href.length-8, window.location.href.length) != window.location.pathname.substring(window.location.pathname.length-8, window.location.pathname.length)){
         setTimeout(function(){
             var target = $(window.location.href.substring(window.location.href.indexOf("#")));
+            // console.log(target.prop("tagName"));
             $('html, body').animate({
                 scrollTop: target.offset().top - $('header').height() - $('#sub_header').height() - 12 //116
             }, 500);
