@@ -673,10 +673,7 @@ input {
 /* ***** mobile ***** */
 /* ------------------------------------------------------------------- */
 
-@media handheld,
-only screen and (max-device-width:480px),
-only screen and (max-device-width:320px),
-screen and (max-width:600px) {
+    @media handheld, only screen and (max-device-width:480px), only screen and (max-device-width:320px), screen and (max-width:600px) {
     body {
         width: calc(100% - 2em)!important;
         padding: 1em!important

@@ -74,17 +74,17 @@
     </nav>
     <div id="nav_bg" onclick="$('nav, #nav_bg').removeClass('on');"></div> -->
 
-    <section style="text-align:center;" id="first_class">
+    <section style="text-align:center; display:none;" id="first_class">
         <div class="card">
             <dl class="front" id="output">
                 <input type="checkbox" checked> <dt>인턴십 기간</dt>
-                <dd class="" id="output1">
+                <dd class="" id="">
 
                 </dd>
             </dl>
             <div class="back">
                 <p>
-                    전생에 죄를 너무 많이 지은 인턴이 만들어다고 전해짐.
+                    제작 : 전생에 죄가 많은 이.
                 </p>
             </div>
         </div>
@@ -93,8 +93,13 @@
     <!-- <h2 id="휴식">휴식</h2> -->
     <section class="sup">
 
-        <!-- <h3 id="여행"><i class="material-icons">nature_people</i><span>여행</span></h3> -->
+        <h3 id="여행"><i class="material-icons">work</i><span>8월 29일 입사</span></h3>
         <section class="sub">
+
+            <dl>
+                <input type="checkbox" checked> <dt>기간</dt>
+                <dd id="output1">ㅅㄷㄴㅅ2.</dd>
+            </dl>
 
             <dl class="">
                 <input type="checkbox" checked> <dt>얼마나 했음?</dt>
@@ -118,12 +123,43 @@
 
         </section>
 
+        <h3 id="여행"><i class="material-icons">free_breakfast</i><span>9월 1일 입사</span></h3>
+        <section class="sub">
+
+            <dl>
+                <input type="checkbox" checked> <dt>기간</dt>
+                <dd id="output6">ㅅㄷㄴㅅ2.</dd>
+            </dl>
+
+            <dl class="">
+                <input type="checkbox" checked> <dt>얼마나 했음?</dt>
+                <dd id="output7">ㅅㄷㄴㅅ2.<span class="date"></span> </dd>
+            </dl>
+
+            <dl class="">
+                <input type="checkbox" checked> <dt>얼마나 남음?</dt>
+                <dd id="output8">ㅅㄷㄴㅅ2.<span class="date"></span> </dd>
+            </dl>
+
+            <dl class="">
+                <input type="checkbox" checked> <dt>진행률</dt>
+                <dd id="output9">ㅅㄷㄴㅅ2.<span class="date"></span> </dd>
+            </dl>
+
+            <dl class="">
+                <input type="checkbox" checked> <dt>카운트다운</dt>
+                <dd id="output10">ㅅㄷㄴㅅ2.<span class="date"></span> </dd>
+            </dl>
+
+        </section>
+
         <section id="contextmenu">
             <textarea class="output" onclick="select();"></textarea>
         </section>
         <!-- context-menu close -->
 
         <script type="text/javascript">
+            //8.29. 입사
             var d_0 = new Date(2016, 7, 29);
             var t_0 = new Date(2016, 7, 29, 9);
             var d_1 = new Date(2016, 10, 28);
@@ -142,7 +178,27 @@
             $('#output3').text('D-' + dday);
             $('#output4').text('D+' + day);
 
+            //9.1. 입사
+            var d_0b = new Date(2016, 8, 1);
+            var t_0b = new Date(2016, 8, 1, 9);
+            var d_1b = new Date(2016, 10, 30);
+            var t_1b = new Date(2016, 10, 30, 18);
+            var d_allb = Math.floor((d_1b - d_0b) / 24 / 60 / 60 / 1000);
+            var t_allb = Math.floor((t_1b - t_0b) / 60 / 60 / 1000);
+            var dayb = (Math.floor((new Date() - d_0b) / 24 / 60 / 60 / 1000) + 1); //D+
+            var db = d_1b - new Date();
+            var tb = t_1b - new Date();
+            var ddayb = Math.floor(db / 24 / 60 / 60 / 1000); //D-
+            if (ddayb == 0) {
+                ddayb = "DAY";
+            }
+
+            $('#output6').text('2016.09.01. ~ 2016.11.30. (' + d_allb + '일)');
+            $('#output8').text('D-' + ddayb);
+            $('#output7').text('D+' + dayb);
+
             function run() {
+                //8.29.
                 var percent = (new Date() - t_0) / (t_1 - t_0) * 100;
                 if (percent >= 100) {
                     percent = 100.0000000;
@@ -157,6 +213,17 @@
                 $('#output5').text(d_d + ':' + d_h + ':' + d_m + ':' + d_s + ':' + d_ms);
 
                 $('title').html(d_d + ':' + d_h + ':' + d_m + ':' + d_s);
+
+                //9.1.
+                var percentb = (new Date() - t_0b) / (t_1b - t_0b) * 100;
+                if (percentb >= 100) {
+                    percentb = 100.0000000;
+                }
+                $('#output9').text(percentb.toFixed(7) + '%');
+
+                var d_db = leadingZeros(Math.floor(tb / 24 / 60 / 60 / 1000), 2);
+                var d_hb = leadingZeros(Math.floor((tb - d_db * 24 * 60 * 60 * 1000) / 60 / 60 / 1000), 2);
+                $('#output10').text(d_db + ':' + d_hb + ':' + d_m + ':' + d_s + ':' + d_ms);
             }
 
             function leadingZeros(n, digits) {
