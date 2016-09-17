@@ -210,9 +210,14 @@
                 var d_m = leadingZeros(60 - new Date().getMinutes(), 2);
                 var d_s = leadingZeros(60 - new Date().getSeconds(), 2);
                 var d_ms = leadingZeros(1000 - new Date().getMilliseconds(), 3);
-                $('#output5').text(d_d + ':' + d_h + ':' + d_m + ':' + d_s + ':' + d_ms);
 
-                $('title').html(d_d + ':' + d_h + ':' + d_m + ':' + d_s);
+                if (new Date() > t_1) {
+                    $('#output5').text('0:00:00:00:000');
+                    $('title').text('0:00:00:00');
+                } else {
+                    $('#output5').text(d_d + ':' + d_h + ':' + d_m + ':' + d_s + ':' + d_ms);
+                    $('title').html(d_d + ':' + d_h + ':' + d_m + ':' + d_s);
+                }
 
                 //9.1.
                 var percentb = (new Date() - t_0b) / (t_1b - t_0b) * 100;
@@ -223,7 +228,13 @@
 
                 var d_db = leadingZeros(Math.floor(tb / 24 / 60 / 60 / 1000), 2);
                 var d_hb = leadingZeros(Math.floor((tb - d_db * 24 * 60 * 60 * 1000) / 60 / 60 / 1000), 2);
-                $('#output10').text(d_db + ':' + d_hb + ':' + d_m + ':' + d_s + ':' + d_ms);
+
+
+                if (new Date() > t_1b) {
+                    $('#output10').text('0:00:00:00:000');
+                } else {
+                    $('#output10').text(d_db + ':' + d_hb + ':' + d_m + ':' + d_s + ':' + d_ms);
+                }
             }
 
             function leadingZeros(n, digits) {
