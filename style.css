@@ -5,7 +5,7 @@
 @import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
 @import url(style_card.css);
 
-::selection { background: rgba(0, 0, 0, 0) }
+::selection { background: rgba(0, 0, 0, 0); }
 
 body {
     max-width: 600px;
