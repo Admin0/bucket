@@ -1,12 +1,20 @@
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+
 /*@import url(iconfont/material-icons.css);*/
+
 @import url(https://fonts.googleapis.com/css?family=Black+Ops+One);
+body {
+    background: #e5e5e5;
+}
 
-body { background: #e5e5e5; }
+.article h2:not(:first-child):not(:first-of-type):after, .article h2:not(:first-child):not(:first-of-type):before {
+    background: #e5e5e5;
+    color: #bbb;
+}
 
-.article h2:not(:first-child):not(:first-of-type):after,
-.article h2:not(:first-child):not(:first-of-type):before { background: #e5e5e5; color:#bbb; }
-.article h2:not(:first-child):not(:first-of-type) {border-color: #bbb;}
+.article h2:not(:first-child):not(:first-of-type) {
+    border-color: #bbb;
+}
 
 .card_wrap dl, dl#setting {
     padding: 1em;
@@ -29,14 +37,14 @@ body { background: #e5e5e5; }
 .card_wrap dt, #setting dt {
     font-size: 16px;
     /*color: #777;*/
-    color: rgba(0,0,0,.65);
+    color: rgba(0, 0, 0, .65);
     display: inline;
     flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.card_wrap dd, #setting dd  {
+.card_wrap dd, #setting dd {
     font-size: .9em;
     color: rgba(0, 0, 0, .5);
     white-space: normal;
@@ -63,14 +71,20 @@ body { background: #e5e5e5; }
     display: flex;
 }
 
-.card_wrap dd ul li dt {margin-left: 4px;}
+.card_wrap dd ul li dt {
+    margin-left: 4px;
+}
 
 .card_wrap .back ol, .back ul {
     column-count: 2;
     column-gap: 3em;
     padding-left: 1em;
 }
-.card_wrap .back ul {list-style: none;}
+
+.card_wrap .back ul {
+    list-style: none;
+}
+
 .card_wrap .back li span {
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -84,11 +98,12 @@ body { background: #e5e5e5; }
     display: none;
 }
 
+
 /*.card_wrap input + dt:before, #setting input + dt:before {
     content: "check_box_outline_blank"; 색설정문제로 걍 js에서 처리함
 }*/
 
-.card_wrap input[checked] + dt, #setting input[checked] + dt {
+.card_wrap input[checked]+dt, #setting input[checked]+dt {
     font-weight: 700;
     color: #000;
     text-decoration: none;
@@ -98,11 +113,11 @@ body { background: #e5e5e5; }
     opacity: 0;
 }
 
-.card_wrap input[failed] + dt {
+.card_wrap input[failed]+dt {
     /*text-decoration: line-through*/
 }
 
-.card_wrap input[failed] + dt + dd:after {
+.card_wrap input[failed]+dt+dd:after {
     content: "FAILED";
     /*content: "실패했습니다";*/
     display: inline-block;
@@ -126,9 +141,12 @@ body { background: #e5e5e5; }
 .card_wrap .date {
     float: right;
     /*color: #aaa;*/
-    color: rgba(0,0,0,.4);
+    color: rgba(0, 0, 0, .4);
 }
-.card_wrap li > .date { float: none; }
+
+.card_wrap li>.date {
+    float: none;
+}
 
 .card_wrap {
     perspective: 1000;
@@ -145,9 +163,15 @@ body { background: #e5e5e5; }
 }
 
 @keyframes unhover {
-    0% {z-index: 2;}
-    99% {z-index: 2;}
-    100% {z-index: 1;}
+    0% {
+        z-index: 2;
+    }
+    99% {
+        z-index: 2;
+    }
+    100% {
+        z-index: 1;
+    }
 }
 
 .card_wrap:not(:hover) {
@@ -169,8 +193,7 @@ body { background: #e5e5e5; }
     transform: rotateX(180deg)
 }
 
-.card_wrap .back,
-.card_wrap .front {
+.card_wrap .back, .card_wrap .front {
     backface-visibility: hidden;
     left: 0
 }
@@ -190,8 +213,7 @@ body { background: #e5e5e5; }
     max-width: 100%
 }
 
-.card_wrap .back,
-dl:not(.card):hover {
+.card_wrap .back, dl:not(.card):hover {
     box-shadow: 0 5px 12px rgba(0, 0, 0, .2)
 }
 
@@ -221,27 +243,29 @@ dl:not(.card):hover {
     border-bottom-right-radius: 3px
 }
 
-.card_wrap .back > .img {
+.card_wrap .back>.img {
     display: flex;
     overflow: hidden;
     margin: 0!important
 }
-.card_wrap .back > .img > div {
+
+.card_wrap .back>.img>div {
     flex: 1;
 }
-.card_wrap .back > .img:first-child>div:first-child>img {
+
+.card_wrap .back>.img:first-child>div:first-child>img {
     border-top-left-radius: 3px
 }
 
-.card_wrap .back > .img:first-child>div:last-child>img {
+.card_wrap .back>.img:first-child>div:last-child>img {
     border-top-right-radius: 3px
 }
 
-.card_wrap .back > .img:last-child>div:first-child>img {
+.card_wrap .back>.img:last-child>div:first-child>img {
     border-bottom-left-radius: 3px
 }
 
-.card_wrap .back > .img:last-child>div:last-child>img {
+.card_wrap .back>.img:last-child>div:last-child>img {
     border-bottom-right-radius: 3px
 }
 
@@ -249,13 +273,32 @@ dl:not(.card):hover {
     margin-right: 0;
     vertical-align: text-bottom;
 }
-.card_wrap a[href]:before {content: "open_in_new"!important; }
-.card_wrap a[href^='#']:before {content: "find_in_page"!important; }
-.card_wrap a[href$='.zip']:before {content: "save"!important; }
-.card_wrap a[href$='.pdf']:before {content: "insert_drive_file"!important; }
-.card_wrap a[onclick]:before {content: "theaters"!important; }
-.card_wrap a[src]:before {content: "photo"!important; }
-.card_wrap a:before     {
+
+.card_wrap a[href]:before {
+    content: "open_in_new"!important;
+}
+
+.card_wrap a[href^='#']:before {
+    content: "find_in_page"!important;
+}
+
+.card_wrap a[href$='.zip']:before {
+    content: "save"!important;
+}
+
+.card_wrap a[href$='.pdf']:before {
+    content: "insert_drive_file"!important;
+}
+
+.card_wrap a[onclick]:before {
+    content: "theaters"!important;
+}
+
+.card_wrap a[src]:before {
+    content: "photo"!important;
+}
+
+.card_wrap a:before {
     vertical-align: text-bottom;
     font-family: 'Material Icons';
     font-weight: normal;
@@ -270,14 +313,42 @@ dl:not(.card):hover {
     direction: ltr;
     -webkit-font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
-    width: 1em; /*for not Chrome*/
+    width: 1em;
+    /*for not Chrome*/
 }
 
 
-.cccv_bg    { background: #e5e5e5; padding:1px 1em; }
-.cccv_bg > h2   { margin-top: 0; }
+/* cast */
+
+table.cast {}
+
+table.cast tr td:first-child {
+    width: 50%;
+    text-align: right;
+    padding-right: 1.5em;
+}
+
+table.cast tr td:nth-child(2) {
+    width: 50%;
+    padding-left: 1.5em;
+}
+
+.cccv_bg {
+    background: #e5e5e5;
+    padding: 1px 1em;
+}
+
+.cccv_bg>h2 {
+    margin-top: 0;
+}
 
 
 /* for Blog */
-.article .card .imageblock { margin:0!important; }
-.article .card .imageblock img { box-shadow: none!important; }
+
+.article .card .imageblock {
+    margin: 0!important;
+}
+
+.article .card .imageblock img {
+    box-shadow: none!important;
+}

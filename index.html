@@ -473,10 +473,53 @@
                     <dd>위 항목을 일 년 동안 반복하기.<span class="date">2016.12.25.</span></dd>
                 </dl>
                 <div class="back">
+                    <p style="text-align: center; font-weight:bold; font-size:1.0em;">통계</p>
+                    <table class="cast">
+                        <tr>
+                            <td>진행일</td>
+                            <td>365 일</td>
+                        </tr>
+                        <tr>
+                            <td>기록 횟수</td>
+                            <td>365 회</td>
+                        </tr>
+                        <tr>
+                            <td>통계적 기록 빈도</td>
+                            <td>1 회/일</td>
+                        </tr>
+                        <tr>
+                            <td>　</td>
+                            <td>　</td>
+                        </tr>
+                        <tr>
+                            <td>라면 섭취 횟수</td>
+                            <td>116 회 </td>
+                        </tr>
+                        <tr>
+                            <td>라면 섭취 빈도</td>
+                            <td>31.78%</td>
+                        </tr>
+                        <tr>
+                            <td>　</td>
+                            <td>　</td>
+                        </tr>
+                        <tr>
+                            <td>완료 후 스펙</td>
+                            <td>178 cm / 73 kg / 20% </td>
+                        </tr>
+                        <tr>
+                            <td>　</td>
+                            <td>　</td>
+                        </tr>
+                        <tr>
+                            <td>어이없었던 일</td>
+                            <td>"우리 회사는 기술력으로 먹고 살기 때문에, 식당에서 밥 사진 찍은 거 다 지워라." (지움) </td>
+                        </tr>
+                    </table>
                     <p>
-                        이 <a href="https://www.instagram.com/user_no.01/">인스타그램 계정</a>에서 진행정도를 볼 수 있음.
+                        이 <a href="https://www.instagram.com/user_no.01/">인스타그램 계정</a>에서 결과를 볼 수 있음.
                     </p>
-                    <img src="img/먹스타그램.png" alt="" />
+                    <!-- <img src="img/먹스타그램.png" alt=""> -->
                 </div>
             </div>
             <div class="card">
@@ -2136,19 +2179,19 @@
             </dl>
             <dl>
                 <!-- 구멍 없는 바늘 -->
-                <input type="checkbox"> <dt>구멍 없는 바늘</dt>
+                <input type="checkbox" failed> <dt>구멍 없는 바늘</dt>
                 <dd>인생의 매운맛 경험하기.<span class="date"></span>
                     <ul>
-                        <li><input type="checkbox"><dt>이맛헬</dt></li>
-                        <li><input type="checkbox"><dt>헬잘알</dt></li>
+                        <li><input type="checkbox" failed><dt>이맛헬</dt></li>
+                        <li><input type="checkbox" failed><dt>헬잘알</dt></li>
                     </ul>
                 </dd>
             </dl>
             <dl>
                 <!-- 이맛헬 -->
-                <input type="checkbox"> <dt>이맛헬</dt>
+                <input type="checkbox" failed> <dt>이맛헬</dt>
                 <dd>인턴 후 정규직 전환 실패.<span class="date"></span></dd>
-                <input type="checkbox"> <dt>헬잘알</dt>
+                <input type="checkbox" failed> <dt>헬잘알</dt>
                 <dd>계약 만료 후 연장 실패.<span class="date"></span></dd>
             </dl>
             <dl>
@@ -2200,9 +2243,9 @@
             <dl>
                 <!-- 사람 구실 -->
                 <input type="checkbox" checked> <dt>사람 구실</dt>
-                <dd>직업 갖기.</dd>
+                <dd>직업 갖기.<span class="date">2017.01.19.</span></dd>
             </dl>
-            <dl>
+            <dl id="요즘엔_다_이렇다더라">
                 <!-- 신입사원 되기 -->
                 <input type="checkbox" checked> <dt>요즘엔 다 이렇다더라</dt>
                 <dd>인턴 혹은 계약직, 파견직 되기.<span class="date">2016.08.29.</span> </dd>
@@ -2221,8 +2264,8 @@
                 <input type="checkbox"> <dt>직업 달성 6</dt>
                 <dd>회장 되기.<span class="date"></span> </dd>
             </dl>
-            <dl>
-                <!-- 추가 근무 -->
+            <dl id="건설로봇_준비_완료">
+                <!-- 건설로봇 -->
                 <input type="checkbox" checked> <dt>건설로봇 준비 완료</dt>
                 <dd>시간외 근무하기.<span class="date">2017.01.23.</span> </dd>
                 <input type="checkbox" checked> <dt>시키면 해야죠</dt>
@@ -2231,10 +2274,19 @@
                 <dd>휴일 근무하기.<span class="date">2017.01.27.</span> </dd>
                 <input type="checkbox" checked> <dt>안 좋은 일인가요?</dt>
                 <dd>주 7일 근무하기.<span class="date">2017.02.06.</span> </dd>
-                <input type="checkbox"> <dt>으아잇 깜짝이야</dt>
-                <dd>월 50시간 초과 근무.<span class="date"></span> </dd>
-                <input type="checkbox"> <dt>건설로봇이 공격받고 있습니다</dt>
-                <dd>월 100시간 초과 근무.<span class="date"></span> </dd>
+                <input type="checkbox" checked> <dt>으아잇 깜짝이야</dt>
+                <dd>월 50시간 초과 근무.<span class="date">2017.02.04.</span> </dd>
+                <input type="checkbox" checked> <dt>건설로봇이 공격받고 있습니다</dt>
+                <dd>월 100시간 초과 근무.<span class="date">2017.02.11.</span> </dd>
+            </dl>
+            <dl id="지게로봇_소환">
+                <!-- 지게로봇 -->
+                <input type="checkbox" checked> <dt>지게로봇 소환</dt>
+                <dd>건설로봇 시리즈 모두 달성하기.<span class="date">2017.02.11.</span> </dd>
+                <input type="checkbox"> <dt>스캐너 탐색</dt>
+                <dd>경력직으로 이직하기.<span class="date"></span> </dd>
+                <input type="checkbox"> <dt>보급품 투하</dt>
+                <dd>연봉 5,000 만원 받기.<span class="date"></span> </dd>
             </dl>
             <div class="card">
                 <!-- 자영업자 되기. -->
