@@ -9,6 +9,11 @@
 
 ## UPDATE LOG
 
+##### 2017.03. ver.3.2
+- 퍼가기 코드를 자동 복붙 가능하게 만듦. ([clipboard.js](https://clipboardjs.com/))
+- 항목들을 대거 추가.
+- 시급 6,600 원 받고 일하고 있음(정규직ㅎ). (현 최저시급 6,470 원)
+
 ##### 2016.07. ver.3.1
 - 설정에 다채로운 기능들과 디자인을 추가.
 - .js 함수 개선을 통한 디자인 최적화.
@@ -52,6 +57,17 @@ Copyright © Google Inc.
 
 The MIT License (MIT)
 Copyright © 2016 David DeSandro
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+#### [clipboard.js](https://clipboardjs.com/)
+
+The MIT License (MIT)
+Copyright © 2017 Zeno Rocha <hi@zenorocha.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

@@ -11,7 +11,8 @@
     <script src="http://code.jquery.com/jquery-1.9.0.js"></script>
     <script src="main.js"></script>
     <script src="js/masonry.pkgd.min.js"></script>
-    <!-- <script src="js/prefixfree.min.js"></script> -->
+    <script src="js/clipboard.min.js"></script>
+    <script src="js/prefixfree.min.js"></script>
 </head>
 
 <body>
@@ -104,7 +105,7 @@
 
         <div class="card">
             <!-- 버킷리스트 만들기. -->
-            <div class="front">
+            <div class="front" id="그거_먹는건가요">
                 <dl>
                     <input type="checkbox" checked> <dt>그거 먹는건가요?</dt>
                     <dd>버킷리스트 만들기. <span class="date">2014.10.03.</span> </dd>
@@ -620,7 +621,7 @@
             </dl>
             <div class="card">
                 <!-- 싫은데? -->
-                <div class="front">
+                <div class="front" id="싫은데">
                     <dl>
                         <input type="checkbox" checked> <dt>싫은데?</dt>
                         <dd>사회적 통념을 거스르는 행위 하기.<span class="date">2013.01.04.</span></dd>
@@ -638,7 +639,7 @@
             </div>
             <div class="card">
                 <!-- 멋진 크리스마스 보내기. -->
-                <dl class="front">
+                <dl class="front" id="그럼_그렇지">
                     <input type="checkbox" checked> <dt>그럼 그렇지...</dt>
                     <dd>멋진 크리스마스 보내기.<span class="date">2015.12.25.</span></dd>
                 </dl>
@@ -658,12 +659,12 @@
                     <p title='"야수를 길들여 친구로 만듭니다. 야수를 길들이는 데 집중하는 20초 동안은 방어도가 100%만큼 감소합니다. 만약 이 동안 어떤 이유로든 야수의 주의가 딴데로 돌아가게 된다면 길들이는 것은 실패하게 됩니다. 길들이는 데 성공하면 만족도와 충성도가 매우 낮습니다. 즉시 먹을 것을 줘서 만족도를 높이도록 하십시오."'>위 개시끼에게 손바닥을 뚫리면서 처참하게 실패.</p>
                 </div>
             </div>
-            <dl class="front" title="내 꿈을 위한 여행 (피카츄) ♬">
+            <dl class="front" id="자_이제_시작이야" title="내 꿈을 위한 여행 (피카츄) ♬">
                 <!-- 자, 이제 시작이야 -->
                 <input type="checkbox"> <dt>자, 이제 시작이야 (내 꿈을)</dt>
                 <dd>포켓몬 마스터 되기.<span class="date"></span></dd>
             </dl>
-            <dl class="front">
+            <dl class="front" id="추락하는_것은_날개가_없다">
                 <!-- 추락하는 것은 날개가 없다? -->
                 <input type="checkbox"> <dt>추락하는 것은 날개가 없다?</dt>
                 <dd>죽지 않고 65미터 떨어지기.<span class="date"></span></dd>
@@ -712,7 +713,7 @@
 
             <div class="card">
                 <!-- 제 1번 계획 -->
-                <dl class="front">
+                <dl class="front" id="제_1번_계획">
                     <input type="checkbox" checked> <dt>제 1번 계획</dt>
                     <dd>암호 만들기.<span class="date"></span></dd>
                 </dl>
@@ -725,7 +726,7 @@
             </div>
             <div class="card">
                 <!-- 그래, 이건 집에서만 입자 -->
-                <div class="front">
+                <div class="front" id="이건_집에서만_입자">
                     <dl>
                         <input type="checkbox" checked> <dt>이건 집에서만 입자</dt>
                         <dd>티셔츠에 그림 그리고 입어보기.<span class="date">2014.08.08.</span></dd>
@@ -741,7 +742,7 @@
                 </div>
             </div>
 
-            <dl class="">
+            <dl class="front">
                 <!-- 가구 만들기. -->
                 <input type="checkbox"> <dt>!nameless</dt>
                 <dd>가구 만들기.<span class="date"></span></dd>
@@ -749,13 +750,13 @@
                 <dd>건물 짓기.<span class="date"></span></dd>
             </dl>
 
-            <dl class="">
+            <dl class="front">
                 <!-- 로켓 날리기. -->
                 <input type="checkbox"> <dt>대학 나온 보람이 있네</dt>
                 <dd>연료를 이용해 추진하는 로켓 만들고, 날리기.<span class="date"></span></dd>
             </dl>
 
-            <dl class="">
+            <dl class="front">
                 <!-- 이글루 만들기. -->
                 <input type="checkbox"> <dt>눈 내린다!</dt>
                 <dd>사람 크기의 눈사람 만든 뒤 어깨동무하고 셀카찍기.<span class="date"></span></dd>
@@ -777,6 +778,11 @@
                 <!-- 발명 -->
                 <input type="checkbox"> <dt>!nameless</dt>
                 <dd>발명하기 혹은 특허갖기.<span class="date"></span></dd>
+            </dl>
+            <dl class="front" id="브레이킹_배드">
+                <!-- 브레이킹 베드 -->
+                <input type="checkbox"> <dt>브레이킹 배드</dt>
+                <dd>집에서 고순도의 화학 물질 제조하기.<span class="date"></span></dd>
             </dl>
         </section>
 
@@ -2264,21 +2270,28 @@
                 <input type="checkbox"> <dt>직업 달성 6</dt>
                 <dd>회장 되기.<span class="date"></span> </dd>
             </dl>
-            <dl id="건설로봇_준비_완료">
-                <!-- 건설로봇 -->
-                <input type="checkbox" checked> <dt>건설로봇 준비 완료</dt>
-                <dd>시간외 근무하기.<span class="date">2017.01.23.</span> </dd>
-                <input type="checkbox" checked> <dt>시키면 해야죠</dt>
-                <dd>철야 근무하기.<span class="date">2017.02.04.</span> </dd>
-                <input type="checkbox" checked> <dt>이야 야근이다</dt>
-                <dd>휴일 근무하기.<span class="date">2017.01.27.</span> </dd>
-                <input type="checkbox" checked> <dt>안 좋은 일인가요?</dt>
-                <dd>주 7일 근무하기.<span class="date">2017.02.06.</span> </dd>
-                <input type="checkbox" checked> <dt>으아잇 깜짝이야</dt>
-                <dd>월 50시간 초과 근무.<span class="date">2017.02.04.</span> </dd>
-                <input type="checkbox" checked> <dt>건설로봇이 공격받고 있습니다</dt>
-                <dd>월 100시간 초과 근무.<span class="date">2017.02.11.</span> </dd>
-            </dl>
+            <div class="card">
+                <div class="front">
+                    <dl id="건설로봇_준비_완료">
+                        <!-- 건설로봇 -->
+                        <input type="checkbox" checked> <dt>건설로봇 준비 완료</dt>
+                        <dd>시간외 근무하기.<span class="date">2017.01.23.</span> </dd>
+                        <input type="checkbox" checked> <dt>시키면 해야죠</dt>
+                        <dd>철야 근무하기.<span class="date">2017.02.04.</span> </dd>
+                        <input type="checkbox" checked> <dt>이야 야근이다</dt>
+                        <dd>휴일 근무하기.<span class="date">2017.01.27.</span> </dd>
+                        <input type="checkbox" checked> <dt>안 좋은 일인가요?</dt>
+                        <dd>주 7일 근무하기.<span class="date">2017.02.06.</span> </dd>
+                        <input type="checkbox" checked> <dt>으아잇 깜짝이야</dt>
+                        <dd>월 50시간 초과 근무.<span class="date">2017.02.04.</span> </dd>
+                        <input type="checkbox" checked> <dt>건설로봇이 공격받고 있습니다</dt>
+                        <dd>월 100시간 초과 근무.<span class="date">2017.02.11.</span> </dd>
+                    </dl>
+                </div>
+                <div class="back">
+                    <p>갓조센의 중소기업에서는 이정도 수준의 항목들은 한달컷에 지나지 않는다.</p>
+                </div>
+            </div>
             <dl id="지게로봇_소환">
                 <!-- 지게로봇 -->
                 <input type="checkbox" checked> <dt>지게로봇 소환</dt>
@@ -2500,7 +2513,10 @@
     </section>
 
     <section id="contextmenu">
-        <textarea class="output" onclick="select();"></textarea>
+        <div id="for_copy" data-clipboard-target="#for_copy_output" onclick="$('#contextmenu').removeClass('on');">
+            <i class="material-icons">content_copy</i>복사하기
+        </div>
+        <textarea class="output" id="for_copy_output"></textarea>
     </section>
     <!-- context-menu close -->
 

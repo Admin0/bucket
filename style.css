@@ -633,6 +633,7 @@ input {
     transition:.25s;
     transition-property: opacity, transform, margin;
     top:50%;
+    font-size: 14px;
 }
 #contextmenu {
     top:2em; left:-302px;
@@ -650,6 +651,15 @@ input {
 #contextmenu > .output { overflow: hidden; width: 300px; height: 100px; border: none;  padding: .5em; }
 #contextmenu > .output:focus { outline: none; }
 #contextmenu > .output::selection { background: rgba(0, 0, 0, 0.1); }
+
+#contextmenu i { font-size: 1.25em; }
+#contextmenu > div { padding: 1ex 2ex; color:#212121; }
+#contextmenu > div:hover {
+    background: rgba(158, 158, 158, .2);
+    box-shadow: none;
+    z-index: 1
+}
+/*#contextmenu > #for_copy { position: absolute; top: 0; margin: 0; }*/
 
 
 
