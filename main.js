@@ -888,6 +888,8 @@ function contextmenu() {
                     e.clearSelection();
 
                     toast("복사되었습니다.", "content_paste");
+
+                    $("#contextmenu").removeClass("on");
                 });
 
                 clipboard.on('error', function(e) {
