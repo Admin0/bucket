@@ -541,6 +541,14 @@ input {
     display: none;
 }
 
+.copyright {
+    text-align: center;
+    color: rgba(0, 0, 0, .54);
+    /*font-size: .8em;*/
+    padding:1em;
+}
+.copyright a{color: inherit!important; font-weight: inherit;}
+
 /* ------------------------------------------------------------------- */
 /* ***** tooltip ***** */
 /* ------------------------------------------------------------------- */

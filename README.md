@@ -1,4 +1,5 @@
-# BUCKET LIST by JinH
+BUCKET LIST by JinH
+===================
 
 - 실행 페이지: http://admin0.github.io/bucket/
 - 블로그: [http://jinh.tistory.com/](http://jinh.tistory.com/category/%EA%B8%B0%EB%A1%9D%20%2396:%204th%20Project)
@@ -7,7 +8,8 @@
 
 
 
-## UPDATE LOG
+UPDATE LOG
+----------
 
 ##### 2017.03. ver.3.2
 - 퍼가기 코드를 자동 복붙 가능하게 만듦. ([clipboard.js](https://clipboardjs.com/))
@@ -46,7 +48,8 @@
 
 
 
-## Open Source License
+Open Source License
+-------------------
 
 #### [Material icons](https://design.google.com/icons/)
 
