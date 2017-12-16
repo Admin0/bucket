@@ -278,7 +278,8 @@ function scroll_smooth() {
       isNotNav = false;
     }
 
-    var target = $(this.hash);
+    var target_pre = this.hash;
+    var target = (target_pre.substring(1, 2) == "%" ? $(decodeURIComponent(target_pre)) : $(target_pre));
     var target_reverse; // = $(this) //old code
     if ($(this).parent("p").parent(".back").prev(".front").length != 0) {
       target_reverse = $(this).parent("p").parent(".back").prev(".front");
@@ -345,7 +346,8 @@ function scroll_at_open() {
 
   if (window.location.href.substring(window.location.href.length - 8, window.location.href.length) != window.location.pathname.substring(window.location.pathname.length - 8, window.location.pathname.length)) {
     setTimeout(function() {
-      var target = $(window.location.href.substring(window.location.href.indexOf("#")));
+      var target_pre = window.location.href.substring(window.location.href.indexOf("#"));
+      var target = (target_pre.substring(1, 2) == "%" ? $(decodeURIComponent(target_pre)) : $(target_pre));
       // console.log(target.prop("tagName"));
       $('html, body').animate({
         scrollTop: target.offset().top - $('header').height() - $('#sub_header').height() - 12 //116
