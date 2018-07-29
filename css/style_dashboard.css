@@ -24,6 +24,32 @@
   flex: 1 1 auto;
 }
 
+.dashboard .sub_info {
+  font-size: .75em;
+}
+
+.dashboard .subtitle {
+  position: relative;
+}
+
 #first_class .card_wrap:last-child {
   /* max-width: calc(100% - 1em) !important; */
+}
+
+@media (max-width:1920px) {
+  #item_list_count {
+    display: none !important;
+  }
+}
+
+@media (max-width:1600px) {
+  #item_failed_count {
+    display: none !important;
+  }
+}
+
+@media handheld, only screen and (max-device-width:480px), only screen and (max-device-width:320px), screen and (max-width:600px) {
+  #item_acheieved_count {
+    display: none !important;
+  }
 }

@@ -1,10 +1,11 @@
 // 전역 함수
-var list_total, acheieved, percent_total;
+var list_total, acheieved, percent_total, failed;
 
 function percentage() {
 
   // 세포분열
-  list_total = ($("input").length - $("input[failed]").length);
+  failed = $("input[failed]").length;
+  list_total = ($("input").length - failed);
   if (list_total >= 1000) {
     $("#세포분열_1000").attr("checked", true);
     $("#세포분열_1000 + dt + dd > .date").text(list_total + "개 생성");
@@ -65,8 +66,8 @@ function info() {
   var acheieved_in_this_year = 0, // 올해
     acheieved_in_last_year = 0, //지난해
     acheieved_in_lastlast_year = 0, //지지난해
-    acheieved_in_recent_3_years = 0; //최근 3년... 인데 지난해랑 지지난해 뺀거
-  acheieved_in_recent_3_6_years = 0; //최근 3년... 이후 3년 ㅎ
+    acheieved_in_recent_3_years = 0, //최근 3년... 인데 지난해랑 지지난해 뺀거
+    acheieved_in_recent_3_6_years = 0; //최근 3년... 이후 3년 ㅎ
   var this_year = new Date().getFullYear();
   var this_month = ("00" + (new Date().getMonth() + 1)).slice(-2);
   for (i = 0; i < $("span.date").length; i++) {
@@ -97,10 +98,14 @@ function info() {
   $("#acheieved_in_lastlast_year").text(acheieved_in_lastlast_year);
   $("#acheieved_in_recent_3_years").text(acheieved_in_this_year + acheieved_in_last_year + acheieved_in_lastlast_year + acheieved_in_recent_3_years);
   $("#acheieved_in_recent_3_6_years").text(acheieved_in_recent_3_6_years);
-  $("#acheieved_count").html(acheieved + " <span style='font-size:.75em;'>(" + percent_total + "%)</span>");
+  $("#acheieved_count").html(acheieved);
+  $("#unacheieved_count").text(list_total - acheieved);
+  $("#list_count").text(list_total + failed);
+  $("#failed_count").text(failed);
 
-  $("#acheieved_in_last_year_subtitle").html(((acheieved_in_last_year >= acheieved_in_lastlast_year) ? "▲ " : "▼ ") + (acheieved_in_last_year - acheieved_in_lastlast_year) + " (" + ((acheieved_in_last_year - acheieved_in_lastlast_year) / acheieved_in_lastlast_year * 100).toFixed(0) + "%)<br/>vs. 지지난해");
-  $("#acheieved_in_recent_3_years_subtitle").html(((acheieved_in_recent_3_years >= acheieved_in_recent_3_6_years) ? "▲ " : "▼ ") + (acheieved_in_recent_3_years - acheieved_in_recent_3_6_years) + " (" + ((acheieved_in_recent_3_years - acheieved_in_recent_3_6_years) / acheieved_in_recent_3_6_years * 100).toFixed(0) + "%)<br/>vs. 그 이전 3년간과 비교합니다.");
+  $("#acheieved_in_last_year_subtitle").html(((acheieved_in_last_year >= acheieved_in_lastlast_year) ? "▴ " : "▾ ") + (acheieved_in_last_year - acheieved_in_lastlast_year) + " (" + ((acheieved_in_last_year - acheieved_in_lastlast_year) / acheieved_in_lastlast_year * 100).toFixed(0) + "%)<br/>vs. 지지난해");
+  $("#acheieved_in_recent_3_years_subtitle").html(((acheieved_in_recent_3_years >= acheieved_in_recent_3_6_years) ? "▴" : "▾ ") + (acheieved_in_recent_3_years - acheieved_in_recent_3_6_years) + " (" + ((acheieved_in_recent_3_years - acheieved_in_recent_3_6_years) / acheieved_in_recent_3_6_years * 100).toFixed(0) + "%)<br/>vs. 그 이전 3년간<span class='not_important'>과 비교합니다.</span>");
+  $("#acheieved_count_subtitle").html(percent_total + "%<br/>현재까지의 달성율<span class='not_important'>을 나타냅니다.</span>");
 
   // console.log("acheieved_this_year (" + i + "):" + acheieved_this_year);
 }
