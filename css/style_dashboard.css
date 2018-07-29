@@ -1,0 +1,29 @@
+.dashboard {
+  color: rgba(255, 255, 255, .98);
+  line-height: 1;
+  font-size: .9em;
+  padding-bottom: 3.5em !important;
+  max-width: 2580px;
+}
+
+.dashboard h2 {
+  color: rgba(255, 255, 255, .98);
+  margin-top: 0;
+}
+
+.dashboard .value {
+  font-size: 2.25em;
+  line-height: 1.25;
+}
+
+.dashboard .item_wrap {
+  display: flex;
+}
+
+.dashboard .item {
+  flex: 1 1 auto;
+}
+
+#first_class .card_wrap:last-child {
+  /* max-width: calc(100% - 1em) !important; */
+}

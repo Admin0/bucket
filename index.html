@@ -6,10 +6,11 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="theme-color" content="#212121" />
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="shortcut icon" href="img/[favicon]/favicon.ico">
   <script src="http://code.jquery.com/jquery-1.9.0.js"></script>
-  <script src="main.js"></script>
+  <script src="js/main_info.js"></script>
+  <script src="js/main.js"></script>
   <script src="js/masonry.pkgd.min.js"></script>
   <script src="js/clipboard.min.js"></script>
   <script src="js/prefixfree.min.js"></script>
@@ -115,7 +116,48 @@
         <p>만들었다. 버킷리스트!</p>
       </div>
     </div>
+    <br/>
+
+    <!-- info dashboard -->
+    <div class="card_wrap size_fixed">
+      <dl class="dashboard">
+        <h2 id="실적">실적</h2>
+        <div class="item_wrap">
+          <div class="item">
+            <span class="title">올해 현재까지</span>
+            <div class="value" id="acheieved_in_this_year"></div>
+            <div class="subtitle" id="acheieved_in_this_year_subtitle"></div>
+          </div>
+          <div class="item">
+            <span class="title">지난 해</span>
+            <div class="value" id="acheieved_in_last_year"></div>
+            <div class="subtitle" id="acheieved_in_last_year_subtitle"></div>
+          </div>
+          <div class="item not_important" id="item_lastlast_year">
+            <span class="title">지지난 해</span>
+            <div class="value" id="acheieved_in_lastlast_year"></div>
+            <div class="subtitle" id="acheieved_in_lastlast_year_subtitle"></div>
+          </div>
+          <div class="item">
+            <span class="title">최근 3년간</span>
+            <div class="value" id="acheieved_in_recent_3_years"></div>
+            <div class="subtitle" id="acheieved_in_recent_3_years_subtitle"></div>
+          </div>
+          <div class="item not_important" id="item_recent_3_6_years">
+            <span class="title">그 이전 3년간</span>
+            <div class="value" id="acheieved_in_recent_3_6_years"></div>
+            <div class="subtitle" id="acheieved_in_recent_3_6_years_subtitle"></div>
+          </div>
+          <div class="item">
+            <span class="title">지금까지 달성된 항목의 수</span>
+            <div class="value" id="acheieved_count"></div>
+            <div class="subtitle" id="acheieved_count_subtitle"></div>
+          </div>
+        </div>
+      </dl>
+    </div>
   </section>
+
 
   <!--        ██████              ██        ██  -->
   <!--                            ██        ██  -->
@@ -327,6 +369,7 @@
           </ul>
         </dd>
       </dl>
+
       <dl class="">
         <!-- 항공 교통 -->
         <input type="checkbox"> <dt>교통 수단: 항공</dt>
@@ -339,6 +382,7 @@
           </ul>
         </dd>
       </dl>
+
       <dl class="">
         <!-- 퍼스트 클래스 -->
         <input type="checkbox"> <dt>퍼스트 클래스</dt>
@@ -678,6 +722,10 @@
         <!-- 내일 지구의 종말이 온다 할지라도 -->
         <input type="checkbox"> <dt>내일 지구의 종말이 온다 할지라도</dt>
         <dd>나는 오늘 한그루의 사과나무를 심겠다.<span class="date"></span></dd>
+      </dl>
+      <dl class="">
+        <input type="checkbox"> <dt>!nameless</dt>
+        <dd>소설이 영화화 되기 전에 읽기.<span class="date"></span></dd>
       </dl>
     </section>
 
@@ -2048,10 +2096,12 @@
         </dl>
         <div class="back">
           <div class="img">
+            <img src="img/국가기술자격증 사무자동화산업기사.jpg" alt="" />
             <img src="img/국가기술자격증 산업안전기사.png" alt="" />
+          </div>
+          <div class="img">
             <img src="img/국가기술자격증 정보처리기사.png" alt="" />
             <img src="img/국가기술자격증 화공기사.png" alt="" />
-            <img src="img/국가기술자격증 사무자동화산업기사.jpg" alt="" />
           </div>
         </div>
       </div>
