@@ -13,6 +13,21 @@ var acheieved = {
     "years_ago_3": 0, //지지지난해
     "recent_3_years": 0, //최근 3년... 인데 지난해랑 지지난해 뺀거
     "recent_3_6_years": 0, //최근 3년... 이후 3년 ㅎ
+    "month": {
+      "january": 0,
+      "february": 0,
+      "march": 0,
+      "april": 0,
+      "may": 0,
+      "june": 0,
+      "july": 0,
+      "august": 0,
+      "september": 0,
+      "october": 0,
+      "november": 0,
+      "december": 0,
+      "null": 0, //미등록
+    }
   }
 };
 
@@ -120,7 +135,7 @@ function info() {
   $("#acheieved_in_lastlast_year_subtitle").html(((acheieved.in.lastlast_year >= acheieved.in.years_ago_3) ? "▴ " : "▾ ") + (acheieved.in.lastlast_year - acheieved.in.years_ago_3) + " (" + ((acheieved.in.lastlast_year - acheieved.in.years_ago_3) / acheieved.in.years_ago_3 * 100).toFixed(0) + "%)<br/>vs. " + (this_year - 3) + "년");
   $("#acheieved_in_recent_3_years_subtitle").html(((acheieved.in.recent_3_years >= acheieved.in.recent_3_6_years) ? "▴" : "▾ ") + (acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) + " (" + ((acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) / acheieved.in.recent_3_6_years * 100).toFixed(0) + "%)<br/>vs. 그 이전 3년간<span class='not_important'>과 비교합니다.</span>");
   $("#acheieved_count_subtitle").html(acheieved.stat.percentage + "%<br/>현재까지의 달성율<span class='not_important'>을 나타냅니다.</span>");
-  $("#failed_count_subtitle").html(acheieved.stat.failed + "<br/>영원히 달성 불가능한 과제입니다.");
+  $("#failed_count_subtitle").html((acheieved.stat.failed / (acheieved.stat.failed + acheieved.stat.total) * 100).toFixed(0) + "%<br/>영원히 달성 불가능한 과제입니다.");
 
   // console.log("acheieved_this_year (" + i + "):" + acheieved_this_year);
 }
