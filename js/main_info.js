@@ -39,15 +39,15 @@ function percentage() {
   acheieved.stat.total = ($("input").length - acheieved.stat.failed);
   if (acheieved.stat.total >= 1000) {
     $("#세포분열_1000").attr("checked", true);
-    $("#세포분열_1000 + dt + dd > .date").text(acheieved.stat.total + "개 생성");
+    $("#세포분열_1000 + dt + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
   }
   if (acheieved.stat.total >= 500) {
     $("#세포분열_500").attr("checked", true);
-    $("#세포분열_500 + dt + dd > .date").text(acheieved.stat.total + "개 생성");
+    $("#세포분열_500 + dt + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
   }
   if (acheieved.stat.total >= 100) {
     $("#세포분열_100").attr("checked", true);
-    $("#세포분열_100 + dt + dd > .date").text(acheieved.stat.total + "개 생성");
+    $("#세포분열_100 + dt + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
   }
 
   //재귀함수
@@ -137,10 +137,13 @@ function info() {
   $("#acheieved_count_subtitle").html(acheieved.stat.percentage + "%<br/>현재까지의 달성율<span class='not_important'>을 나타냅니다.</span>");
   $("#failed_count_subtitle").html((acheieved.stat.failed / (acheieved.stat.failed + acheieved.stat.total) * 100).toFixed(0) + "%<br/>영원히 달성 불가능한 과제입니다.");
 
+  $(".dashboard .rotate").remove();
   // console.log("acheieved_this_year (" + i + "):" + acheieved_this_year);
 }
 
-$(document).ready(function() {
-  percentage();
-  info();
-});
+percentage();
+info();
+
+// $(document).ready(function() {
+//
+// });

@@ -101,6 +101,7 @@ function coloring() {
   $("meta[name='theme-color']").attr("content", color.material_700[color.i]);
 }
 
+// coloring();
 
 $(document).ready(function() {
   coloring();

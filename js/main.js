@@ -830,6 +830,18 @@ function browser_alert() {
   if (!is_chrome || is_firefox) $("#browser_alert").addClass("on");
 }
 
+
+// web worker test
+function ajax() {
+  $.ajax({
+    url: "js/main_info.js",
+    success: function(result) {
+      //Do something with the result
+    }
+  });
+}
+//web worker end
+
 $(window).scroll(function() {
   for (i = $("h3:not(nav h3)").length - 1; i >= 0; i--) {
     var target = $("h3:not(nav h3):nth(" + i + ")");
@@ -858,6 +870,7 @@ $(window).resize(function() {
 });
 
 $(document).ready(function() {
+  ajax();
   browser_alert();
   setting();
   card_wrap();

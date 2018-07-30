@@ -9,7 +9,7 @@
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="shortcut icon" href="img/[favicon]/favicon.ico">
   <script src="http://code.jquery.com/jquery-1.9.0.js"></script>
-  <script src="js/main_info.js"></script>
+  <!-- <script src="js/main_info.js"></script> -->
   <script src="js/main.js"></script>
   <script src="js/main_coloring.js"></script>
   <script src="js/masonry.pkgd.min.js"></script>
@@ -126,49 +126,52 @@
         <div class="item_wrap">
           <div class="item">
             <span class="title">올해 현재까지</span>
-            <div class="value" id="acheieved_in_this_year"></div>
+            <div class="value" id="acheieved_in_this_year">--</div>
             <div class="subtitle" id="acheieved_in_this_year_subtitle"></div>
           </div>
           <div class="item">
             <span class="title">지난 해</span>
-            <div class="value" id="acheieved_in_last_year"></div>
-            <div class="subtitle" id="acheieved_in_last_year_subtitle"></div>
+            <div class="value" id="acheieved_in_last_year">--</div>
+            <div class="subtitle" id="acheieved_in_last_year_subtitle">- -- (--%)<br/>vs. 지지난해</div>
           </div>
           <div class="item not_important" id="item_lastlast_year">
             <span class="title">지지난 해</span>
-            <div class="value" id="acheieved_in_lastlast_year"></div>
-            <div class="subtitle" id="acheieved_in_lastlast_year_subtitle"></div>
+            <div class="value" id="acheieved_in_lastlast_year">--</div>
+            <div class="subtitle" id="acheieved_in_lastlast_year_subtitle">- -- (--%)<br/>vs. ----년</div>
           </div>
           <div class="item">
             <span class="title">최근 3년간</span>
-            <div class="value" id="acheieved_in_recent_3_years"></div>
-            <div class="subtitle" id="acheieved_in_recent_3_years_subtitle"></div>
+            <div class="value" id="acheieved_in_recent_3_years">--</div>
+            <div class="subtitle" id="acheieved_in_recent_3_years_subtitle"><br/>vs. 그 이전 3년간과 비교합니다.</div>
           </div>
           <div class="item not_important" id="item_recent_3_6_years">
             <span class="title">그 이전 3년간</span>
-            <div class="value" id="acheieved_in_recent_3_6_years"></div>
+            <div class="value" id="acheieved_in_recent_3_6_years">--</div>
             <div class="subtitle" id="acheieved_in_recent_3_6_years_subtitle"></div>
           </div>
           <div class="item" id="item_acheieved_count">
             <span class="title">지금까지 달성된 항목의 수</span>
-            <div class="value" id="acheieved_count"></div>
-            <div class="subtitle" id="acheieved_count_subtitle"></div>
+            <div class="value" id="acheieved_count">--</div>
+            <div class="subtitle" id="acheieved_count_subtitle">--%<br/>현재까지의 달성율을 나타냅니다.</div>
           </div>
           <div class="item not_important" id="item_unacheieved_count">
             <span class="title">아직 달성하지 못 한 업적의 수</span>
-            <div class="value" id="unacheieved_count"></div>
+            <div class="value" id="unacheieved_count">--</div>
             <div class="subtitle" id="unacheieved_count_subtitle"><br/></div>
           </div>
           <div class="item not_important" id="item_list_count">
             <span class="title">전체 도전 과제의 수</span>
-            <div class="value" id="list_count"></div>
+            <div class="value" id="list_count">--</div>
             <div class="subtitle" id="list_count_subtitle"><br/></div>
           </div>
           <div class="item not_important" id="item_failed_count">
             <span class="title">실패한 도전 과제의 수</span>
-            <div class="value" id="failed_count"></div>
+            <div class="value" id="failed_count">--</div>
             <div class="subtitle" id="failed_count_subtitle"><br/>영원히 달성 불가능한 과제입니다.</div>
           </div>
+        </div>
+        <div class="rotate">
+          <i class="material-icons">autorenew</i>
         </div>
       </dl>
     </div>
