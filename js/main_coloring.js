@@ -1,4 +1,4 @@
-var color = {
+color = {
   "length": 19,
   "material_50": [
     "#FFEBEE", "#FCE4EC", "#F3E5F5", "#EDE7F6", "#E8EAF6",
@@ -62,6 +62,14 @@ var color = {
   ]
 }
 
+function dice(n, s, b) {
+  var out = 0;
+  for (i = 0; i < n; i++) {
+    out += Math.ceil(Math.random() * s);
+  }
+  return out + b;
+}
+
 if (window.localStorage["theme_color"] == "true") {
   color.i = window.localStorage["theme_color__i"];
 } else {
@@ -103,6 +111,6 @@ function coloring() {
 
 // coloring();
 
-$(document).ready(function() {
-  coloring();
-});
+// $(document).ready(function() {
+//   coloring();
+// });

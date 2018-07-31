@@ -1,11 +1,3 @@
-function dice(n, s, b) {
-  var out = 0;
-  for (i = 0; i < n; i++) {
-    out += Math.ceil(Math.random() * s);
-  }
-  return out + b;
-}
-
 function nav_create() {
   // $("body").prepend("<nav><div id='nav_header'></div><div id='nav'></div><div id='nav_footer'><i class='material-icons'>chevron_left</i></div></nav>");
   // $("nav").prepend("<section id='in-page'></section>");
@@ -881,6 +873,7 @@ $(document).ready(function() {
   columns();
   title_tooltip();
   contextmenu();
+  coloring();
 });
 
 $(window).load(function() {
