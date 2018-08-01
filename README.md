@@ -1,11 +1,15 @@
 # BUCKET LIST by JinH
 
-- 실행 페이지: <http://admin0.github.io/bucket/>
-- 블로그: [http://jinh.tistory.com/](http://jinh.tistory.com/category/%EA%B8%B0%EB%A1%9D%20%2396:%204th%20Project)
+- 실행 페이지: <http://jinh.kr/bucket/>
+- 블로그: [http://blog.jinh.kr/](http://jinh.tistory.com/category/%EA%B8%B0%EB%A1%9D%20%2396:%204th%20Project)
 
 맘대로 갖다 쓰셈. 님들의 영혼을 양껏 살찌우셈. 그럼 난 만족함.
 
 ## UPDATE LOG
+
+### 2018.07\. ver.3.4
+
+- 통계 기능 추가.
 
 ### 2017.12\. ver.3.3
 

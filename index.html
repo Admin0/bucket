@@ -6,10 +6,12 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="theme-color" content="#212121" />
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="shortcut icon" href="img/[favicon]/favicon.ico">
   <script src="http://code.jquery.com/jquery-1.9.0.js"></script>
-  <script src="main.js"></script>
+  <!-- <script src="js/main_info.js"></script> -->
+  <script src="js/main_coloring.js"></script>
+  <script src="js/main.js"></script>
   <script src="js/masonry.pkgd.min.js"></script>
   <script src="js/clipboard.min.js"></script>
   <script src="js/prefixfree.min.js"></script>
@@ -115,7 +117,69 @@
         <p>만들었다. 버킷리스트!</p>
       </div>
     </div>
+    <br/>
+
+    <!-- info dashboard -->
+    <div class="card_wrap size_fixed">
+      <dl class="dashboard">
+        <h2 id="실적">실적</h2>
+        <div class="item_wrap">
+          <div class="item">
+            <span class="title">올해 현재까지</span>
+            <div class="value" id="acheieved_in_this_year">--</div>
+            <div class="subtitle" id="acheieved_in_this_year_subtitle"></div>
+          </div>
+          <div class="item">
+            <span class="title">지난 해</span>
+            <div class="value" id="acheieved_in_last_year">--</div>
+            <div class="subtitle" id="acheieved_in_last_year_subtitle">- -- (--%)<br/>vs. 지지난해</div>
+          </div>
+          <div class="item not_important" id="item_lastlast_year">
+            <span class="title">지지난 해</span>
+            <div class="value" id="acheieved_in_lastlast_year">--</div>
+            <div class="subtitle" id="acheieved_in_lastlast_year_subtitle">- -- (--%)<br/>vs. ----년</div>
+          </div>
+          <div class="item">
+            <span class="title">최근 3년간</span>
+            <div class="value" id="acheieved_in_recent_3_years">--</div>
+            <div class="subtitle" id="acheieved_in_recent_3_years_subtitle"><br/>vs. 그 이전 3년간</div>
+          </div>
+          <div class="item not_important" id="item_recent_3_6_years">
+            <span class="title">그 이전 3년간</span>
+            <div class="value" id="acheieved_in_recent_3_6_years">--</div>
+            <div class="subtitle" id="acheieved_in_recent_3_6_years_subtitle"></div>
+          </div>
+          <div class="item" id="item_acheieved_count">
+            <span class="title">지금까지 달성된 항목의 수</span>
+            <div class="value" id="acheieved_count">--</div>
+            <div class="subtitle" id="acheieved_count_subtitle">--%<br/>현재까지의 달성율</div>
+          </div>
+          <div class="item not_important" id="item_unacheieved_count">
+            <span class="title">아직 달성하지 못 한 업적의 수</span>
+            <div class="value" id="unacheieved_count">--</div>
+            <div class="subtitle" id="unacheieved_count_subtitle"><br/></div>
+          </div>
+          <div class="item not_important" id="item_list_count">
+            <span class="title">전체 도전 과제의 수</span>
+            <div class="value" id="list_count">--</div>
+            <div class="subtitle" id="list_count_subtitle"><br/></div>
+          </div>
+          <div class="item not_important" id="item_failed_count">
+            <span class="title">실패한 도전 과제의 수</span>
+            <div class="value" id="failed_count">--</div>
+            <div class="subtitle" id="failed_count_subtitle"><br/>영원히 달성 불가능한 과제입니다.</div>
+          </div>
+        </div>
+        <!-- <div class="rotate">
+          <i class="material-icons">autorenew</i>
+        </div> -->
+        <div class="progress">
+
+        </div>
+      </dl>
+    </div>
   </section>
+
 
   <!--        ██████              ██        ██  -->
   <!--                            ██        ██  -->
@@ -149,7 +213,7 @@
         <div class="front">
           <dl>
             <input type="checkbox" checked> <dt>기념품은 감귤 초콜렛</dt>
-            <dd>해발 1,000 m 이상인 땅 밟기.<span class="date"></span> </dd>
+            <dd>해발 1,000 m 이상인 땅 밟기.<span class="date">2005.</span> </dd>
             <input type="checkbox"> <dt>실은 등산 싫어함</dt>
             <dd>해발 5,000 m 이상인 땅 밟기.<span class="date"></span> </dd>
             <input type="checkbox" failed> <dt>있긴 한 건가?</dt>
@@ -327,6 +391,7 @@
           </ul>
         </dd>
       </dl>
+
       <dl class="">
         <!-- 항공 교통 -->
         <input type="checkbox"> <dt>교통 수단: 항공</dt>
@@ -339,6 +404,7 @@
           </ul>
         </dd>
       </dl>
+
       <dl class="">
         <!-- 퍼스트 클래스 -->
         <input type="checkbox"> <dt>퍼스트 클래스</dt>
@@ -679,6 +745,36 @@
         <input type="checkbox"> <dt>내일 지구의 종말이 온다 할지라도</dt>
         <dd>나는 오늘 한그루의 사과나무를 심겠다.<span class="date"></span></dd>
       </dl>
+      <div class="card">
+        <dl class="front">
+          <!-- 소설이 영화화 되기 전에 읽기. -->
+          <input type="checkbox" checked> <dt>!nameless</dt>
+          <dd>소설이 영화화 되기 전에 읽기.<span class="date"></span></dd>
+        </dl>
+        <div class="back">
+          <ol>
+            <li>천사와 악마 - 댄 브라운</li>
+            <li>해리포터 시리즈- J. K. 롤링</li>
+            <li>향수 - 파트리크 쥐스킨트</li>
+            <li>헝거 게임 - 수잔 콜린스</li>
+          </ol>
+        </div>
+      </div>
+      <div class="card">
+        <dl class="front">
+          <!-- 영화화된 원작 찾아 읽기. -->
+          <input type="checkbox" checked> <dt>!nameless</dt>
+          <dd>영화화된 원작 찾아 읽기.<span class="date"></span></dd>
+        </dl>
+        <div class="back">
+          <ol>
+            <li>다빈치코드 - 댄 브라운</li>
+            <li>신과함께 - 주호민</li>
+            <li>올드보이 - 츠시야 가롱, 미네기시 노부아키</li>
+            <li>우주전쟁 - H. G. 웰스</li>
+          </ol>
+        </div>
+      </div>
     </section>
 
   </section>
@@ -2048,7 +2144,10 @@
         </dl>
         <div class="back">
           <div class="img">
+            <img src="img/국가기술자격증 사무자동화산업기사.jpg" alt="" />
             <img src="img/국가기술자격증 산업안전기사.png" alt="" />
+          </div>
+          <div class="img">
             <img src="img/국가기술자격증 정보처리기사.png" alt="" />
             <img src="img/국가기술자격증 화공기사.png" alt="" />
           </div>
@@ -2062,7 +2161,7 @@
         </dl>
         <div class="back">
           <img src="img/삼기사 (1).png" alt="" />
-          <p>내가 딴다고 했잖니 ㅎㅎ</p>
+          <p>화공기사 땄음. 암튼 무조건 땄음.</p>
         </div>
       </div>
       <dl>
@@ -2653,7 +2752,7 @@
     <p class="copyright">©
       <script>
         document.write(new Date().getFullYear());
-      </script> JinH (29세, 최저시급)</p>
+      </script> JinH (30세, 워킹푸어)</p>
   </footer>
 
   <section id="contextmenu">

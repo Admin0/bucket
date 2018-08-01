@@ -4,6 +4,7 @@
 @import url(https://fonts.googleapis.com/css?family=Black+Ops+One);
 @import url(https://fonts.googleapis.com/earlyaccess/hanna.css);
 @import url(style_card.css);
+@import url(style_dashboard.css);
 
 ::selection { background: rgba(0, 0, 0, 0); }
 
@@ -50,7 +51,7 @@ header {
     padding-left: 256px;
     -webkit-transition: .3s;
     transition: .3s;
-    background: #aaa
+    background: #aaa;
 }
 
 #sub_header.fold {
