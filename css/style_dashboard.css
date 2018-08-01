@@ -5,6 +5,7 @@
   padding-bottom: 3.5em !important;
   max-width: 2580px;
   background: #aaa;
+  transition: .25s;
 }
 
 .dashboard h2 {
@@ -84,6 +85,16 @@
 
 .dashboard .rotate i {
   font-size: 48px;
+}
+
+.dashboard .progress {
+  position: absolute;
+  width: 0;
+  bottom: .5em;
+  left: .5em;
+  background: rgba(255, 255, 255, .75);
+  height: 3px;
+  /* transition: .05s; */
 }
 
 @media (max-width:1920px) {

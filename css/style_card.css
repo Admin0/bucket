@@ -1,5 +1,4 @@
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
-
 /*@import url(iconfont/material-icons.css);*/
 
 @import url(https://fonts.googleapis.com/css?family=Black+Ops+One);
@@ -32,6 +31,11 @@ body {
 .card_wrap dl dl {
   padding: 0;
   box-shadow: none
+}
+
+dl, dt, dd, .card {
+  /* 코드 작동 전에는 아예 안 보이도록 조치 */
+  color: rgba(0, 0, 0, 0);
 }
 
 .card_wrap dt, #setting dt {
@@ -97,7 +101,6 @@ body {
 .card_wrap input {
   display: none;
 }
-
 
 /*.card_wrap input + dt:before, #setting input + dt:before {
     content: "check_box_outline_blank"; 색설정문제로 걍 js에서 처리함
@@ -246,7 +249,7 @@ body {
 .card_wrap .back>.img {
   display: flex;
   overflow: hidden;
-  margin: 0!important
+  margin: 0 !important
 }
 
 .card_wrap .back>.img>div {
@@ -275,27 +278,27 @@ body {
 }
 
 .card_wrap a[href]:before {
-  content: "open_in_new"!important;
+  content: "open_in_new" !important;
 }
 
 .card_wrap a[href^='#']:before {
-  content: "find_in_page"!important;
+  content: "find_in_page" !important;
 }
 
 .card_wrap a[href$='.zip']:before {
-  content: "save"!important;
+  content: "save" !important;
 }
 
 .card_wrap a[href$='.pdf']:before {
-  content: "insert_drive_file"!important;
+  content: "insert_drive_file" !important;
 }
 
 .card_wrap a[onclick]:before {
-  content: "theaters"!important;
+  content: "theaters" !important;
 }
 
 .card_wrap a[src]:before {
-  content: "photo"!important;
+  content: "photo" !important;
 }
 
 .card_wrap a:before {
@@ -316,7 +319,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: 'liga';
 }
-
 
 /* cast */
 
@@ -342,13 +344,12 @@ table.cast tr td:nth-child(2) {
   margin-top: 0;
 }
 
-
 /* for Blog */
 
 .article .card .imageblock {
-  margin: 0!important;
+  margin: 0 !important;
 }
 
 .article .card .imageblock img {
-  box-shadow: none!important;
+  box-shadow: none !important;
 }

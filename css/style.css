@@ -51,7 +51,7 @@ header {
     padding-left: 256px;
     -webkit-transition: .3s;
     transition: .3s;
-    background: #aaa
+    background: #aaa;
 }
 
 #sub_header.fold {
