@@ -146,6 +146,7 @@ var i_info = 0;
 
 function info() {
   // 대시보드
+
   setTimeout(function() {
     if (i_info < $("span.date").length) {
 
@@ -172,17 +173,30 @@ function info() {
         }
         i_info++;
       }
-      if (i_info < $("span.date").length) {inner_info();}
-      if (i_info < $("span.date").length) {inner_info();}
-      if (i_info < $("span.date").length) {inner_info();}
-      if (i_info < $("span.date").length) {inner_info();}
-      if (i_info < $("span.date").length) {inner_info();}
-      if (i_info < $("span.date").length) {inner_info();}
-      if (i_info < $("span.date").length) {inner_info();}
-      if (i_info < $("span.date").length) {inner_info();}
-      if (i_info < $("span.date").length) {inner_info();}
-      if (i_info < $("span.date").length) {inner_info();}
-
+      if (i_info < $("span.date").length) {
+        inner_info();
+      }
+      if (i_info < $("span.date").length) {
+        inner_info();
+      }
+      if (i_info < $("span.date").length) {
+        inner_info();
+      }
+      if (i_info < $("span.date").length) {
+        inner_info();
+      }
+      if (i_info < $("span.date").length) {
+        inner_info();
+      }
+      if (i_info < $("span.date").length) {
+        inner_info();
+      }
+      if (i_info < $("span.date").length) {
+        inner_info();
+      }
+      if (i_info < $("span.date").length) {
+        inner_info();
+      }
       $("#acheieved_in_this_year").text(acheieved.in.this_year);
       $("#acheieved_in_last_year").text(acheieved.in.last_year);
       $("#acheieved_in_lastlast_year").text(acheieved.in.lastlast_year);
@@ -197,6 +211,8 @@ function info() {
       // $(".dashboard .rotate").remove();
       $(".dashboard .progress").remove();
       toast("통계 불러오기 완료", "pie_chart");
+      // console.log(columns);
+      // info_columns();
     }
     $(".dashboard .progress").css({
       "width": "calc(" + i_info / $("span.date").length * 100 + "% - 1em)"
@@ -212,6 +228,20 @@ function info() {
   $("#failed_count").text(acheieved.stat.failed);
   $("#failed_count_subtitle").html((acheieved.stat.failed / (acheieved.stat.failed + acheieved.stat.total) * 100).toFixed(0) + "%<br/>영원히 달성 불가능한 과제입니다.");
 
+
+  function info_columns() {
+    var columns = Math.floor($("body").width() / 500);
+    if (columns <= 1) {
+      $(".not_important").css({
+        "display": "none"
+      });
+    } else {
+      $(".not_important").css({
+        "display": "initial"
+      });
+    }
+  }
+  info_columns();
   // console.log("acheieved_this_year (" + i + "):" + acheieved_this_year);
 }
 
