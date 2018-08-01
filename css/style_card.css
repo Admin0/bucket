@@ -38,6 +38,10 @@ dl, dt, dd, .card {
   color: rgba(0, 0, 0, 0);
 }
 
+.card_wrap dl, .card_wrap dt, .card_wrap dd, .card_wrap .card {
+  color: rgba(0, 0, 0, .65);
+}
+
 .card_wrap dt, #setting dt {
   font-size: 16px;
   /*color: #777;*/
