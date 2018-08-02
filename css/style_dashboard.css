@@ -94,7 +94,8 @@
   left: .5em;
   background: rgba(255, 255, 255, .75);
   height: 3px;
-  /* transition: .05s; */
+  transition: .15s;
+  transition-timing-function: linear;
 }
 
 @media (max-width:1920px) {

@@ -173,30 +173,13 @@ function info() {
         }
         i_info++;
       }
-      if (i_info < $("span.date").length) {
-        inner_info();
+
+      for (var i = 0; i < 10; i++) {
+        if (i_info < $("span.date").length) {
+          inner_info();
+        }
       }
-      if (i_info < $("span.date").length) {
-        inner_info();
-      }
-      if (i_info < $("span.date").length) {
-        inner_info();
-      }
-      if (i_info < $("span.date").length) {
-        inner_info();
-      }
-      if (i_info < $("span.date").length) {
-        inner_info();
-      }
-      if (i_info < $("span.date").length) {
-        inner_info();
-      }
-      if (i_info < $("span.date").length) {
-        inner_info();
-      }
-      if (i_info < $("span.date").length) {
-        inner_info();
-      }
+
       $("#acheieved_in_this_year").text(acheieved.in.this_year);
       $("#acheieved_in_last_year").text(acheieved.in.last_year);
       $("#acheieved_in_lastlast_year").text(acheieved.in.lastlast_year);
@@ -219,7 +202,7 @@ function info() {
     });
     // console.log(i_info + "/" + $("span.date").length);
     // i_info++;
-  }, 1);
+  }, 250);
 
   $("#acheieved_count").html(acheieved.stat.done);
   $("#acheieved_count_subtitle").html(acheieved.stat.percentage + "%<br/>현재까지의 달성율<span class='not_important'>을 나타냅니다.</span>");
