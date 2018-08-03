@@ -143,9 +143,20 @@ function percentage() {
 var this_year = new Date().getFullYear();
 var this_month = ("00" + (new Date().getMonth() + 1)).slice(-2);
 var i_info = 0;
+var info_count = 25;
+var info_timmer = 250;
+var info_width = $(".dashboard").width();
+var info_length = $("span.date").length
 
 function info() {
   // 대시보드
+
+  $("#acheieved_count").html(acheieved.stat.done);
+  $("#acheieved_count_subtitle").html(acheieved.stat.percentage + "%<br/>현재까지의 달성율<span class='not_important'>을 나타냅니다.</span>");
+  $("#unacheieved_count").text(acheieved.stat.total - acheieved.stat.done);
+  $("#list_count").text(acheieved.stat.total + acheieved.stat.failed);
+  $("#failed_count").text(acheieved.stat.failed);
+  $("#failed_count_subtitle").html((acheieved.stat.failed / (acheieved.stat.failed + acheieved.stat.total) * 100).toFixed(0) + "%<br/>영원히 달성 불가능한 과제입니다.");
 
   setTimeout(function() {
     if (i_info < $("span.date").length) {
@@ -155,40 +166,41 @@ function info() {
         var month = $("span.date")[i_info].innerHTML.substring(5, 7);
         if (year == this_year) {
           acheieved.in.this_year++;
+          $("#acheieved_in_this_year").text(acheieved.in.this_year);
         } else if (year == this_year - 1) {
           acheieved.in.last_year++;
+          $("#acheieved_in_last_year").text(acheieved.in.last_year);
+          $("#acheieved_in_last_year_subtitle").html(((acheieved.in.last_year >= acheieved.in.lastlast_year) ? "▴ " : "▾ ") + (acheieved.in.last_year - acheieved.in.lastlast_year) + " (" + ((acheieved.in.last_year - acheieved.in.lastlast_year) / acheieved.in.lastlast_year * 100).toFixed(0) + "%)<br/>vs. 지지난해");
         } else if (year == this_year - 2) {
           acheieved.in.lastlast_year++;
+          $("#acheieved_in_lastlast_year").text(acheieved.in.lastlast_year);
+          $("#acheieved_in_lastlast_year_subtitle").html(((acheieved.in.lastlast_year >= acheieved.in.years_ago_3) ? "▴ " : "▾ ") + (acheieved.in.lastlast_year - acheieved.in.years_ago_3) + " (" + ((acheieved.in.lastlast_year - acheieved.in.years_ago_3) / acheieved.in.years_ago_3 * 100).toFixed(0) + "%)<br/>vs. " + (this_year - 3) + "년");
         } else if (year == this_year - 3) {
           acheieved.in.years_ago_3++;
           if (month >= this_month) {
             acheieved.in.recent_3_years++;
+            $("#acheieved_in_recent_3_years").text(acheieved.in.this_year + acheieved.in.last_year + acheieved.in.lastlast_year + acheieved.in.recent_3_years);
+            $("#acheieved_in_recent_3_years_subtitle").html(((acheieved.in.recent_3_years >= acheieved.in.recent_3_6_years) ? "▴" : "▾ ") + (acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) + " (" + ((acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) / acheieved.in.recent_3_6_years * 100).toFixed(0) + "%)<br/>vs. 그 이전 3년간<span class='not_important'>과 비교합니다.</span>");
           } else {
             acheieved.in.recent_3_6_years++;
+            $("#acheieved_in_recent_3_6_years").text(acheieved.in.recent_3_6_years);
           }
         } else if (year >= this_year - 6) {
           if (month >= this_month) {
             acheieved.in.recent_3_6_years++;
+            $("#acheieved_in_recent_3_6_years").text(acheieved.in.recent_3_6_years);
           }
         }
         i_info++;
       }
 
-      for (var i = 0; i < 10; i++) {
+      for (var i = 0; i < info_count; i++) {
         if (i_info < $("span.date").length) {
           inner_info();
         }
       }
 
-      $("#acheieved_in_this_year").text(acheieved.in.this_year);
-      $("#acheieved_in_last_year").text(acheieved.in.last_year);
-      $("#acheieved_in_lastlast_year").text(acheieved.in.lastlast_year);
-      $("#acheieved_in_recent_3_years").text(acheieved.in.this_year + acheieved.in.last_year + acheieved.in.lastlast_year + acheieved.in.recent_3_years);
-      $("#acheieved_in_recent_3_6_years").text(acheieved.in.recent_3_6_years);
 
-      $("#acheieved_in_last_year_subtitle").html(((acheieved.in.last_year >= acheieved.in.lastlast_year) ? "▴ " : "▾ ") + (acheieved.in.last_year - acheieved.in.lastlast_year) + " (" + ((acheieved.in.last_year - acheieved.in.lastlast_year) / acheieved.in.lastlast_year * 100).toFixed(0) + "%)<br/>vs. 지지난해");
-      $("#acheieved_in_lastlast_year_subtitle").html(((acheieved.in.lastlast_year >= acheieved.in.years_ago_3) ? "▴ " : "▾ ") + (acheieved.in.lastlast_year - acheieved.in.years_ago_3) + " (" + ((acheieved.in.lastlast_year - acheieved.in.years_ago_3) / acheieved.in.years_ago_3 * 100).toFixed(0) + "%)<br/>vs. " + (this_year - 3) + "년");
-      $("#acheieved_in_recent_3_years_subtitle").html(((acheieved.in.recent_3_years >= acheieved.in.recent_3_6_years) ? "▴" : "▾ ") + (acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) + " (" + ((acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) / acheieved.in.recent_3_6_years * 100).toFixed(0) + "%)<br/>vs. 그 이전 3년간<span class='not_important'>과 비교합니다.</span>");
       info();
     } else {
       // $(".dashboard .rotate").remove();
@@ -197,19 +209,15 @@ function info() {
       // console.log(columns);
       // info_columns();
     }
-    $(".dashboard .progress").css({
-      "width": "calc(" + i_info / $("span.date").length * 100 + "% - 1em)"
-    });
+    // $(".dashboard .progress").css({
+    //   "width": "calc(" + i_info / $("span.date").length * 100 + "% - 1em)"
+    // });
+    $(".dashboard .progress").animate({
+      "width": i_info / info_length * info_width - 16
+    }, info_timmer);
     // console.log(i_info + "/" + $("span.date").length);
     // i_info++;
-  }, 250);
-
-  $("#acheieved_count").html(acheieved.stat.done);
-  $("#acheieved_count_subtitle").html(acheieved.stat.percentage + "%<br/>현재까지의 달성율<span class='not_important'>을 나타냅니다.</span>");
-  $("#unacheieved_count").text(acheieved.stat.total - acheieved.stat.done);
-  $("#list_count").text(acheieved.stat.total + acheieved.stat.failed);
-  $("#failed_count").text(acheieved.stat.failed);
-  $("#failed_count_subtitle").html((acheieved.stat.failed / (acheieved.stat.failed + acheieved.stat.total) * 100).toFixed(0) + "%<br/>영원히 달성 불가능한 과제입니다.");
+  }, info_timmer);
 
 
   function info_columns() {
@@ -231,6 +239,16 @@ function info() {
 
 percentage();
 info();
+
+var info_top = $(".dashboard").offset().top;
+$(window).scroll(function() {
+  if (info_top < pageYOffset + 119) {
+
+    console.log(info_top);
+    // break;
+  }
+});
+
 
 // $(document).ready(function() {
 //

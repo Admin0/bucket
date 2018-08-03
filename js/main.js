@@ -854,7 +854,7 @@ $(window).scroll(function() {
   //         console.log($(this).text());
   //     }
   // });
-  // console.log("sex");
+  // console.log("hello?");
 });
 
 $(window).resize(function() {

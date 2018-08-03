@@ -94,7 +94,7 @@
   left: .5em;
   background: rgba(255, 255, 255, .75);
   height: 3px;
-  transition: .15s;
+  /* transition: .15s; */
   transition-timing-function: linear;
 }
 
