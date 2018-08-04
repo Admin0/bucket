@@ -6,11 +6,14 @@
   max-width: 2580px;
   background: #aaa;
   transition: .25s;
+  z-index: 10;
 }
 
-.dashboard h2 {
+.dashboard #실적 {
   color: rgba(255, 255, 255, .98);
   margin-top: 0;
+  margin-bottom: 0.8em;
+  font-size: 1.5em;
 }
 
 .dashboard .value {

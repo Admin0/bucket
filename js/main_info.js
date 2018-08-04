@@ -146,7 +146,8 @@ var i_info = 0;
 var info_count = 25;
 var info_timmer = 250;
 var info_width = $(".dashboard").width();
-var info_length = $("span.date").length
+var info_height = $(".dashboard").height();
+var info_length = $("span.date").length;
 
 function info() {
   // 대시보드
@@ -166,29 +167,29 @@ function info() {
         var month = $("span.date")[i_info].innerHTML.substring(5, 7);
         if (year == this_year) {
           acheieved.in.this_year++;
-          $("#acheieved_in_this_year").text(acheieved.in.this_year);
+          // $("#acheieved_in_this_year").text(acheieved.in.this_year);
         } else if (year == this_year - 1) {
           acheieved.in.last_year++;
-          $("#acheieved_in_last_year").text(acheieved.in.last_year);
-          $("#acheieved_in_last_year_subtitle").html(((acheieved.in.last_year >= acheieved.in.lastlast_year) ? "▴ " : "▾ ") + (acheieved.in.last_year - acheieved.in.lastlast_year) + " (" + ((acheieved.in.last_year - acheieved.in.lastlast_year) / acheieved.in.lastlast_year * 100).toFixed(0) + "%)<br/>vs. 지지난해");
+          // $("#acheieved_in_last_year").text(acheieved.in.last_year);
+          // $("#acheieved_in_last_year_subtitle").html(((acheieved.in.last_year >= acheieved.in.lastlast_year) ? "▴ " : "▾ ") + (acheieved.in.last_year - acheieved.in.lastlast_year) + " (" + ((acheieved.in.last_year - acheieved.in.lastlast_year) / acheieved.in.lastlast_year * 100).toFixed(0) + "%)<br/>vs. 지지난해");
         } else if (year == this_year - 2) {
           acheieved.in.lastlast_year++;
-          $("#acheieved_in_lastlast_year").text(acheieved.in.lastlast_year);
-          $("#acheieved_in_lastlast_year_subtitle").html(((acheieved.in.lastlast_year >= acheieved.in.years_ago_3) ? "▴ " : "▾ ") + (acheieved.in.lastlast_year - acheieved.in.years_ago_3) + " (" + ((acheieved.in.lastlast_year - acheieved.in.years_ago_3) / acheieved.in.years_ago_3 * 100).toFixed(0) + "%)<br/>vs. " + (this_year - 3) + "년");
+          // $("#acheieved_in_lastlast_year").text(acheieved.in.lastlast_year);
+          // $("#acheieved_in_lastlast_year_subtitle").html(((acheieved.in.lastlast_year >= acheieved.in.years_ago_3) ? "▴ " : "▾ ") + (acheieved.in.lastlast_year - acheieved.in.years_ago_3) + " (" + ((acheieved.in.lastlast_year - acheieved.in.years_ago_3) / acheieved.in.years_ago_3 * 100).toFixed(0) + "%)<br/>vs. " + (this_year - 3) + "년");
         } else if (year == this_year - 3) {
           acheieved.in.years_ago_3++;
           if (month >= this_month) {
             acheieved.in.recent_3_years++;
-            $("#acheieved_in_recent_3_years").text(acheieved.in.this_year + acheieved.in.last_year + acheieved.in.lastlast_year + acheieved.in.recent_3_years);
-            $("#acheieved_in_recent_3_years_subtitle").html(((acheieved.in.recent_3_years >= acheieved.in.recent_3_6_years) ? "▴" : "▾ ") + (acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) + " (" + ((acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) / acheieved.in.recent_3_6_years * 100).toFixed(0) + "%)<br/>vs. 그 이전 3년간<span class='not_important'>과 비교합니다.</span>");
+            // $("#acheieved_in_recent_3_years").text(acheieved.in.this_year + acheieved.in.last_year + acheieved.in.lastlast_year + acheieved.in.recent_3_years);
+            // $("#acheieved_in_recent_3_years_subtitle").html(((acheieved.in.recent_3_years >= acheieved.in.recent_3_6_years) ? "▴" : "▾ ") + (acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) + " (" + ((acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) / acheieved.in.recent_3_6_years * 100).toFixed(0) + "%)<br/>vs. 그 이전 3년간<span class='not_important'>과 비교합니다.</span>");
           } else {
             acheieved.in.recent_3_6_years++;
-            $("#acheieved_in_recent_3_6_years").text(acheieved.in.recent_3_6_years);
+            // $("#acheieved_in_recent_3_6_years").text(acheieved.in.recent_3_6_years);
           }
         } else if (year >= this_year - 6) {
           if (month >= this_month) {
             acheieved.in.recent_3_6_years++;
-            $("#acheieved_in_recent_3_6_years").text(acheieved.in.recent_3_6_years);
+            // $("#acheieved_in_recent_3_6_years").text(acheieved.in.recent_3_6_years);
           }
         }
         i_info++;
@@ -199,6 +200,15 @@ function info() {
           inner_info();
         }
       }
+
+      $("#acheieved_in_this_year").text(acheieved.in.this_year);
+      $("#acheieved_in_last_year").text(acheieved.in.last_year);
+      $("#acheieved_in_last_year_subtitle").html(((acheieved.in.last_year >= acheieved.in.lastlast_year) ? "▴ " : "▾ ") + (acheieved.in.last_year - acheieved.in.lastlast_year) + " (" + ((acheieved.in.last_year - acheieved.in.lastlast_year) / acheieved.in.lastlast_year * 100).toFixed(0) + "%)<br/>vs. 지지난해");
+      $("#acheieved_in_lastlast_year").text(acheieved.in.lastlast_year);
+      $("#acheieved_in_lastlast_year_subtitle").html(((acheieved.in.lastlast_year >= acheieved.in.years_ago_3) ? "▴ " : "▾ ") + (acheieved.in.lastlast_year - acheieved.in.years_ago_3) + " (" + ((acheieved.in.lastlast_year - acheieved.in.years_ago_3) / acheieved.in.years_ago_3 * 100).toFixed(0) + "%)<br/>vs. " + (this_year - 3) + "년");
+      $("#acheieved_in_recent_3_years").text(acheieved.in.this_year + acheieved.in.last_year + acheieved.in.lastlast_year + acheieved.in.recent_3_years);
+      $("#acheieved_in_recent_3_years_subtitle").html(((acheieved.in.recent_3_years >= acheieved.in.recent_3_6_years) ? "▴" : "▾ ") + (acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) + " (" + ((acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) / acheieved.in.recent_3_6_years * 100).toFixed(0) + "%)<br/>vs. 그 이전 3년간<span class='not_important'>과 비교합니다.</span>");
+      $("#acheieved_in_recent_3_6_years").text(acheieved.in.recent_3_6_years);
 
 
       info();
@@ -243,9 +253,32 @@ info();
 var info_top = $(".dashboard").offset().top;
 $(window).scroll(function() {
   if (info_top < pageYOffset + 119) {
-
-    console.log(info_top);
+    // var columns = Math.floor(($("html").width() - $("nav").width() - 152) / 500);
+    $(".card_wrap").has(".dashboard").css({
+      "position": "fixed",
+      "top": "119px",
+      "width": (columns == 1 || window.localStorage['column_only_mode'] == "true" ? "100%" : $("body").width() - 16),
+      "margin-left": (columns == 1 || window.localStorage['column_only_mode'] == "true" ? "-" + $(".card_wrap").has(".dashboard").width() / 2 + "px" : "-" + $(".card_wrap").has(".dashboard").width() / 2 - 8 + "px"),
+      "z-index": "5",
+      "box-shadow": "0 5px 12px rgba(0, 0, 0, .2)",
+    })
+    $("#first_class").css({
+      "margin-bottom": $(".card_wrap").has(".dashboard").height() + 16,
+    })
+    // console.log(info_top);
     // break;
+  } else {
+    $(".card_wrap").has(".dashboard").css({
+      "position": "inherit",
+      "top": "inherit",
+      "width": "100%",
+      "margin-left": "inherit",
+      "z-index": "inherit",
+      "box-shadow": "inherit",
+    })
+    $("#first_class").css({
+      "margin-bottom": "inherit",
+    })
   }
 });
 

@@ -222,33 +222,33 @@ dl, dt, dd, .card .card a, .back {
 }
 
 .card_wrap .back, dl:not(.card):hover {
-  box-shadow: 0 5px 12px rgba(0, 0, 0, .2)
+  box-shadow: 0 5px 12px rgba(0, 0, 0, .2);
 }
 
 .card_wrap .back>:not(img) {
-  margin: .5em 1em
+  margin: .5em 1em;
 }
 
 .card_wrap .back>:first-child:not(img) {
-  margin: 1em 1em .5em
+  margin: 1em 1em .5em;
 }
 
 .card_wrap .back>:last-child:not(img) {
-  margin: .5em 1em 1em
+  margin: .5em 1em 1em;
 }
 
 .card_wrap .back>:only-child:not(img):not(ol) {
-  margin: 26px 1em
+  margin: 26px 1em;
 }
 
 .card_wrap .back>img:first-child {
   border-top-left-radius: 3px;
-  border-top-right-radius: 3px
+  border-top-right-radius: 3px;
 }
 
 .card_wrap .back>img:last-child {
   border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px
+  border-bottom-right-radius: 3px;
 }
 
 img {
