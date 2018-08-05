@@ -50,50 +50,11 @@
 #first_class .card_wrap:last-child {
   /* max-width: calc(100% - 1em) !important; */
 }
-
-@-webkit-keyframes rotate {
-  from {
-    -webkit-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes rotate {
-  from {
-    -ms-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  to {
-    -ms-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -webkit-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-
-.rotate {
-  -webkit-animation: rotate 2s linear infinite;
-  -moz-animation: rotate 2s linear infinite;
-  -ms-animation: rotate 2s linear infinite;
-  -o-animation: rotate 2s linear infinite;
-  animation: rotate 2s linear infinite;
-}
-
-.dashboard .rotate {
-  vertical-align: initial;
+.dashboard .pin{
   position: absolute;
-  left: calc(50% - 24px);
-  top: calc(50% - 24px);
+  top: 1em;
+  right: 1em;
+  cursor: pointer;
 }
 
 .dashboard .rotate i {

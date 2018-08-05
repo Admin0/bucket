@@ -1,18 +1,20 @@
 function columns_dashboard(type) {
   if (97 < pageYOffset && window.localStorage['setting__stat'] == "true") {
-    var b_w = $("body").width();
-    if (type) { // column_only_mode
-      $(".card_wrap").has(".dashboard").css({
-        "width": "100%",
-        "margin-left": "-" + b_w / 2 + "px",
-      });
-    } else {
-      $(".card_wrap").has(".dashboard").css({
-        "width": b_w - 16,
-        "margin-left": "-" + (b_w - 16) / 2 - 8 + "px",
-      });
+    if ($(".wrap_dashboard.floating").length == 1) {
+      var b_w = $("body").width();
+      if (type) { // column_only_mode
+        $(".card_wrap").has(".dashboard").css({
+          "width": "100%",
+          "margin-left": "-" + b_w / 2 + "px",
+        });
+      } else {
+        $(".card_wrap").has(".dashboard").css({
+          "width": b_w - 16,
+          "margin-left": "-" + (b_w - 16) / 2 - 8 + "px",
+        });
+      }
+      console.log("columns_dashboard: " + type);
     }
-    console.log("columns_dashboard: " + type);
   }
 }
 

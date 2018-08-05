@@ -198,10 +198,26 @@ function info() {
   // console.log("acheieved_this_year (" + i + "):" + acheieved_this_year);
 }
 
+function info_pinned() {
+  $(".dashboard .pin").on("click", function() {
+    if (window.localStorage["setting__stat"] == "true") {
+      window.localStorage["setting__stat"] = "false"
+      $(".dashboard .pin i").text("turned_in_not");
+      toast("통계 대시보드의 고정이 풀렸습니다.", "pie_chart");
+    } else {
+      window.localStorage["setting__stat"] = "true"
+      $(".dashboard .pin i").text("turned_in");
+      toast("통계 대시보드가 고정됐습니다.", "pie_chart");
+    }
+    info_position();
+  });
+}
+
 percentage();
 info();
+info_pinned();
 
-$(window).scroll(function() {
+function info_position() {
   if (97 < pageYOffset && window.localStorage['setting__stat'] == "true") {
     if ($(".wrap_dashboard.floating").length == 0) {
       var b_w = $("body").width();
@@ -225,9 +241,19 @@ $(window).scroll(function() {
       "margin-bottom": "inherit",
     })
   }
+}
+
+
+$(window).scroll(function() {
+  info_position();
 });
 
 
 $(document).ready(function() {
   $(".card_wrap").has(".dashboard").addClass("wrap_dashboard");
+
+  if (window.localStorage["setting__stat"] == "true") {
+    $(".dashboard .pin i").text("turned_in");
+  }
+
 });
