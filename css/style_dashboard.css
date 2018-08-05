@@ -1,5 +1,12 @@
-#first_class .card_wrap {
+.card_wrap.wrap_dashboard {
   z-index: 4 !important;
+}
+
+.card_wrap.wrap_dashboard.floating {
+  position: fixed;
+  top: 119px;
+  margin-left: -50%;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, .2);
 }
 
 .card_wrap dl.dashboard {

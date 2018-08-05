@@ -203,27 +203,23 @@ info();
 
 $(window).scroll(function() {
   if (97 < pageYOffset && window.localStorage['setting__stat'] == "true") {
-    var b_w = $("body").width();
-    var columns = Math.floor($("body").width() / 500);
-    $(".card_wrap").has(".dashboard").css({
-      "position": "fixed",
-      "top": "119px",
-      "width": (columns == 1 || window.localStorage['column_only_mode'] == "true" ? "100%" : b_w - 16),
-      "margin-left": "-" + b_w / 2 + "px",
-      "box-shadow": "0 5px 12px rgba(0, 0, 0, .2)",
-    })
-    $("#first_class").css({
-      "margin-bottom": $(".card_wrap").has(".dashboard").height() + 16,
-    })
-    // console.log(info_top);
-    // break;
+    if ($(".wrap_dashboard.floating").length == 0) {
+      var b_w = $("body").width();
+      var columns = Math.floor($("body").width() / 500);
+      $(".wrap_dashboard").addClass("floating");
+      $(".wrap_dashboard").css({
+        "width": (columns == 1 || window.localStorage['column_only_mode'] == "true" ? "100%" : b_w - 16),
+        "margin-left": "-" + b_w / 2 + "px",
+      })
+      $("#first_class").css({
+        "margin-bottom": $(".wrap_dashboard").height() + 32,
+      })
+    }
   } else {
-    $(".card_wrap").has(".dashboard").css({
-      "position": "inherit",
-      "top": "inherit",
+    $(".wrap_dashboard").removeClass("floating");
+    $(".wrap_dashboard").css({
       "width": "100%",
       "margin-left": "inherit",
-      "box-shadow": "inherit",
     })
     $("#first_class").css({
       "margin-bottom": "inherit",
@@ -232,6 +228,6 @@ $(window).scroll(function() {
 });
 
 
-// $(document).ready(function() {
-//
-// });
+$(document).ready(function() {
+  $(".card_wrap").has(".dashboard").addClass("wrap_dashboard");
+});
