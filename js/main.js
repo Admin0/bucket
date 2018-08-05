@@ -202,7 +202,7 @@ function scroll_smooth() {
       if (isNotNav) {
         target_position = target.offset().top - event.pageY + pageYOffset + target.height() / 2;
       } else if (target.css("display") != "none") {
-        target_position = target.offset().top - 114 - 208; //114: header 208:dashboard
+        target_position = target.offset().top - 114 - (window.localStorage['setting__stat'] == "true" ? 208 : 0); //114: header 208:dashboard
       } else {
         toast("항목이 없습니다.");
       }
@@ -619,7 +619,7 @@ function card_wrap() {
 function setting() {
 
   var item = [
-    "strict_filtering", "theme_color",
+    "strict_filtering", "theme_color", "setting__stat",
     "cccv", "cccv__style", "cccv__to_here"
   ];
 
@@ -838,7 +838,7 @@ $(window).scroll(function() {
   for (i = $("h3:not(nav h3)").length - 1; i >= 0; i--) {
     var target = $("h3:not(nav h3):nth(" + i + ")");
     // console.log(target.offset().top);
-    if (target.offset().top < pageYOffset + 256 + 208 && target.css("display") != "none") { //256:header 208:dashboard
+    if (target.offset().top < pageYOffset + 256 + (window.localStorage['setting__stat'] == "true" ? 208 : 0) && target.css("display") != "none") { //256:header 208:dashboard
       $("nav h3 a").css({
         "color": "inherit"
       });

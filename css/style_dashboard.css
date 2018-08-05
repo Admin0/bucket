@@ -1,3 +1,7 @@
+#first_class .card_wrap {
+  z-index: 4 !important;
+}
+
 .card_wrap dl.dashboard {
   color: rgba(255, 255, 255, .98);
   line-height: 1;
@@ -6,7 +10,6 @@
   max-width: 2580px;
   background: #aaa;
   transition: .25s;
-  z-index: 10;
 }
 
 .dashboard #실적 {

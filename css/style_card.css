@@ -182,7 +182,7 @@ dl, dt, dd, .card .card a, .back {
   }
 }
 
-.card_wrap:not(:hover) {
+.card_wrap:not(:hover, #first_class .card_wrap) {
   animation-name: unhover;
   animation-duration: .5s;
 }

@@ -1,16 +1,20 @@
-// function columns_dashboard(type) {
-//   if (type) { // column_only_mode
-//     $(".card_wrap").has(".dashboard").css({
-//       "width": "100%",
-//       "margin-left": "-" + $(".card_wrap").has(".dashboard").width() / 2 + "px",
-//     });
-//   } else {
-//     $(".card_wrap").has(".dashboard").css({
-//       "width": $("body").width() - 16,
-//       "margin-left": "-" + $(".card_wrap").has(".dashboard").width() / 2 - 8 + "px",
-//     });
-//   }
-// }
+function columns_dashboard(type) {
+  if (97 < pageYOffset && window.localStorage['setting__stat'] == "true") {
+    var b_w = $("body").width();
+    if (type) { // column_only_mode
+      $(".card_wrap").has(".dashboard").css({
+        "width": "100%",
+        "margin-left": "-" + b_w / 2 + "px",
+      });
+    } else {
+      $(".card_wrap").has(".dashboard").css({
+        "width": b_w - 16,
+        "margin-left": "-" + (b_w - 16) / 2 - 8 + "px",
+      });
+    }
+    console.log("columns_dashboard: " + type);
+  }
+}
 
 function columns() {
   if (column_only_mode != "true") {
@@ -57,6 +61,7 @@ function columns() {
       });
       headline();
       // },100);
+      columns_dashboard(false);
     }
   } else {
     $("body").removeClass("columns");
@@ -82,6 +87,7 @@ function columns() {
     });
     headline();
     // },100);
+    columns_dashboard(true);
   }
 }
 
