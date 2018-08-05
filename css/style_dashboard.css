@@ -6,7 +6,10 @@
   position: fixed;
   top: 119px;
   margin-left: -50%;
-  box-shadow: 0 5px 12px rgba(0, 0, 0, .2);
+}
+
+.card_wrap.wrap_dashboard.floating .dashboard {
+  box-shadow: 0 7px 16px rgba(0, 0, 0, .35);
 }
 
 .card_wrap dl.dashboard {
@@ -50,7 +53,8 @@
 #first_class .card_wrap:last-child {
   /* max-width: calc(100% - 1em) !important; */
 }
-.dashboard .pin{
+
+.dashboard .pin {
   position: absolute;
   top: 1em;
   right: 1em;

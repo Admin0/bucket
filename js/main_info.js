@@ -218,7 +218,7 @@ info();
 info_pinned();
 
 function info_position() {
-  if (97 < pageYOffset && window.localStorage['setting__stat'] == "true") {
+  if (94 < pageYOffset && window.localStorage['setting__stat'] == "true") {
     if ($(".wrap_dashboard.floating").length == 0) {
       var b_w = $("body").width();
       var columns = Math.floor($("body").width() / 500);
@@ -228,7 +228,7 @@ function info_position() {
         "margin-left": "-" + b_w / 2 + "px",
       })
       $("#first_class").css({
-        "margin-bottom": $(".wrap_dashboard").height() + 32,
+        "margin-bottom": $(".wrap_dashboard").height() + 36,
       })
     }
   } else {
