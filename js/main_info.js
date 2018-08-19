@@ -39,14 +39,17 @@ function percentage() {
   acheieved.stat.total = ($("input").length - acheieved.stat.failed);
   if (acheieved.stat.total >= 1000) {
     $("#세포분열_1000").attr("checked", true);
+    $("#세포분열_1000").prev().text("check_box");
     $("#세포분열_1000 + dt + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
   }
   if (acheieved.stat.total >= 500) {
     $("#세포분열_500").attr("checked", true);
+    $("#세포분열_500").prev().text("check_box");
     $("#세포분열_500 + dt + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
   }
   if (acheieved.stat.total >= 100) {
     $("#세포분열_100").attr("checked", true);
+    $("#세포분열_100").prev().text("check_box");
     $("#세포분열_100 + dt + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
   }
 
@@ -56,12 +59,15 @@ function percentage() {
     acheieved.stat.percentage = (acheieved.stat.done / acheieved.stat.total * 100).toFixed(0);
     if (acheieved.stat.percentage >= 75) {
       $("#재귀함수_75").attr("checked", true);
+      $("#재귀함수_75").prev().text("check_box");
     }
     if (acheieved.stat.percentage >= 50) {
       $("#재귀함수_50").attr("checked", true);
+      $("#재귀함수_50").prev().text("check_box");
     }
     if (acheieved.stat.percentage >= 25) {
       $("#재귀함수_25").attr("checked", true);
+      $("#재귀함수_25").prev().text("check_box");
     }
 
     if (acheieved.stat.percentage != (acheieved.stat.done / acheieved.stat.total * 100).toFixed(0)) {
