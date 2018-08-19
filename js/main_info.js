@@ -154,6 +154,7 @@ function info() {
       }
 
       $("#acheieved_in_this_year").text(acheieved.in.this_year);
+      $("#acheieved_in_this_year_subtitle").html(((acheieved.in.this_year >= acheieved.in.last_year) ? "▴ " : "▾ ") + (acheieved.in.this_year - acheieved.in.last_year) + " (" + ((acheieved.in.this_year - acheieved.in.last_year) / acheieved.in.last_year * 100).toFixed(0) + "%)<br/>vs. 지난해");
       $("#acheieved_in_last_year").text(acheieved.in.last_year);
       $("#acheieved_in_last_year_subtitle").html(((acheieved.in.last_year >= acheieved.in.lastlast_year) ? "▴ " : "▾ ") + (acheieved.in.last_year - acheieved.in.lastlast_year) + " (" + ((acheieved.in.last_year - acheieved.in.lastlast_year) / acheieved.in.lastlast_year * 100).toFixed(0) + "%)<br/>vs. 지지난해");
       $("#acheieved_in_lastlast_year").text(acheieved.in.lastlast_year);
