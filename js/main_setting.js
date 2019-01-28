@@ -1,7 +1,7 @@
 function setting() {
 
   var item = [
-    "strict_filtering", "theme_color", "setting__stat",
+    "strict_filtering", "theme_color", "setting__stat_on", "setting__stat",
     "cccv", "cccv__style", "cccv__to_here"
   ];
 
@@ -44,10 +44,8 @@ function setting() {
     }
 
     // setting__stat (dashboard)
-    if (window.localStorage['setting__stat'] == null) {
-      window.localStorage['setting__stat'] == "true";
-    } else {
-      window.localStorage['setting__stat'] == "false";
+    if (window.localStorage['setting__stat_on'] == "true") {
+      info();
     }
     if (window.localStorage["setting__stat"] == "true") {
       $(".dashboard .pin i").text("turned_in");

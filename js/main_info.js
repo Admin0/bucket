@@ -169,8 +169,10 @@ function info() {
       $("#acheieved_in_recent_3_years_subtitle").html(((acheieved.in.recent_3_years >= acheieved.in.recent_3_6_years) ? "▴" : "▾ ") + (acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) + " (" + ((acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) / acheieved.in.recent_3_6_years * 100).toFixed(0) + "%)<br/>vs. 그 이전 3년간<span class='not_important'>과 비교합니다.</span>");
       $("#acheieved_in_recent_3_6_years").text(acheieved.in.recent_3_6_years);
 
+      if (window.localStorage['setting__stat_on'] == "true") {
+        info();
+      }
 
-      info();
     } else {
       // $(".dashboard .rotate").remove();
       $(".dashboard .progress").remove();
@@ -221,7 +223,9 @@ function info_pinned() {
 }
 
 percentage();
-info();
+if (window.localStorage['setting__stat_on'] == "true") {
+  info();
+}
 info_pinned();
 
 function info_position() {

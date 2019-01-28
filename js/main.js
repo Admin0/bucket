@@ -566,7 +566,7 @@ function contextmenu() {
         $("#contextmenu > .output").val(output); //.select();
 
         // auto copy to Clipboard
-        var clipboard = new Clipboard('#for_copy');
+        var clipboard = new ClipboardJS('#for_copy');
 
         clipboard.on('success', function(e) {
           console.info('Action:', e.action);

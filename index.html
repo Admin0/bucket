@@ -18,15 +18,15 @@
   <meta name="theme-color" content="#212121" />
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="shortcut icon" href="img/[favicon]/favicon.ico">
-  <script src="https://code.jquery.com/jquery-1.9.0.js"></script>
-  <script src="js/masonry.pkgd.min.js"></script>
-  <script src="js/clipboard.min.js"></script>
-  <script src="js/prefixfree.min.js"></script>
+  <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
   <!-- <script src="js/main_info.js"></script> -->
   <script src="js/main_setting.js"></script>
   <script src="js/main_coloring.js"></script>
   <script src="js/main_columns.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/masonry.pkgd.min.js"></script>
+  <script src="js/clipboard.min.js"></script>
+  <script src="js/prefixfree.min.js"></script>
 </head>
 
 <body>
@@ -96,6 +96,11 @@
       <input type="checkbox" checked> <dt>테마 색</dt>
       <dd class="on">현재 색이 테마 색으로 지정되었습니다.</dd>
       <dd class="off">테마 색이 무작위로 변합니다.</dd>
+    </div>
+    <div class="setting_item" id="setting__stat_on">
+      <input type="checkbox"> <dt>통계 보기</dt>
+      <dd class="on">통계를 보여줍니다.</dd>
+      <dd class="off">통계는 필요없으니 CPU를 고문하지 마십시오.</dd>
     </div>
     <div class="setting_item" id="setting__stat">
       <input type="checkbox" checked> <dt>통계 대시보드 고정</dt>
@@ -2668,7 +2673,7 @@
       </dl>
       <dl class="front">
         <!-- 지름신 강림 -->
-        <input type="checkbox"> <dt>지름신 강림</dt>
+        <input type="checkbox" checked> <dt>지름신 강림</dt>
         <dd>1,000 만 원 이상의 가치가 있는 것 구입.<span class="date">2018.11.29.</span> </dd>
         <input type="checkbox"> <dt>내집마련?</dt>
         <dd>1 억 원 이상의 가치가 있는 것 구입.<span class="date"></span> </dd>
