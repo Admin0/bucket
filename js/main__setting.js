@@ -44,15 +44,7 @@ function setting() {
     }
 
     // setting__stat (dashboard)
-    if (window.localStorage['setting__stat_on'] == "true") {
-      info();
-    }
-    if (window.localStorage["setting__stat"] == "true") {
-      $(".dashboard .pin i").text("turned_in");
-    } else {
-      $(".dashboard .pin i").text("turned_in_not");
-    }
-    info_position();
+    $.getScript("js/main__setting_stat.js")
 
 
   }

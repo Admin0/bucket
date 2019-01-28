@@ -665,7 +665,7 @@ function browser_alert() {
 // web worker test
 function ajax() {
   $.ajax({
-    url: "js/main_info.js",
+    url: "js/main__info.js",
     success: function(result) {
       //Do something with the result
     }
