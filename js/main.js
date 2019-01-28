@@ -549,7 +549,7 @@ function contextmenu() {
 
       function print() {
         if (window.localStorage["cccv__style"] == "true") {
-          output += '<link rel="stylesheet" type="text/css" href="https://jinh.kr/bucket/style_card.css">\n<style>\n\t.card_wrap { margin:1em auto; display: block; font-size: 16px; }\n</style>\n\n';
+          output += '<link rel="stylesheet" type="text/css" href="//jinh.kr/bucket/css/style_card.css">\n<style>\n\t.card_wrap { margin:1em auto; display: block; font-size: 16px; }\n</style>\n\n';
         }
         output += '<div class=card_wrap>' + target.html() + '</div>';
         if (window.localStorage["cccv__to_here"] == "true") {
@@ -561,7 +561,7 @@ function contextmenu() {
           } else {
             id = "";
           }
-          output = '<h2><a href="https://jinh.kr/bucket' + id + '">버킷리스트' + id + '</a></h2>\n\n' + output;
+          output = '<h2><a href="//jinh.kr/bucket' + id + '">버킷리스트' + id + '</a></h2>\n\n' + output;
         }
         $("#contextmenu > .output").val(output); //.select();
 
