@@ -151,7 +151,7 @@ li a:hover  { position: inherit; box-shadow: none; background: rgba(0, 0, 0, .05
 
 #nav_bg, #setting_bg {
     position: fixed;
-    z-index: 6;
+    z-index: 5;
     left: 0;
     top: 0;
     transition: .3s;
