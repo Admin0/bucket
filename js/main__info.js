@@ -228,8 +228,12 @@ if (window.localStorage['setting__stat_on'] == "true") {
 }
 info_pinned();
 
+var dashboard_top = $(".dashboard").offset().top - 116;
+
 function info_position() {
-  if (104 < pageYOffset && window.localStorage['setting__stat'] == "true" && window.localStorage['setting__stat_on'] == "true") {
+  if (dashboard_top < pageYOffset &&
+    window.localStorage['setting__stat'] == "true" &&
+    window.localStorage['setting__stat_on'] == "true") {
     if ($(".wrap_dashboard.floating").length == 0) {
       var b_w = $("body").width();
       var columns = Math.floor($("body").width() / 500);

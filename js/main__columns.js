@@ -1,5 +1,6 @@
 function columns_dashboard(type) {
-  if (97 < pageYOffset && window.localStorage['setting__stat'] == "true") {
+  dashboard_top = $(".dashboard").offset().top - 116;
+  if (dashboard_top < pageYOffset && window.localStorage['setting__stat'] == "true") {
     if ($(".wrap_dashboard.floating").length == 1) {
       var b_w = $("body").width();
       if (type) { // column_only_mode
