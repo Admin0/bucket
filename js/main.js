@@ -332,7 +332,7 @@ function imgReady() {
       })
     })
 
-    $("#img_wrap > img").load(function() {
+    $("#img_wrap > img").on('load', function() {
       if ($("#img_wrap > img").height() >= $(window).height() * .9) {
         $("#img_wrap > img").css({
           "width": "initial",
