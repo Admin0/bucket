@@ -151,7 +151,7 @@ li a:hover  { position: inherit; box-shadow: none; background: rgba(0, 0, 0, .05
 
 #nav_bg, #setting_bg {
     position: fixed;
-    z-index: 5;
+    z-index: 6;
     left: 0;
     top: 0;
     transition: .3s;
@@ -341,7 +341,7 @@ nav.fold #setting_bt:hover {
 #setting {
     background: #fff;
     box-shadow: 0 2px 4px -1px rgba(0,0,0,0.2),0 4px 5px 0 rgba(0,0,0,0.14),0 1px 10px 0 rgba(0,0,0,0.12)!important;
-    z-index: 5;
+    z-index: 6;
     max-width:calc(450px - 2em);
     margin: auto;
     transition: .25s opacity!important;

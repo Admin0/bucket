@@ -102,7 +102,7 @@ var this_year = new Date().getFullYear();
 var this_month = ("00" + (new Date().getMonth() + 1)).slice(-2);
 var i_info = 0;
 var info_count = 25;
-var info_timmer = 250;
+var info_timmer = 100;
 var info_width = $(".dashboard").width();
 var info_height = $(".dashboard").height();
 var info_length = $("span.date").length;
@@ -176,7 +176,7 @@ function info() {
     } else {
       // $(".dashboard .rotate").remove();
       $(".dashboard .progress").remove();
-      toast("통계 불러오기 완료", "pie_chart");
+      // toast("통계 불러오기 완료", "pie_chart");
       // console.log(columns);
       // info_columns();
     }
@@ -185,7 +185,7 @@ function info() {
     // });
     $(".dashboard .progress").animate({
       "width": i_info / info_length * 97.5 + "%"
-    }, info_timmer);
+    }, info_timmer, "linear");
     // console.log(i_info + "/" + $("span.date").length);
     // i_info++;
   }, info_timmer);
@@ -229,7 +229,7 @@ if (window.localStorage['setting__stat_on'] == "true") {
 info_pinned();
 
 function info_position() {
-  if (94 < pageYOffset && window.localStorage['setting__stat'] == "true") {
+  if (104 < pageYOffset && window.localStorage['setting__stat'] == "true" && window.localStorage['setting__stat_on'] == "true") {
     if ($(".wrap_dashboard.floating").length == 0) {
       var b_w = $("body").width();
       var columns = Math.floor($("body").width() / 500);
@@ -240,7 +240,7 @@ function info_position() {
       })
       $("#first_class").css({
         "margin-bottom": $(".wrap_dashboard").height() + 36,
-      })
+      });
     }
   } else {
     $(".wrap_dashboard").removeClass("floating");
@@ -250,7 +250,7 @@ function info_position() {
     })
     $("#first_class").css({
       "margin-bottom": "inherit",
-    })
+    });
   }
 }
 

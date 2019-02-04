@@ -1,7 +1,8 @@
 function setting() {
 
   var item = [
-    "strict_filtering", "theme_color", "setting__stat_on", "setting__stat",
+    "strict_filtering", "theme_color",
+    "setting__stat_on", "setting__stat",
     "cccv", "cccv__style", "cccv__to_here"
   ];
 
@@ -13,7 +14,9 @@ function setting() {
     $("#setting .setting_item input").prev("i").remove();
 
     for (i = 0; i < item.length; i++) {
-      if (window.localStorage[item[i]] == "true") {
+      if (window.localStorage[item[i]] == null) {
+        window.localStorage[item[i]] = $("#" + item[i] + " input").prop('checked');
+      } else if (window.localStorage[item[i]] == "true") {
         $("#" + item[i] + " input").attr("checked", true);
       } else {
         $("#" + item[i] + " input").attr("checked", false);
@@ -44,7 +47,7 @@ function setting() {
     }
 
     // setting__stat (dashboard)
-    $.getScript("js/main__setting_stat.js")
+    $.getScript("js/main__setting_stat.js");
 
 
   }
