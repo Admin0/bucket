@@ -49,8 +49,8 @@ function setting() {
     // setting__stat (dashboard)
     $.getScript("js/main__setting_stat.js");
 
-
   }
+
   $("#setting_bt").on("click", function() {
     // $(this).css("color",color.material_500[color.i]);
     $('#tooltip_nav').css({
@@ -64,6 +64,7 @@ function setting() {
     });
     check_setting();
   });
+
   $("#setting > .setting_item").on("click", function() {
     // console.log($(this).hasClass("disabled"));
     if (!$(this).hasClass("disabled")) {
@@ -84,5 +85,4 @@ function setting() {
       check_setting();
     }
   });
-
 }

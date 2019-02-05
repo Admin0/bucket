@@ -61,5 +61,32 @@ $.when(
     $(deferred.resolve);
   })
 ).done(function() {
-  //place your code here, the scripts are all loaded
+
+  $(window).resize(function() {
+    columns();
+  });
+
+  $(document).ready(function() {
+    ajax();
+    browser_alert();
+    setting();
+    card_wrap();
+    nav_create();
+    scroll_smooth();
+    checkbox();
+    filter();
+    columns();
+    title_tooltip();
+    contextmenu();
+    coloring();
+  });
+
+  $(window).on('load', function() {
+    setTimeout(function() {
+      columns();
+      scroll_at_open();
+    }, 0);
+    imgReady();
+  });
+
 });
