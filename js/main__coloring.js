@@ -71,7 +71,10 @@ function dice(n, s, b) {
 }
 
 if (window.localStorage["theme_color"] == "true") {
-  color.i = window.localStorage["theme_color__i"];
+  if (!window.localStorage["theme_color__i"])
+    color.i = window.localStorage["theme_color__i"];
+  else
+    color.i = 0;
 } else {
   color.i = dice(1, color.length, -1);
 }
