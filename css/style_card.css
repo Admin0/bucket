@@ -251,7 +251,7 @@ dl, dt, dd, .card .card a, .back {
   border-bottom-right-radius: 3px;
 }
 
-img {
+.card img {
   /* 로딩전 미리보기 방지 */
   opacity: 0;
 }
