@@ -1,5 +1,15 @@
+var dashboard_top;
+
 function columns_dashboard(type) {
-  dashboard_top = $(".dashboard").offset().top - 116;
+  if ($(".dashboard").length != 0) {
+    dashboard_top = $(".dashboard").offset().top - 116;
+  } else {
+    $.get("module/dashboard.html", function(data) {
+      $('section#first_class').append(data);
+      coloring();
+      dashboard_top = $(".dashboard").offset().top - 116;
+    });
+  }
   if (dashboard_top < pageYOffset && window.localStorage['setting__stat'] == "true") {
     if ($(".wrap_dashboard.floating").length == 1) {
       var b_w = $("body").width();

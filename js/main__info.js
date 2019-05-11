@@ -228,7 +228,7 @@ if (window.localStorage['setting__stat_on'] == "true") {
 }
 info_pinned();
 
-var dashboard_top = $(".dashboard").offset().top - 116;
+// var dashboard_top = $(".dashboard").offset().top - 116;
 
 function info_position() {
   if (dashboard_top < pageYOffset &&

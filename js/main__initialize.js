@@ -45,17 +45,17 @@ $.each([{
       default:
         $(val.to).append(data);
     }
-    console.log(this.url + " was loaded.");
+    // console.log(this.url + " was loaded.");
   }).fail(function() {
-    console.log(this.url + " was failed to load.");
+    // console.log(this.url + " was failed to load.");
   });
 });
 
 // boot
 $.when(
   $.getScript("js/main__setting.js"),
-  $.getScript("js/main__coloring.js"),
   $.getScript("js/main__columns.js"),
+  $.getScript("js/main__coloring.js"),
   $.getScript("js/main.js"),
   $.Deferred(function(deferred) {
     $(deferred.resolve);
@@ -79,7 +79,7 @@ $.when(
     title_tooltip();
     contextmenu();
     coloring();
-    check_setting();
+    // check_setting();
   });
 
   $(window).on('load', function() {
