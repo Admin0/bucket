@@ -34,7 +34,16 @@ $.each([{
   from: "contents__배움_고등교육", // 배움
   to: "h2#배움 + section.sup"
 }, {
+  from: "contents__배움_자격",
+  to: "h2#배움 + section.sup"
+}, {
+  from: "contents__배움_언어",
+  to: "h2#배움 + section.sup"
+}, {
   from: "contents__돈_직업", // 돈
+  to: "h2#돈 + section.sup"
+}, {
+  from: "contents__돈_소유",
   to: "h2#돈 + section.sup"
 }], function(id, val) {
   $.get("module/" + val.from + ".html", function(data) {

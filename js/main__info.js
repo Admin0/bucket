@@ -125,29 +125,23 @@ function info() {
         var month = $("span.date")[i_info].innerHTML.substring(5, 7);
         if (year == this_year) {
           acheieved.in.this_year++;
-          // $("#acheieved_in_this_year").text(acheieved.in.this_year);
+            acheieved.in.recent_3_years++;
         } else if (year == this_year - 1) {
           acheieved.in.last_year++;
-          // $("#acheieved_in_last_year").text(acheieved.in.last_year);
-          // $("#acheieved_in_last_year_subtitle").html(((acheieved.in.last_year >= acheieved.in.lastlast_year) ? "▴ " : "▾ ") + (acheieved.in.last_year - acheieved.in.lastlast_year) + " (" + ((acheieved.in.last_year - acheieved.in.lastlast_year) / acheieved.in.lastlast_year * 100).toFixed(0) + "%)<br/>vs. 지지난해");
+            acheieved.in.recent_3_years++;
         } else if (year == this_year - 2) {
           acheieved.in.lastlast_year++;
-          // $("#acheieved_in_lastlast_year").text(acheieved.in.lastlast_year);
-          // $("#acheieved_in_lastlast_year_subtitle").html(((acheieved.in.lastlast_year >= acheieved.in.years_ago_3) ? "▴ " : "▾ ") + (acheieved.in.lastlast_year - acheieved.in.years_ago_3) + " (" + ((acheieved.in.lastlast_year - acheieved.in.years_ago_3) / acheieved.in.years_ago_3 * 100).toFixed(0) + "%)<br/>vs. " + (this_year - 3) + "년");
+            acheieved.in.recent_3_years++;
         } else if (year == this_year - 3) {
           acheieved.in.years_ago_3++;
           if (month >= this_month) {
             acheieved.in.recent_3_years++;
-            // $("#acheieved_in_recent_3_years").text(acheieved.in.this_year + acheieved.in.last_year + acheieved.in.lastlast_year + acheieved.in.recent_3_years);
-            // $("#acheieved_in_recent_3_years_subtitle").html(((acheieved.in.recent_3_years >= acheieved.in.recent_3_6_years) ? "▴" : "▾ ") + (acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) + " (" + ((acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) / acheieved.in.recent_3_6_years * 100).toFixed(0) + "%)<br/>vs. 그 이전 3년간<span class='not_important'>과 비교합니다.</span>");
           } else {
             acheieved.in.recent_3_6_years++;
-            // $("#acheieved_in_recent_3_6_years").text(acheieved.in.recent_3_6_years);
           }
         } else if (year >= this_year - 6) {
           if (month >= this_month) {
             acheieved.in.recent_3_6_years++;
-            // $("#acheieved_in_recent_3_6_years").text(acheieved.in.recent_3_6_years);
           }
         }
         i_info++;
@@ -165,7 +159,7 @@ function info() {
       $("#acheieved_in_last_year_subtitle").html(((acheieved.in.last_year >= acheieved.in.lastlast_year) ? "▴ " : "▾ ") + (acheieved.in.last_year - acheieved.in.lastlast_year) + " (" + ((acheieved.in.last_year - acheieved.in.lastlast_year) / acheieved.in.lastlast_year * 100).toFixed(0) + "%)<br/>vs. 지지난해");
       $("#acheieved_in_lastlast_year").text(acheieved.in.lastlast_year);
       $("#acheieved_in_lastlast_year_subtitle").html(((acheieved.in.lastlast_year >= acheieved.in.years_ago_3) ? "▴ " : "▾ ") + (acheieved.in.lastlast_year - acheieved.in.years_ago_3) + " (" + ((acheieved.in.lastlast_year - acheieved.in.years_ago_3) / acheieved.in.years_ago_3 * 100).toFixed(0) + "%)<br/>vs. " + (this_year - 3) + "년");
-      $("#acheieved_in_recent_3_years").text(acheieved.in.this_year + acheieved.in.last_year + acheieved.in.lastlast_year + acheieved.in.recent_3_years);
+      $("#acheieved_in_recent_3_years").text(acheieved.in.recent_3_years);
       $("#acheieved_in_recent_3_years_subtitle").html(((acheieved.in.recent_3_years >= acheieved.in.recent_3_6_years) ? "▴" : "▾ ") + (acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) + " (" + ((acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) / acheieved.in.recent_3_6_years * 100).toFixed(0) + "%)<br/>vs. 그 이전 3년간<span class='not_important'>과 비교합니다.</span>");
       $("#acheieved_in_recent_3_6_years").text(acheieved.in.recent_3_6_years);
 

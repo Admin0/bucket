@@ -58,7 +58,7 @@ function columns() {
       $(".not_important").css({
         "display": "initial"
       });
-      console.log("columns: " + columns);
+      // console.log("columns: " + columns);
       // setTimeout(function(){
       $('section.sub').masonry({
         // options
