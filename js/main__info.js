@@ -217,7 +217,7 @@ function info_pinned() {
 }
 
 percentage();
-if (window.localStorage['setting__stat_on'] == "true") {
+if (window.localStorage['setting__stat_on'] != "false") {
   info();
 }
 info_pinned();
