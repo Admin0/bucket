@@ -11,7 +11,6 @@ $.each([{
 }, {
   from: "contents__휴식_음식",
   to: "h2#휴식 + section.sup",
-  type: "append"
 }, {
   from: "contents__휴식_기타",
   to: "h2#휴식 + section.sup"
@@ -78,20 +77,20 @@ $.when(
   $(document).ready(function() {
     ajax();
     browser_alert();
+    checkbox();
     setting();
     card_wrap();
     nav_create();
     scroll_smooth();
-    checkbox();
     filter();
     columns();
     title_tooltip();
     contextmenu();
     coloring();
-    // check_setting();
+    check_setting();
   });
 
-  $(window).on('load', function() {
+  $(window).on('load', function() { //not document, but window
     setTimeout(function() {
       columns();
       scroll_at_open();

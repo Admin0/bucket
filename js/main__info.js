@@ -102,7 +102,7 @@ var this_year = new Date().getFullYear();
 var this_month = ("00" + (new Date().getMonth() + 1)).slice(-2);
 var i_info = 0;
 var info_count = 25;
-var info_timmer = 100;
+var info_timmer = 100; //css transition과 같은 값으로 설정해야한다.
 var info_width = $(".dashboard").width();
 var info_height = $(".dashboard").height();
 var info_length = $("span.date").length;
@@ -125,13 +125,13 @@ function info() {
         var month = $("span.date")[i_info].innerHTML.substring(5, 7);
         if (year == this_year) {
           acheieved.in.this_year++;
-            acheieved.in.recent_3_years++;
+          acheieved.in.recent_3_years++;
         } else if (year == this_year - 1) {
           acheieved.in.last_year++;
-            acheieved.in.recent_3_years++;
+          acheieved.in.recent_3_years++;
         } else if (year == this_year - 2) {
           acheieved.in.lastlast_year++;
-            acheieved.in.recent_3_years++;
+          acheieved.in.recent_3_years++;
         } else if (year == this_year - 3) {
           acheieved.in.years_ago_3++;
           if (month >= this_month) {
@@ -163,23 +163,24 @@ function info() {
       $("#acheieved_in_recent_3_years_subtitle").html(((acheieved.in.recent_3_years >= acheieved.in.recent_3_6_years) ? "▴" : "▾ ") + (acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) + " (" + ((acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) / acheieved.in.recent_3_6_years * 100).toFixed(0) + "%)<br/>vs. 그 이전 3년간<span class='not_important'>과 비교합니다.</span>");
       $("#acheieved_in_recent_3_6_years").text(acheieved.in.recent_3_6_years);
 
-      if (window.localStorage['setting__stat_on'] == "true") {
+      if (window.localStorage['setting__stat_on'] != "false") {
         info();
       }
 
     } else {
       // $(".dashboard .rotate").remove();
-      $(".dashboard .progress").remove();
+      $(".dashboard .progress").fadeOut(100);
+
       // toast("통계 불러오기 완료", "pie_chart");
       // console.log(columns);
       // info_columns();
     }
-    // $(".dashboard .progress").css({
-    //   "width": "calc(" + i_info / $("span.date").length * 100 + "% - 1em)"
-    // });
-    $(".dashboard .progress").animate({
-      "width": i_info / info_length * 97.5 + "%"
-    }, info_timmer, "linear");
+    $(".dashboard .progress").css({
+      "width": "calc(" + i_info / info_length * 100 + "% - 1em)"
+    });
+    // $(".dashboard .progress").animate({
+    //   "width": i_info / info_length * 100 + "%"
+    // }, info_timmer, "linear");
     // console.log(i_info + "/" + $("span.date").length);
     // i_info++;
   }, info_timmer);
