@@ -17,7 +17,7 @@ function columns_dashboard(type) {
           "margin-left": "-" + (b_w - 16) / 2 - 8 + "px",
         });
       }
-      console.log("columns_dashboard: " + type);
+      console.log("dashboard__column_only_mode: " + type);
     }
   }
 }

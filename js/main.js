@@ -280,7 +280,7 @@ function title_tooltip() {
   $('[data-title]').each(function() {
     $(this).hover(
       function() {
-        console.log($(this).attr('data-title'));
+        console.log("title_tooltip: " + $(this).attr('data-title'));
         if (document.height === null) {
           pageYOffset = document.documentElement.scrollTop;
         }
