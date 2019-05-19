@@ -640,6 +640,39 @@ h4:first-of-type {
   border-radius: 3px
 }
 
+.shadow-right {
+  box-shadow: 2px 0 6px 0 rgba(60, 64, 67, .15);
+}
+
+.shadow-bottom {
+  box-shadow: 0 2px 6px 0 rgba(60, 64, 67, .15);
+}
+
+.shadow-top-inset {
+  box-shadow: inset 0 7px 6px -5px rgba(60, 64, 67, .15);
+}
+
+.shadow-bottom-inset {
+  box-shadow: inset 0 -7px 6px -5px rgba(60, 64, 67, .15);
+}
+
+.shadow-top-inset.shadow-bottom-inset {
+  box-shadow: inset 0 7px 6px -5px rgba(60, 64, 67, .15), inset 0 -7px 6px -5px rgba(60, 64, 67, .15);
+}
+
+.text-shadow {
+  text-shadow: 0 2px 5px rgba(0, 0, 0, .25);
+}
+
+.text-shadow-inset {
+  background-color: #565656;
+  color: rgba(255, 255, 255, 0.85) !important;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.5);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+}
+
 img {
   width: 100%;
   cursor: pointer;

@@ -91,7 +91,8 @@
   #item_acheieved_count {
     display: none !important;
   }
+
   .card_wrap.wrap_dashboard.floating {
-    width: calc(100% - 2em)!important;
+    width: calc(100% - 2em) !important;
   }
 }
