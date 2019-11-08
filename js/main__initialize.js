@@ -99,6 +99,7 @@ function boot() {
     contextmenu();
     coloring();
     check_setting();
+    imgReady();
     // });
 
     $(window).on('load', function() { //not document, but window
@@ -106,7 +107,7 @@ function boot() {
         columns();
         scroll_at_open();
       }, 0);
-      imgReady();
+      // imgReady();
     });
 
   });
