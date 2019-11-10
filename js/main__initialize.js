@@ -75,6 +75,7 @@ function boot() {
     $.getScript("js/main__setting.js"),
     $.getScript("js/main__columns.js"),
     $.getScript("js/main__coloring.js"),
+    $.getScript("js/main__image.js"),
     $.getScript("js/main.js"),
     $.Deferred(function(deferred) {
       $(deferred.resolve);
