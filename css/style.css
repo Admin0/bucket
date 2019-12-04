@@ -676,6 +676,7 @@ h4:first-of-type {
 img {
   width: 100%;
   cursor: pointer;
+  margin: auto;
   /* margin-bottom: -5px */
   display: block;
 }
