@@ -87,20 +87,7 @@ function boot() {
     });
 
     // $(document).ready(function() {
-    ajax();
-    browser_alert();
-    checkbox();
-    setting();
-    card_wrap();
-    nav_create();
-    scroll_smooth();
-    filter();
-    columns();
-    title_tooltip();
-    contextmenu();
-    coloring();
-    check_setting();
-    imgReady();
+    bucket.initialize();
     // });
 
     $(window).on('load', function() { //not document, but window
