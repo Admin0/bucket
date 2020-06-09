@@ -10,10 +10,10 @@ const bucket = {
     filter();
     columns();
     title_tooltip();
-    contextmenu();
+    bucket.set.contextmenu();
     coloring();
     check_setting();
-    imgReady();
+    bucket.set.img();
   },
   set: {
     nav: function() {
@@ -154,6 +154,180 @@ const bucket = {
           $("nav, #nav_bg").removeClass("on");
         });
       }
+    },
+    contextmenu: function() {
+      $("body").on("contextmenu", function(event) {
+        event.preventDefault();
+      });
+      $(".card_wrap").on("contextmenu", function(event) {
+        // event.preventDefault();
+        if (window.localStorage["cccv"] == "true") {
+          var c = $("#contextmenu");
+          var target = $(this);
+          var output = "";
+
+          function print() {
+            if (window.localStorage["cccv__style"] == "true") {
+              output += '<link rel="stylesheet" type="text/css" href="//jinh.kr/bucket/css/style_card.css">\n<style>\n\t.card_wrap { margin:1em auto; display: block; font-size: 16px; }\n</style>\n\n';
+            }
+            output += '<div class=card_wrap>' + target.html() + '</div>';
+            if (window.localStorage["cccv__to_here"] == "true") {
+              var id;
+              if (target.children().attr("id") != null) {
+                id = "/#" + target.children().attr("id");
+              } else if (target.children().children().attr("id") != null) {
+                id = "/#" + target.children().children().attr("id");
+              } else {
+                id = "";
+              }
+              output = '<h2><a href="//jinh.kr/bucket' + id + '">버킷리스트' + id + '</a></h2>\n\n' + output;
+            }
+            $("#contextmenu > .output").val(output); //.select();
+
+            // auto copy to Clipboard
+            var clipboard = new ClipboardJS('#for_copy');
+
+            clipboard.on('success', function(e) {
+              console.info('Action:', e.action);
+              console.info('Text:', e.text);
+              console.info('Trigger:', e.trigger);
+
+              e.clearSelection();
+
+              toast("복사되었습니다.", "content_paste");
+
+              $("#contextmenu").removeClass("on");
+            });
+
+            clipboard.on('error', function(e) {
+              console.error('Action:', e.action);
+              console.error('Trigger:', e.trigger);
+
+              toast("!ERROR!: 복사 실패.", "content_paste");
+            });
+          }
+
+          function set_location() {
+
+            var context_x,
+              context_y,
+              con_sub_x,
+              con_sub_y;
+            if ($(document).width() - $("#contextmenu").outerWidth() > event.pageX) {
+              context_x = event.pageX;
+            } else {
+              context_x = $(document).width() - $("#contextmenu").outerWidth();
+            }
+            if ($(window).height() - $("#contextmenu").outerHeight() > event.pageY - $(document).scrollTop()) {
+              context_y = event.pageY - $(document).scrollTop();
+            } else {
+              context_y = $(window).height() - $("#contextmenu").outerHeight();
+            }
+            $("#contextmenu").css({
+              'left': context_x + "px",
+              'top': context_y + "px"
+            }).addClass("on");
+            $('.contextmenu').parent().hover(function() { //하위 메뉴 항목
+              if ($(document).width() - $("#contextmenu").outerWidth() - target.children().last().outerWidth() > event.pageX) {
+                con_sub_x = 'calc(100% - .5em)';
+              } else {
+                con_sub_x = 'calc(' + (-target.children().last().outerWidth()) + 'px + .5em)';
+              }
+              if ($(window).height() - target.children().last().outerHeight() - target.position().top > event.pageY - $(document).scrollTop()) {
+                con_sub_y = '-7px';
+              } else {
+                con_sub_y = $(window).height() - $("#contextmenu").position().top - target.position().top - target.children().last().outerHeight() + 'px';
+              }
+              target.children().last().css({
+                'left': con_sub_x,
+                'top': con_sub_y
+              });
+            });
+          }
+
+          set_location();
+          print();
+        }
+      })
+      $(document).on("click", function() {
+        if ($('#contextmenu:hover').length > 0) {
+          if ($('.context_able:hover').length > 0) {
+            //      $('#output_for_contextmenu').html('1');
+            $("#contextmenu").removeClass("on");
+          } else {
+            //      $('#output_for_contextmenu').html('2');
+          }
+        } else {
+          //    $('#output_for_contextmenu').html('3');
+          $("#contextmenu").removeClass("on");
+        }
+      });
+    },
+    img: function() {
+
+      function showImg(src) {
+        $("body").append("<div id='img_wrap'><img class='shadow' src='" + src + "'></img></div>")
+        $("#img_wrap").fadeIn(500);;
+        $("#img_wrap").on("click", function() {
+          $(this).fadeOut(500, function() {
+            $(this).remove();
+          })
+        })
+
+        $("#img_wrap > img").on('load', function() {
+          if ($("#img_wrap > img").height() >= $(window).height() * .9) {
+            $("#img_wrap > img").css({
+              "width": "initial",
+              "height": "90%",
+              "top": "5%"
+            });
+          } else {
+            $("#img_wrap > img").css("top", function() {
+              return "calc(50% - " + $(this).height() / 2 + "px)"
+            });
+          }
+        });
+      }
+
+      $("a[src]").each(function() {
+        var src = $(this).attr("src");
+        $(this).on("click", function() {
+          showImg(src)
+        });
+      });
+
+      $("img").on("click", function() { //이미지를 클릭하면 크게 보이는 고얌
+        showImg($(this).attr("src"));
+      });
+
+      console.log('initialize: main__image.js was loaded.');
+
+      $('.card_wrap').on('mouseenter', function() {  //.img로 묶인 이미지를 높이에 맞게 정렬
+        // console.log('mouseenter');
+        // console.log($(this).index() + "/" + $('.card_wrap').length);
+        $(this).find('.img').each(function() {
+          let obj = $(this).children("img");
+          if (obj[0].style.flex == "") {
+
+            for (var i = 0; i < obj.length; i++) {
+              let flex = obj[i].width = obj[i].width * obj[0].height / obj[i].height;
+              obj[i].style.flex = flex + "%";
+              // console.log("obj[" + i + "]: " + obj[i].style.flex);
+              // console.log(i);
+              // console.log(obj.length);
+              if (i == obj.length-1) {
+                // console.log("i == obj.length");
+                for (var j = 0; j < obj.length; j++) {
+                  obj[j].style.width = 0;
+                }
+              }
+            }
+            // console.log($(this).children("img"))
+            // console.log($(this).children("img")[0]);
+            // console.log($(this).children("img").length);
+          }
+        });
+      });
     }
   }
 }
@@ -464,115 +638,6 @@ function card_wrap() {
   });
   $(".back li").each(function() {
     $(this).replaceWith('<li><span>' + $(this).html() + '</span></li>');
-  });
-}
-
-function contextmenu() {
-  $("body").on("contextmenu", function(event) {
-    event.preventDefault();
-  });
-  $(".card_wrap").on("contextmenu", function(event) {
-    // event.preventDefault();
-    if (window.localStorage["cccv"] == "true") {
-      var c = $("#contextmenu");
-      var target = $(this);
-      var output = "";
-
-      function print() {
-        if (window.localStorage["cccv__style"] == "true") {
-          output += '<link rel="stylesheet" type="text/css" href="//jinh.kr/bucket/css/style_card.css">\n<style>\n\t.card_wrap { margin:1em auto; display: block; font-size: 16px; }\n</style>\n\n';
-        }
-        output += '<div class=card_wrap>' + target.html() + '</div>';
-        if (window.localStorage["cccv__to_here"] == "true") {
-          var id;
-          if (target.children().attr("id") != null) {
-            id = "/#" + target.children().attr("id");
-          } else if (target.children().children().attr("id") != null) {
-            id = "/#" + target.children().children().attr("id");
-          } else {
-            id = "";
-          }
-          output = '<h2><a href="//jinh.kr/bucket' + id + '">버킷리스트' + id + '</a></h2>\n\n' + output;
-        }
-        $("#contextmenu > .output").val(output); //.select();
-
-        // auto copy to Clipboard
-        var clipboard = new ClipboardJS('#for_copy');
-
-        clipboard.on('success', function(e) {
-          console.info('Action:', e.action);
-          console.info('Text:', e.text);
-          console.info('Trigger:', e.trigger);
-
-          e.clearSelection();
-
-          toast("복사되었습니다.", "content_paste");
-
-          $("#contextmenu").removeClass("on");
-        });
-
-        clipboard.on('error', function(e) {
-          console.error('Action:', e.action);
-          console.error('Trigger:', e.trigger);
-
-          toast("!ERROR!: 복사 실패.", "content_paste");
-        });
-      }
-
-      function set_location() {
-
-        var context_x,
-          context_y,
-          con_sub_x,
-          con_sub_y;
-        if ($(document).width() - $("#contextmenu").outerWidth() > event.pageX) {
-          context_x = event.pageX;
-        } else {
-          context_x = $(document).width() - $("#contextmenu").outerWidth();
-        }
-        if ($(window).height() - $("#contextmenu").outerHeight() > event.pageY - $(document).scrollTop()) {
-          context_y = event.pageY - $(document).scrollTop();
-        } else {
-          context_y = $(window).height() - $("#contextmenu").outerHeight();
-        }
-        $("#contextmenu").css({
-          'left': context_x + "px",
-          'top': context_y + "px"
-        }).addClass("on");
-        $('.contextmenu').parent().hover(function() { //하위 메뉴 항목
-          if ($(document).width() - $("#contextmenu").outerWidth() - target.children().last().outerWidth() > event.pageX) {
-            con_sub_x = 'calc(100% - .5em)';
-          } else {
-            con_sub_x = 'calc(' + (-target.children().last().outerWidth()) + 'px + .5em)';
-          }
-          if ($(window).height() - target.children().last().outerHeight() - target.position().top > event.pageY - $(document).scrollTop()) {
-            con_sub_y = '-7px';
-          } else {
-            con_sub_y = $(window).height() - $("#contextmenu").position().top - target.position().top - target.children().last().outerHeight() + 'px';
-          }
-          target.children().last().css({
-            'left': con_sub_x,
-            'top': con_sub_y
-          });
-        });
-      }
-
-      set_location();
-      print();
-    }
-  })
-  $(document).on("click", function() {
-    if ($('#contextmenu:hover').length > 0) {
-      if ($('.context_able:hover').length > 0) {
-        //      $('#output_for_contextmenu').html('1');
-        $("#contextmenu").removeClass("on");
-      } else {
-        //      $('#output_for_contextmenu').html('2');
-      }
-    } else {
-      //    $('#output_for_contextmenu').html('3');
-      $("#contextmenu").removeClass("on");
-    }
   });
 }
 

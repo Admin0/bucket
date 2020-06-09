@@ -56,9 +56,7 @@ $(document).ready(function() {
       }
       if (id == 14) {
         console.log("initialize: all modules were loaded.");
-
         boot();
-
       }
       // console.log(this.url + " was loaded.");
     }).fail(function() {

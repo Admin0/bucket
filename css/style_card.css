@@ -258,6 +258,7 @@ dl, dt, dd, .card .card a, .back {
 
 .card_wrap img, #img_wrap img {
   opacity: inherit;
+  /* width: inherit; */
 }
 
 .card_wrap .back>.img {
