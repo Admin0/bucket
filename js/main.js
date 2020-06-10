@@ -691,3 +691,5 @@ $(window).scroll(function() {
   // });
   // console.log("hello?");
 });
+
+document.getElementById("year").innerHTML = new Date().getFullYear();
