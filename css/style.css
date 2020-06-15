@@ -893,22 +893,21 @@ input {
 /* ***** splash ***** */
 /* ------------------------------------------------------------------- */
 div#splash {
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   left: 0;
   top: 0;
   background: #fff;
   text-align: center;
+  z-index: 6;
+  opacity: 1;
+}
+
+div#splash.off {
   z-index: -1;
   opacity: 0;
   transition: 1s;
-}
-
-div#splash.on {
-  z-index: 6;
-  opacity: 1;
-  transition: 0;
 }
 
 div#splash img {

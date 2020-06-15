@@ -218,7 +218,7 @@ function info_pinned() {
 }
 
 percentage();
-$("div#splash").removeClass("on");  // splash
+$("div#splash").addClass("off");  // splash
 
 if (localStorage.setting__stat_on != "false") {
   info();
