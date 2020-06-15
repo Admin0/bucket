@@ -36,7 +36,7 @@ const bucket = {
           setTimeout(function() {
             $("body").removeClass("fold");
           }, 300);
-          window.localStorage['nav_fold'] = "false";
+          localStorage.nav_fold = "false";
         }
 
         function nav_fold() {
@@ -44,17 +44,17 @@ const bucket = {
           setTimeout(function() {
             $("body").addClass("fold");
           }, 300);
-          window.localStorage['nav_fold'] = "true";
+          localStorage.nav_fold = "true";
         }
 
-        if (window.localStorage['nav_fold'] == "true") {
+        if (localStorage.nav_fold == "true") {
           nav_fold();
         } else {
           nav_expand();
         }
 
         $("#nav_footer").on("click", function() {
-          if (window.localStorage['nav_fold'] != "true") {
+          if (localStorage.nav_fold != "true") {
             nav_fold();
           } else {
             nav_expand();
@@ -161,17 +161,17 @@ const bucket = {
       });
       $(".card_wrap").on("contextmenu", function(event) {
         // event.preventDefault();
-        if (window.localStorage["cccv"] == "true") {
+        if (localStorage.cccv == "true") {
           var c = $("#contextmenu");
           var target = $(this);
           var output = "";
 
           function print() {
-            if (window.localStorage["cccv__style"] == "true") {
+            if (localStorage.cccv__style == "true") {
               output += '<link rel="stylesheet" type="text/css" href="//jinh.kr/bucket/css/style_card.css">\n<style>\n\t.card_wrap { margin:1em auto; display: block; font-size: 16px; }\n</style>\n\n';
             }
             output += '<div class=card_wrap>' + target.html() + '</div>';
-            if (window.localStorage["cccv__to_here"] == "true") {
+            if (localStorage.cccv__to_here == "true") {
               var id;
               if (target.children().attr("id") != null) {
                 id = "/#" + target.children().attr("id");
@@ -300,7 +300,7 @@ const bucket = {
         showImg($(this).attr("src"));
       });
 
-      console.log('initialize: main__image.js was loaded.');
+      time.log('initialize: main__image.js was loaded.');
 
       $('.card_wrap').on('mouseenter', function() {  //.img로 묶인 이미지를 높이에 맞게 정렬
         // console.log('mouseenter');
@@ -398,7 +398,7 @@ function scroll_smooth() {
       if (isNotNav) {
         target_position = target.offset().top - event.pageY + pageYOffset + target.height() / 2;
       } else if (target.css("display") != "none") {
-        target_position = target.offset().top - 114 - (window.localStorage['setting__stat'] == "true" ? 208 : 0); //114: header 208:dashboard
+        target_position = target.offset().top - 114 - (localStorage.setting__stat == "true" ? 208 : 0); //114: header 208:dashboard
       } else {
         toast("항목이 없습니다.");
       }
@@ -435,7 +435,7 @@ function scroll_at_open() {
       var target = (target_pre.substring(1, 2) == "%" ? $(decodeURIComponent(target_pre)) : $(target_pre));
       // console.log(target.prop("tagName"));
       $('html, body').animate({
-        scrollTop: target.offset().top - $('header').height() - $('#sub_header').height() - 12 - (window.localStorage['setting__stat'] == "true" ? 208 : 0) //116 - dashboard
+        scrollTop: target.offset().top - $('header').height() - $('#sub_header').height() - 12 - (localStorage.setting__stat == "true" ? 208 : 0) //116 - dashboard
       }, 500);
       target.css({
         "background-color": color.material_a100[color.i],
@@ -498,7 +498,7 @@ function filter() {
       column_only_mode = "false";
     }
     columns();
-    window.localStorage['column_only_mode'] = column_only_mode;
+    localStorage.column_only_mode = column_only_mode;
   });
 
   function hide_all() {
@@ -513,7 +513,7 @@ function filter() {
         $(this).parent().parent().addClass("hide");
         // console.log("dl");
       }
-      if (window.localStorage['strict_filtering'] == "true" && $(this).parent().parent().attr("id") != "setting") {
+      if (localStorage.strict_filtering == "true" && $(this).parent().parent().attr("id") != "setting") {
         $(this).prev().addClass("hide");
         $(this).next().addClass("hide");
         $(this).next().next().addClass("hide");
@@ -533,7 +533,7 @@ function filter() {
     $("input[checked]").parent().parent().parent().parent(".card_wrap").removeClass("hide");
     $("input[checked]").parent().parent().parent(".card_wrap").removeClass("hide");
     $("input[checked]").parent().parent(".card_wrap").removeClass("hide");
-    if (window.localStorage['strict_filtering'] == "true") {
+    if (localStorage.strict_filtering == "true") {
       $("input[checked]").prev().removeClass("hide");
       $("input[checked]").next().removeClass("hide");
       $("input[checked]").next().next().removeClass("hide");
@@ -545,7 +545,7 @@ function filter() {
     $("input:not([checked]):not([failed]").parent().parent().parent().parent(".card_wrap").removeClass("hide");
     $("input:not([checked]):not([failed]").parent().parent().parent(".card_wrap").removeClass("hide");
     $("input:not([checked]):not([failed]").parent().parent(".card_wrap").removeClass("hide");
-    if (window.localStorage['strict_filtering'] == "true") {
+    if (localStorage.strict_filtering == "true") {
       $("input:not([checked]):not([failed])").prev().removeClass("hide");
       $("input:not([checked]):not([failed])").next().removeClass("hide");
       $("input:not([checked]):not([failed])").next().next().removeClass("hide");
@@ -557,22 +557,22 @@ function filter() {
     $("input[failed]").parent().parent().parent().parent(".card_wrap").removeClass("hide");
     $("input[failed]").parent().parent().parent(".card_wrap").removeClass("hide");
     $("input[failed]").parent().parent(".card_wrap").removeClass("hide");
-    if (window.localStorage['strict_filtering'] == "true") {
+    if (localStorage.strict_filtering == "true") {
       $("input[failed]").prev().removeClass("hide");
       $("input[failed]").next().removeClass("hide");
       $("input[failed]").next().next().removeClass("hide");
     }
   }
 
-  if (window.localStorage['filter'] == "filter_10") {
+  if (localStorage.filter == "filter_10") {
     $("#sub_header .filter_bt").removeClass("on");
     $("#filter_10").addClass("on");
     filter_10();
-  } else if (window.localStorage['filter'] == "filter_01") {
+  } else if (localStorage.filter == "filter_01") {
     $("#sub_header .filter_bt").removeClass("on");
     $("#filter_01").addClass("on");
     filter_01();
-  } else if (window.localStorage['filter'] == "filter_00") {
+  } else if (localStorage.filter == "filter_00") {
     $("#sub_header .filter_bt").removeClass("on");
     $("#filter_00").addClass("on");
     filter_00();
@@ -584,16 +584,16 @@ function filter() {
     $("#sub_header .filter_bt").removeClass("on");
     $(this).addClass("on");
     if ($(this).attr("id") == "filter_11") { //show all
-      window.localStorage['filter'] = "filter_11";
+      localStorage.filter = "filter_11";
       filter_11();
     } else if ($(this).attr("id") == "filter_10") { //show acheieved
-      window.localStorage['filter'] = "filter_10";
+      localStorage.filter = "filter_10";
       filter_10();
     } else if ($(this).attr("id") == "filter_01") { //show notyet
-      window.localStorage['filter'] = "filter_01";
+      localStorage.filter = "filter_01";
       filter_01();
     } else if ($(this).attr("id") == "filter_00") { //show notyet
-      window.localStorage['filter'] = "filter_00";
+      localStorage.filter = "filter_00";
       filter_00();
     }
     columns();
@@ -657,7 +657,6 @@ function browser_alert() {
   if (!is_chrome || is_firefox) $("#browser_alert").addClass("on");
 }
 
-
 // web worker test
 function ajax() {
   $.ajax({
@@ -673,7 +672,7 @@ $(window).scroll(function() {
   for (i = $("h3:not(nav h3)").length - 1; i >= 0; i--) {
     var target = $("h3:not(nav h3):nth(" + i + ")");
     // console.log(target.offset().top);
-    if (target.offset().top < pageYOffset + 256 + (window.localStorage['setting__stat'] == "true" ? 208 : 0) && target.css("display") != "none") { //256:header 208:dashboard
+    if (target.offset().top < pageYOffset + 256 + (localStorage.setting__stat == "true" ? 208 : 0) && target.css("display") != "none") { //256:header 208:dashboard
       $("nav h3 a").css({
         "color": "inherit"
       });

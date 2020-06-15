@@ -1,3 +1,12 @@
+const time = {};
+time.start = localStorage.timer || Date.now();
+
+time.log = function(msg) {
+  console.log(msg + ' (' + (Date.now() - time.start) + ' ms)');
+}
+
+time.log("init");
+
 $(document).ready(function() {
   $.each([{
     from: "setting", // 설정
@@ -55,7 +64,8 @@ $(document).ready(function() {
           $(val.to).append(data);
       }
       if (id == 14) {
-        console.log("initialize: all modules were loaded.");
+        time.log("initialize: all modules were loaded.");
+        // console.log("initialize: all modules were loaded.");
         boot();
       }
       // console.log(this.url + " was loaded.");
@@ -63,7 +73,7 @@ $(document).ready(function() {
       // console.log(this.url + " was failed to load.");
     });
   });
-  console.log("initialize: DOM is ready.");
+  time.log("initialize: DOM is ready.");
 });
 
 

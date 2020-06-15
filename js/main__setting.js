@@ -33,8 +33,8 @@ function setting() {
       }
       toast("설정이 저장되었습니다.", "save");
 
-      if ($(this)[0] == $("#theme_color")[0] && window.localStorage["theme_color"] == "true") {
-        window.localStorage["theme_color__i"] = color.i;
+      if ($(this)[0] == $("#theme_color")[0] && localStorage.theme_color == "true") {
+        localStorage.theme_color__i = color.i;
       }
 
       filter();
@@ -75,10 +75,10 @@ function check_setting() {
   $("#setting input:not([checked])").next().next(".on").addClass("hide");
 
   // 개별 적용
-  if (window.localStorage["theme_color"] == "true") {
+  if (localStorage.theme_color == "true") {
     $("#theme_color dd.on").text("현재 색(" + color.name[color.i] + ")이 테마 색으로 지정되었습니다.");
   }
-  if (window.localStorage["cccv"] != "true") {
+  if (localStorage.cccv != "true") {
     $("#cccv__style").addClass("disabled");
     $("#cccv__to_here").addClass("disabled");
   } else {

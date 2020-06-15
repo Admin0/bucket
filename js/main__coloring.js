@@ -1,3 +1,5 @@
+time.log('coloring start');
+
 color = {
   "length": 19,
   "material_50": [
@@ -70,9 +72,9 @@ function dice(n, s, b) {
   return out + b;
 }
 
-if (window.localStorage["theme_color"] == "true") {
-  if (!window.localStorage["theme_color__i"])
-    color.i = window.localStorage["theme_color__i"];
+if (localStorage.theme_color == "true") {
+  if (!localStorage.theme_color__i)
+    color.i = localStorage.theme_color__i;
   else
     color.i = 0;
 } else {
@@ -111,6 +113,7 @@ function coloring() {
   $("link[rel~='icon']").attr("href", "img/[favicon]/favicon" + color.i + ".ico");
   $("meta[name='theme-color']").attr("content", color.material_700[color.i]);
 }
+time.log('coloring done');
 
 // coloring();
 

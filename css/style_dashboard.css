@@ -71,7 +71,7 @@
   left: .5em;
   background: rgba(255, 255, 255, .75);
   height: 3px;
-  transition: .10s;
+  transition: .30s;
   transition-timing-function: linear;
 }
 

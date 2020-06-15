@@ -890,6 +890,43 @@ input {
 }
 
 /* ------------------------------------------------------------------- */
+/* ***** splash ***** */
+/* ------------------------------------------------------------------- */
+div#splash {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: #fff;
+  text-align: center;
+  z-index: -1;
+  opacity: 0;
+  transition: 1s;
+}
+
+div#splash.on {
+  z-index: 6;
+  opacity: 1;
+  transition: 0;
+}
+
+div#splash img {
+  top: calc(50% - 64px);
+  position: relative;
+  width: 128px;
+  height: 128px;
+}
+
+div#splash .splash_title {
+  top: calc(50% - 64px);
+  position: relative;
+  font-size: 1.25em;
+  font-weight: bold;
+  color: #aaa;
+}
+
+/* ------------------------------------------------------------------- */
 /* ***** mobile ***** */
 /* ------------------------------------------------------------------- */
 @media handheld, only screen and (max-device-width:480px), only screen and (max-device-width:320px), screen and (max-width:600px) {

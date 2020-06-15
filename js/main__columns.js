@@ -3,7 +3,7 @@ var dashboard_top;
 function columns_dashboard(type) {
   dashboard_top = $("#그거_먹는건가요").offset().top - 32;
   //     dashboard_top = $(".dashboard").offset().top - 116;
-  if (dashboard_top < pageYOffset && window.localStorage['setting__stat'] == "true") {
+  if (dashboard_top < pageYOffset && localStorage.setting__stat == "true") {
     if ($(".wrap_dashboard.floating").length == 1) {
       var b_w = $("body").width();
       if (type) { // column_only_mode
@@ -98,8 +98,8 @@ function columns() {
 }
 
 var column_only_mode;
-if (window.localStorage['column_only_mode'] == null) {
+if (localStorage.column_only_mode == null) {
   column_only_mode = "false";
 } else {
-  column_only_mode = window.localStorage['column_only_mode'];
+  column_only_mode = localStorage.column_only_mode;
 }

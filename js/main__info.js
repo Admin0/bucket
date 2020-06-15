@@ -102,7 +102,7 @@ var this_year = new Date().getFullYear();
 var this_month = ("00" + (new Date().getMonth() + 1)).slice(-2);
 var i_info = 0;
 var info_count = 25;
-var info_timmer = 100; //css transition과 같은 값으로 설정해야한다.
+var info_timmer = 300; //css transition과 같은 값으로 설정해야한다.
 var info_width = $(".dashboard").width();
 var info_height = $(".dashboard").height();
 var info_length = $("span.date").length;
@@ -163,13 +163,13 @@ function info() {
       $("#acheieved_in_recent_3_years_subtitle").html(((acheieved.in.recent_3_years >= acheieved.in.recent_3_6_years) ? "▴" : "▾ ") + (acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) + " (" + ((acheieved.in.recent_3_years - acheieved.in.recent_3_6_years) / acheieved.in.recent_3_6_years * 100).toFixed(0) + "%)<br/>vs. 그 이전 3년간<span class='not_important'>과 비교합니다.</span>");
       $("#acheieved_in_recent_3_6_years").text(acheieved.in.recent_3_6_years);
 
-      if (window.localStorage['setting__stat_on'] != "false") {
+      if (localStorage.setting__stat_on != "false") {
         info();
       }
 
     } else {
       // $(".dashboard .rotate").remove();
-      $(".dashboard .progress").fadeOut(100);
+      $(".dashboard .progress").delay(250).fadeOut(100);
 
       // toast("통계 불러오기 완료", "pie_chart");
       // console.log(columns);
@@ -204,12 +204,12 @@ function info() {
 
 function info_pinned() {
   $(".dashboard .pin").on("click", function() {
-    if (window.localStorage["setting__stat"] == "true") {
-      window.localStorage["setting__stat"] = "false"
+    if (localStorage.setting__stat == "true") {
+      localStorage.setting__stat = "false"
       $(".dashboard .pin i").text("turned_in_not");
       toast("통계 대시보드의 고정이 풀렸습니다.", "pie_chart");
     } else {
-      window.localStorage["setting__stat"] = "true"
+      localStorage.setting__stat = "true"
       $(".dashboard .pin i").text("turned_in");
       toast("통계 대시보드가 고정됐습니다.", "pie_chart");
     }
@@ -218,7 +218,9 @@ function info_pinned() {
 }
 
 percentage();
-if (window.localStorage['setting__stat_on'] != "false") {
+$("div#splash").removeClass("on");  // splash
+
+if (localStorage.setting__stat_on != "false") {
   info();
 }
 info_pinned();
@@ -227,14 +229,14 @@ info_pinned();
 
 function info_position() {
   if (dashboard_top < pageYOffset &&
-    window.localStorage['setting__stat'] == "true" &&
-    window.localStorage['setting__stat_on'] == "true") {
+    localStorage.setting__stat == "true" &&
+    localStorage.setting__stat_on == "true") {
     if ($(".wrap_dashboard.floating").length == 0) {
       var b_w = $("body").width();
       var columns = Math.floor($("body").width() / 500);
       $(".wrap_dashboard").addClass("floating");
       $(".wrap_dashboard").css({
-        "width": (columns == 1 || window.localStorage['column_only_mode'] == "true" ? "100%" : b_w - 16),
+        "width": (columns == 1 || localStorage.column_only_mode == "true" ? "100%" : b_w - 16),
         "margin-left": "-" + b_w / 2 + "px",
       })
       $("#first_class").css({
@@ -262,7 +264,7 @@ $(window).scroll(function() {
 $(document).ready(function() {
   $(".card_wrap").has(".dashboard").addClass("wrap_dashboard");
 
-  if (window.localStorage["setting__stat"] == "true") {
+  if (localStorage.setting__stat == "true") {
     $(".dashboard .pin i").text("turned_in");
   }
 
