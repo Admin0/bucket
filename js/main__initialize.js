@@ -37,6 +37,9 @@ $(document).ready(function() {
     from: "contents__취미_커뮤니티",
     to: "h2#취미 + section.sup"
   }, {
+    from: "contents__취미_기타",
+    to: "h2#취미 + section.sup"
+  }, {
     from: "contents__건강_생존", // 건강
     to: "h2#건강 + section.sup"
   }, {
@@ -63,7 +66,7 @@ $(document).ready(function() {
         default:
           $(val.to).append(data);
       }
-      if (id == 14) {
+      if (id == 15) {
         time.log("initialize: all modules were loaded.");
         // console.log("initialize: all modules were loaded.");
         boot();

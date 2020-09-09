@@ -264,7 +264,9 @@ nav h4 {
 
 nav h2 a,
 nav h3 a {
-  padding-left: 22px
+  padding-left: 22px;
+  align-items: center;
+  display: flex;
 }
 
 nav h4 a {
