@@ -77,6 +77,7 @@ dl, dt, dd, .card .card a, .back {
   overflow: hidden;
   text-overflow: ellipsis;
   display: flex;
+  align-items: center;
 }
 
 .card_wrap dd ul li dt {
