@@ -37,20 +37,17 @@ function percentage() {
   // 세포분열
   acheieved.stat.failed = $("input[failed]").length;
   acheieved.stat.total = ($("input").length - acheieved.stat.failed);
-  if (acheieved.stat.total >= 1000) {
+  if (acheieved.stat.total + acheieved.stat.failed >= 1000) {
     $("#세포분열_1000").attr("checked", true);
     $("#세포분열_1000").prev().text("check_box");
-    $("#세포분열_1000 + dt + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
   }
-  if (acheieved.stat.total >= 500) {
+  if (acheieved.stat.total + acheieved.stat.failed >= 500) {
     $("#세포분열_500").attr("checked", true);
     $("#세포분열_500").prev().text("check_box");
-    $("#세포분열_500 + dt + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
   }
-  if (acheieved.stat.total >= 100) {
+  if (acheieved.stat.total + acheieved.stat.failed >= 100) {
     $("#세포분열_100").attr("checked", true);
     $("#세포분열_100").prev().text("check_box");
-    $("#세포분열_100 + dt + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
   }
 
   //재귀함수
@@ -76,6 +73,14 @@ function percentage() {
   }
   checke_total();
 
+  if (acheieved.stat.total + acheieved.stat.failed >= 1000) {
+    $("#세포분열_1000 + dt + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
+  } else if (acheieved.stat.total + acheieved.stat.failed >= 500) {
+    $("#세포분열_500 + dt + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
+  } else if (acheieved.stat.total + acheieved.stat.failed >= 100) {
+    $("#세포분열_100 + dt + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
+  }
+  
   if (acheieved.stat.percentage >= 75) {
     $("#재귀함수_75 + dt + dd > .date").text("." + acheieved.stat.percentage + " 완료");
   } else if (acheieved.stat.percentage >= 50) {
@@ -218,7 +223,7 @@ function info_pinned() {
 }
 
 percentage();
-$("div#splash").addClass("off");  // splash
+$("div#splash").addClass("off"); // splash
 
 if (localStorage.setting__stat_on != "false") {
   info();
