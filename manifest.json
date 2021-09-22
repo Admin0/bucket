@@ -1,0 +1,16 @@
+{
+  "short_name": "#bucket",
+  "name": "#Bucket List",
+  "icons": [
+    {
+      "src": "//jinh.kr/images/icon__bucket.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/qualify/",
+  "background_color": "#fff",
+  "display": "standalone",
+  "scope": "/qualify/",
+  "theme_color": "#fff"
+}
