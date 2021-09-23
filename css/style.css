@@ -1060,6 +1060,7 @@ div#splash .splash_title {
     bottom: 0;
     left: 0 !important;
     z-index: 5;
+    border-radius: 0;
   }
 
   @keyframes snackbar_on {
@@ -1088,6 +1089,8 @@ div#splash .splash_title {
   }
 
   #toast.off {
+    opacity: 1;
+    visibility: visible;
     bottom: -56px;
     animation-name: snackbar_off;
     animation-duration: .3s;

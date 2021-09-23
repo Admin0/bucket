@@ -80,7 +80,7 @@ function percentage() {
   } else if (acheieved.stat.total + acheieved.stat.failed >= 100) {
     $("#세포분열_100 + dt + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
   }
-  
+
   if (acheieved.stat.percentage >= 75) {
     $("#재귀함수_75 + dt + dd > .date").text("." + acheieved.stat.percentage + " 완료");
   } else if (acheieved.stat.percentage >= 50) {
@@ -231,6 +231,7 @@ if (localStorage.setting__stat_on != "false") {
 info_pinned();
 
 // var dashboard_top = $(".dashboard").offset().top - 116;
+dashboard_top = $("#그거_먹는건가요").offset().top - 32; // main_columns.js에 들어있는 코드인데 태블릿에서 순서 꼬여서 여기다가 하나 더 만들어놓음
 
 function info_position() {
   if (dashboard_top < pageYOffset &&
@@ -258,6 +259,7 @@ function info_position() {
       "margin-bottom": "inherit",
     });
   }
+  console.log('info_position event');
 }
 
 
