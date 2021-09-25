@@ -302,7 +302,7 @@ const bucket = {
 
       time.log('initialize: main__image.js was loaded.');
 
-      $('.card_wrap').on('mouseenter', function() {  //.img로 묶인 이미지를 높이에 맞게 정렬
+      $('.card_wrap').on('mouseenter', function() { //.img로 묶인 이미지를 높이에 맞게 정렬
         // console.log('mouseenter');
         // console.log($(this).index() + "/" + $('.card_wrap').length);
         $(this).find('.img').each(function() {
@@ -315,7 +315,7 @@ const bucket = {
               // console.log("obj[" + i + "]: " + obj[i].style.flex);
               // console.log(i);
               // console.log(obj.length);
-              if (i == obj.length-1) {
+              if (i == obj.length - 1) {
                 // console.log("i == obj.length");
                 for (var j = 0; j < obj.length; j++) {
                   obj[j].style.width = 0;
@@ -597,6 +597,7 @@ function filter() {
       filter_00();
     }
     columns();
+    info_position();
   });
 
 }

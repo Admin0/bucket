@@ -1,7 +1,10 @@
 var dashboard_top;
 
 function columns_dashboard(type) {
-  dashboard_top = $("#그거_먹는건가요").offset().top - 32;
+
+  dashboard_top = $("#그거_먹는건가요").offset().top - 32
+  dashboard_top = (dashboard_top >= 0 ? dashboard_top : 0);
+
   //     dashboard_top = $(".dashboard").offset().top - 116;
   if (dashboard_top < pageYOffset && localStorage.setting__stat == "true") {
     if ($(".wrap_dashboard.floating").length == 1) {
@@ -14,7 +17,7 @@ function columns_dashboard(type) {
       } else {
         $(".card_wrap").has(".dashboard").css({
           "width": b_w - 16,
-          "margin-left": "-" + (b_w - 16) / 2 - 8 + "px",
+          // "margin-left": "-" + (b_w - 16) / 2 - 8 + "px",
         });
       }
       console.log("dashboard__column_only_mode: " + type);

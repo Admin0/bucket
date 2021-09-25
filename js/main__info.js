@@ -231,7 +231,8 @@ if (localStorage.setting__stat_on != "false") {
 info_pinned();
 
 // var dashboard_top = $(".dashboard").offset().top - 116;
-dashboard_top = $("#그거_먹는건가요").offset().top - 32; // main_columns.js에 들어있는 코드인데 태블릿에서 순서 꼬여서 여기다가 하나 더 만들어놓음
+dashboard_top = $("#그거_먹는건가요").offset().top - 32 // main_columns.js에 들어있는 코드인데 태블릿에서 순서 꼬여서 여기다가 하나 더 만들어놓음
+dashboard_top = (dashboard_top >= 0 ? dashboard_top : 0);
 
 function info_position() {
   if (dashboard_top < pageYOffset &&
@@ -243,7 +244,7 @@ function info_position() {
       $(".wrap_dashboard").addClass("floating");
       $(".wrap_dashboard").css({
         "width": (columns == 1 || localStorage.column_only_mode == "true" ? "100%" : b_w - 16),
-        "margin-left": "-" + b_w / 2 + "px",
+        // "margin-left": "-" + b_w / 2 + "px",
       })
       $("#first_class").css({
         "margin-bottom": $(".wrap_dashboard").height() + 36,

@@ -5,7 +5,7 @@
 .card_wrap.wrap_dashboard.floating {
   position: fixed;
   top: 119px;
-  margin-left: -50%;
+  /* margin-left: -50%; */
 }
 
 .card_wrap.wrap_dashboard.floating .dashboard {
@@ -51,6 +51,7 @@
 
 #first_class .card_wrap:last-child {
   /* max-width: calc(100% - 1em) !important; */
+  display: flex;
 }
 
 .dashboard .pin {
