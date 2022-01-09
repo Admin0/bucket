@@ -47,4 +47,26 @@
   #sub_header .filter_bt .ink_bar {
     background: rgba(255, 255, 255, .85) !important;
   }
+
+  /* ------------------------------------------------------------------- */
+  /* ***** splash ***** */
+  /* ------------------------------------------------------------------- */
+  div#splash {
+    background: #121212!important;
+  }
+
+  div#splash img {
+    top: calc(50% - 64px);
+    position: relative;
+    width: 128px;
+    height: 128px;
+  }
+
+  div#splash .splash_title {
+    top: calc(50% - 64px);
+    position: relative;
+    font-size: 1.25em;
+    font-weight: bold;
+    color: #aaa;
+  }
 }
