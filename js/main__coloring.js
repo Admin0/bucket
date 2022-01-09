@@ -14,6 +14,12 @@ color = {
     "#DCEDC8", "#F0F4C3", "#FFF9C4", "#FFECB3", "#FFE0B2",
     "#FFCCBC", "#D7CCC8", "#F5F5F5", "#CFD8DC"
   ],
+  "material_200": [
+    "#ef9a9a", "#f48fb1", "#ce93d8", "#b39ddb", "#9fa8da",
+    "#90caf9", "#81d4fa", "#80deea", "#80cbc4", "#a5d6a7",
+    "#c5e1a5", "#e6ee9c", "#fff59d", "#ffe082", "#ffcc80",
+    "#ffcc80", "#bcaaa4", "#eeeeee", "#b0bec5"
+  ],
   "material_300": [
     "#E57373", "#F06292", "#BA68C8", "#9575CD", "#7986CB",
     "#64B5F6", "#4FC3F7", "#4DD0E1", "#4DB6AC", "#81C784",
@@ -88,26 +94,33 @@ if (color.i == 17 /* grey */ ) {
   color.i = 5;
 }
 console.log("COLOR CODE: " + color.name[color.i]);
+let dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
 function coloring() {
   $("header, .dashboard").css({
-    "background": color.material_700[color.i]
+    "background": (dark ? '#424242' : color.material_700[color.i])
   });
-  $("#sub_header .filter_bt, #column_bt").hover(function() {
-    $(this).css({
-      "background": color.material_700[color.i]
-    });
-  }, function() {
-    $(this).css({
-      "background": color.material_500[color.i]
-    });
-  })
+  $("#sub_header .filter_bt, #column_bt")
+    .css({
+      "color": (dark ? color.material_200[color.i] : 'inherit')
+    })
+    .hover(function() {
+      $(this).css({
+        "background": (dark ? 'rgba(0, 0, 0, .65)' : color.material_700[color.i]),
+        "color": (dark ? color.material_200[color.i] : 'inherit')
+      });
+    }, function() {
+      $(this).css({
+        "background": (dark ? '#2d2d2d' : color.material_700[color.i]),
+        "color": (dark ? color.material_200[color.i] : 'inherit')
+      });
+    })
   $("#sub_header > #line1").css({
-    "background": color.material_500[color.i]
+    "background": (dark ? '#2d2d2d' : color.material_700[color.i])
   });
   $("dl .material-icons, a:not(nav a), #to_github, #to_github > i").css({
-    "color": color.material_500[color.i],
-    "fill": color.material_500[color.i]
+    "color": (dark ? color.material_200[color.i] : color.material_500[color.i]),
+    "fill": (dark ? color.material_200[color.i] : color.material_500[color.i])
   })
 
   $("link[rel~='icon']").attr("href", "img/[favicon]/favicon" + color.i + ".ico");

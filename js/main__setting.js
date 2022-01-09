@@ -49,7 +49,7 @@ function setting() {
 function check_setting() {
 
   $("#setting .header").css({
-    "background": color.material_500[color.i]
+    "background": (dark ? '#2d2d2d' : color.material_500[color.i]),
   });
   $("#setting .setting_item input").prev("i").remove();
 
@@ -63,17 +63,6 @@ function check_setting() {
     }
   };
 
-  $("#setting input[checked]").before("<i class='material-icons'>check_box</i>");
-  $("#setting input:not([checked]):not([failed])").before("<i class='material-icons'>check_box_outline_blank</i>");
-  $("#setting .material-icons").css({
-    "color": color.material_500[color.i]
-  });
-
-  $("#setting input").next().next().next(".off").removeClass("hide");
-  $("#setting input").next().next(".on").removeClass("hide");
-  $("#setting input[checked]").next().next().next(".off").addClass("hide");
-  $("#setting input:not([checked])").next().next(".on").addClass("hide");
-
   // 개별 적용
   if (localStorage.theme_color == "true") {
     $("#theme_color dd.on").text("현재 색(" + color.name[color.i] + ")이 테마 색으로 지정되었습니다.");
@@ -85,6 +74,20 @@ function check_setting() {
     $("#cccv__style").removeClass("disabled");
     $("#cccv__to_here").removeClass("disabled");
   }
+
+  $("#setting input[checked]").before("<i class='material-icons'>check_box</i>");
+  $("#setting input:not([checked]):not([failed])").before("<i class='material-icons'>check_box_outline_blank</i>");
+  $("#setting div:not(.disabled) .material-icons").css({
+    "color": (dark ? color.material_200[color.i] : color.material_500[color.i])
+  });
+  $("#setting .disabled .material-icons").css({
+    "color": 'none'
+  });
+
+  $("#setting input").next().next().next(".off").removeClass("hide");
+  $("#setting input").next().next(".on").removeClass("hide");
+  $("#setting input[checked]").next().next().next(".off").addClass("hide");
+  $("#setting input:not([checked])").next().next(".on").addClass("hide");
 
   // setting__stat (dashboard)
   $.getScript("js/main__setting_stat.js");

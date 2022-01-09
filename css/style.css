@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css?family=Black+Ops+One&display=swap');
 @import url('style_card.css');
 @import url('style_dashboard.css');
+@import url('style_dark.css');
 
 ::selection {
   background: rgba(0, 0, 0, 0);
@@ -458,7 +459,7 @@ nav.fold #setting_bt:hover {
 }
 
 #setting .setting_item.disabled>* {
-  color: rgba(0, 0, 0, .5) !important;
+  color: rgba(0, 0, 0, .5);
 }
 
 #setting .setting_item:hover {
@@ -674,7 +675,9 @@ h4:first-of-type {
 }
 
 img {
+  aspect-ratio: attr(width) / attr(height);
   width: 100%;
+  height: auto;
   cursor: pointer;
   margin: auto;
   /* margin-bottom: -5px */

@@ -1,0 +1,50 @@
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #121212 !important;
+  }
+
+  .card_wrap dl, dl#setting,
+  .card_wrap .back {
+    color: rgba(255, 255, 255, .65) !important;
+    background: #1f1f1f !important;
+  }
+
+  .card_wrap dl.dashboard {
+    background: #2d2d2d !important;
+  }
+
+  .card_wrap dt, #setting dt,
+  #setting .setting_title,
+  h2, h3, nav h2 a {
+    color: rgba(255, 255, 255, .65) !important;
+  }
+
+  .card_wrap dd, #setting dd,
+  .dashboard .subtitle,
+  #setting .setting_item.disabled>* {
+    color: rgba(255, 255, 255, .5) !important;
+  }
+
+  .card_wrap .date {
+    color: rgba(255, 255, 255, .4) !important;
+  }
+
+  header, .dashboard .value, .dashboard #실적,
+  .card_wrap input[checked]+dt, #setting input[checked]+dt,
+  nav h3 a {
+    color: rgba(255, 255, 255, .85) !important;
+  }
+
+  nav {
+    background: #1f1f1f !important;
+  }
+
+  nav #nav_header, nav #nav_footer {
+    background: #2d2d2d !important;
+    color: rgba(255, 255, 255, .65) !important;
+  }
+
+  #sub_header .filter_bt .ink_bar {
+    background: rgba(255, 255, 255, .85) !important;
+  }
+}
