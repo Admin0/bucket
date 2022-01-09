@@ -9,6 +9,11 @@
     background: #1f1f1f !important;
   }
 
+  .card_wrap:hover dl, dl#setting,
+  .card_wrap:hover .back {
+    background: #2d2d2d !important;
+  }
+
   .card_wrap dl.dashboard {
     background: #2d2d2d !important;
   }
@@ -52,7 +57,7 @@
   /* ***** splash ***** */
   /* ------------------------------------------------------------------- */
   div#splash {
-    background: #121212!important;
+    background: #121212 !important;
   }
 
   div#splash img {
