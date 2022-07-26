@@ -1,5 +1,5 @@
 // 전역 함수
-var acheieved = {
+let acheieved = {
   "stat": { //for percentage
     "total": 0, // 전체 도전과제의 수
     "done": 0, // 달성된 항목의 수
@@ -233,47 +233,56 @@ info_pinned();
 // var dashboard_top = $(".dashboard").offset().top - 116;
 dashboard_top = $("#그거_먹는건가요").offset().top - 32 // main_columns.js에 들어있는 코드인데 태블릿에서 순서 꼬여서 여기다가 하나 더 만들어놓음
 dashboard_top = (dashboard_top >= 0 ? dashboard_top : 0);
+// let dashboard_height;
 
-function info_position() {
-  if (dashboard_top < pageYOffset &&
-    localStorage.setting__stat == "true" &&
-    localStorage.setting__stat_on == "true") {
-    if ($(".wrap_dashboard.floating").length == 0) {
-      var b_w = $("body").width();
-      var columns = Math.floor($("body").width() / 500);
-      $(".wrap_dashboard").addClass("floating");
-      $(".wrap_dashboard").css({
-        "width": (columns == 1 || localStorage.column_only_mode == "true" ? "100%" : b_w - 16),
-        // "margin-left": "-" + b_w / 2 + "px",
-      })
+let dashboard_height;
+let is_dashboard_floated = false;
+
+function info_position(dashboard_height) {
+  if (dashboard_height == undefined) {
+    dashboard_height = $(".wrap_dashboard").height();
+  }
+  if (localStorage.setting__stat == "true" && // 통계 보기            on
+    localStorage.setting__stat_on == "true" && // 통계 대시보드 고정    on
+    dashboard_top < pageYOffset) { // 스크롤 위치
+    if (!is_dashboard_floated) {
+      is_dashboard_floated = true;
+      let b_w = $("body").width();
+      let columns = Math.floor($("body").width() / 500);
+      $(".wrap_dashboard")
+        .addClass("floating")
+        .css({
+          "width": (columns == 1 || localStorage.column_only_mode == "true" ? "100%" : b_w - 16)
+        })
       $("#first_class").css({
-        "margin-bottom": $(".wrap_dashboard").height() + 36,
+        "margin-bottom": `calc(${dashboard_height + 1}px + 1em)`
       });
     }
   } else {
-    $(".wrap_dashboard").removeClass("floating");
-    $(".wrap_dashboard").css({
-      "width": "100%",
-      "margin-left": "inherit",
-    })
-    $("#first_class").css({
-      "margin-bottom": "inherit",
-    });
+    if (is_dashboard_floated) {
+      is_dashboard_floated = false;
+      $(".wrap_dashboard")
+        .removeClass("floating")
+        .css({
+          "width": "100%",
+          "margin-left": "inherit",
+        })
+      $("#first_class").css({
+        "margin-bottom": "inherit",
+      });
+    }
   }
-  console.log('info_position event');
+  // console.log('info_position event');
 }
 
-
 $(window).scroll(function() {
-  info_position();
+  info_position(dashboard_height);
 });
 
 
 $(document).ready(function() {
   $(".card_wrap").has(".dashboard").addClass("wrap_dashboard");
-
   if (localStorage.setting__stat == "true") {
     $(".dashboard .pin i").text("turned_in");
   }
-
 });
