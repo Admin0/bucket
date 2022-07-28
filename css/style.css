@@ -3,7 +3,6 @@
 @import url('https://fonts.googleapis.com/css?family=Black+Ops+One&display=swap');
 @import url('style_card.css');
 @import url('style_dashboard.css');
-@import url('style_dark.css');
 
 ::selection {
   background: rgba(0, 0, 0, 0);
@@ -56,7 +55,7 @@ header {
   height: 48px;
   left: 0;
   top: 0;
-  z-index: 5;
+  z-index: 6;
   background: #fff;
   text-align: center
 }
@@ -65,7 +64,7 @@ header {
   width: calc(100% - 256px);
   position: fixed;
   top: 48px;
-  z-index: 4;
+  z-index: 5;
   box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
   left: 0;
   padding-left: 256px;
@@ -179,7 +178,7 @@ li a:hover {
 
 #nav_bg, #setting_bg {
   position: fixed;
-  z-index: 5;
+  z-index: 6;
   left: 0;
   top: 0;
   transition: .3s;
@@ -208,7 +207,7 @@ nav {
     display: -ms-flexbox;
     display: flex;*/
   position: fixed;
-  z-index: 4;
+  z-index: 5;
   top: 0;
   left: 0;
   width: 256px;
@@ -263,6 +262,10 @@ nav h4 {
   margin: .25em 0
 }
 
+nav h3.on a {
+  color: var(--color-500);
+}
+
 nav h2 a,
 nav h3 a {
   padding-left: 22px;
@@ -304,8 +307,9 @@ nav.fold #nav_header {
   width: calc(100% - 82px);
 }
 
-#to_github i {
-  fill: rgba(0, 0, 0, .54);
+dl .material-icons, a:not(nav a), #to_github, #to_github i {
+  color: var(--color-500);
+  fill: var(--color-500);
 }
 
 #to_github:hover {
@@ -427,7 +431,7 @@ nav.fold #setting_bt:hover {
 #setting {
   background: #fff;
   box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12) !important;
-  z-index: 6;
+  z-index: 7;
   max-width: calc(450px - 2em);
   margin: auto;
   transition: .25s opacity !important;
@@ -498,7 +502,7 @@ nav #nav_footer {
   border: 0;
   bottom: 0;
   position: fixed;
-  z-index: 2;
+  z-index: 3;
   border-top: 1px solid rgba(0, 0, 0, .1)
 }
 
@@ -622,7 +626,7 @@ h4:first-of-type {
 #movie_wrap {
   display: none;
   position: fixed;
-  z-index: 5;
+  z-index: 6;
   top: 0;
   left: 0;
   width: 100%;
@@ -732,13 +736,13 @@ input {
   padding: 1ex;
   border-radius: 3px;
   max-width: 400px;
-  z-index: 3;
+  z-index: 4;
   box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
 }
 
 #tooltip_nav {
   position: fixed;
-  z-index: 4;
+  z-index: 5;
 }
 
 #tooltip_before,
@@ -767,7 +771,7 @@ input {
   min-width: 350px;
   max-width: calc(100% - 2em);
   bottom: 1em;
-  z-index: 5;
+  z-index: 6;
 }
 
 @keyframes snackbar_on {
@@ -800,7 +804,7 @@ input {
   visibility: none;
   animation-name: snackbar_off;
   animation-duration: .3s;
-  z-index: 0;
+  z-index: 7;
 }
 
 /* ------------------------------------------------------------------- */
@@ -905,7 +909,7 @@ div#splash {
   top: 0;
   background: #fff;
   text-align: center;
-  z-index: 6;
+  z-index: 7;
   opacity: 1;
 }
 
@@ -957,6 +961,7 @@ div#splash .splash_title {
   }
 
   #sub_header {
+    background: var(--color-700);
     padding-left: 0 !important;
     width: 100% !important
   }
@@ -984,7 +989,7 @@ div#splash .splash_title {
 
   nav {
     left: -256px;
-    z-index: 6;
+    z-index: 7;
     box-shadow: none;
     padding-top: 0;
     height: 100%
@@ -1014,7 +1019,7 @@ div#splash .splash_title {
   }
 
   #setting {
-    z-index: 7;
+    z-index: 8;
     top: 0 !important;
     left: 0 !important;
     padding: 0 !important;
@@ -1025,7 +1030,7 @@ div#splash .splash_title {
   }
 
   #setting_bg.on {
-    z-index: 6;
+    z-index: 7;
   }
 
   #setting .header {
@@ -1062,7 +1067,7 @@ div#splash .splash_title {
     max-width: 100%;
     bottom: 0;
     left: 0 !important;
-    z-index: 5;
+    z-index: 6;
     border-radius: 0;
   }
 

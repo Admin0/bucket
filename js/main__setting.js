@@ -49,7 +49,7 @@ function setting() {
 function check_setting() {
 
   $("#setting .header").css({
-    "background": (dark ? '#2d2d2d' : color.material_500[color.i]),
+    // "background": (dark ? '#2d2d2d' : color.material_500[color.i]),
   });
   $("#setting .setting_item input").prev("i").remove();
 
@@ -77,9 +77,6 @@ function check_setting() {
 
   $("#setting input[checked]").before("<i class='material-icons'>check_box</i>");
   $("#setting input:not([checked]):not([failed])").before("<i class='material-icons'>check_box_outline_blank</i>");
-  $("#setting div:not(.disabled) .material-icons").css({
-    "color": (dark ? color.material_200[color.i] : color.material_500[color.i])
-  });
   $("#setting .disabled .material-icons").css({
     "color": 'none'
   });

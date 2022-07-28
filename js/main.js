@@ -11,7 +11,6 @@ const bucket = {
     columns();
     title_tooltip();
     bucket.set.contextmenu();
-    coloring();
     check_setting();
     bucket.set.img();
   },
@@ -683,16 +682,12 @@ if ('serviceWorker' in navigator) {
 }
 
 $(window).scroll(function() {
+  $("nav h3").removeClass('on');
   for (i = $("h3:not(nav h3)").length - 1; i >= 0; i--) {
     var target = $("h3:not(nav h3):nth(" + i + ")");
     // console.log(target.offset().top);
     if (target.offset().top < pageYOffset + 256 + (localStorage.setting__stat == "true" ? 208 : 0) && target.css("display") != "none") { //256:header 208:dashboard
-      $("nav h3 a").css({
-        "color": "inherit"
-      });
-      $("nav h3:nth(" + i + ") a").css({
-        "color": color.material_500[color.i]
-      });
+      $(`nav h3:nth(${i})`).addClass('on');
       // console.log(target.text());
       break;
     }

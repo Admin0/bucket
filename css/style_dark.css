@@ -1,63 +1,88 @@
 @media (prefers-color-scheme: dark) {
   body {
-    background: #121212 !important;
+    background: #121212;
   }
 
   .card_wrap dl, dl#setting,
   .card_wrap .back {
-    color: rgba(255, 255, 255, .65) !important;
-    background: #1f1f1f !important;
+    color: rgba(255, 255, 255, .65);
+    background: #1f1f1f;
   }
 
   .card_wrap:hover dl, dl#setting,
   .card_wrap:hover .back {
-    background: #2d2d2d !important;
+    background: #2d2d2d;
   }
 
   .card_wrap dl.dashboard {
-    background: #2d2d2d !important;
+    background: #2d2d2d;
   }
 
   .card_wrap dt, #setting dt,
   #setting .setting_title,
   h2, h3, nav h2 a {
-    color: rgba(255, 255, 255, .65) !important;
+    color: rgba(255, 255, 255, .65);
   }
 
   .card_wrap dd, #setting dd,
   .dashboard .subtitle,
   #setting .setting_item.disabled>* {
-    color: rgba(255, 255, 255, .5) !important;
+    color: rgba(255, 255, 255, .5);
   }
 
   .card_wrap .date {
-    color: rgba(255, 255, 255, .4) !important;
+    color: rgba(255, 255, 255, .4);
   }
 
   header, .dashboard .value, .dashboard #실적,
   .card_wrap input[checked]+dt, #setting input[checked]+dt,
   nav h3 a {
-    color: rgba(255, 255, 255, .85) !important;
+    color: rgba(255, 255, 255, .85);
+  }
+
+  nav h3.on a {
+    color: var(--color-200);
+  }
+
+  header {
+    background: rgb(66, 66, 66);
   }
 
   nav {
-    background: #1f1f1f !important;
+    background: #1f1f1f;
   }
 
   nav #nav_header, nav #nav_footer {
-    background: #2d2d2d !important;
-    color: rgba(255, 255, 255, .65) !important;
+    background: #2d2d2d;
+    color: rgba(255, 255, 255, .65);
   }
 
-  #sub_header .filter_bt .ink_bar {
-    background: rgba(255, 255, 255, .85) !important;
+  dl .material-icons, a:not(nav a), #to_github, #to_github i {
+    color: var(--color-200);
+    fill: var(--color-200);
+  }
+
+  #sub_header {
+    background: #2d2d2d;
+  }
+
+  .filter_bt .ink_bar {
+    background: rgba(255, 255, 255, .85);
+  }
+
+  #sub_header .filter_bt.on, #sub_header .filter_bt:hover, #column_bt, #column_bt:hover {
+    color: var(--color-200);
+  }
+
+  #sub_header .filter_bt:hover, #column_bt:hover {
+    background: rgba(0, 0, 0, .65);
   }
 
   /* ------------------------------------------------------------------- */
   /* ***** splash ***** */
   /* ------------------------------------------------------------------- */
   div#splash {
-    background: #121212 !important;
+    background: #121212;
   }
 
   div#splash img {

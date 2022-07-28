@@ -255,7 +255,7 @@ function info_position(dashboard_height) {
           "width": (columns == 1 || localStorage.column_only_mode == "true" ? "100%" : b_w - 16)
         })
       $("#first_class").css({
-        "margin-bottom": `calc(${dashboard_height + 1}px + 1em)`
+        "margin-bottom": `calc(${dashboard_height}px + 1.25em)`
       });
     }
   } else {
@@ -272,7 +272,7 @@ function info_position(dashboard_height) {
       });
     }
   }
-  // console.log('info_position event');
+  console.log([localStorage.setting__stat, localStorage.setting__stat_on, dashboard_top < pageYOffset]);
 }
 
 $(window).scroll(function() {

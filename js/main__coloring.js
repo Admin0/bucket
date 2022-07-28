@@ -94,38 +94,21 @@ if (color.i == 17 /* grey */ ) {
   color.i = 5;
 }
 console.log("COLOR CODE: " + color.name[color.i]);
-let dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-function coloring() {
-  $("header, .dashboard").css({
-    "background": (dark ? '#424242' : color.material_700[color.i])
-  });
-  $("#sub_header .filter_bt, #column_bt")
-    .css({
-      "color": (dark ? color.material_200[color.i] : 'inherit')
-    })
-    .hover(function() {
-      $(this).css({
-        "background": (dark ? 'rgba(0, 0, 0, .65)' : color.material_700[color.i]),
-        "color": (dark ? color.material_200[color.i] : 'inherit')
-      });
-    }, function() {
-      $(this).css({
-        "background": (dark ? '#2d2d2d' : color.material_700[color.i]),
-        "color": (dark ? color.material_200[color.i] : 'inherit')
-      });
-    })
-  $("#sub_header > #line1").css({
-    "background": (dark ? '#2d2d2d' : color.material_700[color.i])
-  });
-  $("dl .material-icons, a:not(nav a), #to_github, #to_github > i").css({
-    "color": (dark ? color.material_200[color.i] : color.material_500[color.i]),
-    "fill": (dark ? color.material_200[color.i] : color.material_500[color.i])
-  })
+$("link[rel~='icon']").attr("href", "img/[favicon]/favicon" + color.i + ".ico");
+$("meta[name='theme-color']").attr("content", color.material_700[color.i]);
 
-  $("link[rel~='icon']").attr("href", "img/[favicon]/favicon" + color.i + ".ico");
-  $("meta[name='theme-color']").attr("content", color.material_700[color.i]);
-}
+document.documentElement.style.setProperty("--color-50", color.material_50[color.i]);
+document.documentElement.style.setProperty("--color-100", color.material_100[color.i]);
+document.documentElement.style.setProperty("--color-200", color.material_200[color.i]);
+document.documentElement.style.setProperty("--color-300", color.material_300[color.i]);
+document.documentElement.style.setProperty("--color-500", color.material_500[color.i]);
+document.documentElement.style.setProperty("--color-600", color.material_600[color.i]);
+document.documentElement.style.setProperty("--color-700", color.material_700[color.i]);
+document.documentElement.style.setProperty("--color-800", color.material_800[color.i]);
+document.documentElement.style.setProperty("--color-900", color.material_900[color.i]);
+document.documentElement.style.setProperty("--color-a100", color.material_a100[color.i]);
+
 time.log('coloring done');
 
 // coloring();

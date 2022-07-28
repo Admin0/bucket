@@ -1,5 +1,5 @@
 .card_wrap.wrap_dashboard {
-  z-index: 4 !important;
+  z-index: 4;
 }
 
 .card_wrap.wrap_dashboard.floating {
