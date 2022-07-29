@@ -1,29 +1,29 @@
 var dashboard_top;
 
-function columns_dashboard(type) {
-
-  dashboard_top = $("#그거_먹는건가요").offset().top - 32
-  dashboard_top = (dashboard_top >= 0 ? dashboard_top : 0);
-
-  //     dashboard_top = $(".dashboard").offset().top - 116;
-  if (dashboard_top < pageYOffset && localStorage.setting__stat == "true") {
-    if ($(".wrap_dashboard.floating").length == 1) {
-      var b_w = $("body").width();
-      if (type) { // column_only_mode
-        $(".card_wrap").has(".dashboard").css({
-          "width": "100%",
-          "margin-left": "-" + b_w / 2 + "px",
-        });
-      } else {
-        $(".card_wrap").has(".dashboard").css({
-          "width": b_w - 16,
-          // "margin-left": "-" + (b_w - 16) / 2 - 8 + "px",
-        });
-      }
-      console.log("dashboard__column_only_mode: " + type);
-    }
-  }
-}
+// function columns_dashboard(type) {
+//
+//   dashboard_top = $("#그거_먹는건가요").offset().top - 32
+//   dashboard_top = (dashboard_top >= 0 ? dashboard_top : 0);
+//
+//   //     dashboard_top = $(".dashboard").offset().top - 116;
+//   if (dashboard_top < pageYOffset && localStorage.setting__stat == "true") {
+//     // if (is_dashboard_floated) {
+//     //   var b_w = $("body").width();
+//     //   if (type) { // column_only_mode
+//     //     $(".card_wrap").has(".dashboard").css({
+//     //       "width": "100%",
+//     //       // "margin-left": "-" + b_w / 2 + "px",
+//     //     });
+//     //   } else {
+//     //     $(".card_wrap").has(".dashboard").css({
+//     //       "width": b_w - 16,
+//     //       // "margin-left": "-" + (b_w - 16) / 2 - 8 + "px",
+//     //     });
+//     //   }
+//     //   console.log("dashboard__column_only_mode: " + type);
+//     // }
+//   }
+// }
 
 function columns() {
   if (column_only_mode != "true") {
@@ -70,7 +70,7 @@ function columns() {
       });
       headline();
       // },100);
-      columns_dashboard(false);
+      // columns_dashboard(false);
     }
   } else {
     $("body").removeClass("columns");
@@ -96,7 +96,7 @@ function columns() {
     });
     headline();
     // },100);
-    columns_dashboard(true);
+    // columns_dashboard(true);
   }
 }
 

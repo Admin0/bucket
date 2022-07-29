@@ -110,7 +110,6 @@ dl, dt, dd, .card .card a, .back {
 /*.card_wrap input + dt:before, #setting input + dt:before {
     content: "check_box_outline_blank"; 색설정문제로 걍 js에서 처리함
 }*/
-
 .card_wrap input[checked]+dt, #setting input[checked]+dt {
   font-weight: 700;
   color: #000;
@@ -174,9 +173,11 @@ dl, dt, dd, .card .card a, .back {
   0% {
     z-index: 2;
   }
+
   99% {
     z-index: 2;
   }
+
   100% {
     z-index: 1;
   }
@@ -336,7 +337,6 @@ dl, dt, dd, .card .card a, .back {
 }
 
 /* cast */
-
 table.cast {}
 
 table.cast tr td:first-child {
@@ -360,11 +360,20 @@ table.cast tr td:nth-child(2) {
 }
 
 /* for Blog */
-
 .article .card .imageblock {
   margin: 0 !important;
 }
 
 .article .card .imageblock img {
   box-shadow: none !important;
+}
+
+@media handheld, only screen and (max-width:880px) {
+  .card_wrap dd ul {
+    margin-left: -2.75em;
+  }
+
+  .card_wrap li>.date {
+    max-width: 2.5em;
+  }
 }

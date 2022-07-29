@@ -238,7 +238,7 @@ dashboard_top = (dashboard_top >= 0 ? dashboard_top : 0);
 let dashboard_height;
 let is_dashboard_floated = false;
 
-function info_position(dashboard_height) {
+function info_position() {
   if (dashboard_height == undefined) {
     dashboard_height = $(".wrap_dashboard").height();
   }
@@ -272,11 +272,16 @@ function info_position(dashboard_height) {
       });
     }
   }
-  console.log([localStorage.setting__stat, localStorage.setting__stat_on, dashboard_top < pageYOffset]);
+  // console.log({
+    // "setting__stat": localStorage.setting__stat,
+    // "setting__stat_on": localStorage.setting__stat_on,
+    // "position": dashboard_top < pageYOffset,
+    // 'is_dashboard_floated': is_dashboard_floated
+  // });
 }
 
 $(window).scroll(function() {
-  info_position(dashboard_height);
+  info_position();
 });
 
 
@@ -284,5 +289,7 @@ $(document).ready(function() {
   $(".card_wrap").has(".dashboard").addClass("wrap_dashboard");
   if (localStorage.setting__stat == "true") {
     $(".dashboard .pin i").text("turned_in");
+    is_dashboard_floated = false;
+    info_position();
   }
 });

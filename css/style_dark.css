@@ -66,7 +66,7 @@
     background: #2d2d2d;
   }
 
-  .filter_bt .ink_bar {
+  #sub_header .filter_bt .ink_bar {
     background: rgba(255, 255, 255, .85);
   }
 
@@ -76,6 +76,19 @@
 
   #sub_header .filter_bt:hover, #column_bt:hover {
     background: rgba(0, 0, 0, .65);
+  }
+
+  /* ------------------------------------------------------------------- */
+  /* ***** contextmenu ***** */
+  /* ------------------------------------------------------------------- */
+  #contextmenu {
+    background: #2d2d2d;
+    border-color: #555;
+    color: rgba(255, 255, 255, .85);
+  }
+
+  #contextmenu textarea {
+    color: rgba(255, 255, 255, .85);
   }
 
   /* ------------------------------------------------------------------- */
