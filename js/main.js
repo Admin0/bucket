@@ -66,7 +66,7 @@ const bucket = {
 
         $('body').append('<div id="tooltip_nav"><div id="tooltip_nav_text"></div><div id="tooltip_nav_before"></div></div>');
         $("#tooltip_nav").css({
-          "background": color.material_700[color.i]
+          "background": "var(--color-700)"
         });
         $("#tooltip_nav").append($("#tooltip_before"));
         $("#nav h3").hover(function() {
@@ -108,7 +108,7 @@ const bucket = {
                 'left': 68 + 16 + 'px'
               });
               $("#tooltip_nav_before").css({
-                "border-color": "transparent " + color.material_700[color.i] + " transparent transparent",
+                "border-color": "transparent var(--color-700) transparent transparent",
                 "border-width": "1ex 1ex 1ex 0",
                 "left": "-.9ex",
                 "bottom": "calc(50% - .5em)"
@@ -134,7 +134,7 @@ const bucket = {
                 'left': 68 + 16 + 'px'
               });
               $("#tooltip_nav_before").css({
-                "border-color": "transparent " + color.material_700[color.i] + " transparent transparent",
+                "border-color": "transparent var(--color-700) transparent transparent",
                 "border-width": "1ex 1ex 1ex 0",
                 "left": "-.9ex",
                 "bottom": "calc(50% - .5em)"
@@ -437,7 +437,7 @@ function scroll_at_open() {
         scrollTop: target.offset().top - $('header').height() - $('#sub_header').height() - 12 - (localStorage.setting__stat == "true" ? 208 : 0) //116 - dashboard
       }, 500);
       target.css({
-        "background-color": color.material_a100[color.i],
+        "background-color": 'var(--color-a100)',
         "transition": ".75s"
       });
     }, 1000)
@@ -453,11 +453,11 @@ function title_tooltip() {
   });
   $('body').append('<div id="tooltip"><div id="tooltip_text"></div><div id="tooltip_before"></div></div>');
   $("#tooltip").css({
-    "background": color.material_700[color.i]
+    "background": 'var(--color-a200)'
   });
   $("#tooltip").append($("#tooltip_before"));
   $("#tooltip_before").css({
-    "border-color": color.material_700[color.i] + " transparent transparent transparent"
+    "border-color": "var(--color-a200) transparent transparent transparent"
   });
   $('[data-title]').each(function() {
     $(this).hover(

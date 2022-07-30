@@ -62,6 +62,24 @@ color = {
     "#CCFF90", "#F4FF81", "#FFFF8D", "#FFE57F", "#FFD180",
     "#FF9E80", "#D7CCC8", "#F5F5F5", "#CFD8DC"
   ],
+  "material_a200": [
+    "#ff5252", "#ff4081", "#e040fb", "#7c4dff", "#536dfe",
+    "#448aff", "#40c4ff", "#18ffff", "#64ffda", "#69f0ae",
+    "#b2ff59", "#eeff41", "#ffff00", "#ffd740", "#ffab40",
+    "#ff6e40", "#bcaaa4", "#eeeeee", "#b0bec5"
+  ],
+  "material_a400": [
+    "#ff1744", "#f50057", "#d500f9", "#651fff", "#3d5afe",
+    "#00b0ff", "#00b0ff", "#00e5ff", "#1de9b6", "#00e676",
+    "#76ff03", "#c6ff00", "#ffea00", "#ffc400", "#ff9100",
+    "#ff3d00", "#8d6e63", "#bdbdbd", "#78909c"
+  ],
+  "material_a700": [
+    "#d50000", "#c51162", "#aa00ff", "#2962ff", "#304ffe",
+    "#2962ff", "#0091ea", "#00b8d4", "#00bfa5", "#00c853",
+    "#64dd17", "#aeea00", "#ffd600", "#ffab00", "#ff6d00",
+    "#dd2c00", "#5d4037", "#616161", "#455a64"
+  ],
   "name": [
     "Red", "Pink", "Purple", "Deep Purple", "Indigo",
     "Blue", "Light Blue", "Cyan", "Teal", "Green",
@@ -93,7 +111,6 @@ if (color.i == 12 /*yellow*/ ) {
 if (color.i == 17 /* grey */ ) {
   color.i = 5;
 }
-console.log("COLOR CODE: " + color.name[color.i]);
 
 $("link[rel~='icon']").attr("href", "img/[favicon]/favicon" + color.i + ".ico");
 $("meta[name='theme-color']").attr("content", color.material_700[color.i]);
@@ -108,8 +125,11 @@ document.documentElement.style.setProperty("--color-700", color.material_700[col
 document.documentElement.style.setProperty("--color-800", color.material_800[color.i]);
 document.documentElement.style.setProperty("--color-900", color.material_900[color.i]);
 document.documentElement.style.setProperty("--color-a100", color.material_a100[color.i]);
+document.documentElement.style.setProperty("--color-a200", color.material_a200[color.i]);
+document.documentElement.style.setProperty("--color-a400", color.material_a400[color.i]);
+document.documentElement.style.setProperty("--color-a700", color.material_a700[color.i]);
 
-time.log('coloring done');
+time.log('coloring done: ' + color.name[color.i]);
 
 // coloring();
 
