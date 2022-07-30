@@ -47,7 +47,7 @@
 body {
   max-width: 600px;
   margin: 104px auto auto;
-  padding: 1em 0 1em 256px;
+  padding: 1em 0 1em calc(256px + 1em);
   background: #e5e5e5;
   font-family: 'Noto Sans KR', sans-serif;
   color: rgba(0, 0, 0, .87);

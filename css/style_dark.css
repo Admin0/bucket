@@ -1,5 +1,4 @@
 @media (prefers-color-scheme: dark) {
-
   ::-webkit-scrollbar-track {
     background-color: #212121;
   }
@@ -13,39 +12,39 @@
     background: #121212;
   }
 
-  .card_wrap dl, dl#setting,
-  .card_wrap .back {
+  dl.card, dl#setting,
+  .card .front, .card .back {
     color: rgba(255, 255, 255, .65);
     background: #1f1f1f;
   }
 
-  .card_wrap:hover dl, dl#setting,
-  .card_wrap:hover .back {
+  .card:hover dl, dl#setting,
+  .card:hover .back {
     background: #2d2d2d;
   }
 
-  .card_wrap dl.dashboard {
+  dl.dashboard {
     background: #2d2d2d;
   }
 
-  .card_wrap dt, #setting dt,
+  .card dt, #setting dt,
   #setting .setting_title,
   h2, h3, nav h2 a {
     color: rgba(255, 255, 255, .65);
   }
 
-  .card_wrap dd, #setting dd,
+  .card dd, #setting dd,
   .dashboard .subtitle,
   #setting .setting_item.disabled>* {
     color: rgba(255, 255, 255, .5);
   }
 
-  .card_wrap .date {
+  .card .date {
     color: rgba(255, 255, 255, .4);
   }
 
   header, .dashboard .value, .dashboard #실적,
-  .card_wrap input[checked]+dt, #setting input[checked]+dt,
+  .card input[checked]+dt, #setting input[checked]+dt,
   nav h3 a {
     color: rgba(255, 255, 255, .85);
   }
@@ -67,7 +66,7 @@
     color: rgba(255, 255, 255, .65);
   }
 
-  dl .material-icons, a:not(nav a), #to_github, #to_github i {
+  dl .material-icons, a:not(nav a), #to_github, #to_github i, .dashboard .pin .material-icons {
     color: var(--color-200);
     fill: var(--color-200);
   }

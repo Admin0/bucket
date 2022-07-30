@@ -1,4 +1,6 @@
-time.log('coloring start');
+if (time != undefined) {
+  time.log('coloring start');
+};
 
 color = {
   "length": 19,
@@ -129,10 +131,6 @@ document.documentElement.style.setProperty("--color-a200", color.material_a200[c
 document.documentElement.style.setProperty("--color-a400", color.material_a400[color.i]);
 document.documentElement.style.setProperty("--color-a700", color.material_a700[color.i]);
 
-time.log('coloring done: ' + color.name[color.i]);
-
-// coloring();
-
-// $(document).ready(function() {
-//   coloring();
-// });
+if (time != undefined) {
+  time.log('coloring done');
+};

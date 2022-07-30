@@ -2,8 +2,9 @@
   text-align: center;
 }
 
-#first_class .card_wrap {
-  max-width: 600px;
+#first_class .card {
+  width: 600px;
+  margin: 0 auto 1em;
 }
 
 body.floating_dashboard #dashboard {
@@ -13,26 +14,21 @@ body.floating_dashboard #dashboard {
   z-index: 4;
 }
 
-.wrap_dashboard {
-  max-width: calc(100% - 1em);
-  display: flex;
-}
-
-body:not(.columns) .wrap_dashboard {
+body:not(.columns) .dashboard {
   max-width: 100%;
 }
 
-.floating_dashboard .wrap_dashboard {
+.floating_dashboard .dashboard {
   box-shadow: 0 7px 16px rgba(0, 0, 0, .35);
 }
 
-.card_wrap .dashboard {
+dl.dashboard {
+  max-width: calc(100% - 3em);
   color: rgba(255, 255, 255, .8);
   line-height: 1;
   font-size: .9em;
   padding-bottom: 3.5em;
   background: var(--color-700);
-  transition: .25s;
 }
 
 .dashboard #실적 {
@@ -71,6 +67,11 @@ body:not(.columns) .wrap_dashboard {
   cursor: pointer;
 }
 
+.dashboard .pin .material-icons {
+  color: #eee;
+  fill: #eee;
+}
+
 .dashboard .rotate i {
   font-size: 48px;
 }
@@ -103,7 +104,7 @@ body:not(.columns) .wrap_dashboard {
     display: none !important;
   }
 
-  .card_wrap.wrap_dashboard.floating {
+  .dashbaord.wrap_dashboard.floating {
     width: calc(100% - 2em) !important;
   }
 }

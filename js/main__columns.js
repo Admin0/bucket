@@ -10,7 +10,7 @@ function columns() {
       $("body").removeClass("columns");
       $("#column_bt").addClass("disabled");
       $('section.sub').masonry({
-        itemSelector: '.card_wrap',
+        itemSelector: '.card',
         columnWidth: body_w_1
       });
     } else { // only column
@@ -18,7 +18,7 @@ function columns() {
       var column_w = body_w / columns;
       document.documentElement.style.setProperty("--column_w", column_w - 16 + 'px');
       $('section.sub').masonry({
-        itemSelector: '.card_wrap',
+        itemSelector: '.card',
         columnWidth: column_w
       });
     }
@@ -32,7 +32,7 @@ function columns() {
       $("#column_bt").removeClass("disabled");
     }
     $('section.sub').masonry({
-      itemSelector: '.card_wrap',
+      itemSelector: '.card',
       columnWidth: body_w_1
     });
   }

@@ -4,7 +4,6 @@ const bucket = {
     browser_alert();
     checkbox();
     setting();
-    card_wrap();
     bucket.set.nav();
     scroll_smooth();
     filter();
@@ -158,7 +157,7 @@ const bucket = {
       $("body").on("contextmenu", function(event) {
         event.preventDefault();
       });
-      $(".card_wrap").on("contextmenu", function(event) {
+      $(".card").on("contextmenu", function(event) {
         // event.preventDefault();
         if (localStorage.cccv == "true") {
           var c = $("#contextmenu");
@@ -167,9 +166,9 @@ const bucket = {
 
           function print() {
             if (localStorage.cccv__style == "true") {
-              output += '<link rel="stylesheet" type="text/css" href="//jinh.kr/bucket/css/style_card.css">\n<style>\n\t.card_wrap { margin:1em auto; display: block; font-size: 16px; }\n</style>\n\n';
+              output += '<link rel="stylesheet" type="text/css" href="//jinh.kr/bucket/css/style_card.css">\n<style>\n\t.card { margin:1em auto; display: block; font-size: 16px; }\n</style>\n\n';
             }
-            output += '<div class=card_wrap>' + target.html() + '</div>';
+            output += '<div class="card">' + target.html() + '</div>';
             if (localStorage.cccv__to_here == "true") {
               var id;
               if (target.children().attr("id") != null) {
@@ -301,7 +300,7 @@ const bucket = {
 
       time.log('initialize: main__image.js was loaded.');
 
-      $('.card_wrap').on('mouseenter', function() { //.img로 묶인 이미지를 높이에 맞게 정렬
+      $('.card').on('mouseenter', function() { //.img로 묶인 이미지를 높이에 맞게 정렬
         // console.log('mouseenter');
         // console.log($(this).index() + "/" + $('.card_wrap').length);
         $(this).find('.img').each(function() {
@@ -502,14 +501,14 @@ function filter() {
 
   function hide_all() {
     $("input").each(function() {
-      if ($(this).parent().parent().parent().parent().attr('class') == 'card_wrap') {
-        $(this).parent().parent().parent().parent().addClass("hide");
-        // console.log(".card");
-      } else if ($(this).parent().parent().parent().attr('class') == 'card_wrap') {
+      if ($(this).parent().parent().parent().attr('class') == 'card') {
         $(this).parent().parent().parent().addClass("hide");
-        // console.log("dl.card");
-      } else if ($(this).parent().parent().attr('class') == 'card_wrap') {
+        // console.log(".card");
+      } else if ($(this).parent().parent().attr('class') == 'card') {
         $(this).parent().parent().addClass("hide");
+        // console.log("dl.card");
+      } else if ($(this).parent().attr('class') == 'card') {
+        $(this).parent().addClass("hide");
         // console.log("dl");
       }
       if (localStorage.strict_filtering == "true" && $(this).parent().parent().attr("id") != "setting") {
@@ -517,21 +516,21 @@ function filter() {
         $(this).next().addClass("hide");
         $(this).next().next().addClass("hide");
       } else {
-        $(".card_wrap *.hide").removeClass("hide");
+        $(".card *.hide").removeClass("hide");
       }
     });
   }
 
   function filter_11() {
-    $(".card_wrap").removeClass("hide");
+    $(".card").removeClass("hide");
     $("input").parent().children(".hide").removeClass("hide");
   }
 
   function filter_10() {
     hide_all();
-    $("input[checked]").parent().parent().parent().parent(".card_wrap").removeClass("hide");
-    $("input[checked]").parent().parent().parent(".card_wrap").removeClass("hide");
-    $("input[checked]").parent().parent(".card_wrap").removeClass("hide");
+    $("input[checked]").parent().parent().parent(".card").removeClass("hide");
+    $("input[checked]").parent().parent(".card").removeClass("hide");
+    $("input[checked]").parent(".card").removeClass("hide");
     if (localStorage.strict_filtering == "true") {
       $("input[checked]").prev().removeClass("hide");
       $("input[checked]").next().removeClass("hide");
@@ -541,9 +540,9 @@ function filter() {
 
   function filter_01() {
     hide_all();
-    $("input:not([checked]):not([failed]").parent().parent().parent().parent(".card_wrap").removeClass("hide");
-    $("input:not([checked]):not([failed]").parent().parent().parent(".card_wrap").removeClass("hide");
-    $("input:not([checked]):not([failed]").parent().parent(".card_wrap").removeClass("hide");
+    $("input:not([checked]):not([failed]").parent().parent().parent(".card").removeClass("hide");
+    $("input:not([checked]):not([failed]").parent().parent(".card").removeClass("hide");
+    $("input:not([checked]):not([failed]").parent(".card").removeClass("hide");
     if (localStorage.strict_filtering == "true") {
       $("input:not([checked]):not([failed])").prev().removeClass("hide");
       $("input:not([checked]):not([failed])").next().removeClass("hide");
@@ -553,9 +552,9 @@ function filter() {
 
   function filter_00() {
     hide_all();
-    $("input[failed]").parent().parent().parent().parent(".card_wrap").removeClass("hide");
-    $("input[failed]").parent().parent().parent(".card_wrap").removeClass("hide");
-    $("input[failed]").parent().parent(".card_wrap").removeClass("hide");
+    $("input[failed]").parent().parent().parent(".card").removeClass("hide");
+    $("input[failed]").parent().parent(".card").removeClass("hide");
+    $("input[failed]").parent(".card").removeClass("hide");
     if (localStorage.strict_filtering == "true") {
       $("input[failed]").prev().removeClass("hide");
       $("input[failed]").next().removeClass("hide");
@@ -617,29 +616,13 @@ function trim_contents_headline() {
       $(this).removeClass('hide');
     };
   });
-  time.log('initialize: trim_contents_headlin was activeted.')
+  // time.log('initialize: trim_contents_headlin was activeted.')
 }
 
 function checkbox() {
   $("input[checked]").before("<i class='material-icons'>check_box</i>");
   $("input:not([checked]):not([failed])").before("<i class='material-icons'>check_box_outline_blank</i>");
   $("input[failed]").before("<i class='material-icons'>priority_high</i>");
-}
-
-function card_wrap() {
-  $(".card").each(function() {
-    $(this).after("<div class='card_wrap'></div>")
-    $(this).appendTo($(this).next());
-  });
-  $("dl").each(function() {
-    if ($(this).parent().attr("class") == "sub") {
-      $(this).after("<div class='card_wrap'></div>")
-      $(this).appendTo($(this).next());
-    }
-  });
-  $(".back li").each(function() {
-    $(this).replaceWith('<li><span>' + $(this).html() + '</span></li>');
-  });
 }
 
 function browser_alert() {
