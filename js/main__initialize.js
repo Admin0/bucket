@@ -14,7 +14,7 @@ $(document).ready(function() {
     type: "prepend"
   }, {
     from: "dashboard", // 대시보드
-    to: "section#first_class"
+    to: "section#dashboard"
   }, {
     from: "contents__휴식_여행", // 휴식
     to: "h2#휴식 + section.sup"

@@ -1,28 +1,42 @@
-.card_wrap.wrap_dashboard {
+#first_class {
+  text-align: center;
+}
+
+#first_class .card_wrap {
+  max-width: 600px;
+}
+
+body.floating_dashboard #dashboard {
+  position: -webkit-sticky;
+  position: sticky;
+  top: calc(104px + 1em);
   z-index: 4;
 }
 
-.card_wrap.wrap_dashboard.floating {
-  position: fixed;
-  top: 119px;
-  /* margin-left: -50%; */
+.wrap_dashboard {
+  max-width: calc(100% - 1em);
+  display: flex;
 }
 
-.card_wrap.wrap_dashboard.floating .dashboard {
+body:not(.columns) .wrap_dashboard {
+  max-width: 100%;
+}
+
+.floating_dashboard .wrap_dashboard {
   box-shadow: 0 7px 16px rgba(0, 0, 0, .35);
 }
 
-.card_wrap dl.dashboard {
-  color: rgba(255, 255, 255, .98);
+.card_wrap .dashboard {
+  color: rgba(255, 255, 255, .8);
   line-height: 1;
   font-size: .9em;
-  padding-bottom: 3.5em !important;
+  padding-bottom: 3.5em;
   background: var(--color-700);
   transition: .25s;
 }
 
 .dashboard #실적 {
-  color: rgba(255, 255, 255, .98);
+  color: rgba(255, 255, 255, 1);
   margin-top: 0;
   margin-bottom: 0.8em;
   font-size: 1.5em;
@@ -31,6 +45,7 @@
 .dashboard .value {
   font-size: 2.25em;
   line-height: 1.25;
+  color: rgba(255, 255, 255, 1);
 }
 
 .dashboard .item_wrap {
@@ -47,11 +62,6 @@
 
 .dashboard .subtitle {
   position: relative;
-}
-
-#first_class .card_wrap:last-child {
-  /* max-width: calc(100% - 1em) !important; */
-  display: flex;
 }
 
 .dashboard .pin {

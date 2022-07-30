@@ -18,6 +18,7 @@
   --color-a200: #eeeeee;
   --color-a400: #bdbdbd;
   --color-a700: #616161;
+  --column_w: 600px;
 }
 
 ::selection {
@@ -25,7 +26,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  background-color: inherit;
+  background-color: #bdbdbd;
 }
 
 ::-webkit-scrollbar {
@@ -57,6 +58,10 @@ body {
 body.columns {
   max-width: 100%;
   padding-left: calc(1em + 256px);
+}
+
+body:not(.columns) .not_important {
+  display: none;
 }
 
 body.fold {

@@ -173,38 +173,13 @@ function info() {
       }
 
     } else {
-      // $(".dashboard .rotate").remove();
       $(".dashboard .progress").delay(250).fadeOut(100);
-
-      // toast("통계 불러오기 완료", "pie_chart");
-      // console.log(columns);
-      // info_columns();
     }
     $(".dashboard .progress").css({
       "width": "calc(" + i_info / info_length * 100 + "% - 1em)"
     });
-    // $(".dashboard .progress").animate({
-    //   "width": i_info / info_length * 100 + "%"
-    // }, info_timmer, "linear");
-    // console.log(i_info + "/" + $("span.date").length);
-    // i_info++;
   }, info_timmer);
 
-
-  function info_columns() {
-    var columns = Math.floor($("body").width() / 500);
-    if (columns <= 1) {
-      $(".not_important").css({
-        "display": "none"
-      });
-    } else {
-      $(".not_important").css({
-        "display": "initial"
-      });
-    }
-  }
-  info_columns();
-  // console.log("acheieved_this_year (" + i + "):" + acheieved_this_year);
 }
 
 function info_pinned() {
@@ -218,7 +193,7 @@ function info_pinned() {
       $(".dashboard .pin i").text("turned_in");
       toast("통계 대시보드가 고정됐습니다.", "pie_chart");
     }
-    info_position();
+    check_dashboard_floating();
   });
 }
 
@@ -235,53 +210,16 @@ dashboard_top = $("#그거_먹는건가요").offset().top - 32 // main_columns.j
 dashboard_top = (dashboard_top >= 0 ? dashboard_top : 0);
 // let dashboard_height;
 
-let dashboard_height;
-let is_dashboard_floated = false;
-
-function info_position() {
-  if (dashboard_height == undefined) {
-    dashboard_height = $(".wrap_dashboard").height();
-  }
-  if (localStorage.setting__stat == "true" && // 통계 보기            on
-    localStorage.setting__stat_on == "true" && // 통계 대시보드 고정    on
-    dashboard_top < pageYOffset) { // 스크롤 위치
-    if (!is_dashboard_floated) {
-      is_dashboard_floated = true;
-      let b_w = $("body").width();
-      let columns = Math.floor($("body").width() / 500);
-      $(".wrap_dashboard")
-        .addClass("floating")
-        .css({
-          "width": (columns == 1 || localStorage.column_only_mode == "true" ? "100%" : b_w - 16)
-        })
-      $("#first_class").css({
-        "margin-bottom": `calc(${dashboard_height}px + 1.25em)`
-      });
-    }
+function check_dashboard_floating() {
+  if (localStorage.setting__stat == "true" && localStorage.setting__stat_on == "true") {
+    $("body").addClass("floating_dashboard")
   } else {
-    if (is_dashboard_floated) {
-      is_dashboard_floated = false;
-      $(".wrap_dashboard")
-        .removeClass("floating")
-        .css({
-          "width": "100%",
-          "margin-left": "inherit",
-        })
-      $("#first_class").css({
-        "margin-bottom": "inherit",
-      });
-    }
+    $("body").removeClass("floating_dashboard")
   }
-  // console.log({
-    // "setting__stat": localStorage.setting__stat,
-    // "setting__stat_on": localStorage.setting__stat_on,
-    // "position": dashboard_top < pageYOffset,
-    // 'is_dashboard_floated': is_dashboard_floated
-  // });
 }
 
 $(window).scroll(function() {
-  info_position();
+  check_dashboard_floating();
 });
 
 
@@ -289,7 +227,6 @@ $(document).ready(function() {
   $(".card_wrap").has(".dashboard").addClass("wrap_dashboard");
   if (localStorage.setting__stat == "true") {
     $(".dashboard .pin i").text("turned_in");
-    is_dashboard_floated = false;
-    info_position();
+    check_dashboard_floating();
   }
 });

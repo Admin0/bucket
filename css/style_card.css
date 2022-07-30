@@ -27,6 +27,14 @@ body {
   transition: .25s;
 }
 
+body.columns section.sub .card_wrap {
+  max-width: var(--column_w);
+}
+
+body:not(.columns) section.sub .card_wrap {
+  max-width: 600px;
+}
+
 .card_wrap dl dl {
   padding: 0;
   box-shadow: none

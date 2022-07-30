@@ -10,4 +10,4 @@ if (localStorage.setting__stat == "true" && localStorage.setting__stat_on == "tr
 } else {
   $(".dashboard .pin i").text("turned_in_not");
 }
-info_position();
+check_dashboard_floating();
