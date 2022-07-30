@@ -1,4 +1,14 @@
 @media (prefers-color-scheme: dark) {
+
+  ::-webkit-scrollbar-track {
+    background-color: #212121;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-a100);
+    -webkit-box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
   body {
     background: #121212;
   }

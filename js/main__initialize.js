@@ -68,7 +68,6 @@ $(document).ready(function() {
       }
       if (id == 15) {
         time.log("initialize: all modules were loaded.");
-        // console.log("initialize: all modules were loaded.");
         boot();
       }
       // console.log(this.url + " was loaded.");
@@ -101,10 +100,11 @@ function boot() {
     // });
 
     $(window).on('load', function() { //not document, but window
-      setTimeout(function() {
+      // setTimeout(function() {
         columns();
+        trim_contents_headline();
         scroll_at_open();
-      }, 0);
+      // }, 0);
       // imgReady();
     });
 

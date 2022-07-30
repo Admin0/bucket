@@ -112,9 +112,7 @@ var info_width = $(".dashboard").width();
 var info_height = $(".dashboard").height();
 var info_length = $("span.date").length;
 
-function info() {
-  // 대시보드
-
+function info() { // 대시보드
   $("#acheieved_count").html(acheieved.stat.done);
   $("#acheieved_count_subtitle").html(acheieved.stat.percentage + "%<br/>현재까지의 달성율<span class='not_important'>을 나타냅니다.</span>");
   $("#unacheieved_count").text(acheieved.stat.total - acheieved.stat.done);

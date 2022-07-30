@@ -596,27 +596,28 @@ function filter() {
       filter_00();
     }
     columns();
-    headline();
+    trim_contents_headline();
   });
 
 }
 
-function headline() {
+function trim_contents_headline() {
 
   $("section.sup > h3").each(function() {
     if ($(this).next().height() == 0) {
-      $(this).css("display", "none");
+      $(this).addClass('hide');
     } else {
-      $(this).css("display", "block");
+      $(this).removeClass('hide');
     };
   });
   $("h2:not(nav h2)").each(function() {
     if ($(this).next().height() == 0) {
-      $(this).css("display", "none");
+      $(this).addClass('hide');
     } else {
-      $(this).css("display", "block");
+      $(this).removeClass('hide');
     };
   });
+  time.log('initialize: trim_contents_headlin was activeted.')
 }
 
 function checkbox() {
