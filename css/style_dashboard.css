@@ -8,6 +8,10 @@
   position: relative;
 }
 
+body:not(.columns) #first_class .card {
+  width: 100%;
+}
+
 body.floating_dashboard #dashboard {
   position: -webkit-sticky;
   position: sticky;

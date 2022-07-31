@@ -23,7 +23,7 @@
     background: #2d2d2d;
   }
 
-  dl.dashboard {
+  .dashboard {
     background: #2d2d2d;
   }
 
@@ -44,7 +44,7 @@
   }
 
   header, .dashboard .value, .dashboard #실적,
-  .card input[checked]+dt, #setting input[checked]+dt,
+  .card dt[checked], #setting dt[checked],
   nav h3 a {
     color: rgba(255, 255, 255, .85);
   }
@@ -67,6 +67,11 @@
   }
 
   dl .material-icons, a:not(nav a), #to_github, #to_github i, .dashboard .pin .material-icons {
+    color: var(--color-200);
+    fill: var(--color-200);
+  }
+
+  .card dt:before, #setting dt:before {
     color: var(--color-200);
     fill: var(--color-200);
   }
