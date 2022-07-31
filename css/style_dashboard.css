@@ -22,7 +22,7 @@ body:not(.columns) .dashboard {
   box-shadow: 0 7px 16px rgba(0, 0, 0, .35);
 }
 
-dl.dashboard {
+.dashboard {
   max-width: calc(100% - 3em);
   color: rgba(255, 255, 255, .8);
   line-height: 1;

@@ -51,15 +51,15 @@ function check_setting() {
   $("#setting .header").css({
     // "background": (dark ? '#2d2d2d' : color.material_500[color.i]),
   });
-  $("#setting .setting_item input").prev("i").remove();
+  $("#setting .setting_item dt").prev("i").remove();
 
   for (i = 0; i < item.length; i++) {
     if (window.localStorage[item[i]] == null) {
-      window.localStorage[item[i]] = $("#" + item[i] + " input").prop('checked');
+      window.localStorage[item[i]] = $("#" + item[i] + " dt").prop('checked');
     } else if (window.localStorage[item[i]] == "true") {
-      $("#" + item[i] + " input").attr("checked", true);
+      $("#" + item[i] + " dt").attr("checked", true);
     } else {
-      $("#" + item[i] + " input").attr("checked", false);
+      $("#" + item[i] + " dt").attr("checked", false);
     }
   };
 
@@ -72,16 +72,16 @@ function check_setting() {
     $("#cccv__to_here").removeClass("disabled");
   }
 
-  $("#setting input[checked]").before("<i class='material-icons'>check_box</i>");
-  $("#setting input:not([checked]):not([failed])").before("<i class='material-icons'>check_box_outline_blank</i>");
-  $("#setting .disabled .material-icons").css({
-    "color": 'none'
-  });
+  // $("#setting dt[checked]").before("<i class='material-icons'>check_box</i>");
+  // $("#setting dt:not([checked]):not([failed])").before("<i class='material-icons'>check_box_outline_blank</i>");
+  // $("#setting .disabled .material-icons").css({
+  //   "color": 'none'
+  // });
 
-  $("#setting input").next().next().next(".off").removeClass("hide");
-  $("#setting input").next().next(".on").removeClass("hide");
-  $("#setting input[checked]").next().next().next(".off").addClass("hide");
-  $("#setting input:not([checked])").next().next(".on").addClass("hide");
+  $("#setting dt").next().next().next(".off").removeClass("hide");
+  $("#setting dt").next().next(".on").removeClass("hide");
+  $("#setting dt[checked]").next().next().next(".off").addClass("hide");
+  $("#setting dt:not([checked])").next().next(".on").addClass("hide");
 
   // setting__stat (dashboard)
   $.getScript("js/main__setting_stat.js");

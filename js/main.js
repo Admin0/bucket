@@ -153,6 +153,16 @@ const bucket = {
         });
       }
     },
+    filter: {
+      _10: [],
+      _01: [],
+      _00: []
+    },
+    filter_list: function() {
+      this.filter._10.push($("input[checked]").parent().parent().parent(".card"), $("input[checked]").parent().parent(".card"), $("input[checked]").parent(".card"));
+      this.filter._01.push($("input:not([checked]):not([failed]").parent().parent().parent(".card"), $("input:not([checked]):not([failed]").parent().parent(".card"), $("input:not([checked]):not([failed]").parent(".card"));
+      this.filter._00.push($("input[failed]").parent().parent().parent(".card"), $("input[failed]").parent().parent(".card"), $("input[failed]").parent(".card"));
+    },
     contextmenu: function() {
       $("body").on("contextmenu", function(event) {
         event.preventDefault();
@@ -461,7 +471,7 @@ function title_tooltip() {
   $('[data-title]').each(function() {
     $(this).hover(
       function() {
-        console.log("title_tooltip: " + $(this).attr('data-title'));
+        // console.log("title_tooltip: " + $(this).attr('data-title'));
         if (document.height === null) {
           pageYOffset = document.documentElement.scrollTop;
         }
@@ -500,7 +510,7 @@ function filter() {
   });
 
   function hide_all() {
-    $("input").each(function() {
+    $("dt").each(function() {
       if ($(this).parent().parent().parent().attr('class') == 'card') {
         $(this).parent().parent().parent().addClass("hide");
         // console.log(".card");
@@ -523,42 +533,42 @@ function filter() {
 
   function filter_11() {
     $(".card").removeClass("hide");
-    $("input").parent().children(".hide").removeClass("hide");
+    $("dt").parent().children(".hide").removeClass("hide");
   }
 
   function filter_10() {
     hide_all();
-    $("input[checked]").parent().parent().parent(".card").removeClass("hide");
-    $("input[checked]").parent().parent(".card").removeClass("hide");
-    $("input[checked]").parent(".card").removeClass("hide");
+    $("dt[checked]").parent().parent().parent(".card").removeClass("hide");
+    $("dt[checked]").parent().parent(".card").removeClass("hide");
+    $("dt[checked]").parent(".card").removeClass("hide");
     if (localStorage.strict_filtering == "true") {
-      $("input[checked]").prev().removeClass("hide");
-      $("input[checked]").next().removeClass("hide");
-      $("input[checked]").next().next().removeClass("hide");
+      $("dt[checked]").prev().removeClass("hide");
+      $("dt[checked]").next().removeClass("hide");
+      $("dt[checked]").next().next().removeClass("hide");
     }
   }
 
   function filter_01() {
     hide_all();
-    $("input:not([checked]):not([failed]").parent().parent().parent(".card").removeClass("hide");
-    $("input:not([checked]):not([failed]").parent().parent(".card").removeClass("hide");
-    $("input:not([checked]):not([failed]").parent(".card").removeClass("hide");
+    $("dt:not([checked]):not([failed]").parent().parent().parent(".card").removeClass("hide");
+    $("dt:not([checked]):not([failed]").parent().parent(".card").removeClass("hide");
+    $("dt:not([checked]):not([failed]").parent(".card").removeClass("hide");
     if (localStorage.strict_filtering == "true") {
-      $("input:not([checked]):not([failed])").prev().removeClass("hide");
-      $("input:not([checked]):not([failed])").next().removeClass("hide");
-      $("input:not([checked]):not([failed])").next().next().removeClass("hide");
+      $("dt:not([checked]):not([failed])").prev().removeClass("hide");
+      $("dt:not([checked]):not([failed])").next().removeClass("hide");
+      $("dt:not([checked]):not([failed])").next().next().removeClass("hide");
     }
   }
 
   function filter_00() {
     hide_all();
-    $("input[failed]").parent().parent().parent(".card").removeClass("hide");
-    $("input[failed]").parent().parent(".card").removeClass("hide");
-    $("input[failed]").parent(".card").removeClass("hide");
+    $("dt[failed]").parent().parent().parent(".card").removeClass("hide");
+    $("dt[failed]").parent().parent(".card").removeClass("hide");
+    $("dt[failed]").parent(".card").removeClass("hide");
     if (localStorage.strict_filtering == "true") {
-      $("input[failed]").prev().removeClass("hide");
-      $("input[failed]").next().removeClass("hide");
-      $("input[failed]").next().next().removeClass("hide");
+      $("dt[failed]").prev().removeClass("hide");
+      $("dt[failed]").next().removeClass("hide");
+      $("dt[failed]").next().next().removeClass("hide");
     }
   }
 
