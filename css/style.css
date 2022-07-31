@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Material+Icons');
 @import url('https://fonts.googleapis.com/css?family=Black+Ops+One&display=swap');
-@import url('style_card.css');
+@import url('style_card_v2.css');
 @import url('style_dashboard.css');
 
 :root {
@@ -986,7 +986,6 @@ div#splash .splash_title {
   }
 
   #sub_header {
-    background: var(--color-700);
     padding-left: 0 !important;
     width: 100% !important
   }
@@ -1059,6 +1058,7 @@ div#splash .splash_title {
   }
 
   #setting .header {
+    background: var(--color-700);
     display: block;
     margin-bottom: 1em;
     height: 48px;

@@ -165,15 +165,15 @@ const bucket = {
 
           function print() {
             if (localStorage.cccv__style == "true") {
-              output += '<link rel="stylesheet" type="text/css" href="//jinh.kr/bucket/css/style_card.css">\n<style>\n\t.card { margin:1em auto; display: block; font-size: 16px; }\n</style>\n\n';
+              output += '<link rel="stylesheet" type="text/css" href="//jinh.kr/bucket/css/style_card.css">\n<style>\n\t.card { max-width:600px; margin:1em auto; display: block; font-size: 16px; }\n</style>\n\n';
             }
-            output += '<div class="card">' + target.html() + '</div>';
+            output += target[0].outerHTML;
             if (localStorage.cccv__to_here == "true") {
               var id;
-              if (target.children().attr("id") != null) {
+              if (target.attr("id") != null) {
+                id = "/#" + target.attr("id");
+              } else if (target.children().attr("id") != null) {
                 id = "/#" + target.children().attr("id");
-              } else if (target.children().children().attr("id") != null) {
-                id = "/#" + target.children().children().attr("id");
               } else {
                 id = "";
               }

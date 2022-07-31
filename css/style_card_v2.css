@@ -1,7 +1,3 @@
-/* 이전 버전과 호환을 위한 파일입니다. */
-/* 지우지 마세요. */
-/* 다음 버전(v2) 에서 계속 이어집니다. */
-
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import url('https://fonts.googleapis.com/css?family=Black+Ops+One&display=swap');
 
@@ -9,44 +5,98 @@ body {
   background: #e5e5e5;
 }
 
-.article h2:not(:first-child):not(:first-of-type):after, .article h2:not(:first-child):not(:first-of-type):before {
-  background: #e5e5e5;
-  color: #bbb;
+body.columns section.sub .card {
+  max-width: var(--column_w);
 }
 
-.article h2:not(:first-child):not(:first-of-type) {
-  border-color: #bbb;
+body.columns section.sub .card.front {
+  max-width: calc(var(--column_w) - 2em);
 }
 
-.card_wrap dl, dl#setting {
-  padding: 1em;
-  margin: 0;
-  border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
-  background: #fff;
+body:not(.columns) section.sub .card {
+  width: 100%;
+}
+
+body:not(.columns) section.sub .card.front {
   width: calc(100% - 2em);
-  white-space: nowrap;
+}
+
+.card, dl#setting {
+  display: block;
+  margin: 0 1em 1em 0;
+  border-radius: 3px;
+  width: calc(100% - 2em);
+  transform-style: preserve-3d;
+  perspective: 3000px;
+}
+
+.back, .front {
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+  transform-origin: 0 3em;
+  text-align: left;
+  width: calc(100% - 2em);
+  position: relative;
+  backface-visibility: hidden;
+  left: 0;
+  transition: box-shadow .5s;
+  padding: 1em;
+}
+
+.front {
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: .25s;
 }
 
-.card_wrap dl dl {
+.card.front {
+  transition: box-shadow .5s, background-color .5s;
+}
+
+.card .back, .card .front {
+  transition: transform .5s, box-shadow .5s, background-color .5s;
+  padding: 1em;
+  margin: 0;
+}
+
+.card .back {
+  top: 0;
+  position: absolute;
+  width: 100%;
+  transform: rotateX(180deg);
+  border-radius: 3px;
+  background: #fff;
+  z-index: 2;
+  max-width: 100%;
+  padding: 0;
+}
+
+.card.front:hover,
+.card:hover .front,
+.card:hover .back {
+  box-shadow: 0 5px 12px rgb(0 0 0 / 20%);
+  z-index: 2;
+}
+
+.card:hover .front {
+  transform: rotateX(-180deg);
+}
+
+.card:hover .back {
+  transform: rotateX(0);
+}
+
+.card dl dl {
   padding: 0;
   box-shadow: none
 }
 
-dl, dt, dd, .card .card a, .back {
-  /* 코드 작동 전에는 아예 안 보이도록 조치 */
-  color: rgba(0, 0, 0, 0);
-}
-
-.card_wrap dl, .card_wrap dt, .card_wrap dd, .card_wrap .back {
+.card dl, .card dt, .card dd, .card .back {
   /* 코드가 작동하면 글이 보입니다 */
   color: rgba(0, 0, 0, .65);
 }
 
-.card_wrap dt, #setting dt {
+.card dt, #setting dt {
   font-size: 16px;
   /*color: #777;*/
   color: rgba(0, 0, 0, .65);
@@ -54,29 +104,64 @@ dl, dt, dd, .card .card a, .back {
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.card_wrap dd, #setting dd {
+.card dt:before, #setting dt:before {
+  content: 'check_box_outline_blank';
+  margin-right: 0.25em;
+  color: var(--color-500);
+  fill: var(--color-500);
+  vertical-align: bottom;
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+.card dt[checked]:before, #setting dt[checked]:before {
+  content: 'check_box';
+}
+
+.card dt[failed]:before, #setting dt[failed]:before {
+  content: 'priority_high';
+}
+
+.card .disabled dt:before, #setting .disabled dt:before {
+  fill: inherit;
+  color: inherit;
+}
+
+.card dd, #setting dd {
   font-size: .9em;
   color: rgba(0, 0, 0, .5);
   white-space: normal;
 }
 
-.card_wrap dd+input {
+.card dd+input {
   margin-top: 1em;
 }
 
-.card_wrap dd ul {
+.card dd ul {
   list-style: none;
   padding: 0;
   column-count: 2;
 }
 
-.card_wrap dd:last-child ul {
+.card dd:last-child ul {
   margin-bottom: 0;
 }
 
-.card_wrap dd ul li {
+.card dd ul li {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -84,21 +169,17 @@ dl, dt, dd, .card .card a, .back {
   align-items: center;
 }
 
-.card_wrap dd ul li dt {
-  margin-left: 4px;
-}
-
-.card_wrap .back ol, .back ul {
+.card .back ol, .back ul {
   column-count: 2;
   column-gap: 3em;
   padding-left: 1em;
 }
 
-.card_wrap .back ul {
+.card .back ul {
   list-style: none;
 }
 
-.card_wrap .back li span {
+.card .back li span {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -107,29 +188,20 @@ dl, dt, dd, .card .card a, .back {
   margin: 0 0 -5px;
 }
 
-.card_wrap input {
+.card input {
   display: none;
 }
 
-/*.card_wrap input + dt:before, #setting input + dt:before {
+/*.card input + dt:before, #setting input + dt:before {
     content: "check_box_outline_blank"; 색설정문제로 걍 js에서 처리함
 }*/
-
-.card_wrap input[checked]+dt, #setting input[checked]+dt {
+.card dt[checked], #setting dt[checked] {
   font-weight: 700;
   color: #000;
   text-decoration: none;
 }
 
-.card_wrap input[failed] {
-  opacity: 0;
-}
-
-.card_wrap input[failed]+dt {
-  /*text-decoration: line-through*/
-}
-
-.card_wrap input[failed]+dt+dd:after {
+.card dt[failed]+dd:after {
   content: "FAILED";
   /*content: "실패했습니다";*/
   display: inline-block;
@@ -150,27 +222,31 @@ dl, dt, dd, .card .card a, .back {
   backface-visibility: hidden;
 }
 
-.card_wrap .date {
-  float: right;
-  /*color: #aaa;*/
-  color: rgba(0, 0, 0, .4);
+#setting dt[checked]~dd.off, #setting dt:not([checked])~dd.on {
+  display: none;
 }
 
-.card_wrap li>.date {
+.card .date {
+  float: right;
+  font-size: 14px;
+  font-weight: normal;
+  color: rgba(0, 0, 0, .4);
+  align-self: flex-end;
+}
+
+.card li>.date {
   float: none;
 }
 
-.card_wrap {
+/* .card {
   perspective: 1000;
   -webkit-perspective: 1000;
-  width: 100%;
   max-width: 600px;
   display: inline-block;
   margin: 0 1em 1em 0;
   text-align: left;
-}
-
-.card_wrap:hover {
+} */
+.card:hover {
   z-index: 3;
 }
 
@@ -178,79 +254,43 @@ dl, dt, dd, .card .card a, .back {
   0% {
     z-index: 2;
   }
+
   99% {
     z-index: 2;
   }
+
   100% {
     z-index: 1;
   }
 }
 
-.card_wrap:not(:hover):not(.wrap_dashboard) {
+.card:not(:hover) {
   animation-name: unhover;
   animation-duration: .5s;
 }
 
-.card_wrap .card {
-  transition: .5s;
-  transform-style: preserve-3d;
-  transform-origin: 100% 50% 0;
-  text-align: left;
-  width: 100%;
-  position: relative
-}
-
-.card_wrap:hover .card {
-  z-index: 2;
-  transform: rotateX(180deg)
-}
-
-.card_wrap .back, .card_wrap .front {
-  backface-visibility: hidden;
-  left: 0
-}
-
-.card_wrap .front {
-  z-index: 2
-}
-
-.card_wrap .back {
-  bottom: 0;
-  position: absolute;
-  width: 100%;
-  transform: rotateX(-180deg);
-  border-radius: 3px;
-  background: #fff;
-  z-index: 2;
-  max-width: 100%
-}
-
-.card_wrap .back, dl:not(.card):hover {
-  box-shadow: 0 5px 12px rgba(0, 0, 0, .2);
-}
-
-.card_wrap .back>:not(img) {
+.card .back>:not(img) {
   margin: .5em 1em;
 }
 
-.card_wrap .back>:first-child:not(img) {
+.card .back>:first-child:not(img) {
   margin: 1em 1em .5em;
 }
 
-.card_wrap .back>:last-child:not(img) {
+.card .back>:last-child:not(img) {
   margin: .5em 1em 1em;
 }
 
-.card_wrap .back>:only-child:not(img):not(ol) {
+.card .back>:only-child:not(img):not(ol) {
   margin: 26px 1em;
 }
 
-.card_wrap .back>img:first-child {
+.card .back>img:first-child {
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
 }
 
-.card_wrap .back>img:last-child {
+.card .back>img:last-child {
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
 }
@@ -260,67 +300,67 @@ dl, dt, dd, .card .card a, .back {
   opacity: 0;
 }
 
-.card_wrap img, #img_wrap img {
+.card img, #img_wrap img {
   opacity: inherit;
   /* width: inherit; */
 }
 
-.card_wrap .back>.img {
+.card .back>.img {
   display: flex;
   overflow: hidden;
   margin: 0 !important
 }
 
-.card_wrap .back>.img>div {
+.card .back>.img>div {
   flex: 1;
 }
 
-.card_wrap .back>.img:first-child>div:first-child>img {
+.card .back>.img:first-child>div:first-child>img {
   border-top-left-radius: 3px
 }
 
-.card_wrap .back>.img:first-child>div:last-child>img {
+.card .back>.img:first-child>div:last-child>img {
   border-top-right-radius: 3px
 }
 
-.card_wrap .back>.img:last-child>div:first-child>img {
+.card .back>.img:last-child>div:first-child>img {
   border-bottom-left-radius: 3px
 }
 
-.card_wrap .back>.img:last-child>div:last-child>img {
+.card .back>.img:last-child>div:last-child>img {
   border-bottom-right-radius: 3px
 }
 
-.card_wrap .material-icons {
+.card .material-icons {
   margin-right: 0;
   vertical-align: text-bottom;
 }
 
-.card_wrap a[href]:before {
+.card a[href]:before {
   content: "open_in_new" !important;
 }
 
-.card_wrap a[href^='#']:before {
+.card a[href^='#']:before {
   content: "find_in_page" !important;
 }
 
-.card_wrap a[href$='.zip']:before {
+.card a[href$='.zip']:before {
   content: "save" !important;
 }
 
-.card_wrap a[href$='.pdf']:before {
+.card a[href$='.pdf']:before {
   content: "insert_drive_file" !important;
 }
 
-.card_wrap a[onclick]:before {
+.card a[onclick]:before {
   content: "theaters" !important;
 }
 
-.card_wrap a[src]:before {
+.card a[src]:before {
   content: "photo" !important;
 }
 
-.card_wrap a:before {
+.card a:before {
   vertical-align: text-bottom;
   font-family: 'Material Icons';
   font-weight: normal;
@@ -340,7 +380,6 @@ dl, dt, dd, .card .card a, .back {
 }
 
 /* cast */
-
 table.cast {}
 
 table.cast tr td:first-child {
@@ -364,11 +403,20 @@ table.cast tr td:nth-child(2) {
 }
 
 /* for Blog */
-
 .article .card .imageblock {
   margin: 0 !important;
 }
 
 .article .card .imageblock img {
   box-shadow: none !important;
+}
+
+@media handheld, only screen and (max-width:880px) {
+  .card dd ul {
+    margin-left: -2.75em;
+  }
+
+  .card li>.date {
+    max-width: 2.5em;
+  }
 }
