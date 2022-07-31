@@ -2,7 +2,6 @@ const bucket = {
   initialize: function() {
     ajax();
     browser_alert();
-    checkbox();
     setting();
     bucket.set.nav();
     scroll_smooth();
@@ -461,7 +460,7 @@ function title_tooltip() {
   $('[data-title]').each(function() {
     $(this).hover(
       function() {
-        console.log("title_tooltip: " + $(this).attr('data-title'));
+        // console.log("title_tooltip: " + $(this).attr('data-title'));
         if (document.height === null) {
           pageYOffset = document.documentElement.scrollTop;
         }
@@ -499,66 +498,45 @@ function filter() {
     localStorage.column_only_mode = column_only_mode;
   });
 
+  function show_all() {
+    $(".card").removeClass("hide");
+    $(".card dt").removeClass("hide");
+    $(".card dd").removeClass("hide");
+  }
+
   function hide_all() {
-    $("input").each(function() {
-      if ($(this).parent().parent().parent().attr('class') == 'card') {
-        $(this).parent().parent().parent().addClass("hide");
-        // console.log(".card");
-      } else if ($(this).parent().parent().attr('class') == 'card') {
-        $(this).parent().parent().addClass("hide");
-        // console.log("dl.card");
-      } else if ($(this).parent().attr('class') == 'card') {
-        $(this).parent().addClass("hide");
-        // console.log("dl");
-      }
-      if (localStorage.strict_filtering == "true" && $(this).parent().parent().attr("id") != "setting") {
-        $(this).prev().addClass("hide");
-        $(this).next().addClass("hide");
-        $(this).next().next().addClass("hide");
-      } else {
-        $(".card *.hide").removeClass("hide");
-      }
-    });
+    show_all()
+    $(".card:not(.dashboard)").addClass("hide");
   }
 
   function filter_11() {
-    $(".card").removeClass("hide");
-    $("input").parent().children(".hide").removeClass("hide");
+    show_all();
   }
 
   function filter_10() {
     hide_all();
-    $("input[checked]").parent().parent().parent(".card").removeClass("hide");
-    $("input[checked]").parent().parent(".card").removeClass("hide");
-    $("input[checked]").parent(".card").removeClass("hide");
+    $(".card").has("dt[checked]").removeClass("hide");
     if (localStorage.strict_filtering == "true") {
-      $("input[checked]").prev().removeClass("hide");
-      $("input[checked]").next().removeClass("hide");
-      $("input[checked]").next().next().removeClass("hide");
+      $(".card").has("dt:not([checked])").addClass("hide");
+      $(".card dt[checked], .card dt[checked]+dd").removeClass("hide");
     }
   }
 
   function filter_01() {
     hide_all();
-    $("input:not([checked]):not([failed]").parent().parent().parent(".card").removeClass("hide");
-    $("input:not([checked]):not([failed]").parent().parent(".card").removeClass("hide");
-    $("input:not([checked]):not([failed]").parent(".card").removeClass("hide");
+    $(".card").has("dt:not([checked]):not([failed])").removeClass("hide");
     if (localStorage.strict_filtering == "true") {
-      $("input:not([checked]):not([failed])").prev().removeClass("hide");
-      $("input:not([checked]):not([failed])").next().removeClass("hide");
-      $("input:not([checked]):not([failed])").next().next().removeClass("hide");
+      // $(".card").has("dt[checked], dt[failed]").addClass("hide");
+      $(".card dt[checked], .card dt[checked]+dd, .card dt[failed], .card dt[failed]+dd").addClass("hide");
     }
   }
 
   function filter_00() {
     hide_all();
-    $("input[failed]").parent().parent().parent(".card").removeClass("hide");
-    $("input[failed]").parent().parent(".card").removeClass("hide");
-    $("input[failed]").parent(".card").removeClass("hide");
+    $(".card").has("dt[failed]").removeClass("hide");
     if (localStorage.strict_filtering == "true") {
-      $("input[failed]").prev().removeClass("hide");
-      $("input[failed]").next().removeClass("hide");
-      $("input[failed]").next().next().removeClass("hide");
+      $(".card dt:not([failed]), .card dt:not([failed])+dd").addClass("hide");
+      $("dt:not([failed])+dd").has("dt[failed]").removeClass("hide");
     }
   }
 
@@ -617,12 +595,6 @@ function trim_contents_headline() {
     };
   });
   // time.log('initialize: trim_contents_headlin was activeted.')
-}
-
-function checkbox() {
-  $("input[checked]").before("<i class='material-icons'>check_box</i>");
-  $("input:not([checked]):not([failed])").before("<i class='material-icons'>check_box_outline_blank</i>");
-  $("input[failed]").before("<i class='material-icons'>priority_high</i>");
 }
 
 function browser_alert() {

@@ -9,16 +9,16 @@ body.columns section.sub .card {
   max-width: var(--column_w);
 }
 
-body.columns section.sub dl.card {
+body.columns section.sub .card.front {
   max-width: calc(var(--column_w) - 2em);
 }
 
 body:not(.columns) section.sub .card {
-  width: 600px;
+  width: 100%;
 }
 
-body:not(.columns) section.sub dl.card {
-  width: calc(600px - 2em);
+body:not(.columns) section.sub .card.front {
+  width: calc(100% - 2em);
 }
 
 .card, dl#setting {
@@ -31,7 +31,7 @@ body:not(.columns) section.sub dl.card {
   /* transition: .25s; */
 }
 
-.card .back, .card .front, dl.card {
+.back, .front {
   border-radius: 3px;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
@@ -42,17 +42,14 @@ body:not(.columns) section.sub dl.card {
   position: relative;
   backface-visibility: hidden;
   left: 0;
+  transition: box-shadow .5s;
+  padding: 1em;
 }
 
 .card .back, .card .front {
   transition: transform .5s, box-shadow .5s;
   padding: 1em;
   margin: 0;
-}
-
-dl.card {
-  transition: box-shadow .5s;
-  padding: 1em;
 }
 
 .card .back {
@@ -67,7 +64,8 @@ dl.card {
   padding: 0;
 }
 
-dl.card:hover,
+.card.front:hover,
+.card:hover .front:hover,
 .card:hover .back {
   box-shadow: 0 5px 12px rgb(0 0 0 / 20%);
   z-index: 2;
@@ -101,6 +99,40 @@ dl.card:hover,
   text-overflow: ellipsis;
 }
 
+.card dt:before, #setting dt:before {
+  content: 'check_box_outline_blank';
+  margin-right: 0.25em;
+  color: var(--color-500);
+  fill: var(--color-500);
+  vertical-align: bottom;
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+.card dt[checked]:before, #setting dt[checked]:before {
+  content: 'check_box';
+}
+
+.card dt[failed]:before, #setting dt[failed]:before {
+  content: 'priority_high';
+}
+
+.card .disabled dt:before, #setting .disabled dt:before {
+  fill: inherit;
+  color: inherit;
+}
+
 .card dd, #setting dd {
   font-size: .9em;
   color: rgba(0, 0, 0, .5);
@@ -129,10 +161,6 @@ dl.card:hover,
   align-items: center;
 }
 
-.card dd ul li dt {
-  margin-left: 4px;
-}
-
 .card .back ol, .back ul {
   column-count: 2;
   column-gap: 3em;
@@ -159,21 +187,13 @@ dl.card:hover,
 /*.card input + dt:before, #setting input + dt:before {
     content: "check_box_outline_blank"; 색설정문제로 걍 js에서 처리함
 }*/
-.card input[checked]+dt, #setting input[checked]+dt {
+.card dt[checked], #setting dt[checked] {
   font-weight: 700;
   color: #000;
   text-decoration: none;
 }
 
-.card input[failed] {
-  opacity: 0;
-}
-
-.card input[failed]+dt {
-  /*text-decoration: line-through*/
-}
-
-.card input[failed]+dt+dd:after {
+.card dt[failed]+dd:after {
   content: "FAILED";
   /*content: "실패했습니다";*/
   display: inline-block;
@@ -194,10 +214,16 @@ dl.card:hover,
   backface-visibility: hidden;
 }
 
+#setting dt[checked]~dd.off, #setting dt:not([checked])~dd.on {
+  display: none;
+}
+
 .card .date {
   float: right;
-  /*color: #aaa;*/
+  font-size: 14px;
+  font-weight: normal;
   color: rgba(0, 0, 0, .4);
+  align-self: flex-end;
 }
 
 .card li>.date {

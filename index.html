@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 
 <head>
   <title>#BUCKET_LIST @JinH</title>
@@ -12,12 +12,13 @@
   <link rel="shortcut icon" href="img/[favicon]/favicon.ico">
   <script src="js/jquery.min.js"></script>
   <!-- <script defer src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
+  <script defer src="js/sub__coloring.js"></script>
   <script defer src="js/main__initialize.js"></script>
   <script defer src="js/sub__masonry.pkgd.min.js"></script>
   <script defer src="js/sub__clipboard.min.js"></script>
   <script async src="js/sub__lazysizes.min.js"></script>
   <script async src="js/sub__coloring.js"></script>
-  <script defer src="js/prefixfree.min.js"></script>
+  <!-- <script defer src="js/prefixfree.min.js"></script> -->
   <link rel="manifest" href="manifest.json">
 </head>
 
@@ -85,7 +86,7 @@
     <div class="card">
       <!-- 버킷리스트 만들기. -->
       <dl class="front" id="그거_먹는건가요">
-        <input type="checkbox" checked> <dt>그거 먹는건가요?</dt>
+        <dt checked>그거 먹는건가요?</dt>
         <dd>버킷리스트 만들기. <span class="date">2014.10.03.</span> </dd>
       </dl>
       <div class="back">
@@ -132,7 +133,7 @@
         <li><a href="https://www.mozilla.org/ko/firefox/new/" target="_blank">Firefox - by Mozilla</a></li>
         <!-- <li><a href="https://windows.microsoft.com/ko-kr/internet-explorer/ie-11-worldwide-languages" target="_blank">Internet Explorer 11 - by Microsoft</a></li> -->
       </ul>
-      <p><a onclick="$('#browser_alert').remove()">닫기</a></p>
+      <p><a href="#" onclick="$('#browser_alert').remove()">닫기</a></p>
     </div>
   </div>
 

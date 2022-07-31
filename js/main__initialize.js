@@ -90,22 +90,17 @@ function boot() {
       $(deferred.resolve);
     })
   ).done(function() {
-
+    $("div#splash").addClass("off"); // splash
     $(window).resize(function() {
       columns();
     });
 
-    // $(document).ready(function() {
     bucket.initialize();
-    // });
 
     $(window).on('load', function() { //not document, but window
-      // setTimeout(function() {
-        columns();
-        trim_contents_headline();
-        scroll_at_open();
-      // }, 0);
-      // imgReady();
+      columns();
+      trim_contents_headline();
+      scroll_at_open();
     });
 
   });

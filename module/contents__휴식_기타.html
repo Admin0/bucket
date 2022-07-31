@@ -3,7 +3,7 @@
   <div class="card">
     <!-- 나도 영화 봤거든? -->
     <dl class="front">
-      <input type="checkbox"> <dt>나도 영화 봤거든?</dt>
+      <dt>나도 영화 봤거든?</dt>
       <dd>세상에서 가장 아름다운 소녀에게 키스하기.<span class="date"></span></dd>
     </dl>
     <div class="back">
@@ -14,14 +14,12 @@
   </div>
   <div class="card">
     <!-- 뒷면 사진에 나온 거 당겨보기. -->
-    <div class="front">
-      <dl id="비상_사태_발생">
-        <input type="checkbox" checked> <dt>비상 사태 발생!</dt>
-        <dd>뒷면 사진에 나온 거 당겨보기.<span class="date">2016.09.02.</span></dd>
-      </dl>
-    </div>
+    <dl class="front" id="비상_사태_발생">
+      <dt checked>비상 사태 발생!</dt>
+      <dd>뒷면 사진에 나온 거 당겨보기.<span class="date">2016.09.02.</span></dd>
+    </dl>
     <div class="back">
-      <img data-src="img\can_i_pull_it.jpg" class="lazyload" alt="" />
+      <img data-src="img\can_i_pull_it.jpg" class="lazyload" alt="비상샤워기" />
       <p>화학회사에서 인턴하면서 몰래 당겨봄.</p>
       <p>(사진은 대학교 실험실 복도에서 찍어놓음)</p>
     </div>
@@ -29,30 +27,30 @@
   <div class="card">
     <!-- 자취하기 -->
     <dl class="front">
-      <input type="checkbox" checked> <dt>라면 먹고 갈래?</dt>
+      <dt checked>라면 먹고 갈래?</dt>
       <dd>자취하기.<span class="date">2011.09.</span></dd>
     </dl>
     <div class="back">
       <p>항상 해보고 싶었음.</p>
     </div>
   </div>
-  <dl class="card">
+  <dl class="card front">
     <!-- 해먹 -->
-    <input type="checkbox"> <dt>휴식 하면 이거지</dt>
+    <dt>휴식 하면 이거지</dt>
     <dd>해먹 갖기. 그리고 해먹 안에서 격렬하게 아무것도 하지 않아보기.<span class="date"></span></dd>
   </dl>
   <div class="card">
     <!-- 싫은데? -->
     <dl class="front" id="싫은데">
-      <input type="checkbox" checked> <dt>싫은데?</dt>
+      <dt checked>싫은데?</dt>
       <dd>사회적 통념을 거스르는 행위 하기.<span class="date">2013.01.04.</span></dd>
     </dl>
     <div class="back">
       <div class="img">
-        <img src="img/싫은데/nope0.webp" />
-        <img src="img/싫은데/nope1.webp" />
-        <img src="img/싫은데/nope2.webp" />
-        <img src="img/싫은데/nope3.webp" />
+        <img src="img/싫은데/nope0.webp" class="lazyload" alt="싫은데"/>
+        <img src="img/싫은데/nope1.webp" class="lazyload" alt="싫은데"/>
+        <img src="img/싫은데/nope2.webp" class="lazyload" alt="싫은데"/>
+        <img src="img/싫은데/nope3.webp" class="lazyload" alt="싫은데"/>
       </div>
       <p>휴... 나란 남자... 넘나 나쁜 남자인 것!</p>
     </div>
@@ -60,49 +58,49 @@
   <div class="card">
     <!-- 멋진 크리스마스 보내기. -->
     <dl class="front" id="그럼_그렇지">
-      <input type="checkbox" checked> <dt>그럼 그렇지...</dt>
+      <dt checked>그럼 그렇지...</dt>
       <dd>멋진 크리스마스 보내기.<span class="date">2015.12.25.</span></dd>
     </dl>
     <div class="back">
-      <img data-src="img\그럼_그렇지\christmas.jpg" class="lazyload" alt="" />
+      <img data-src="img\그럼_그렇지\christmas.jpg" class="lazyload" alt="크리스마마스 트리" />
       <p>위 크리스마마스 트리를 만들고 자괴감이 들었다고 한다.</p>
     </div>
   </div>
   <div class="card">
     <!-- 야수 길들이기 -->
     <dl class="front" id="야수_길들이기">
-      <input type="checkbox" failed> <dt>야수 길들이기</dt>
+      <dt failed>야수 길들이기</dt>
       <dd>"야수를 길들여 친구로 만듭니다."<span class="date"></span></dd>
     </dl>
     <div class="back">
-      <img data-src="img\야수_길들이기.webp" class="lazyload" alt="" />
+      <img data-src="img\야수_길들이기.webp" class="lazyload" alt="야수" />
       <p title='"야수를 길들여 친구로 만듭니다. 야수를 길들이는 데 집중하는 20초 동안은 방어도가 100%만큼 감소합니다. 만약 이 동안 어떤 이유로든 야수의 주의가 딴데로 돌아가게 된다면 길들이는 것은 실패하게 됩니다. 길들이는 데 성공하면 만족도와 충성도가 매우 낮습니다. 즉시 먹을 것을 줘서 만족도를 높이도록 하십시오."'>위 개시끼에게 손바닥을 뚫리면서 처참하게 실패.</p>
     </div>
   </div>
-  <dl class="card" id="자_이제_시작이야" title="내 꿈을 위한 여행 (피카츄) ♬">
+  <dl class="card front" id="자_이제_시작이야" title="내 꿈을 위한 여행 (피카츄) ♬">
     <!-- 자, 이제 시작이야 -->
-    <input type="checkbox"> <dt>자, 이제 시작이야 (내 꿈을)</dt>
+    <dt>자, 이제 시작이야 (내 꿈을)</dt>
     <dd>포켓몬 마스터 되기.<span class="date"></span></dd>
   </dl>
-  <dl class="card" id="추락하는_것은_날개가_없다">
+  <dl class="card front" id="추락하는_것은_날개가_없다">
     <!-- 추락하는 것은 날개가 없다? -->
-    <input type="checkbox"> <dt>추락하는 것은 날개가 없다?</dt>
+    <dt>추락하는 것은 날개가 없다?</dt>
     <dd>죽지 않고 65미터 떨어지기.<span class="date"></span></dd>
   </dl>
-  <dl class="card">
+  <dl class="card front">
     <!-- 서울말은 끝말만 올리면 되는거 모르니↗ -->
-    <input type="checkbox" checked> <dt>서울말은 끝말만 올리면 되는 거 모르니↗</dt>
+    <dt checked>서울말은 끝말만 올리면 되는 거 모르니↗</dt>
     <dd>서울에서 1년간 살기.<span class="date">2016.06.01.</span></dd>
   </dl>
-  <dl class="card">
+  <dl class="card front">
     <!-- 내일 지구의 종말이 온다 할지라도 -->
-    <input type="checkbox"> <dt>내일 지구의 종말이 온다 할지라도</dt>
+    <dt>내일 지구의 종말이 온다 할지라도</dt>
     <dd>나는 오늘 한그루의 사과나무를 심겠다.<span class="date"></span></dd>
   </dl>
   <div class="card">
     <dl class="front">
       <!-- 소설이 영화화 되기 전에 읽기. -->
-      <input type="checkbox" checked> <dt>!nameless</dt>
+      <dt checked>!nameless</dt>
       <dd>소설이 영화화 되기 전에 읽기.<span class="date"></span></dd>
     </dl>
     <div class="back">
@@ -117,7 +115,7 @@
   <div class="card">
     <dl class="front">
       <!-- 영화화된 원작 찾아 읽기. -->
-      <input type="checkbox" checked> <dt>!nameless</dt>
+      <dt checked>!nameless</dt>
       <dd>영화화된 원작 찾아 읽기.<span class="date"></span></dd>
     </dl>
     <div class="back">

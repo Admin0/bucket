@@ -35,36 +35,30 @@ let acheieved = {
 function percentage() {
 
   // 세포분열
-  acheieved.stat.failed = $("input[failed]").length;
-  acheieved.stat.total = ($("input").length - acheieved.stat.failed);
+  acheieved.stat.failed = $("dt[failed]").length;
+  acheieved.stat.total = ($("dt").length - acheieved.stat.failed);
   if (acheieved.stat.total + acheieved.stat.failed >= 1000) {
     $("#세포분열_1000").attr("checked", true);
-    $("#세포분열_1000").prev().text("check_box");
   }
   if (acheieved.stat.total + acheieved.stat.failed >= 500) {
     $("#세포분열_500").attr("checked", true);
-    $("#세포분열_500").prev().text("check_box");
   }
   if (acheieved.stat.total + acheieved.stat.failed >= 100) {
     $("#세포분열_100").attr("checked", true);
-    $("#세포분열_100").prev().text("check_box");
   }
 
   //재귀함수
   function checke_total() {
-    acheieved.stat.done = $("input[checked]").length;
+    acheieved.stat.done = $("dt[checked]").length;
     acheieved.stat.percentage = (acheieved.stat.done / acheieved.stat.total * 100).toFixed(0);
     if (acheieved.stat.percentage >= 75) {
       $("#재귀함수_75").attr("checked", true);
-      $("#재귀함수_75").prev().text("check_box");
     }
     if (acheieved.stat.percentage >= 50) {
       $("#재귀함수_50").attr("checked", true);
-      $("#재귀함수_50").prev().text("check_box");
     }
     if (acheieved.stat.percentage >= 25) {
       $("#재귀함수_25").attr("checked", true);
-      $("#재귀함수_25").prev().text("check_box");
     }
 
     if (acheieved.stat.percentage != (acheieved.stat.done / acheieved.stat.total * 100).toFixed(0)) {
@@ -74,19 +68,19 @@ function percentage() {
   checke_total();
 
   if (acheieved.stat.total + acheieved.stat.failed >= 1000) {
-    $("#세포분열_1000 + dt + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
+    $("#세포분열_1000 + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
   } else if (acheieved.stat.total + acheieved.stat.failed >= 500) {
-    $("#세포분열_500 + dt + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
+    $("#세포분열_500 + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
   } else if (acheieved.stat.total + acheieved.stat.failed >= 100) {
-    $("#세포분열_100 + dt + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
+    $("#세포분열_100 + dd > .date").text(acheieved.stat.total + acheieved.stat.failed + "개 생성");
   }
 
   if (acheieved.stat.percentage >= 75) {
-    $("#재귀함수_75 + dt + dd > .date").text("." + acheieved.stat.percentage + " 완료");
+    $("#재귀함수_75 + dd > .date").text("." + acheieved.stat.percentage + " 완료");
   } else if (acheieved.stat.percentage >= 50) {
-    $("#재귀함수_50 + dt + dd > .date").text("." + acheieved.stat.percentage + " 완료");
+    $("#재귀함수_50 + dd > .date").text("." + acheieved.stat.percentage + " 완료");
   } else if (acheieved.stat.percentage >= 25) {
-    $("#재귀함수_25 + dt + dd > .date").text("." + acheieved.stat.percentage + " 완료");
+    $("#재귀함수_25 + dd > .date").text("." + acheieved.stat.percentage + " 완료");
   }
 
   $("h1").append("<class class='percentage'>" + acheieved.stat.percentage + "% (" +
@@ -94,12 +88,12 @@ function percentage() {
 
   $("h2:not(nav h2, #실적)").each(function() {
     var i = $("h2").index(this);
-    $(this).append("<span class='percentage'>" + ($("h2:nth(" + i + ") + section.sup input[checked]").length / $("h2:nth(" + i + ") + section.sup input").length * 100).toFixed(0) + "%</span>");
+    $(this).append("<span class='percentage'>" + ($("h2:nth(" + i + ") + section.sup dt[checked]").length / $("h2:nth(" + i + ") + section.sup dt").length * 100).toFixed(0) + "%</span>");
   });
 
   $("h3:not(nav h3)").each(function() {
     var i = $("h3").index(this);
-    $(this).append("<span class='percentage'>" + ($("h3:nth(" + i + ") + section.sub input[checked]").length / $("h3:nth(" + i + ") + section.sub input").length * 100).toFixed(0) + "%</span>");
+    $(this).append("<span class='percentage'>" + ($("h3:nth(" + i + ") + section.sub dt[checked]").length / $("h3:nth(" + i + ") + section.sub dt").length * 100).toFixed(0) + "%</span>");
   });
 }
 
@@ -196,7 +190,6 @@ function info_pinned() {
 }
 
 percentage();
-$("div#splash").addClass("off"); // splash
 
 if (localStorage.setting__stat_on != "false") {
   info();
