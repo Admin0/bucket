@@ -6,7 +6,7 @@
 }
 
 body {
-  background: #e5e5e5;
+  /* background: #e5e5e5; */
 }
 
 body.columns section.sub .card {
@@ -38,7 +38,6 @@ body:not(.columns) section.sub .card.front {
 
 .card dt, #setting dt {
   font-size: 16px;
-  display: inline;
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -59,11 +58,6 @@ body:not(.columns) section.sub .card.front {
   transition: box-shadow .75s;
 }
 
-.front {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .card.front {
   transition: box-shadow .75s, background-color .75s;
 }
@@ -72,6 +66,11 @@ body:not(.columns) section.sub .card.front {
   margin: 0;
   padding: 1em;
   transition: transform .75s, box-shadow .75s, background-color .75s;
+}
+
+.card.front, .card .front {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card .back {
@@ -117,7 +116,7 @@ body:not(.columns) section.sub .card.front {
   margin-right: 0.25em;
   color: var(--color-500);
   fill: var(--color-500);
-  vertical-align: bottom;
+  vertical-align: text-bottom;
   font-family: 'Material Icons';
   font-weight: normal;
   font-style: normal;
@@ -151,6 +150,10 @@ body:not(.columns) section.sub .card.front {
   color: rgba(0, 0, 0, .7);
 }
 
+.card dd:not(:last-child) {
+  margin-bottom: .5em;
+}
+
 .card dd+input {
   margin-top: 1em;
 }
@@ -158,11 +161,8 @@ body:not(.columns) section.sub .card.front {
 .card dd ul {
   list-style: none;
   padding: 0;
+  margin: .5em 0 0;
   column-count: 2;
-}
-
-.card dd:last-child ul {
-  margin-bottom: 0;
 }
 
 .card dd ul li {
