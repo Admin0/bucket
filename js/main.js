@@ -165,7 +165,7 @@ const bucket = {
 
           function print() {
             if (localStorage.cccv__style == "true") {
-              output += '<link rel="stylesheet" type="text/css" href="//jinh.kr/bucket/css/style_card.css">\n<style>\n\t.card { max-width:600px; margin:1em auto; display: block; font-size: 16px; }\n</style>\n\n';
+              output += '<link rel="stylesheet" type="text/css" href="//jinh.kr/bucket/css/style_card_v2.css">\n<style>\n\t.card { max-width:600px; margin:1em auto; display: block; font-size: 16px; }\n</style>\n\n';
             }
             output += target[0].outerHTML;
             if (localStorage.cccv__to_here == "true") {
@@ -177,7 +177,7 @@ const bucket = {
               } else {
                 id = "";
               }
-              output = '<h2><a href="//jinh.kr/bucket' + id + '">버킷리스트' + id + '</a></h2>\n\n' + output;
+              output = '<h2><a href="//jinh.kr/bucket' + id + '">버킷리스트' + id + '</a></h2>\n\n' + output.replace(/ style=".*"/i, '');
             }
             $("#contextmenu > .output").val(output); //.select();
 
@@ -368,30 +368,16 @@ function scroll_smooth() {
     } else {
       target_reverse = $(this);
     }
-    var target_bg;
     var reversible = true;
 
     function bg_change(t, color, time) {
-      if (t[0].tagName == "TR") {
-        t.children("td").css({
-          "background-color": color,
-          "transition": time
-        });
-      } else {
-        t.css({
-          "background-color": color,
-          "transition": time
-        });
-      }
+      t.css({
+        "background-color": color,
+        "transition": time
+      });
     }
 
     function scroll(target, event) {
-      if (target[0].tagName == "TR") {
-        target_bg = target.children("td").css("background-color");
-      } else {
-        target_bg = target.css("background-color");
-      }
-
       if (isNotNav) {
         target_position = target.offset().top - event.pageY + pageYOffset + target.height() / 2;
       } else if (target.css("display") != "none") {
@@ -403,19 +389,22 @@ function scroll_smooth() {
       $('html, body').animate({
         scrollTop: target_position
       }, 500, function() {
-        bg_change(target, target_bg, ".75s");
+        target.addClass('on');
+        setTimeout(() => {
+          target.removeClass('on');
+        }, "750");
       });
     }
 
     scroll(target, event);
-    bg_change(target, color.material_a100[color.i], ".25s");
+    // target.addClass('on').delay(500).removeClass('on');
+    // bg_change(target, color.material_a100[color.i], ".25s");
 
     if (isNotNav) {
       toast("원래 자리로 가려면 더블 클릭.", "refresh", 2500);
       document.ondblclick = function(event) {
         if (reversible) {
           scroll(target_reverse, event);
-          bg_change(target_reverse, color.material_a100[color.i], ".25s");
           reversible = false;
         }
       };
@@ -425,7 +414,6 @@ function scroll_smooth() {
 }
 
 function scroll_at_open() {
-
   if (window.location.href.substring(window.location.href.length - 8, window.location.href.length) != window.location.pathname.substring(window.location.pathname.length - 8, window.location.pathname.length)) {
     setTimeout(function() {
       var target_pre = window.location.href.substring(window.location.href.indexOf("#"));
@@ -434,10 +422,7 @@ function scroll_at_open() {
       $('html, body').animate({
         scrollTop: target.offset().top - $('header').height() - $('#sub_header').height() - 12 - (localStorage.setting__stat == "true" ? 208 : 0) //116 - dashboard
       }, 500);
-      target.css({
-        "background-color": 'var(--color-a100)',
-        "transition": ".75s"
-      });
+      target.addClass('on');
     }, 1000)
   }
 }

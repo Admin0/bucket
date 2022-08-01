@@ -41,9 +41,11 @@
   }
 
   .card .date {
-    color: rgba(255, 255, 255, .4);
+    color: inherit;
+    opacity: .7;
   }
 
+  /* dashboard */
   header, .dashboard .value, .dashboard #실적,
   .card dt[checked], #setting dt[checked],
   nav h3 a {
@@ -91,6 +93,24 @@
 
   #sub_header .filter_bt:hover, #column_bt:hover {
     background: rgba(0, 0, 0, .65);
+  }
+
+  /* card on from scr anker value */
+  .front.on {
+    background: var(--color-a100);
+  }
+
+  .front.on:hover {
+    background: var(--color-a200);
+  }
+
+  .front.on dt, .front.on dt:before {
+    color: rgba(0, 0, 0, .95);
+    fill: rgba(0, 0, 0, .95);
+  }
+
+  .front.on dd {
+    color: rgba(0, 0, 0, .5);
   }
 
   /* ------------------------------------------------------------------- */
