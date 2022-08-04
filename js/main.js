@@ -32,6 +32,7 @@ const bucket = {
           $("nav, #sub_header, #nav_footer > i").removeClass("fold");
           setTimeout(function() {
             $("body").removeClass("fold");
+            columns();
           }, 300);
           localStorage.nav_fold = "false";
         }
@@ -40,6 +41,7 @@ const bucket = {
           $("nav, #sub_header, #nav_footer > i").addClass("fold");
           setTimeout(function() {
             $("body").addClass("fold");
+            columns();
           }, 300);
           localStorage.nav_fold = "true";
         }
@@ -56,9 +58,9 @@ const bucket = {
           } else {
             nav_expand();
           }
-          setTimeout(function() {
-            columns();
-          }, 300);
+          // setTimeout(function() {
+          //   columns();
+          // }, 300);
           // columns();
         });
 

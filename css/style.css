@@ -961,6 +961,12 @@ div#splash .splash_title {
 /* ------------------------------------------------------------------- */
 /* ***** mobile ***** */
 /* ------------------------------------------------------------------- */
+@media handheld, only screen and (max-width:1440px) {
+  body.fold {
+    padding: 1em 0 1em calc(1em + 68px);
+  }
+}
+
 @media handheld, only screen and (max-width:880px) {
   body {
     width: calc(100% - 2em) !important;

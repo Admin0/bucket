@@ -148,3 +148,12 @@
     color: #aaa;
   }
 }
+
+/* ------------------------------------------------------------------- */
+/* ***** mobile ***** */
+/* ------------------------------------------------------------------- */
+@media handheld, only screen and (max-width:880px) and (prefers-color-scheme: dark) {
+  #setting .header {
+    background: rgb(66, 66, 66);
+  }
+}

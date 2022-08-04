@@ -1,11 +1,15 @@
 const body_w_1 = 600;
+let column_w_spec;
 
 function columns() {
+  column_w_std = $('body').hasClass('fold') ? 450 : 500;
+  // column_w_std = ($(window).width() >= 1440) ? 500 : 450;
+
   if (column_only_mode != "true") { // columns
     $("body").addClass("columns");
     let body_w = $("body").width();
     $("#column_bt i").text("view_stream");
-    var columns = Math.floor(body_w / 500);
+    var columns = Math.floor(body_w / column_w_std);
     if (columns <= 1) {
       $("body").removeClass("columns");
       $("#column_bt").addClass("disabled");
@@ -25,7 +29,7 @@ function columns() {
   } else { // column_only_mode == true
     $("body").removeClass("columns");
     $("#column_bt i").text("dashboard");
-    var columns = Math.floor(($("html").width() - $("nav").width() - 152) / 500);
+    var columns = Math.floor(($("html").width() - $("nav").width() - 152) / column_w_std);
     if (columns <= 1) {
       $("#column_bt").addClass("disabled");
     } else {

@@ -59,13 +59,13 @@ body:not(.columns) section.sub .card.front {
 }
 
 .card.front {
-  transition: box-shadow .75s, background-color .75s;
+  transition: box-shadow .5s, background-color .5s;
 }
 
 .card .back, .card .front {
   margin: 0;
   padding: 1em;
-  transition: transform .75s, box-shadow .75s, background-color .75s;
+  transition: transform .75s, box-shadow .5s, background-color .5s;
 }
 
 .card.front, .card .front {
