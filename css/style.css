@@ -235,8 +235,7 @@ nav {
   box-shadow: 2px 0 5px rgba(0, 0, 0, .25);
   padding-top: 48px;
   height: calc(100% - 48px);
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   transition: .3s
 }
 
@@ -245,7 +244,6 @@ nav #nav {
   height: calc(100% - 46px);
   overflow-y: auto;
   overflow-x: hidden;
-  transition: .3s
 }
 
 nav a {
@@ -509,19 +507,8 @@ nav.fold #setting_bt:hover {
 
 nav #nav_footer {
   cursor: pointer;
-  -webkit-box-flex: 0;
-  -webkit-flex: 0 0 auto;
-  -ms-flex: 0 0 auto;
-  flex: 0 0 auto;
   height: 44px;
-  padding: 0;
-  margin: 0;
-  width: inherit;
-  left: 0;
   background: #fafafa;
-  border: 0;
-  bottom: 0;
-  position: fixed;
   z-index: 3;
   border-top: 1px solid rgba(0, 0, 0, .1)
 }
@@ -746,15 +733,34 @@ input {
 /* ------------------------------------------------------------------- */
 /* ***** tooltip ***** */
 /* ------------------------------------------------------------------- */
-#tooltip,
-#tooltip_nav {
-  color: #fff;
+@keyframes tooltip {
+  0% {
+    margin-top: .5em;
+  }
+
+  100% {
+    margin-top: 0;
+  }
+}
+
+@keyframes tooltip_nav {
+  0% {
+    margin-left: -.5em;
+  }
+
+  100% {
+    margin-left: 0;
+  }
+}
+
+#tooltip {
+  color: rgba(255, 255, 255, .75);
   position: absolute;
   top: 0;
   visibility: hidden;
   opacity: 0;
   filter: alpha(opacity=0);
-  background: #212121;
+  background: var(--color-a700);
   -webkit-transition: .5s opacity;
   transition: .5s opacity;
   padding: 1ex;
@@ -762,16 +768,17 @@ input {
   max-width: 400px;
   z-index: 4;
   box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
+  visibility: hidden;
+  opacity: 0;
 }
 
-#tooltip_nav {
+#tooltip.nav {
   position: fixed;
   z-index: 5;
 }
 
-#tooltip_before,
-#tooltip_nav_before {
-  border-color: #212121 transparent transparent;
+#tooltip:before {
+  border-color: var(--color-a700) transparent transparent;
   border-width: 1ex 1ex 0;
   border-style: solid;
   content: " ";
@@ -780,8 +787,26 @@ input {
   bottom: -.9ex
 }
 
+#tooltip.nav:before {
+  border-color: transparent var(--color-a700) transparent transparent;
+  border-width: 1ex 1ex 1ex 0px;
+  left: -0.9ex;
+  bottom: calc(50% - 0.5em);
+}
+
 #tooltip_text {
   white-space: pre-line;
+}
+
+#tooltip.on {
+  animation-name: tooltip;
+  animation-duration: .3s;
+  visibility: visible;
+  opacity: 1
+}
+
+#tooltip.on.nav {
+  animation-name: tooltip_nav;
 }
 
 /* ------------------------------------------------------------------- */
@@ -1043,9 +1068,7 @@ div#splash .splash_title {
     padding: 6px 0;
   }
 
-  nav #nav_footer {
-    display: none;
-  }
+  nav #nav_footer {}
 
   #setting {
     z-index: 8;

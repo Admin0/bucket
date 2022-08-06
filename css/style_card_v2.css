@@ -175,21 +175,18 @@ body:not(.columns) section.sub .card.front {
 
 .card .back ol, .back ul {
   column-count: 2;
-  column-gap: 3em;
-  padding-left: 1em;
+  padding-left: 0;
 }
 
 .card .back ul {
   list-style: none;
 }
 
-.card .back li span {
+.card .back li {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  display: inline-block;
-  width: 100%;
-  margin: 0 0 -5px;
+  list-style-position: inside;
 }
 
 .card dt[checked], #setting dt[checked] {
