@@ -38,10 +38,10 @@ body:not(.columns) section.sub .card.front {
 
 .card dt, #setting dt {
   font-size: 16px;
-  flex: 1;
+  position: relative;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 
 .back, .front {
@@ -74,6 +74,7 @@ body:not(.columns) section.sub .card.front {
 }
 
 .card .back {
+  /* font-size: .875em; */
   position: absolute;
   top: 0;
   width: 100%;
@@ -146,8 +147,9 @@ body:not(.columns) section.sub .card.front {
 }
 
 .card dd, #setting dd {
-  font-size: .9em;
+  font-size: 15px;
   color: rgba(0, 0, 0, .7);
+  position: relative;
 }
 
 .card dd:not(:last-child) {
@@ -167,10 +169,8 @@ body:not(.columns) section.sub .card.front {
 
 .card dd ul li {
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   display: flex;
-  align-items: center;
+  justify-content: space-between;
 }
 
 .card .back ol, .back ul {
@@ -225,10 +225,7 @@ body:not(.columns) section.sub .card.front {
   font-weight: normal;
   align-self: flex-end;
   opacity: .5;
-}
-
-.card li>.date {
-  float: none;
+  margin-left: .5em;
 }
 
 .card:hover {
@@ -268,6 +265,10 @@ body:not(.columns) section.sub .card.front {
 
 .card .back>:only-child:not(img):not(ol) {
   margin: 26px 1em;
+}
+
+.card .back>ol:only-child {
+  margin: 1em;
 }
 
 .card .back>img:first-child {
