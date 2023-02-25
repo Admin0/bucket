@@ -48,7 +48,8 @@
   /* dashboard */
   header, .dashboard .value, .dashboard #실적,
   .card dt[checked], #setting dt[checked],
-  nav h3 a {
+  nav h3 a,
+  .copyright {
     color: rgba(255, 255, 255, .85);
   }
 
