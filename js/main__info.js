@@ -168,7 +168,8 @@ function info() { // 대시보드
       $(".dashboard .progress").delay(250).fadeOut(100);
     }
     $(".dashboard .progress").css({
-      "width": "calc(" + i_info / info_length * 100 + "% - 1em)"
+      // "width": "calc(" + i_info / info_length * 100 + "% - 1em)" // liner effect
+      "width": `calc(${Math.sqrt(i_info / info_length) * 100}% - 1em)` // ease effect
     });
   }, info_timmer);
 

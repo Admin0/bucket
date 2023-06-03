@@ -463,7 +463,7 @@ function filter() {
     $(".card").has("dt:not([checked]):not([failed])").removeClass("hide");
     if (localStorage.strict_filtering == "true") {
       // $(".card").has("dt[checked], dt[failed]").addClass("hide");
-      $(".card dt[checked], .card dt[checked]+dd, .card dt[failed], .card dt[failed]+dd").addClass("hide");
+      $(".card dt[checked], .card dt[checked]+dd, .card dt[checked]+span.date, .card dt[failed], .card dt[failed]+dd").addClass("hide");
     }
   }
 
