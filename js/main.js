@@ -578,7 +578,7 @@ $(window).scroll(function() {
   for (i = $("h3:not(nav h3)").length - 1; i >= 0; i--) {
     var target = $("h3:not(nav h3):nth(" + i + ")");
     // console.log(target.offset().top);
-    if (target.offset().top < pageYOffset + 256 + (localStorage.setting__stat == "true" ? 208 : 0) && target.css("display") != "none") { //256:header 208:dashboard
+    if (target.offset().top < scrollY + 256 + (localStorage.setting__stat == "true" ? 208 : 0) && target.css("display") != "none") { //256:header 208:dashboard
       $(`nav h3:nth(${i})`).addClass('on');
       // console.log(target.text());
       break;

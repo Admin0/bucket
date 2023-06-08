@@ -995,7 +995,8 @@ div#splash .splash_title {
 @media handheld, only screen and (max-width:880px) {
   body {
     width: calc(100% - 2em) !important;
-    padding: 1em !important
+    padding: 1em !important;
+    margin-top: 96px;
   }
 
   header {

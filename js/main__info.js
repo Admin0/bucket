@@ -101,7 +101,7 @@ var this_year = new Date().getFullYear();
 var this_month = ("00" + (new Date().getMonth() + 1)).slice(-2);
 var i_info = 0;
 var info_count = 25;
-var info_timmer = 300; //css transition과 같은 값으로 설정해야한다.
+var info_timmer = 450; //css transition과 같은 값으로 설정해야한다.
 var info_width = $(".dashboard").width();
 var info_height = $(".dashboard").height();
 var info_length = $("span.date").length;
@@ -114,6 +114,7 @@ function info() { // 대시보드
   $("#failed_count").text(acheieved.stat.failed);
   $("#failed_count_subtitle").html((acheieved.stat.failed / (acheieved.stat.failed + acheieved.stat.total) * 100).toFixed(0) + "%<br/>영원히 달성 불가능한 과제입니다.");
 
+  let progress_percent = 0;
   setTimeout(function() {
     if (i_info < $("span.date").length) {
 
@@ -165,12 +166,13 @@ function info() { // 대시보드
       }
 
     } else {
-      $(".dashboard .progress").delay(250).fadeOut(100);
+      $(".dashboard .progress").delay(500).fadeOut(500);
     }
+    progress_percent = Math.sqrt(i_info / info_length) * 100;
     $(".dashboard .progress").css({
       // "width": "calc(" + i_info / info_length * 100 + "% - 1em)" // liner effect
-      "width": `calc(${Math.sqrt(i_info / info_length) * 100}% - 1em)` // ease effect
-    });
+      "width": `calc(${progress_percent}% - 1em)` // ease effect
+    }).text(`${Math.ceil(progress_percent)} %`);
   }, info_timmer);
 
 }

@@ -87,10 +87,12 @@ body:not(.columns) .dashboard {
   width: 0;
   bottom: .5em;
   left: .5em;
-  background: rgba(255, 255, 255, .75);
-  height: 3px;
-  transition: .30s;
+  border-bottom: 3px solid rgba(255, 255, 255, .75);
+  padding-bottom: 3px;
+  transition: .45s;
   transition-timing-function: linear;
+  text-align: right;
+  white-space: nowrap;
 }
 
 @media (max-width:1920px) {
@@ -105,7 +107,16 @@ body:not(.columns) .dashboard {
   }
 }
 
-@media handheld, only screen and (max-device-width:480px), only screen and (max-device-width:320px), screen and (max-width:600px) {
+@media (max-width:880px) {
+  body.floating_dashboard #dashboard {
+    top: calc(96px + 1em);
+  }
+}
+
+@media handheld,
+only screen and (max-device-width:480px),
+only screen and (max-device-width:320px),
+screen and (max-width:600px) {
   #item_acheieved_count {
     display: none !important;
   }
