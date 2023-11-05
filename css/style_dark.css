@@ -12,15 +12,18 @@
     background: #121212;
   }
 
-  .card.front, dl#setting,
-  .card .front, .card .back {
+  .card.front,
+  dl#setting,
+  .card .front,
+  .card .back {
     color: rgba(255, 255, 255, .65);
     background: #1f1f1f;
   }
 
   .card:hover .front,
   .card:hover .back,
-  dl#setting, .card.front:hover {
+  dl#setting,
+  .card.front:hover {
     background: #2d2d2d;
   }
 
@@ -28,13 +31,17 @@
     background: #2d2d2d;
   }
 
-  .card dt, #setting dt,
+  .card dt,
+  #setting dt,
   #setting .setting_title,
-  h2, h3, nav h2 a {
+  h2,
+  h3,
+  nav h2 a {
     color: rgba(255, 255, 255, .65);
   }
 
-  .card dd, #setting dd,
+  .card dd,
+  #setting dd,
   .dashboard .subtitle,
   #setting .setting_item.disabled>* {
     color: rgba(255, 255, 255, .5);
@@ -46,8 +53,11 @@
   }
 
   /* dashboard */
-  header, .dashboard .value, .dashboard #실적,
-  .card dt[checked], #setting dt[checked],
+  header,
+  .dashboard .value,
+  .dashboard #실적,
+  .card dt[checked],
+  #setting dt[checked],
   nav h3 a,
   .copyright {
     color: rgba(255, 255, 255, .85);
@@ -65,17 +75,23 @@
     background: #1f1f1f;
   }
 
-  nav #nav_header, nav #nav_footer {
+  nav #nav_header,
+  nav #nav_footer {
     background: #2d2d2d;
     color: rgba(255, 255, 255, .65);
   }
 
-  dl .material-icons, a:not(nav a), #to_github, #to_github i, .dashboard .pin .material-icons {
+  dl .material-icons,
+  a:not(nav a),
+  #to_github,
+  #to_github i,
+  .dashboard .pin .material-icons {
     color: var(--color-200);
     fill: var(--color-200);
   }
 
-  .card dt:before, #setting dt:before {
+  .card dt:before,
+  #setting dt:before {
     color: var(--color-200);
     fill: var(--color-200);
   }
@@ -88,11 +104,15 @@
     background: rgba(255, 255, 255, .85);
   }
 
-  #sub_header .filter_bt.on, #sub_header .filter_bt:hover, #column_bt, #column_bt:hover {
+  #sub_header .filter_bt.on,
+  #sub_header .filter_bt:hover,
+  #column_bt,
+  #column_bt:hover {
     color: var(--color-200);
   }
 
-  #sub_header .filter_bt:hover, #column_bt:hover {
+  #sub_header .filter_bt:hover,
+  #column_bt:hover {
     background: rgba(0, 0, 0, .65);
   }
 
@@ -105,13 +125,55 @@
     background: var(--color-a200);
   }
 
-  .front.on dt, .front.on dt:before {
+  .front.on dt,
+  .front.on dt:before {
     color: rgba(0, 0, 0, .95);
     fill: rgba(0, 0, 0, .95);
   }
 
   .front.on dd {
     color: rgba(0, 0, 0, .5);
+  }
+
+  /* ------------------------------------------------------------------- */
+  /* ***** tooltip ***** */
+  /* ------------------------------------------------------------------- */
+  @keyframes tooltip {
+    0% {
+      margin-top: .5em;
+    }
+
+    100% {
+      margin-top: 0;
+    }
+  }
+
+  @keyframes tooltip_nav {
+    0% {
+      margin-left: -.5em;
+    }
+
+    100% {
+      margin-left: 0;
+    }
+  }
+
+  #tooltip {
+    color: var(--color-dark-tooltip);
+    background: var(--color-a200);
+  }
+
+  #tooltip.nav {
+    position: fixed;
+    z-index: 5;
+  }
+
+  #tooltip:before {
+    border-color: var(--color-a200) transparent transparent;
+  }
+
+  #tooltip.nav:before {
+    border-color: transparent var(--color-a200) transparent transparent;
   }
 
   /* ------------------------------------------------------------------- */
@@ -153,7 +215,8 @@
 /* ------------------------------------------------------------------- */
 /* ***** mobile ***** */
 /* ------------------------------------------------------------------- */
-@media handheld, only screen and (max-width:880px) and (prefers-color-scheme: dark) {
+@media handheld,
+only screen and (max-width:880px) and (prefers-color-scheme: dark) {
   #setting .header {
     background: rgb(66, 66, 66);
   }
