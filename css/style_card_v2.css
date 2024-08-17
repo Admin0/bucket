@@ -365,7 +365,7 @@ body:not(.columns) section.sub .card.front {
   font-feature-settings: 'liga';
 }
 
-/* cast */
+/* cast*/
 table.cast {}
 
 table.cast tr td:first-child {
