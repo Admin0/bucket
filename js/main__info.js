@@ -86,12 +86,12 @@ function percentage() {
   $("h1").append("<class class='percentage'>" + acheieved.stat.percentage + "% (" +
     acheieved.stat.done + "/" + acheieved.stat.total + ")</span>");
 
-  $("h2:not(nav h2, #실적)").each(function() {
+  $("h2:not(nav h2, #실적)").each(function () {
     var i = $("h2").index(this);
     $(this).append("<span class='percentage'>" + ($("h2:nth(" + i + ") + section.sup dt[checked]").length / $("h2:nth(" + i + ") + section.sup dt").length * 100).toFixed(0) + "%</span>");
   });
 
-  $("h3:not(nav h3)").each(function() {
+  $("h3:not(nav h3)").each(function () {
     var i = $("h3").index(this);
     $(this).append("<span class='percentage'>" + ($("h3:nth(" + i + ") + section.sub dt[checked]").length / $("h3:nth(" + i + ") + section.sub dt").length * 100).toFixed(0) + "%</span>");
   });
@@ -115,7 +115,7 @@ function info() { // 대시보드
   $("#failed_count_subtitle").html((acheieved.stat.failed / (acheieved.stat.failed + acheieved.stat.total) * 100).toFixed(0) + "%<br/>영원히 달성 불가능한 과제입니다.");
 
   let progress_percent = 0;
-  setTimeout(function() {
+  setTimeout(function () {
     if (i_info < $("span.date").length) {
 
       function inner_info() {
@@ -178,15 +178,21 @@ function info() { // 대시보드
 }
 
 function info_pinned() {
-  $(".dashboard .pin").on("click", function() {
+  $(".dashboard .pin").on("click", function () {
     if (localStorage.setting__stat == "true") {
       localStorage.setting__stat = "false"
       $(".dashboard .pin i").text("turned_in_not");
       toast("통계 대시보드의 고정이 풀렸습니다.", "pie_chart");
     } else {
+      if (localStorage.setting__stat_on == "true") {
+        toast("통계 대시보드가 고정됐습니다.", "pie_chart");
+      } else {
+        localStorage.setting__stat_on = "true"
+        toast("통계를 활성화하고 대시보드를 고정했습니다.", "pie_chart");
+        $.getScript("js/main__setting_stat.js");
+      }
       localStorage.setting__stat = "true"
       $(".dashboard .pin i").text("turned_in");
-      toast("통계 대시보드가 고정됐습니다.", "pie_chart");
     }
     check_dashboard_floating();
   });
@@ -212,12 +218,12 @@ function check_dashboard_floating() {
   }
 }
 
-$(window).scroll(function() {
+$(window).scroll(function () {
   check_dashboard_floating();
 });
 
 
-$(document).ready(function() {
+$(document).ready(function () {
   $(".card_wrap").has(".dashboard").addClass("wrap_dashboard");
   if (localStorage.setting__stat == "true") {
     $(".dashboard .pin i").text("turned_in");

@@ -16,7 +16,7 @@ function setting() {
     });
     $("#setting, #setting_bg").toggleClass("on");
     $("#setting").css({
-      "top": $("#setting_bt").offset().top - pageYOffset,
+      "top": $("#setting_bt").offset().top - scrollY,
       "left": $("#nav").width() - 16
     });
     check_setting();

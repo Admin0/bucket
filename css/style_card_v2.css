@@ -101,7 +101,8 @@ body:not(.columns) section.sub .card.front {
   transform: rotateX(0);
 }
 
-.card dl dl {
+.card dl dl,
+.card .front dl {
   padding: 0;
   box-shadow: none
 }
@@ -173,16 +174,20 @@ body:not(.columns) section.sub .card.front {
   justify-content: space-between;
 }
 
-.card .back ol, .back ul {
-  column-count: 2;
+.card .back ol:not(.normal), .card .back ul:not(.normal) {
   padding-left: 0;
+  column-count: 2;
+}
+
+.card .back ol.normal, .card .back ul.normal {
+  padding-left: 1.125em;
 }
 
 .card .back ul {
   list-style: none;
 }
 
-.card .back li {
+.card .back ol:not(.normal) li, .card .back ul:not(.normal) li  {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
