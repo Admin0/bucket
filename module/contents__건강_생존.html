@@ -98,7 +98,7 @@
       <dt checked>포세이돈 </dt><span class="date">2022.07.02.</span>
     </li>
     <li>
-      <dt>켄타우로스</dt>
+      <dt checked>켄타우로스</dt><span class="date">2024.08.29.</span>
     </li>
     <li>
       <dt checked>오리온 </dt><span class="date">2017.09.27.</span>
@@ -107,7 +107,7 @@
       <dt>이카루스</dt>
     </li>
     <li>
-      <dt>헤르메스</dt>
+      <dt checked>헤르메스</dt><span class="date">2024.11.10.</span>
     </li>
     </ul><span class="date"></span>
     </dd>
@@ -116,12 +116,10 @@
     <!-- 패러글라이딩 혹은 스카이 다이빙 하기. -->
     <dt>아틀라스</dt>
     <dd>물구나무 서기.<span class="date"></span> </dd>
-    <dt>켄타우로스</dt>
-    <dd>승마 배우기.<span class="date"></span> </dd>
+    <dt checked>켄타우로스</dt>
+    <dd>승마 배우기.<span class="date">2024.08.29.</span> </dd>
     <dt>이카루스</dt>
     <dd>패러글라이딩 혹은 스카이 다이빙 하기.<span class="date"></span> </dd>
-    <dt>헤르메스</dt>
-    <dd>마라톤 출전하기.<span class="date"></span> </dd>
   </dl>
   <dl class="card front" id="포세이돈">
     <dt checked>포세이돈</dt>
@@ -167,23 +165,65 @@
       <p> <a onclick="showMovie('https://www.youtube.com/watch?v=8nCVHjYOZ7U')">동영상</a>으로 기록 남김. </p>
     </div>
   </div>
-  <dl class="card front" id="몬스터_헌터">
-    <dt>몬스터 헌터</dt>
-    <dd>유해 조수 수렵 퀘스트 완료.<span class="date"></span>
+  <div class="card">
+    <dl class="front" id="몬스터_헌터">
+      <dt failed>몬스터 헌터</dt>
+      <dd>유해 조수 수렵 퀘스트 완료.<span class="date"></span>
+        <ul>
+          <li>
+      <dt checked>다람쥐 </dt><span class="date">2024.07.20.</span></li>
+      <li>
+        <dt>꿩 </dt><span class="date"></span>
+      </li>
+      <li>
+        <dt>고라니 </dt><span class="date"></span>
+      </li>
+      <li>
+        <dt>멧돼지 </dt><span class="date"></span>
+      </li>
+      </ul>
+    </dl>
+    <div class="back">
+      <p>수렵 면허를 갱신하지 않아서 만료(취소)되었음. </p>
+      <p>하위 항목은 <a href="https://www.law.go.kr/법령/야생생물보호및관리에관한법률/제2조">유해 야생 동물</a> 조우 시 사진 촬영으로 달성하기로 함.<br>(내맘이니까토달지마셈)</p>
+      <img src="img/몬스터 헌터/다람쥐.jpeg" alt="">
+    </div>
+  </div>
+
+  <div class="card">
+    <!-- 마라톤 -->
+    <dl class="front">
+      <dt checked>헤르메스</dt>
+      <dd>마라톤 대회 나가기.<span class="date">2024.11.10.</span>
       <ul>
         <li>
-    <dt>다람쥐 </dt><span class="date"></span></li>
-    <li>
-      <dt>꿩 </dt><span class="date"></span>
-    </li>
-    <li>
-      <dt>고라니 </dt><span class="date"></span>
-    </li>
-    <li>
-      <dt>멧돼지 </dt><span class="date"></span>
-    </li>
-    </ul><span class="date"></span></dd>
-  </dl>
+          <dt checked>10 km 런</dt><span class="date"></span><span class="date">2024.</span>
+        </li>
+        <li>
+          <dt>하프 마라톤 (21.0975 km)</dt><span class="date"></span>
+        </li>
+        <li>
+          <dt>마라톤 (42.195 km)</dt><span class="date"></span>
+        </li>
+      </ul>
+    </dl>
+    <div class="back">
+      <p>사실 10 km 거리는 마라톤이라고 부르는 게 아니래요... (그냥 달리기라고 불러야 함)</p>
+      <table style="width: 100%; text-align: center;">
+        <tr>
+          <th>Year</th>
+          <th>Class</th>
+          <th>Time Record</th>
+        </tr>
+        <tr>
+          <td>2024</td>
+          <td>10 km</td>
+          <td><a href="https://time.spct.kr/m2.php?E=2024111004&B=001956">0:58:43</a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
   <div class="card">
     <!-- 포레스트 검프 -->
     <dl class="front" id="포레스트_검프">
@@ -195,20 +235,7 @@
       <p>0:58:37 를 기록했다.</p>
     </div>
   </div>
-  <div class="card">
-    <!-- 마라톤 -->
-    <dl class="front">
-      <dt checked>단축 마라톤</dt>
-      <dd>10 km 연속 달리기.<span class="date"></span> </dd>
-      <dt>하프 마라톤</dt>
-      <dd>20 km 연속 달리기.<span class="date"></span> </dd>
-      <dt>마라톤</dt>
-      <dd>42.195 km 완주.<span class="date"></span> </dd>
-    </dl>
-    <div class="back">
-      <p>헥헥;;</p>
-    </div>
-  </div>
+
   <div class="card">
     <!-- 지구 한 바퀴 -->
     <dl class="front">
@@ -557,7 +584,8 @@
     <dt failed>'안 펴 병신아;;'</dt>
     <dd>위 항목에 실패 했다면, 금연으로 만회하자.</dd>
   </dl>
-  <dl class="card front" title="아재. 잘지내고 계시죠?<br>저도 요즘 가을바람에 앞머리가 점점 없어지네요.<br><br>이제서야 아저씨의 마음을 알겠어요.<br>어린날의 객기로 큰 실수를 저질렀습니다.<br>이제서야 사과합니다">
+  <dl class="card front"
+    title="아재. 잘지내고 계시죠?<br>저도 요즘 가을바람에 앞머리가 점점 없어지네요.<br><br>이제서야 아저씨의 마음을 알겠어요.<br>어린날의 객기로 큰 실수를 저질렀습니다.<br>이제서야 사과합니다">
     <!-- 썩 물러가라 사악한 요정아 -->
     <dt failed>썩 물러가라 사악한 요정아</dt>
     <dd>풍성한 머리칼 유지하기.</dd>
