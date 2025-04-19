@@ -766,7 +766,7 @@ input {
   padding: 1ex;
   border-radius: 3px;
   max-width: 400px;
-  z-index: 4;
+  z-index: 5;
   box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
   visibility: hidden;
   opacity: 0;
@@ -774,7 +774,7 @@ input {
 
 #tooltip.nav {
   position: fixed;
-  z-index: 5;
+  /* z-index: 5; */
 }
 
 #tooltip:before {

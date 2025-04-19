@@ -16,11 +16,11 @@
 
 #블랙야크_canvas {
     position: relative;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     width: calc(100% - 2em);
     max-width: 600px;
     height: 600px;
-    background-image: url("../../img/블랙야크/map_kr.svg");
+    background-image: url("../../img/지도/kr.svg");
     background-size: 124% ;
     background-position: 35% 15%;
 }
