@@ -27,8 +27,8 @@ const points = [
     { no: 14, id: "금수산", done: false, pos_0: { y: 36.985009, x: 128.256761 }, info: { peak: "정상", height: 1016 } },
     { no: 15, id: "금오산(구미)", done: false, pos_0: { y: 36.092833, x: 128.300054 }, info: { peak: "현월봉", height: 977 } },
 
-    { no: 16, id: "금정산", done: false, pos_0: { y: 35.280118, x: 129.050542 }, info: { peak: "고당봉", height: 802 } },
-    { no: 17, id: "남산(경주)", done: false, pos_0: { y: 35.767661, x: 129.225369 }, info: { peak: "금오봉", height: 468 } },
+    { no: 16, id: "금정산", done: "2024.04.26.", pos_0: { y: 35.280118, x: 129.050542 }, info: { peak: "고당봉", height: 802 } },
+    { no: 17, id: "남산(경주)", done: "2024.04.26.", pos_0: { y: 35.767661, x: 129.225369 }, info: { peak: "금오봉", height: 468 } },
     { no: 18, id: "내변산(변산)", done: "2025.04.11.", pos_0: { y: 35.616667, x: 126.583333 }, info: { peak: "관음봉", height: 424 } },
     { no: 19, id: "내연산", done: false, pos_0: { y: 36.263301, x: 129.258523 }, info: { peak: "삼지봉", height: 710 } },
     { no: 20, id: "내장산", done: "2025.01.25.", pos_0: { y: 35.478299, x: 126.888994 }, info: { peak: "신선봉", height: 763 } },
