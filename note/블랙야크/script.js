@@ -19,7 +19,7 @@ const points = [
     { no: 7, id: "감악산(파주)", done: false, pos_0: { y: 37.941082, x: 126.969989 }, info: { peak: "정상", height: 675 } },
     { no: 8, id: "계룡산", done: "2025.03.30.", pos_0: { y: 36.361424, x: 127.210292 }, info: { peak: "관음봉", height: 845 } },
     { no: 9, id: "계방산", done: false, pos_0: { y: 37.728268, x: 128.46543 }, info: { peak: "정상", height: 1577 } },
-    { no: 10, id: "관악산", done: false, pos_0: { y: 37.445044, x: 126.964223 }, info: { peak: "정상", height: 629 } },
+    { no: 10, id: "관악산", done: "2025.05.11.", pos_0: { y: 37.445044, x: 126.964223 }, info: { peak: "정상", height: 629 } },
 
     { no: 11, id: "광덕산", done: "2024.10.27.", pos_0: { y: 36.687795, x: 127.027906 }, info: { peak: "정상", height: 699.3 } },
     { no: 12, id: "구병산(보은)", done: false, pos_0: { y: 36.46989438, x: 127.8625301 }, info: { peak: "정상", height: 877 } },
@@ -47,7 +47,7 @@ const points = [
 
     { no: 31, id: "두타산", done: false, pos_0: { y: 37.43445721, x: 128.9734669 }, info: { peak: "정상", height: 1353 } },
     { no: 32, id: "마니산(강화도)", done: false, pos_0: { y: 37.612745, x: 126.436401 }, info: { peak: "정상", height: 469 } },
-    { no: 33, id: "마이산(진안)", done: false, pos_0: { y: 35.760484, x: 127.411233 }, info: { peak: "비룡대", height: 686 } },
+    { no: 33, id: "마이산(진안)", done: "2025.05.04.", pos_0: { y: 35.760484, x: 127.411233 }, info: { peak: "비룡대", height: 686 } },
     { no: 34, id: "명지산", done: false, pos_0: { y: 37.94024567, x: 127.4325174 }, info: { peak: "정상", height: 1267 } },
     { no: 35, id: "모악산", done: "2025.04.12.", pos_0: { y: 35.728678, x: 127.084721 }, info: { peak: "정상", height: 794 } },
 
@@ -94,9 +94,9 @@ const points = [
     { no: 70, id: "재약산", done: false, pos_0: { y: 35.557707, x: 128.97228 }, info: { peak: "수미봉", height: 1189 } },
 
     { no: 71, id: "조계산", done: false, pos_0: { y: 35.001211, x: 127.313555 }, info: { peak: "장군봉", height: 884 } },
-    { no: 72, id: "조령산", done: false, pos_0: { y: 36.816667, x: 128.316667 }, info: { peak: "정상", height: 1027 } },
+    { no: 72, id: "조령산", done: false, pos_0: { y: 36.770830, x: 128.043553 }, info: { peak: "정상", height: 1027 } },
     { no: 73, id: "주왕산", done: false, pos_0: { y: 36.389337, x: 129.162417 }, info: { peak: "주봉", height: 721 } },
-    { no: 74, id: "주흘산", done: false, pos_0: { y: 36.78844, x: 128.101271 }, info: { peak: "주봉", height: 1106 } },
+    { no: 74, id: "주흘산", done: "2025.05.17.", pos_0: { y: 36.78844, x: 128.101271 }, info: { peak: "주봉", height: 1106 } },
     { no: 75, id: "지리산", done: false, pos_0: { y: 35.336971, x: 127.730474 }, info: { peak: "천왕봉", height: 1915 } },
 
     { no: 76, id: "지리산", done: false, pos_0: { y: 35.421872, x: 127.576094 }, info: { peak: "바래봉", height: 1165 } },
@@ -106,14 +106,14 @@ const points = [
     { no: 80, id: "천성산", done: false, pos_0: { y: 35.378184, x: 128.950771 }, info: { peak: "비로봉", height: 922 } },
 
     { no: 81, id: "천태산", done: false, pos_0: { y: 36.159122, x: 127.600005 }, info: { peak: "정상", height: 715 } },
-    { no: 82, id: "청계산", done: false, pos_0: { y: 37.433333, x: 127.05 }, info: { peak: "매봉", height: 582 } },
+    { no: 82, id: "청계산", done: "2025.05.11.", pos_0: { y: 37.433333, x: 127.05 }, info: { peak: "매봉", height: 582 } },
     { no: 83, id: "청량산", done: false, pos_0: { y: 36.794122, x: 128.907994 }, info: { peak: "장인봉", height: 870 } },
     { no: 84, id: "청화산", done: false, pos_0: { y: 36.416667, x: 129.083333 }, info: { peak: "정상", height: 970 } },
     { no: 85, id: "축령산", done: false, pos_0: { y: 37.752705, x: 127.333923 }, info: { peak: "정상", height: 879 } },
 
     { no: 86, id: "치악산", done: "2024.12.22.", pos_0: { y: 37.365077, x: 128.055568 }, info: { peak: "비로봉", height: 1288 } },
     { no: 87, id: "칠갑산(청양)", done: "2025.02.23.", pos_0: { y: 36.413006, x: 126.884905 }, info: { peak: "정상", height: 561 } },
-    { no: 88, id: "칠보산(괴산)", done: false, pos_0: { y: 37.260801, x: 126.932127 }, info: { peak: "정상", height: 778 } },
+    { no: 88, id: "칠보산(괴산)", done: "2025.05.17.", pos_0: { y: 36.739981, x: 127.927710 }, info: { peak: "정상", height: 778 } },
     { no: 89, id: "태백산", done: false, pos_0: { y: 37.096337, x: 128.916532 }, info: { peak: "정상", height: 1567 } },
     { no: 90, id: "태화산", done: false, pos_0: { y: 37.117601, x: 128.486345 }, info: { peak: "정상", height: 1027 } },
 
