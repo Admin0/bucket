@@ -108,7 +108,7 @@ body:not(.columns) section.sub .card.front {
 }
 
 /* card on from scr anker value */
-.card.on.front, .card.on .front, .card.on .back {
+.card.on.front, .card .on.front, .card.on .front, .card.on .back {
   background: var(--color-a100);
 }
 

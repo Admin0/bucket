@@ -118,11 +118,11 @@
 
   /* card on from scr anker value */
   .front.on {
-    background: var(--color-a100);
+    background: var(--color-700);
   }
 
   .front.on:hover {
-    background: var(--color-a200);
+    background: var(--color-500);
   }
 
   .front.on dt,
