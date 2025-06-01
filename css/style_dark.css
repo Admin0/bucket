@@ -117,7 +117,7 @@
   }
 
   /* card on from scr anker value */
-  .front.on {
+  .card.on.front, .card .on.front, .card.on .front, .card.on .back {
     background: var(--color-700);
   }
 
