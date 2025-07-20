@@ -102,7 +102,7 @@ const points = [
     { no: 76, id: "지리산", done: false, pos_0: { y: 35.421872, x: 127.576094 }, info: { peak: "바래봉", height: 1165 } },
     { no: 77, id: "지리산", done: false, pos_0: { y: 35.275637, x: 127.578314 }, info: { peak: "반야봉", height: 1732 } },
     { no: 78, id: "천관산", done: false, pos_0: { y: 34.535402, x: 126.911238 }, info: { peak: "연대봉", height: 723 } },
-    { no: 79, id: "천마산", done: false, pos_0: { y: 37.680364, x: 127.273397 }, info: { peak: "정상", height: 812 } },
+    { no: 79, id: "천마산", done: "2025.06.27.", pos_0: { y: 37.680364, x: 127.273397 }, info: { peak: "정상", height: 812 } },
     { no: 80, id: "천성산", done: false, pos_0: { y: 35.378184, x: 128.950771 }, info: { peak: "비로봉", height: 922 } },
 
     { no: 81, id: "천태산", done: "2025.05.24.", pos_0: { y: 36.159122, x: 127.600005 }, info: { peak: "정상", height: 715 } },
