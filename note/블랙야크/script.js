@@ -23,7 +23,7 @@ const points = [
 
     { no: 11, id: "광덕산", done: "2024.10.27.", pos_0: { y: 36.687795, x: 127.027906 }, info: { peak: "정상", height: 699.3 } },
     { no: 12, id: "구병산(보은)", done: "2025.05.24.", pos_0: { y: 36.46989438, x: 127.8625301 }, info: { peak: "정상", height: 877 } },
-    { no: 13, id: "구봉산(진안)", done: false, pos_0: { y: 35.923157, x: 127.416559 }, info: { peak: "천왕봉", height: 1002 } },
+    { no: 13, id: "구봉산(진안)", done: "2025.08.08.", pos_0: { y: 35.923157, x: 127.416559 }, info: { peak: "천왕봉", height: 1002 } },
     { no: 14, id: "금수산", done: false, pos_0: { y: 36.985009, x: 128.256761 }, info: { peak: "정상", height: 1016 } },
     { no: 15, id: "금오산(구미)", done: false, pos_0: { y: 36.092833, x: 128.300054 }, info: { peak: "현월봉", height: 977 } },
 
@@ -84,7 +84,7 @@ const points = [
     { no: 61, id: "용봉산", done: "2025.01.19.", pos_0: { y: 36.6436555556, x: 126.6492388889 }, info: { peak: "정상", height: 381 } },
     { no: 62, id: "용화산", done: false, pos_0: { y: 38.0380386, x: 127.7479119 }, info: { peak: "정상", height: 878 } },
     { no: 63, id: "운악산", done: false, pos_0: { y: 37.878718, x: 127.322893 }, info: { peak: "서봉", height: 936 } },
-    { no: 64, id: "운장산", done: false, pos_0: { y: 35.915653, x: 127.363019 }, info: { peak: "운장대", height: 1126 } },
+    { no: 64, id: "운장산", done: "2025.08.08.", pos_0: { y: 35.915653, x: 127.363019 }, info: { peak: "운장대", height: 1126 } },
     { no: 65, id: "월악산", done: "2025.01.12.", pos_0: { y: 36.886045, x: 128.105844 }, info: { peak: "영봉", height: 1094 } },
 
     { no: 66, id: "월출산", done: false, pos_0: { y: 34.766997, x: 126.704294 }, info: { peak: "천황봉", height: 809 } },
@@ -94,7 +94,7 @@ const points = [
     { no: 70, id: "재약산", done: false, pos_0: { y: 35.557707, x: 128.97228 }, info: { peak: "수미봉", height: 1189 } },
 
     { no: 71, id: "조계산", done: false, pos_0: { y: 35.001211, x: 127.313555 }, info: { peak: "장군봉", height: 884 } },
-    { no: 72, id: "조령산", done: false, pos_0: { y: 36.770830, x: 128.043553 }, info: { peak: "정상", height: 1027 } },
+    { no: 72, id: "조령산", done: false, pos_0: { y: 36.77083, x: 128.043553 }, info: { peak: "정상", height: 1027 } },
     { no: 73, id: "주왕산", done: false, pos_0: { y: 36.389337, x: 129.162417 }, info: { peak: "주봉", height: 721 } },
     { no: 74, id: "주흘산", done: "2025.05.17.", pos_0: { y: 36.78844, x: 128.101271 }, info: { peak: "주봉", height: 1106 } },
     { no: 75, id: "지리산", done: false, pos_0: { y: 35.336971, x: 127.730474 }, info: { peak: "천왕봉", height: 1915 } },
@@ -113,7 +113,7 @@ const points = [
 
     { no: 86, id: "치악산", done: "2024.12.22.", pos_0: { y: 37.365077, x: 128.055568 }, info: { peak: "비로봉", height: 1288 } },
     { no: 87, id: "칠갑산(청양)", done: "2025.02.23.", pos_0: { y: 36.413006, x: 126.884905 }, info: { peak: "정상", height: 561 } },
-    { no: 88, id: "칠보산(괴산)", done: "2025.05.17.", pos_0: { y: 36.739981, x: 127.927710 }, info: { peak: "정상", height: 778 } },
+    { no: 88, id: "칠보산(괴산)", done: "2025.05.17.", pos_0: { y: 36.739981, x: 127.92771 }, info: { peak: "정상", height: 778 } },
     { no: 89, id: "태백산", done: false, pos_0: { y: 37.096337, x: 128.916532 }, info: { peak: "정상", height: 1567 } },
     { no: 90, id: "태화산", done: false, pos_0: { y: 37.117601, x: 128.486345 }, info: { peak: "정상", height: 1027 } },
 
@@ -144,10 +144,10 @@ function getImagePath(point) {
 // 이미지 파일 존재 여부 확인 (fetch API 사용)
 async function isImageExists(path) {
     try {
-        const response = await fetch(path, { method: 'HEAD', mode: 'no-cors' }); // no-cors 추가
+        const response = await fetch(path, { method: "HEAD", mode: "no-cors" }); // no-cors 추가
         return response.ok; // 200 OK이면 true, 그렇지 않으면 false
     } catch (error) {
-        console.error('Error checking image existence:', error);
+        console.error("Error checking image existence:", error);
         return false;
     }
 }
@@ -164,7 +164,23 @@ async function updateTitle(p, point) {
             title = `${title} <br/> ${point.done}`;
         }
     }
-    p.setAttribute("data-title", title);
+    // p.setAttribute("data-title", title);
+    p.addEventListener("mouseover", (e) => {
+        let tooltip = document.getElementById("tooltip");
+
+        tooltip.innerHTML = title;
+
+        tooltip.classList.add("on");
+        tooltip.style.top = note.parentElement.getBoundingClientRect().top + scrollY + p.offsetTop - tooltip.offsetHeight + "px";
+        let left = p.getBoundingClientRect().left + (p.offsetWidth - tooltip.getBoundingClientRect().width) / 2;
+        if (left <= 0) {
+            left = 0;
+        }
+        tooltip.style.left = left + "px";
+    });
+    p.addEventListener("mouseout", (e) => {
+        tooltip.classList.remove("on");
+    });
 }
 
 function pin(point) {
