@@ -26,6 +26,12 @@ color = {
     "#AED581", "#DCE775", "#FFF176", "#FFD54F", "#FFB74D",
     "#FF8A65", "#A1887F", "#E0E0E0", "#90A4AE"
   ],
+  "material_400": [
+    "#EF5350", "#EC407A", "#AB47BC", "#7E57C2", "#5C6BC0",
+    "#42A5F5", "#29B6F6", "#26C6DA", "#26A69A", "#66BB6A",
+    "#9CCC65", "#D4E157", "#FFEE58", "#FFCA28", "#FFA726",
+    "#FF7043", "#8D6E63", "#BDBDBD", "#78909C"
+  ],
   "material_500": [
     "#F44336", "#E91E63", "#9C27B0", "#673AB7", "#3F51B5",
     "#2196F3", "#03A9F4", "#00BCD4", "#009688", "#4CAF50",
@@ -119,6 +125,7 @@ document.documentElement.style.setProperty("--color-50", color.material_50[color
 document.documentElement.style.setProperty("--color-100", color.material_100[color.i]);
 document.documentElement.style.setProperty("--color-200", color.material_200[color.i]);
 document.documentElement.style.setProperty("--color-300", color.material_300[color.i]);
+document.documentElement.style.setProperty("--color-400", color.material_400[color.i]);
 document.documentElement.style.setProperty("--color-500", color.material_500[color.i]);
 document.documentElement.style.setProperty("--color-600", color.material_600[color.i]);
 document.documentElement.style.setProperty("--color-700", color.material_700[color.i]);
