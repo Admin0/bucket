@@ -324,7 +324,7 @@ const LONGITUDE_MIN = 124;
 
 // 이미지 경로 생성 함수
 function getImagePath(point) {
-    return `/note/블랙야크/img/${point.no}_${point.id}.jpg`;
+    return `./note/블랙야크/img/${point.no}_${point.id}.jpg`;
 }
 
 // 이미지 파일 존재 여부 확인 (fetch API 사용)
@@ -382,16 +382,14 @@ function pin(point) {
     p.classList.add("point");
     if (point.done.step != false) {
         p.classList.add("done");
-        if (point.done.step > 80) {
+        if (point.done.step > 75) {
             p.classList.add("c1");
-        } else if (point.done.step > 60) {
+        } else if (point.done.step > 50) {
             p.classList.add("c2");
-        } else if (point.done.step > 40) {
+        } else if (point.done.step > 25) {
             p.classList.add("c3");
-        } else if (point.done.step > 20) {
-            p.classList.add("c4");
         } else {
-            p.classList.add("c5");
+            p.classList.add("c4");
         }
     }
 }

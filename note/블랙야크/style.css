@@ -32,7 +32,7 @@
     background-color: var(--color-50);
     position: absolute;
     border-radius: 50%;
-    border: 1px solid var(--color-a400);
+    border: 1px solid var(--color-500);
 }
 
 .point.done {
@@ -40,21 +40,17 @@
 }
 
 .point.done.c1 {
-    background-color: var(--color-700);
+    background-color: var(--color-a700);
 }
 
 .point.done.c2 {
-    background-color: var(--color-600);
+    background-color: var(--color-a400);
 }
 
 .point.done.c3 {
-    background-color: var(--color-500);
+    background-color: var(--color-a200);
 }
 
 .point.done.c4 {
-    background-color: var(--color-400);
-}
-
-.point.done.c5 {
-    background-color: var(--color-300);
+    background-color: var(--color-a100);
 }
