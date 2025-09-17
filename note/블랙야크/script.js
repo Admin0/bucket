@@ -324,7 +324,8 @@ const LONGITUDE_MIN = 124;
 
 // 이미지 경로 생성 함수
 function getImagePath(point) {
-    return `./note/블랙야크/img/${point.no}_${point.id}.jpg`;
+    let path = window.location.pathname != "/note/%EB%B8%94%EB%9E%99%EC%95%BC%ED%81%AC/" ? "note/블랙야크/" : "";
+    return `./${path}img/${point.no}_${point.id}.jpg`;
 }
 
 // 이미지 파일 존재 여부 확인 (fetch API 사용)
@@ -339,6 +340,14 @@ async function isImageExists(path) {
 }
 
 // title 생성 로직 수정
+if (document.getElementById("tooltip") == null) {
+    // 새로운 div 요소를 생성합니다.
+    const newDiv = document.createElement("div");
+    // 새로운 div 요소에 텍스트를 추가합니다.
+    newDiv.setAttribute("id", "tooltip");
+    // body 요소에 newDiv를 추가합니다.
+    document.body.appendChild(newDiv);
+}
 async function updateTitle(p, point) {
     let title = `${point.id} | ${point.info.peak} | ${point.info.height} m`;
     if (point.done.step) {
