@@ -352,7 +352,7 @@ if (document.getElementById("tooltip") == null) {
     document.body.appendChild(newDiv);
 }
 async function updateTitle(p, point) {
-    let title = `${point.id} | ${point.info.peak} | ${point.info.height} m`;
+    let title = `${point.id} | ${point.info.peak} | ${point.info.height.toLocaleString()} m`;
     if (point.done.step) {
         const imagePath = getImagePath(point);
         if (await isImageExists(imagePath)) {
