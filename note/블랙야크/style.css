@@ -9,10 +9,10 @@
     --color-700: #616161;
     --color-800: #424242;
     --color-900: #212121;
-    --color-a100: #CFD8DC;
-    --color-a200: #B0BEC5;
-    --color-a400: #78909C;
-    --color-a700: #455A64;
+    --color-a100: #cfd8dc;
+    --color-a200: #b0bec5;
+    --color-a400: #78909c;
+    --color-a700: #455a64;
 }
 
 #블랙야크_canvas {
@@ -53,4 +53,10 @@
 
 .point.done.c4 {
     background-color: var(--color-a100);
+}
+
+#tooltip.dev {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }

@@ -324,8 +324,10 @@ const LONGITUDE_MIN = 124;
 
 // 이미지 경로 생성 함수
 function getImagePath(point) {
-    let path = window.location.pathname != "/note/%EB%B8%94%EB%9E%99%EC%95%BC%ED%81%AC/" ? "note/블랙야크/" : "";
-    return `./${path}img/${point.no}_${point.id}.jpg`;
+    let pathname = decodeURI(window.location.pathname);
+    let len = pathname.length;
+    let path = pathname.substring(len - 6, len) != "/블랙야크/" ? `${pathname}note/블랙야크/` : "/";
+    return `.${path}img/${point.no}_${point.id}.jpg`;
 }
 
 // 이미지 파일 존재 여부 확인 (fetch API 사용)
@@ -345,6 +347,7 @@ if (document.getElementById("tooltip") == null) {
     const newDiv = document.createElement("div");
     // 새로운 div 요소에 텍스트를 추가합니다.
     newDiv.setAttribute("id", "tooltip");
+    newDiv.setAttribute("class", "dev");
     // body 요소에 newDiv를 추가합니다.
     document.body.appendChild(newDiv);
 }
