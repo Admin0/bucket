@@ -341,22 +341,12 @@ async function isImageExists(path) {
     }
 }
 
-// title 생성 로직 수정
-if (document.getElementById("tooltip") == null) {
-    // 새로운 div 요소를 생성합니다.
-    const newDiv = document.createElement("div");
-    // 새로운 div 요소에 텍스트를 추가합니다.
-    newDiv.setAttribute("id", "tooltip");
-    newDiv.setAttribute("class", "dev");
-    // body 요소에 newDiv를 추가합니다.
-    document.body.appendChild(newDiv);
-}
 async function updateTitle(p, point) {
     let title = `${point.id} | ${point.info.peak} | ${point.info.height.toLocaleString()} m`;
     if (point.done.step) {
         const imagePath = getImagePath(point);
         if (await isImageExists(imagePath)) {
-            title = `<img style='margin-bottom:.5em;' src='${imagePath}'> ${title} <br/> ${point.done.date} (${point.done.step}/100)`;
+            title = `<img class="블랙야크_img" src='${imagePath}'> ${title} <br/> ${point.done.date} (${point.done.step}/100)`;
         } else {
             title = `${title} <br/> ${point.done.date} (${point.done.step}/100)`;
         }
@@ -425,6 +415,7 @@ function draw() {
 draw();
 
 // 사이즈 맞추기
+canvas.style.height = "calc(" + canvas.offsetWidth + "px - .5em)";
 note.addEventListener("mouseenter", (event) => {
     // const rect = canvas.getBoundingClientRect();
     // const mouseX = event.clientX - rect.left;
