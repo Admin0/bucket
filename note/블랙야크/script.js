@@ -326,7 +326,7 @@ const LONGITUDE_MIN = 124;
 function getImagePath(point) {
     let pathname = decodeURI(window.location.pathname);
     let len = pathname.length;
-    let path = pathname.substring(len - 6, len) != "/블랙야크/" ? `${pathname}note/블랙야크/` : "/";
+    let path = pathname.substring(len - 6, len) != "/블랙야크/" ? "/note/블랙야크/" : "/";
     return `.${path}img/${point.no}_${point.id}.jpg`;
 }
 
