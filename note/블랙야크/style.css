@@ -21,11 +21,15 @@
     width: calc(100% - 2em);
     max-width: 600px;
     max-height: 600px;
-    background-image: url("../../img/지도/kr.svg");
-    background-size: 124%;
-    background-position: 35% 15%;
+    background-image: url("../../img/지도/kr_1.svg");
+    background-size: 79%;
+    background-position: 62% 26%;
+    background-repeat: no-repeat;
 }
-
+body#블랙야크 #블랙야크_canvas {
+    background-color: #b3e5fc;
+    border-radius: 1em;
+}
 .point {
     width: 8px;
     height: 8px;
@@ -57,7 +61,7 @@
 
 .point.done.c4:hover:before,
 .point.done.c4 {
-    background-color: var(--color-a100); 
+    background-color: var(--color-a100);
 }
 
 .point:hover,
@@ -75,7 +79,7 @@
 .point:hover:after,
 .point.done:hover:after {
     position: absolute;
-    width:100%;
+    width: 100%;
     content: "";
     display: block;
     aspect-ratio: 1;
@@ -114,28 +118,28 @@
         74.27% 32.37%,
         100% 50%,
         74.27% 67.63%,
-        calc(74.27% - 0.49px) calc(67.63% - 0.35px),
-        calc(100% - 1px) calc(50% - 0px),
-        calc(74.27% - 0.49px) calc(32.37% - -0.35px),
-        calc(65.45% - 0.31px) calc(2.45% - -0.95px),
-        calc(40.73% - -0.19px) calc(21.47% - -0.57px),
-        calc(9.55% - -0.81px) calc(20.61% - -0.59px),
-        calc(20% - -0.6px) calc(50% - 0px),
-        calc(9.55% - -0.81px) calc(79.39% - 0.59px),
-        calc(40.73% - -0.19px) calc(78.53% - 0.57px),
-        calc(65.45% - 0.31px) calc(97.55% - 0.95px),
-        calc(74.27% - 0.49px) calc(67.63% - 0.35px),
-        calc(100% - 1px) calc(50% - 0px)
+        70.87% 65.16%,
+        93% 50%,
+        70.87% 34.84%,
+        63.29% 9.1%,
+        42.03% 25.46%,
+        15.21% 24.73%,
+        24.2% 50%,
+        15.21% 75.27%,
+        42.03% 74.54%,
+        63.29% 90.9%,
+        70.87% 65.16%,
+        93% 50%
     );
 }
 @keyframes rotate {
     from {
-      transform: rotate(0deg); /* Start at 0 degrees */
+        transform: rotate(0deg); /* Start at 0 degrees */
     }
     to {
-      transform: rotate(360deg); /* Rotate to 360 degrees (one full turn) */
+        transform: rotate(360deg); /* Rotate to 360 degrees (one full turn) */
     }
-  }
+}
 body#블랙야크 {
     margin: 0em;
 }
@@ -154,13 +158,14 @@ body#블랙야크 #tooltip {
 }
 
 body#블랙야크 #tooltip img {
-    max-width: 100%;
+    max-width: calc(600px - 2em);
     height: 100%;
     margin-top: 0.5em;
+    width: 100%;
 }
 body#블랙야크 #블랙야크_canvas {
     /* width: 100%; */
-    margin: 0 1em;
+    margin: 1em;
 }
 
 #tooltip:not(body#블랙야크 #tooltip) img.블랙야크_img {
