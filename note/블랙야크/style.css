@@ -21,13 +21,20 @@
     width: calc(100% - 2em);
     max-width: 600px;
     max-height: 600px;
+}
+#블랙야크_canvas:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
     background-image: url("../../img/지도/kr_1.svg");
-    background-size: 79%;
-    background-position: 62% 26%;
+    background-size: 92%;
+    background-position: 117% 87%;
     background-repeat: no-repeat;
 }
 body#블랙야크 #블랙야크_canvas {
     background-color: #b3e5fc;
+    background: linear-gradient(0deg,rgba(179, 229, 252, 1) 0%, rgba(178, 223, 219, 1) 100%);
     border-radius: 1em;
 }
 .point {

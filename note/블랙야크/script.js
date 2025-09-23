@@ -317,10 +317,10 @@ const points = [
 ];
 
 const MAP_MARGIN = 0;
-const LATITUDE_MAX = 39;
-const LATITUDE_MIN = 33;
-const LONGITUDE_MAX = 132;
-const LONGITUDE_MIN = 124;
+const LATITUDE_MAX = 38.5;
+const LATITUDE_MIN = 33.3;
+const LONGITUDE_MAX = 131.3;
+const LONGITUDE_MIN = 124.35;
 
 // 이미지 경로 생성 함수
 function getImagePath(point) {
