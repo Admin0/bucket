@@ -1,14 +1,41 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <title>블랙야크: BAC 100 대 명산 정복</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <title>#블랙야크: BAC 명산100 프로그램 도전</title>
         <link rel="stylesheet" type="text/css" href="style.css" />
         <script defer src="script.js"></script>
+        <script defer src="script_table-sort.min.js"></script>
     </head>
     <body id="블랙야크">
+        <header>
+            <h1>#블랙야크<span class="sub">: BAC 명산100 프로그램 도전</span></h1>
+        </header>
+
         <div id="블랙야크_canvas"></div>
-        <p id="블랙야크_p"></p>
+        <p id="블랙야크_p">완료: </p>
+        
+        <div id="tooltip"></div>
+
+        <table id="블랙야크_table" class="table-sort">
+            <thead>
+                <tr>
+                    <td class="no">#</td>
+                    <td class="name">이름</td>
+                    <td class="peak">정상</td>
+                    <td class="height">높이 (m)</td>
+                    <td class="done">완료</td>
+                    <td class="step">순서</td>
+                </tr>
+            </thead>
+            <tbody id="블랙야크_tbody"></tbody>
+        </table>
+
+        <footer>
+            <a href="//jinh.kr/bucket/#블랙야크" class="i">#버킷리스트</a> 
+            <a href="//jinh.kr/" class="i">//jinh.kr/</a> 
+            <a href="//bac.blackyak.com/BAC/ChallengeProgram/114" class="i o">명산100 (BAC)</a> 
+
+        </footer>
     </body>
-    <div id="tooltip"></div>
 </html>

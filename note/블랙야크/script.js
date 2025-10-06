@@ -259,7 +259,7 @@ const points = [
     { no: 77, id: "지리산", done: { step: false, date: "" }, pos_0: { y: 35.275637, x: 127.578314 }, info: { peak: "반야봉", height: 1732 } },
     { no: 78, id: "천관산", done: { step: false, date: "" }, pos_0: { y: 34.535402, x: 126.911238 }, info: { peak: "연대봉", height: 723 } },
     { no: 79, id: "천마산", done: { step: 31, date: "2025.06.27." }, pos_0: { y: 37.680364, x: 127.273397 }, info: { peak: "정상", height: 812 } },
-    { no: 80, id: "천성산", done: { step: false, date: "" }, pos_0: { y: 35.415420, x: 129.123144 }, info: { peak: "비로봉", height: 922 } },
+    { no: 80, id: "천성산", done: { step: false, date: "" }, pos_0: { y: 35.41542, x: 129.123144 }, info: { peak: "비로봉", height: 922 } },
 
     { no: 81, id: "천태산", done: { step: 23, date: "2025.05.24." }, pos_0: { y: 36.159122, x: 127.600005 }, info: { peak: "정상", height: 715 } },
     { no: 82, id: "청계산", done: { step: 18, date: "2025.05.11." }, pos_0: { y: 37.433333, x: 127.05 }, info: { peak: "매봉", height: 582 } },
@@ -324,10 +324,13 @@ const LONGITUDE_MIN = 124.35;
 
 // 이미지 경로 생성 함수
 function getImagePath(point) {
-    let pathname = decodeURI(window.location.pathname);
-    let len = pathname.length;
-    let path = pathname.substring(len - 6, len) != "/블랙야크/" ? "/note/블랙야크/" : "/";
+    let path = isNotePage() ? "/" : "/note/블랙야크/";
     return `.${path}img/${point.no}_${point.id}.jpg`;
+}
+
+// am i in note page?
+function isNotePage() {
+    return document.querySelector("body#블랙야크") != null;
 }
 
 // 이미지 파일 존재 여부 확인 (fetch API 사용)
@@ -346,9 +349,9 @@ async function updateTitle(p, point) {
     if (point.done.step) {
         const imagePath = getImagePath(point);
         if (await isImageExists(imagePath)) {
-            title = `<img class="블랙야크_img" src='${imagePath}'> ${title} <br/> ${point.done.date} (${point.done.step}/100)`;
+            title = `<img class="블랙야크_img" src='${imagePath}'> <div clas="info">${title}</div> <div class="done">${point.done.date} (${point.done.step}/100)</div>`;
         } else {
-            title = `${title} <br/> ${point.done.date} (${point.done.step}/100)`;
+            title = `<div clas="info">${title}</div> <div class="done">${point.done.date} (${point.done.step}/100)</div>`;
         }
     }
     // p.setAttribute("data-title", title);
@@ -358,12 +361,14 @@ async function updateTitle(p, point) {
         tooltip.innerHTML = title;
 
         tooltip.classList.add("on");
-        tooltip.style.top = note.parentElement.getBoundingClientRect().top + scrollY + p.offsetTop - tooltip.offsetHeight + "px";
-        let left = p.getBoundingClientRect().left + (p.offsetWidth - tooltip.getBoundingClientRect().width) / 2;
-        if (left <= 0) {
-            left = 0;
+        if (!isNotePage()) {
+            tooltip.style.top = note.parentElement.getBoundingClientRect().top + scrollY + p.offsetTop - tooltip.offsetHeight + "px";
+            let left = p.getBoundingClientRect().left + (p.offsetWidth - tooltip.getBoundingClientRect().width) / 2;
+            if (left <= 0) {
+                left = 0;
+            }
+            tooltip.style.left = left + "px";
         }
-        tooltip.style.left = left + "px";
     });
     p.addEventListener("mouseout", (e) => {
         tooltip.classList.remove("on");
@@ -430,4 +435,32 @@ points.forEach((element) => {
         prog++;
     }
 });
-p.innerText = `완료: ${prog}/100`;
+p.innerHTML += `<span class="prog">${prog}</span>/100`;
+
+// 테이블 만들기
+function createTableFromJSON(jsonData, tableId) {
+    const tableBody = document.getElementById(tableId);
+    tableBody.innerHTML = ""; // 기존 내용 초기화
+
+    jsonData.forEach((item) => {
+        const row = document.createElement("tr"); // 새로운 행 생성
+
+        Object.keys(item).forEach((key) => {
+            const cell = `<td class="no"> ${item.no} </td>
+            <td class="name"> ${item.id} </td>
+            <td class="peak"> ${item.info.peak} </td>
+            <td class="height"> ${Math.floor(item.info.height).toLocaleString()} </td>
+            <td class="done"> ${item.done.date ? item.done.date : "-"} </td>
+            <td class="step"> ${item.done.date ? item.done.step : "-"} </td>`;
+            row.innerHTML = cell;
+
+            if (item.done.step != false) {
+                row.classList.add("done");
+            }
+            updateTitle(row, item);
+        });
+
+        tableBody.appendChild(row); // 행을 테이블 본문에 추가
+    });
+}
+createTableFromJSON(points, "블랙야크_tbody");

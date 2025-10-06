@@ -14,7 +14,6 @@
     --color-a400: #ff1744;
     --color-a700: #d50000;
 }
-
 #블랙야크_canvas {
     position: relative;
     /* border: 1px solid black; */
@@ -34,21 +33,21 @@
 }
 body#블랙야크 #블랙야크_canvas {
     background-color: #b3e5fc;
-    background: linear-gradient(0deg,rgba(179, 229, 252, 1) 0%, rgba(178, 223, 219, 1) 100%);
+    background: linear-gradient(0deg, rgba(179, 229, 252, 1) 0%, rgba(178, 223, 219, 1) 100%);
     border-radius: 1em;
 }
 .point {
     width: 8px;
     height: 8px;
-    background-color: var(--color-50);
+    background-color: #e0e0e0;
     position: absolute;
     border-radius: 50%;
-    border: 1px solid var(--color-500);
+    border: 1px solid #9e9e9e;
     /* transition: .125s; */
 }
 
 .point.done {
-    /* background-color: var(--color-a400); */
+    border-color: var(--color-500);
 }
 
 .point.done.c1:hover:before,
@@ -109,6 +108,9 @@ body#블랙야크 #블랙야크_canvas {
         74.27% 32.37%
     );
 }
+.point:hover:before {
+    background-color: #e0e0e0;
+}
 .point:hover:after,
 .point.done:hover:after {
     background-color: var(--color-500);
@@ -139,6 +141,9 @@ body#블랙야크 #블랙야크_canvas {
         93% 50%
     );
 }
+.point:hover:after {
+    background-color: #9e9e9e;
+}
 @keyframes rotate {
     from {
         transform: rotate(0deg); /* Start at 0 degrees */
@@ -149,32 +154,187 @@ body#블랙야크 #블랙야크_canvas {
 }
 body#블랙야크 {
     margin: 0em;
+    /* letter-spacing: -.05em; */
 }
-body#블랙야크 p {
-    margin: 1em;
+body#블랙야크 h1 {
+    margin: 3em auto;
+    width: calc(100% - 2em);
+    max-width: 600px;
+    color: #212121;
+    font-size: 1.5em;
+}
+body#블랙야크 h1 span.sub {
+    color: #616161;
+    font-size: 0.75em;
+    font-style: italic;
+}
+body#블랙야크 #블랙야크_p {
+    width: calc(100% - 2em);
+    margin: 0 auto 0;
+    right: 1em;
+    top: -3.5em;
+    max-width: 600px;
+    text-align: right;
+    position: relative;
+    color: #212121;
+    font-weight: bold;
+    font-size: 1.25em;
+}
+body#블랙야크 #블랙야크_p .prog {
+    padding: 0 0.125em;
+    color: var(--color-900);
+    font-size: 1.5em;
+    text-decoration: underline;
 }
 body#블랙야크 #tooltip {
+    /* position: absolute; */
     display: flex;
-    flex-direction: column-reverse;
-    align-items: flex-start;
-    width: fit-content;
-    margin: 1em;
-    border: 1px solid #eee;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    width: calc(100% - 4em);
+    margin: -1em auto 2em;
+    max-width: calc(600px - 2em);
+    height: calc(600px + 4em - 2em);
+    max-height: calc(100vw - 0em);
+    outline: 1px solid #9e9e9e;
     padding: 1em;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25); */
+    background-color: #fffe;
+    z-index: 6;
 }
-
+body#블랙야크 #tooltip:not(:has(img)) {
+}
+body#블랙야크 #tooltip:not(:has(img))::before {
+    content: "(^_^)a ?";
+    background-color: #f5f5f5;
+    font-style: italic;
+    color: #9e9e9e;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+body#블랙야크 #tooltip:not(:has(img), :has(.done))::after {
+    content: "-";
+}
+body#블랙야크 #tooltip:not(:has(img))::before,
 body#블랙야크 #tooltip img {
     max-width: calc(600px - 2em);
     height: 100%;
-    margin-top: 0.5em;
+    margin-bottom: 1em;
     width: 100%;
 }
 body#블랙야크 #블랙야크_canvas {
     /* width: 100%; */
-    margin: 1em;
+    outline: 1px solid #009688;
+    margin: 1em auto;
+}
+body#블랙야크 #블랙야크_canvas .point {
+    z-index: 5;
+}
+body#블랙야크 #블랙야크_table {
+    margin: 1em auto;
+    width: calc(100% - 2em);
+    max-width: 600px;
+    color: #616161;
+    border-spacing: 0;
+}
+body#블랙야크 #블랙야크_table thead {
+    font-weight: bold;
+    color: #212121;
+}
+body#블랙야크 #블랙야크_table td {
+    padding: 0.25em 1em;
+    font-size: 0.9em;
+}
+body#블랙야크 #블랙야크_table tr.done td.name,
+body#블랙야크 #블랙야크_table tr.done td.peak,
+body#블랙야크 #블랙야크_table tr.done td.height {
+    font-size: 1em;
+}
+body#블랙야크 #블랙야크_table tbody td.no,
+body#블랙야크 #블랙야크_table tbody td.height,
+body#블랙야크 #블랙야크_table tbody td.step {
+    text-align: right;
 }
 
+body#블랙야크 #블랙야크_table tr.done {
+    font-weight: bold;
+    color: #616161;
+}
+body#블랙야크 #블랙야크_table tr:hover {
+    color: var(--color-900);
+    background-color: var(--color-50);
+}
+body#블랙야크 footer {
+    font-size: 0.85em;
+    padding: 3em 0;
+    margin-top: 3em;
+    text-align: center;
+    color: #9e9e9e;
+    background-color: #f5f5f5;
+}
+body#블랙야크 footer .i {
+    margin: 0 1em;
+}
+body#블랙야크 footer .i:not(:first-child)::before {
+    content: "";
+    border-left: 1px solid #e0e0e0;
+    margin-right: 2em;
+    height: 0.5em;
+    display: inline-block;
+    height: 0.85em;
+}
+body#블랙야크 footer a {
+    text-decoration: none;
+    color: inherit;
+}
+body#블랙야크 footer a:not(.o) {
+    font-weight: bold;
+    color: #757575;
+}
 #tooltip:not(body#블랙야크 #tooltip) img.블랙야크_img {
     margin-bottom: 0.5em;
+}
+
+@media screen and (min-width: 1440px) {
+    body#블랙야크 h1 {
+        max-width: none;
+        text-align: center;
+    }
+    body#블랙야크 #블랙야크_canvas {
+        position: absolute;
+        top: calc(50% - 600px - 2em);
+        left: calc(50% - 600px - 1em);
+    }
+    body#블랙야크 #블랙야크_p {
+        position: absolute;
+        top: calc(50% - 4em);
+        left: calc(50% - 600px - 2em);
+        margin: 0;
+    }
+    body#블랙야크 #tooltip {
+        position: absolute;
+        top: calc(50% + 2em);
+        left: calc(50% - 600px - 1em);
+    }
+    body#블랙야크 #블랙야크_table {
+        outline: 1px solid #9e9e9e;
+        position: absolute;
+        top: calc(50% - 600px - 2em);
+        left: calc(50% + 1em);
+        display: block;
+        height: calc(600px * 2 + 6em);
+        overflow-y: scroll;
+    }
+    body#블랙야크 #블랙야크_table thead , body#블랙야크 #블랙야크_table tbody {
+        /* display: inline-table; */
+        /* width: 100%; */
+    }
+    body#블랙야크 footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
 }
