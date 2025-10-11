@@ -149,7 +149,7 @@ const points = [
         info: { peak: "인왕봉", height: 1187 },
     },
     { no: 37, id: "민주지산", done: { step: false, date: "" }, pos_0: { y: 36.03976612, x: 127.849333 }, info: { peak: "정상", height: 1242 } },
-    { no: 38, id: "방장산", done: { step: false, date: "" }, pos_0: { y: 35.455991, x: 126.75431 }, info: { peak: "정상", height: 743 } },
+    { no: 38, id: "방장산", done: { step: 37, date: "2025.10.10." }, pos_0: { y: 35.455991, x: 126.75431 }, info: { peak: "정상", height: 743 } },
     { no: 39, id: "방태산", done: { step: false, date: "" }, pos_0: { y: 37.888141, x: 128.390341 }, info: { peak: "주억봉", height: 1444 } },
     { no: 40, id: "백덕산", done: { step: false, date: "" }, pos_0: { y: 37.396072, x: 128.293787 }, info: { peak: "정상", height: 1350 } },
 
@@ -166,7 +166,7 @@ const points = [
     {
         no: 45,
         id: "불갑산(영광)",
-        done: { step: false, date: "" },
+        done: { step: 39, date: "2025.10.10." },
         pos_0: { y: 35.1908333333, x: 126.5650472222 },
         info: { peak: "연실봉", height: 517.7 },
     },
@@ -265,7 +265,7 @@ const points = [
     { no: 82, id: "청계산", done: { step: 18, date: "2025.05.11." }, pos_0: { y: 37.433333, x: 127.05 }, info: { peak: "매봉", height: 582 } },
     { no: 83, id: "청량산", done: { step: false, date: "" }, pos_0: { y: 36.794122, x: 128.907994 }, info: { peak: "장인봉", height: 870 } },
     { no: 84, id: "청화산", done: { step: false, date: "" }, pos_0: { y: 36.625029, x: 127.919377 }, info: { peak: "정상", height: 970 } },
-    { no: 85, id: "축령산(장성)", done: { step: false, date: "" }, pos_0: { y: 35.386134, x: 126.740903 }, info: { peak: "정상", height: 879 } },
+    { no: 85, id: "축령산(장성)", done: { step: 38, date: "2025.10.10." }, pos_0: { y: 35.386134, x: 126.740903 }, info: { peak: "정상", height: 879 } },
 
     {
         no: 86,
@@ -349,9 +349,9 @@ async function updateTitle(p, point) {
     if (point.done.step) {
         const imagePath = getImagePath(point);
         if (await isImageExists(imagePath)) {
-            title = `<img class="블랙야크_img" src='${imagePath}'> <div clas="info">${title}</div> <div class="done">${point.done.date} (${point.done.step}/100)</div>`;
+            title = `<img class="블랙야크_img" src='${imagePath}'> <div class="info">${title}</div> <div class="done">${point.done.date} (${point.done.step}/100)</div>`;
         } else {
-            title = `<div clas="info">${title}</div> <div class="done">${point.done.date} (${point.done.step}/100)</div>`;
+            title = `<div class="info">${title}</div> <div class="done">${point.done.date} (${point.done.step}/100)</div>`;
         }
     }
     // p.setAttribute("data-title", title);
