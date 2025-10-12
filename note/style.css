@@ -1,0 +1,27 @@
+::selection{
+    background: rgba(0, 0, 0, 0);
+    /* color: #fff; */
+}
+html,
+body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    overflow: hidden;
+    /* background: #274c43; */
+    /* background: linear-gradient(0deg, rgba(39, 76, 67, 1) 0%, rgba(147, 166, 161, 1) 100%); */
+    height: 100%;
+}
+
+.note {
+    width: 400px;
+    height: 400px;
+    background-color: #FFEA00;
+    position: absolute;
+    padding: 1em;
+    box-shadow: 0px 5px 11px #00000077;
+    cursor: grab;
+}

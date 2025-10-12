@@ -265,7 +265,13 @@ const points = [
     { no: 82, id: "청계산", done: { step: 18, date: "2025.05.11." }, pos_0: { y: 37.433333, x: 127.05 }, info: { peak: "매봉", height: 582 } },
     { no: 83, id: "청량산", done: { step: false, date: "" }, pos_0: { y: 36.794122, x: 128.907994 }, info: { peak: "장인봉", height: 870 } },
     { no: 84, id: "청화산", done: { step: false, date: "" }, pos_0: { y: 36.625029, x: 127.919377 }, info: { peak: "정상", height: 970 } },
-    { no: 85, id: "축령산(장성)", done: { step: 38, date: "2025.10.10." }, pos_0: { y: 35.386134, x: 126.740903 }, info: { peak: "정상", height: 879 } },
+    {
+        no: 85,
+        id: "축령산(장성)",
+        done: { step: 38, date: "2025.10.10." },
+        pos_0: { y: 35.386134, x: 126.740903 },
+        info: { peak: "정상", height: 879 },
+    },
 
     {
         no: 86,
@@ -317,8 +323,8 @@ const points = [
 ];
 
 const MAP_MARGIN = 0;
-const LATITUDE_MAX = 38.5;
-const LATITUDE_MIN = 33.3;
+const LATITUDE_MAX = 38.7;
+const LATITUDE_MIN = 33.5;
 const LONGITUDE_MAX = 131.3;
 const LONGITUDE_MIN = 124.35;
 
@@ -345,21 +351,23 @@ async function isImageExists(path) {
 }
 
 async function updateTitle(p, point) {
-    let title = `${point.id} | ${point.info.peak} | ${point.info.height.toLocaleString()} m`;
+    let title = `<div class="info">${point.id} | ${point.info.peak} | ${point.info.height.toLocaleString()} m</div>`;
     if (point.done.step) {
         const imagePath = getImagePath(point);
         if (await isImageExists(imagePath)) {
-            title = `<img class="블랙야크_img" src='${imagePath}'> <div class="info">${title}</div> <div class="done">${point.done.date} (${point.done.step}/100)</div>`;
+            title = `<img class="블랙야크_img" src='${imagePath}'> ${title} <div class="done">${point.done.date} (${point.done.step}/100)</div>`;
         } else {
-            title = `<div class="info">${title}</div> <div class="done">${point.done.date} (${point.done.step}/100)</div>`;
+            title = `${title} <div class="done">${point.done.date} (${point.done.step}/100)</div>`;
         }
     }
     // p.setAttribute("data-title", title);
+    let p_target = document.querySelector(`#블랙야크_canvas .point:nth-of-type(${point.no})`);
     p.addEventListener("mouseover", (e) => {
         let tooltip = document.getElementById("tooltip");
 
         tooltip.innerHTML = title;
 
+        if (isNotePage()) p_target.classList.add("on");
         tooltip.classList.add("on");
         if (!isNotePage()) {
             tooltip.style.top = note.parentElement.getBoundingClientRect().top + scrollY + p.offsetTop - tooltip.offsetHeight + "px";
@@ -371,6 +379,7 @@ async function updateTitle(p, point) {
         }
     });
     p.addEventListener("mouseout", (e) => {
+        if (isNotePage()) p_target.classList.remove("on");
         tooltip.classList.remove("on");
     });
 }

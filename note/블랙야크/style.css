@@ -1,4 +1,7 @@
-:root {
+@import url("https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100..900&display=swap");
+
+body#note,
+body#블랙야크 {
     --color-50: #ffebee;
     --color-100: #ffcdd2;
     --color-200: #e57373;
@@ -13,11 +16,21 @@
     --color-a200: #ff5252;
     --color-a400: #ff1744;
     --color-a700: #d50000;
+
+    --margin-img-polaroid: 2em;
+    --margin-img: 1em;
+
+    font-family: "Noto Sans KR", sans-serif;
 }
+
+body#블랙야크::selection {
+    background-color: transparent;
+}
+
 #블랙야크_canvas {
     position: relative;
     /* border: 1px solid black; */
-    width: calc(100% - 2em);
+    width: 100%;
     max-width: 600px;
     max-height: 600px;
 }
@@ -28,12 +41,13 @@
     height: 100%;
     background-image: url("../../img/지도/kr_1.svg");
     background-size: 92%;
-    background-position: 117% 87%;
+    background-position: 117% 50%;
     background-repeat: no-repeat;
 }
 body#블랙야크 #블랙야크_canvas {
     background-color: #b3e5fc;
     background: linear-gradient(0deg, rgba(179, 229, 252, 1) 0%, rgba(178, 223, 219, 1) 100%);
+    margin: 0 auto;
     border-radius: 1em;
 }
 .point {
@@ -50,27 +64,33 @@ body#블랙야크 #블랙야크_canvas {
     border-color: var(--color-500);
 }
 
+body#블랙야크 .point.done.c1.on:before,
 .point.done.c1:hover:before,
 .point.done.c1 {
     background-color: var(--color-a700);
 }
 
+body#블랙야크 .point.done.c2.on:before,
 .point.done.c2:hover:before,
 .point.done.c2 {
     background-color: var(--color-a400);
 }
 
+body#블랙야크 .point.done.c3.on:before,
 .point.done.c3:hover:before,
 .point.done.c3 {
     background-color: var(--color-a200);
 }
 
+body#블랙야크 .point.done.c4.on:before,
 .point.done.c4:hover:before,
 .point.done.c4 {
     background-color: var(--color-a100);
 }
 
+body#블랙야크 .point.on,
 .point:hover,
+body#블랙야크 .point.done.on,
 .point.done:hover {
     z-index: 6;
     width: 24px;
@@ -80,9 +100,13 @@ body#블랙야크 #블랙야크_canvas {
     background-color: transparent;
     /* outline: 2px solid var(--color-500); */
 }
+body#블랙야크 .point.on:before,
 .point:hover:before,
+body#블랙야크 .point.done.on:before,
 .point.done:hover:before,
+body#블랙야크 .point.on:after,
 .point:hover:after,
+body#블랙야크 .point.done.on:after,
 .point.done:hover:after {
     position: absolute;
     width: 100%;
@@ -92,7 +116,9 @@ body#블랙야크 #블랙야크_canvas {
     background-color: inherit;
     animation: rotate 3s linear infinite;
 }
+body#블랙야크 .point.on:before,
 .point:hover:before,
+body#블랙야크 .point.done.on:before,
 .point.done:hover:before {
     background-color: var(--color-50);
     clip-path: polygon(
@@ -108,10 +134,13 @@ body#블랙야크 #블랙야크_canvas {
         74.27% 32.37%
     );
 }
+body#블랙야크 .point.on:before,
 .point:hover:before {
     background-color: #e0e0e0;
 }
+body#블랙야크 .point.on:after,
 .point:hover:after,
+body#블랙야크 .point.done.on:after,
 .point.done:hover:after {
     background-color: var(--color-500);
     clip-path: polygon(
@@ -141,6 +170,7 @@ body#블랙야크 #블랙야크_canvas {
         93% 50%
     );
 }
+body#블랙야크 .point.on:after,
 .point:hover:after {
     background-color: #9e9e9e;
 }
@@ -192,33 +222,26 @@ body#블랙야크 #tooltip {
     flex-direction: column;
     justify-content: flex-end;
     align-items: flex-end;
-    width: calc(100% - 4em);
-    margin: -1em auto 2em;
-    max-width: calc(600px - 2em);
-    height: calc(600px + 4em - 2em);
-    max-height: calc(100vw - 0em);
-    outline: 1px solid #9e9e9e;
-    padding: 1em;
-    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25); */
-    background-color: #fffe;
+    width: calc(100% - var(--margin-img) * 2);
+    max-width: calc(600px - var(--margin-img) * 2);
+    margin: 4em auto;
+    height: calc(100% + 4em - var(--margin-img) * 2);
+    /* outline: 1px solid #9e9e9e; */
+    padding: var(--margin-img);
     z-index: 6;
     color: #212121;
+    position: relative;
 }
 body#블랙야크 #tooltip .info {
 }
 body#블랙야크 #tooltip:not(:has(img)) {
 }
-body#블랙야크 #tooltip:not(:has(img))::before {
-    content: "404 Not Found (^_^)a";
-    background-color: #212121;
-    font-style: italic;
-    color: #9e9e9e;
-    border: 1px solid #e0e0e0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body#블랙야크 #tooltip::before {
+    content: "";
+    background: #000000;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(33, 33, 33, 1) 100%);
 }
-body#블랙야크 #tooltip:not(:has(img), :has(.done)) {
+body#블랙야크 #tooltip:has(.done):has(img)::before {
 }
 body#블랙야크 #tooltip .done,
 body#블랙야크 #tooltip::after {
@@ -229,18 +252,34 @@ body#블랙야크 #tooltip:not(:has(img), :has(.done))::after {
     font-weight: normal;
     content: "-";
 }
-body#블랙야크 #tooltip:not(:has(img))::before,
+body#블랙야크 #tooltip::before,
 body#블랙야크 #tooltip img {
-    max-width: calc(600px - 2em);
-    height: 100%;
-    margin-bottom: 1em;
-    width: 100%;
+    width: calc(100% - var(--margin-img) * 2);
+    margin: 0 auto;
+    position: absolute;
+    top: var(--margin-img);
 }
-body#블랙야크 #블랙야크_canvas {
-    /* width: 100%; */
-    outline: 1px solid #009688;
-    margin: 1em auto;
+body#블랙야크 #tooltip::before {
+    padding-bottom: calc(100% - var(--margin-img) * 2);
 }
+body#블랙야크 #tooltip .info {
+    padding-top: calc(100% + 1em);
+}
+body#블랙야크 #tooltip img {
+    z-index: 1;
+}
+
+body#블랙야크 #tooltip:has(.done)::after {
+    content: "♥️";
+    position: absolute;
+    text-decoration: none;
+    font-style: normal;
+    font-size: 2em;
+    left: .5em;
+    padding-top: calc(100% - var(--margin-img) * 2 + 1.75em);
+    top:0;
+}
+
 body#블랙야크 #블랙야크_canvas .point {
     z-index: 5;
 }
@@ -256,9 +295,18 @@ body#블랙야크 #블랙야크_table thead {
     color: #212121;
 }
 body#블랙야크 #블랙야크_table td {
-    padding: 0.25em 1em;
+    padding: 0.5em 1em;
     font-size: 0.9em;
 }
+
+body#블랙야크 #블랙야크_table thead td {
+    border-bottom: 1px solid #9e9e9e;
+}
+
+body#블랙야크 #블랙야크_table tr:not(:last-of-type) td {
+    border-bottom: 1px dashed #aaa;
+}
+
 body#블랙야크 #블랙야크_table tr.done td.name,
 body#블랙야크 #블랙야크_table tr.done td.peak,
 body#블랙야크 #블랙야크_table tr.done td.height {
@@ -275,7 +323,7 @@ body#블랙야크 #블랙야크_table tr.done {
     color: #616161;
 }
 body#블랙야크 #블랙야크_table tr:hover {
-    color: var(--color-900);
+    color: var(--color-a400);
     background-color: var(--color-50);
 }
 body#블랙야크 footer {
@@ -314,37 +362,133 @@ body#블랙야크 footer a:not(.o) {
         max-width: none;
         text-align: center;
     }
-    body#블랙야크 #블랙야크_canvas {
+    body#블랙야크 #블랙야크_canvas.paper {
         position: absolute;
-        top: calc(50% - 600px - 2em);
-        left: calc(50% - 600px - 1em);
+        top: calc(50% - 600px - 3em);
+        left: calc(50% - 600px - 2em);
+        transform: rotate(2%);
+
+        background: #fafafa;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(#fafafa, #fafafa 28px, #91d1d3 28px);
+        background-size: 30px 30px;
     }
+    body#블랙야크 .paper:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        background: radial-gradient(#aaa 9px, #fafafa 0) repeat-y;
+        background-size: 60px 60px;
+        /* border-right: 3px solid #d44147; */
+        box-sizing: border-box;
+    }
+
     body#블랙야크 #블랙야크_p {
         position: absolute;
-        top: calc(50% - 4em);
-        left: calc(50% - 600px - 2em);
+        top: calc(50% - 6.5em);
+        left: calc(50% - 600px - 3em);
         margin: 0;
     }
-    body#블랙야크 #tooltip {
+    body#블랙야크 #tooltip.polaroid {
         position: absolute;
-        top: calc(50% + 2em);
-        left: calc(50% - 600px - 1em);
+        margin: 0;
+        top: calc(50% + 1em);
+        left: calc(50% - 600px - 2em);
+        box-shadow: 2px 5px 11px rgba(0, 0, 0, 0.75);
+        background-color: #fcfbf7;
+        transform: rotate(-1deg);
+        line-height: 1;
+
+        padding: var(--margin-img-polaroid);
+        height: calc(600px + var(--margin-img-polaroid) * 2 - 3.5em);
+
+        width: calc(600px - var(--margin-img-polaroid) * 2);
     }
+    body#블랙야크 #tooltip::before,
+    body#블랙야크 #tooltip img {
+        top: var(--margin-img-polaroid);
+        left: var(--margin-img-polaroid);
+    }
+
+    body#블랙야크 #tooltip::before,
+    body#블랙야크 #tooltip img {
+        width: calc(600px - var(--margin-img-polaroid) * 2);
+        height: calc(600px - var(--margin-img-polaroid) * 2);
+        max-height: 100%;
+        position: absolute;
+        top: var(--margin-img-polaroid);
+        padding: 0;
+    }
+    body#블랙야크 #tooltip:has(.done)::after {
+        content: "♥️";
+        left: 1em;
+    }
+    body#블랙야크 #tooltip .info,
+    body#블랙야크 #tooltip .done,
+    body#블랙야크 #tooltip:not(:has(img), :has(.done))::after {
+        font-family: "East Sea Dokdo", sans-serif;
+        font-size: 1.5em;
+    }
+
+    body#블랙야크 .tape {
+        background-color: hsla(0, 0%, 100%, 0.2);
+        box-shadow: inset 0 0 1em 0.5em hsla(0, 0%, 100%, 0.1);
+        height: 3em;
+        position: absolute;
+        transform: rotate(-2deg);
+        width: 9em;
+        filter: drop-shadow(0 1px 1px hsla(0, 0%, 0%, 0.3));
+        top: calc(50% - 600px - 4.5em);
+        left: calc(50% - 300px - 6.5em);
+        z-index: 10;
+    }
+    body#블랙야크 .tape:nth-of-type(1) {
+        top: calc(50% - 0.5em);
+        transform: rotate(3deg);
+    }
+
+    body#블랙야크 .tape:after,
+    body#블랙야크 .tape:before {
+        background-size: 0.4em 0.4em;
+        bottom: 0;
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 0.2em;
+    }
+    body#블랙야크 .tape:after {
+        background-image: linear-gradient(45deg, transparent 50%, hsla(0, 0%, 100%, 0.3) 50%),
+            linear-gradient(-45deg, transparent 50%, hsla(0, 0%, 100%, 0.3) 50%);
+        background-position: 0 100%;
+        left: -0.2em;
+    }
+    body#블랙야크 .tape:before {
+        background-image: linear-gradient(135deg, transparent 50%, hsla(0, 0%, 100%, 0.3) 50%),
+            linear-gradient(-135deg, transparent 50%, hsla(0, 0%, 100%, 0.3) 50%);
+        background-position: 100% 100%;
+        right: -0.2em;
+    }
+
     body#블랙야크 #블랙야크_table {
         outline: 1px solid #9e9e9e;
         position: absolute;
-        top: calc(50% - 600px - 2em);
-        left: calc(50% + 1em);
+        top: calc(50% - 600px - 4em);
+        left: calc(50% + 2em);
         /* display: block; */
-        height: calc(600px * 2 + 6em);
+        height: calc(600px * 2 + 8em);
         overflow-y: scroll;
     }
     body#블랙야크 #블랙야크_table thead tr {
         display: block;
     }
+
     body#블랙야크 #블랙야크_table tbody {
         display: block;
-        height: calc(600px * 2 + 4em);
+        height: calc(600px * 2 + 6em);
         overflow-y: scroll;
     }
 
@@ -375,11 +519,21 @@ body#블랙야크 footer a:not(.o) {
 }
 
 @media screen and (max-width: 550px) {
+    body#블랙야크 h1 {
+        display: none;
+    }
+    body#블랙야크 #블랙야크_canvas {
+        border-radius: 0;
+    }
+
+    body#블랙야크 #tooltip {
+    }
+
     body#블랙야크 #블랙야크_table {
         font-size: 0.85em;
     }
     body#블랙야크 #블랙야크_table tr td {
-        padding: 0.25em 0.5em;
+        padding: 0.5em 0.5em;
     }
     body#블랙야크 #블랙야크_table tr td:nth-child(1),
     body#블랙야크 #블랙야크_table tr td:nth-child(3) {
