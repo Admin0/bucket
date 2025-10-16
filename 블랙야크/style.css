@@ -1,0 +1,140 @@
+#블랙야크_canvas {
+    position: relative;
+    /* border: 1px solid black; */
+    width: 100%;
+    max-width: 600px;
+    max-height: 600px;
+}
+#블랙야크_canvas:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url("../../img/지도/kr_1.svg");
+    background-size: 92%;
+    background-position: 110% 55%;
+    background-repeat: no-repeat;
+}
+
+.point {
+    width: 8px;
+    height: 8px;
+    background-color: #e0e0e0;
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid #9e9e9e;
+    transform: translate(-50%, -50%);
+}
+
+.point.done {
+    border-color: var(--color-500);
+}
+
+.point.done.c1:hover:before,
+.point.done.c1 {
+    background-color: var(--color-a700);
+}
+
+.point.done.c2:hover:before,
+.point.done.c2 {
+    background-color: var(--color-a400);
+}
+
+.point.done.c3:hover:before,
+.point.done.c3 {
+    background-color: var(--color-a200);
+}
+
+.point.done.c4:hover:before,
+.point.done.c4 {
+    background-color: var(--color-a100);
+}
+.point:hover,
+.point.done:hover {
+    z-index: 6;
+    width: 24px;
+    height: 24px;
+    /* margin: calc(-24px / 2 + 8px / 2) 0 0 calc(-24px / 2 + 8px / 2); */
+    border: none;
+    background-color: transparent;
+    /* outline: 2px solid var(--color-500); */
+}
+.point:hover:before,
+.point.done:hover:before,
+.point:hover:after,
+.point.done:hover:after {
+    position: absolute;
+    width: 100%;
+    content: "";
+    display: block;
+    aspect-ratio: 1;
+    background-color: inherit;
+    animation: rotate 3s linear infinite;
+}
+.point:hover:before,
+.point.done:hover:before {
+    background-color: var(--color-50);
+    clip-path: polygon(
+        100% 50%,
+        74.27% 67.63%,
+        65.45% 97.55%,
+        40.73% 78.53%,
+        9.55% 79.39%,
+        20% 50%,
+        9.55% 20.61%,
+        40.73% 21.47%,
+        65.45% 2.45%,
+        74.27% 32.37%
+    );
+}
+.point:hover:before {
+    background-color: #e0e0e0;
+}
+.point:hover:after,
+.point.done:hover:after {
+    background-color: var(--color-500);
+    clip-path: polygon(
+        100% 50%,
+        74.27% 67.63%,
+        65.45% 97.55%,
+        40.73% 78.53%,
+        9.55% 79.39%,
+        20% 50%,
+        9.55% 20.61%,
+        40.73% 21.47%,
+        65.45% 2.45%,
+        74.27% 32.37%,
+        100% 50%,
+        74.27% 67.63%,
+        70.87% 65.16%,
+        93% 50%,
+        70.87% 34.84%,
+        63.29% 9.1%,
+        42.03% 25.46%,
+        15.21% 24.73%,
+        24.2% 50%,
+        15.21% 75.27%,
+        42.03% 74.54%,
+        63.29% 90.9%,
+        70.87% 65.16%,
+        93% 50%
+    );
+}
+.point:hover:after {
+    background-color: #9e9e9e;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg); /* Start at 0 degrees */
+    }
+    to {
+        transform: rotate(360deg); /* Rotate to 360 degrees (one full turn) */
+    }
+}
+#tooltip.블랙야크 {
+    transform: translate(calc(-50% + .75em), calc(-100% - .5em));
+}
+#tooltip.블랙야크 img.블랙야크_img {
+    margin-bottom: 0.5em;
+}

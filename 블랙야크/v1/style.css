@@ -357,7 +357,7 @@ body#블랙야크 footer a:not(.o) {
     margin-bottom: 0.5em;
 }
 
-@media screen and (min-width: 1440px) {
+@media screen and (min-width: 1920px) {
     body#블랙야크 h1 {
         max-width: none;
         text-align: center;
@@ -366,7 +366,7 @@ body#블랙야크 footer a:not(.o) {
         position: absolute;
         top: calc(50% - 600px - 3em);
         left: calc(50% - 600px - 2em);
-        transform: rotate(2%);
+        transform: rotate(.5deg);
 
         background: #fafafa;
         border-radius: 10px;
