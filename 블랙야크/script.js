@@ -3,11 +3,11 @@ const canvas = document.getElementById("블랙야크_canvas");
 const p = document.getElementById("블랙야크_p");
 
 const points = [
-    // { id: "기준", done: '1', pos_0: { y: 38.615209, x: 128.358513 }, info: { peak: "대한민국 남반부 지역 최북단비", height: 0 } },
-    // { id: "기준", done: '1', pos_0: { y: 37.506167, x: 130.865646 }, info: { peak: "성인봉", height: 0 } },
-    // { id: "기준", done: '1', pos_0: { y: 36.078592, x: 129.569608 }, info: { peak: "호미곶", height: 0 } },
-    // { id: "기준", done: '1', pos_0: { y: 37.823880, x: 124.699525 }, info: { peak: "대청도", height: 0 } },
-    // { id: "기준", done: '1', pos_0: { y: 36.078592, x: 129.569608 }, info: { peak: "호미곶", height: 0 } },
+    // { no: 0, id: "기준", done: '1', pos_0: { y: 38.615209, x: 128.358513 }, info: { peak: "대한민국 남반부 지역 최북단비", height: 0 } },
+    // { no: 0, id: "기준", done: '1', pos_0: { y: 37.506167, x: 130.865646 }, info: { peak: "성인봉", height: 0 } },
+    // { no: 0, id: "기준", done: '1', pos_0: { y: 36.078592, x: 129.569608 }, info: { peak: "호미곶", height: 0 } },
+    // { no: 0, id: "기준", done: '1', pos_0: { y: 37.823880, x: 124.699525 }, info: { peak: "대청도", height: 0 } },
+    // { no: 0, id: "기준", done: '1', pos_0: { y: 33.505519, x: 126.955666 }, info: { peak: "우도", height: 0 } },
 
     { no: 1, id: "가리산(홍천)", done: { step: false, date: "" }, pos_0: { y: 37.871353, x: 127.956485 }, info: { peak: "정상", height: 1051 } },
     { no: 2, id: "가리왕산", done: { step: false, date: "" }, pos_0: { y: 37.460995, x: 128.56275 }, info: { peak: "정상", height: 1561 } },
@@ -330,12 +330,12 @@ const LONGITUDE_MIN = 124.35;
 
 // 이미지 경로 생성 함수
 function getImagePath(point) {
-    let path = isNotePage() ? "/" : "/블랙야크/";
+    let path = isOnPage() ? "/" : "/블랙야크/";
     return `.${path}img/${point.no}_${point.id}.jpg`;
 }
 
 // am i in note page?
-function isNotePage() {
+function isOnPage() {
     return document.querySelector("body#블랙야크") != null;
 }
 
@@ -370,10 +370,9 @@ async function updateTitle(p, point) {
 
         tooltip.innerHTML = title;
 
-        if (isNotePage()) p_target.classList.add("on");
-        tooltip.classList.add("on");
-        tooltip.classList.add("블랙야크");
-        if (!isNotePage()) {
+        if (isOnPage()) p_target.classList.add("on");
+        tooltip.classList.add("on", "블랙야크");
+        if (!isOnPage()) {
             tooltip.style.top = note.parentElement.getBoundingClientRect().top + scrollY + p.offsetTop + "px";
             let left = p.getBoundingClientRect().left;
             if (left <= 0) {
@@ -383,9 +382,12 @@ async function updateTitle(p, point) {
         }
     });
     p.addEventListener("mouseout", (e) => {
-        if (isNotePage()) p_target.classList.remove("on");
-        tooltip.classList.remove("on");
-        tooltip.classList.remove("블랙야크");
+        if (isOnPage()) {
+            document.querySelectorAll("#블랙야크_canvas .point").forEach(function (element) {
+                element.classList.remove("on");
+            });
+        }
+        tooltip.classList.remove("on", "블랙야크");
     });
 }
 
@@ -450,31 +452,3 @@ points.forEach((element) => {
     }
 });
 p.innerHTML += `<span class="prog">${prog}</span>/100`;
-
-// 테이블 만들기
-function createTableFromJSON(jsonData, tableId) {
-    const tableBody = document.getElementById(tableId);
-    tableBody.innerHTML = ""; // 기존 내용 초기화
-
-    jsonData.forEach((item) => {
-        const row = document.createElement("tr"); // 새로운 행 생성
-
-        Object.keys(item).forEach((key) => {
-            const cell = `<td class="no"> ${item.no} </td>
-            <td class="name"> ${item.id} </td>
-            <td class="peak"> ${item.info.peak} </td>
-            <td class="height"> ${Math.floor(item.info.height).toLocaleString()} </td>
-            <td class="done"> ${item.done.date ? item.done.date : "-"} </td>
-            <td class="step"> ${item.done.date ? item.done.step : "-"} </td>`;
-            row.innerHTML = cell;
-
-            if (item.done.step != false) {
-                row.classList.add("done");
-            }
-            updateTitle(row, item);
-        });
-
-        tableBody.appendChild(row); // 행을 테이블 본문에 추가
-    });
-}
-createTableFromJSON(points, "블랙야크_tbody");

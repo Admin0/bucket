@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100..900&display=swap");
 
+::selection {
+    background-color: transparent;
+}
+
 body {
     --color-50: #ffebee;
     --color-100: #ffcdd2;
@@ -19,120 +23,24 @@ body {
     --margin-img: 1em;
 
     font-family: "Noto Sans KR", sans-serif;
-}
-
-::selection {
-    background-color: transparent;
-}
-#블랙야크_canvas {
-    margin: 0 auto;
-    border-radius: 1em;
-}
-.point.done.c1.on:before {
-    background-color: var(--color-a700);
-}
-
-.point.done.c2.on:before {
-    background-color: var(--color-a400);
-}
-
-.point.done.c3.on:before {
-    background-color: var(--color-a200);
-}
-
-.point.done.c4.on:before {
-    background-color: var(--color-a100);
-}
-
-.point.on,
-.point.done.on {
-    z-index: 6;
-    width: 24px;
-    height: 24px;
-    border: none;
-    background-color: transparent;
-    /* outline: 2px solid var(--color-500); */
-}
-.point.on:before,
-.point.done.on:before,
-.point.on:after,
-.point.done.on:after {
-    position: absolute;
-    width: 100%;
-    content: "";
-    display: block;
-    aspect-ratio: 1;
-    background-color: inherit;
-    animation: rotate 3s linear infinite;
-}
-.point.on:before,
-.point.done.on:before {
-    background-color: var(--color-50);
-    clip-path: polygon(
-        100% 50%,
-        74.27% 67.63%,
-        65.45% 97.55%,
-        40.73% 78.53%,
-        9.55% 79.39%,
-        20% 50%,
-        9.55% 20.61%,
-        40.73% 21.47%,
-        65.45% 2.45%,
-        74.27% 32.37%
-    );
-}
-.point.on:before {
-    background-color: #e0e0e0;
-}
-.point.on:after,
-.point.done.on:after {
-    background-color: var(--color-500);
-    clip-path: polygon(
-        100% 50%,
-        74.27% 67.63%,
-        65.45% 97.55%,
-        40.73% 78.53%,
-        9.55% 79.39%,
-        20% 50%,
-        9.55% 20.61%,
-        40.73% 21.47%,
-        65.45% 2.45%,
-        74.27% 32.37%,
-        100% 50%,
-        74.27% 67.63%,
-        70.87% 65.16%,
-        93% 50%,
-        70.87% 34.84%,
-        63.29% 9.1%,
-        42.03% 25.46%,
-        15.21% 24.73%,
-        24.2% 50%,
-        15.21% 75.27%,
-        42.03% 74.54%,
-        63.29% 90.9%,
-        70.87% 65.16%,
-        93% 50%
-    );
-}
-.point.on:after {
-    background-color: #9e9e9e;
-}
-body {
     margin: 0em;
-    /* letter-spacing: -.05em; */
 }
-h1 {
-    margin: 3em auto;
-    width: calc(100% - 2em);
-    max-width: 600px;
+header {
+    margin: 0 auto;
     color: #212121;
-    font-size: 1.5em;
+    max-width: 600px;
+    width: calc(100% - 2em);
 }
 h1 span.sub {
     color: #616161;
     font-size: 0.75em;
     font-style: italic;
 }
+#블랙야크_canvas {
+    margin: 0 auto;
+    border-radius: 1em;
+}
+
 #블랙야크_p {
     width: calc(100% - 2em);
     margin: 0 auto 0;
@@ -207,19 +115,16 @@ h1 span.sub {
 #tooltip::after {
     content: "";
     width: 2em;
+    height: 2em;
     position: absolute;
     background: url(img/icon_heart.svg) no-repeat bottom;
     background-size: contain;
-    top: 1.5em;
-    left: 1em;
-    padding-top: calc(100% - var(--margin-img) * 2 + 1.75em);
+    left: var(--margin-img);
+    bottom: calc(5em - var(--margin-img) / 2);
 }
 #tooltip:has(.done)::after {
     background: url(img/icon_heart_full.svg) no-repeat bottom;
     background-size: contain;
-}
-#블랙야크_canvas .point {
-    z-index: 5;
 }
 #블랙야크_table {
     margin: 1em auto;
@@ -235,6 +140,7 @@ h1 span.sub {
 #블랙야크_table td {
     padding: 0.5em 1em;
     font-size: 0.9em;
+    white-space: nowrap;
 }
 
 #블랙야크_table thead td {
@@ -291,7 +197,10 @@ footer a:not(.o) {
     font-weight: bold;
     color: #757575;
 }
-@media screen and (min-width: 1440px) {
+
+/* 4K */
+
+@media screen and (min-width: 1920px) {
     body {
         background-color: #b3e5fc;
         background: linear-gradient(0deg, rgba(179, 229, 252, 1) 0%, rgba(178, 223, 219, 1) 100%);
@@ -299,27 +208,29 @@ footer a:not(.o) {
 
         --margin-img: 2em;
     }
-    h1 {
-        max-width: none;
-        text-align: center;
-    }
-    #블랙야크_canvas.paper {
+    header {
         position: absolute;
+        text-align: left;
+        padding-left: 2em;
+    }
+    #블랙야크_canvas {
+        /* position: absolute; */
         max-width: 100vh;
         max-height: 100vh;
         top: 0;
-        left: calc(50% - 50vh);
+        /* left: calc(50% - 50vh); */
     }
     #블랙야크_canvas .point {
         transform: translate(-50%, -50%) scale(1.5);
     }
     #블랙야크_p {
         position: absolute;
-        top: calc(50% - 6.5em);
-        left: calc(50% - 600px - 3em);
+        right: var(--margin-img);
+        top: initial;
+        bottom: var(--margin-img);
         margin: 0;
     }
-    #tooltip.polaroid {
+    #tooltip {
         position: absolute;
         margin: 0;
         top: calc(50% - 300px - 5em);
@@ -357,9 +268,7 @@ footer a:not(.o) {
         font-family: "East Sea Dokdo", sans-serif;
         font-size: 1.5em;
     }
-    #tooltip::after {
-        left: 2em;
-    }
+
     .tape {
         background-color: hsla(0, 0%, 100%, 0.2);
         box-shadow: inset 0 0 1em 0.5em hsla(0, 0%, 100%, 0.1);
@@ -368,8 +277,8 @@ footer a:not(.o) {
         transform: rotate(3deg);
         width: 9em;
         filter: drop-shadow(0 1px 1px hsla(0, 0%, 0%, 0.3));
-        top: calc(50% - 25.5em);
-        left: calc(50% - 55em);
+        top: calc(50% - 300px - 5em - 3em / 2);
+        left: calc(50% - 300px - 30vh - 9em / 2);
         z-index: 10;
     }
 
@@ -406,7 +315,7 @@ footer a:not(.o) {
         height: calc(600px * 2);
         max-height: 100vh;
         overflow-y: scroll;
-        transform: translateX(-50%);
+        transform: translateY(-50%);
     }
     #블랙야크_table thead tr {
         display: block;
@@ -439,15 +348,18 @@ footer a:not(.o) {
 
     footer {
         position: absolute;
-        background:transparent;
+        background: transparent;
         bottom: 0;
-        width: 100%;
-        text-align: right;
+        width: calc(100% - 4em);
+        text-align: left;
+        padding: 2em;
     }
 }
 
+/* mobile */
+
 @media screen and (max-width: 600px) {
-    h1 {
+    header {
         display: none;
     }
     #블랙야크_canvas {
