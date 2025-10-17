@@ -52,6 +52,7 @@ h1 span.sub {
     color: #212121;
     font-weight: bold;
     font-size: 1.25em;
+    pointer-events: none;
 }
 #블랙야크_p .prog {
     padding: 0 0.125em;
