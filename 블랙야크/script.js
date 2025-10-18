@@ -354,11 +354,12 @@ async function updateTitle(p, point) {
     let title = `<div class="info">${point.id} | ${point.info.peak} | ${point.info.height.toLocaleString()} m</div>`;
     if (point.done.step) {
         const imagePath = getImagePath(point);
-        if (await isImageExists(imagePath)) {
-            title = `<img class="블랙야크_img" src='${imagePath}'> ${title} <div class="done">${point.done.date} (${point.done.step}/100)</div>`;
-        } else {
-            title = `${title} <div class="done">${point.done.date} (${point.done.step}/100)</div>`;
-        }
+        // if (await isImageExists(imagePath)) {
+        //     title = `<img class="블랙야크_img" src='${imagePath}'> ${title} <div class="done">${point.done.date} (${point.done.step}/100)</div>`;
+        // } else {
+        //     title = `${title} <div class="done">${point.done.date} (${point.done.step}/100)</div>`;
+        // }
+        title = `<img class="블랙야크_img" src='${imagePath}' onerror="this.style.display='none'"> ${title} <div class="done">${point.done.date} (${point.done.step}/100)</div>`;
     } else {
         title += `<div class="undone"></div>`;
     }
@@ -370,7 +371,12 @@ async function updateTitle(p, point) {
 
         tooltip.innerHTML = title;
 
-        if (isOnPage()) p_target.classList.add("on");
+        if (isOnPage()) {
+            document.querySelectorAll("#블랙야크_canvas .point").forEach(function (element) {
+                element.classList.remove("on");
+            });
+            p_target.classList.add("on");
+        }
         tooltip.classList.add("on", "블랙야크");
         if (!isOnPage()) {
             tooltip.style.top = note.parentElement.getBoundingClientRect().top + scrollY + p.offsetTop + "px";
@@ -382,11 +388,6 @@ async function updateTitle(p, point) {
         }
     });
     p.addEventListener("mouseout", (e) => {
-        if (isOnPage()) {
-            document.querySelectorAll("#블랙야크_canvas .point").forEach(function (element) {
-                element.classList.remove("on");
-            });
-        }
         tooltip.classList.remove("on", "블랙야크");
     });
 }
@@ -424,8 +425,8 @@ function draw() {
         if (point.pos == undefined) {
             //처음 1회만 실행
             point.pos = {
-                x: ((point.pos_0.x - LONGITUDE_MIN) / (LONGITUDE_MAX - LONGITUDE_MIN)) * 100,
-                y: ((LATITUDE_MAX - point.pos_0.y) / (LATITUDE_MAX - LATITUDE_MIN)) * 92,
+                x: (point.pos_0.x - LONGITUDE_MIN) / (LONGITUDE_MAX - LONGITUDE_MIN) * 100,
+                y: (LATITUDE_MAX - point.pos_0.y) / (LATITUDE_MAX - LATITUDE_MIN) * 92,
             };
         }
 

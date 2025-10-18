@@ -20,7 +20,7 @@ body {
     --color-a400: #ff1744;
     --color-a700: #d50000;
 
-    --margin-img: 1em;
+    --margin-img: 0em;
 
     font-family: "Noto Sans KR", sans-serif;
     margin: 0em;
@@ -39,20 +39,21 @@ h1 span.sub {
 #블랙야크_canvas {
     margin: 0 auto;
     border-radius: 1em;
+    background-color: #b3e5fc;
+    background: linear-gradient(0deg, rgba(179, 229, 252, 1) 0%, rgba(178, 223, 219, 1) 100%);
 }
 
 #블랙야크_p {
-    width: calc(100% - 2em);
-    margin: 0 auto 0;
-    right: 1em;
-    top: -3.5em;
+    margin: -3em auto 0;
+    right: calc(50% - 300px);
     max-width: 600px;
     text-align: right;
-    position: relative;
+    position: absolute;
     color: #212121;
     font-weight: bold;
     font-size: 1.25em;
     pointer-events: none;
+    padding-right: 1em;
 }
 #블랙야크_p .prog {
     padding: 0 0.125em;
@@ -67,7 +68,7 @@ h1 span.sub {
     justify-content: flex-end;
     width: calc(100% - var(--margin-img) * 2);
     max-width: calc(600px - var(--margin-img) * 2);
-    margin: 4em auto;
+    margin: 0em auto 2em;
     height: calc(100% + 4em - var(--margin-img) * 2);
     /* outline: 1px solid #9e9e9e; */
     padding: var(--margin-img);
@@ -98,7 +99,7 @@ h1 span.sub {
 }
 #tooltip::before,
 #tooltip img {
-    width: calc(100% - var(--margin-img) * 2);
+    width: 100%;
     margin: 0 auto;
     position: absolute;
     top: var(--margin-img);
@@ -118,17 +119,19 @@ h1 span.sub {
     width: 2em;
     height: 2em;
     position: absolute;
-    background: url(img/icon_heart.svg) no-repeat bottom;
+    background-image: url(img/icon_heart.svg);
+    background-repeat: no-repeat;
     background-size: contain;
+    background-origin: content-box;
     left: var(--margin-img);
-    bottom: calc(5em - var(--margin-img) / 2);
+    bottom: 3.5em;
 }
 #tooltip:has(.done)::after {
-    background: url(img/icon_heart_full.svg) no-repeat bottom;
+    background-image: url(img/icon_heart_full.svg);
     background-size: contain;
 }
 #블랙야크_table {
-    margin: 1em auto;
+    margin: 4em auto;
     width: calc(100% - 2em);
     max-width: 600px;
     color: #616161;
@@ -361,15 +364,22 @@ footer a:not(.o) {
 
 @media screen and (max-width: 600px) {
     header {
-        display: none;
+        font-size: 0.75em;
+    }
+    header h1 {
+        display: flex;
+        flex-direction: column;
     }
     #블랙야크_canvas {
         border-radius: 0;
     }
-
-    #tooltip {
-        border-top: 1px solid #aaa;
-        border-bottom: 1px solid #aaa;
+    #블랙야크_p {
+        right: 0;
+    }
+    #tooltip .info,
+    #tooltip .done,
+    #tooltip::after {
+        padding-left: 1em;
     }
 
     #블랙야크_table {
@@ -381,5 +391,15 @@ footer a:not(.o) {
     #블랙야크_table tr td:nth-child(1),
     #블랙야크_table tr td:nth-child(3) {
         display: none;
+    }
+
+    footer a {
+        white-space: nowrap;
+    }
+    footer .i {
+        margin: 0 0.25em;
+    }
+    footer .i:not(:first-child)::before {
+        margin-right: 0.5em;
     }
 }
