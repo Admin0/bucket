@@ -153,3 +153,13 @@ body:not(#블랙야크) #tooltip.블랙야크 {
 }
 #tooltip.블랙야크 img.블랙야크_img {
 }
+
+@media handheld, only screen and (max-width: 880px) {
+    body:not(#블랙야크) #tooltip.블랙야크 {
+        transform: translate(0, calc(-100% - 0.5em));
+        width: 400px;
+        max-width: 100%;
+        left: calc(50% - 200px) !important;
+        
+    }
+}
