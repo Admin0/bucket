@@ -16,7 +16,8 @@ function createTableFromJSON(jsonData, tableId) {
             row.innerHTML = cell;
 
             if (item.done.step != false) row.classList.add("done");
-            row.setAttribute("onmouseover", item.done.step?`play(${item.done.step})`:`play(${item.no}, false)`);
+            row.setAttribute("onmouseover", item.done.step ? `play(${item.done.step})` : `play(${item.no}, false)`);
+            row.setAttribute("onclick", `scrollToCanvas()`);
             // updateTitle(row, item);
         });
 
@@ -53,6 +54,59 @@ async function play(no, done = true) {
     let p_target = document.querySelector(`#블랙야크_canvas .point:nth-of-type(${index + 1})`);
     p_target.classList.add("on");
     tooltip.classList.add("on", "블랙야크");
+}
+
+// scroll to canvas
+function scrollToCanvas() {
+    const canvas = document.getElementById("블랙야크_canvas");
+    canvas.scrollIntoView({ behavior: "smooth" });
+}
+
+// sort point class
+function sortClass(type) {
+    document.querySelectorAll("#블랙야크_canvas .point").forEach(function (element) {
+        element.classList.remove("c1", "c2", "c3", "c4");
+    });
+    points.forEach((item) => {
+        let p_target = document.querySelector(`#블랙야크_canvas .point:nth-of-type(${item.no})`);
+        switch (type) {
+            case "no":
+                if (item.no > 75) {
+                    p_target.classList.add("c1");
+                } else if (item.no > 50) {
+                    p_target.classList.add("c2");
+                } else if (item.no > 25) {
+                    p_target.classList.add("c3");
+                } else if (item.no > 0){
+                    p_target.classList.add("c4");
+                }
+                break;
+            case "height":
+                if (item.info.height > 1500) {
+                    p_target.classList.add("c1");
+                } else if (item.info.height > 1000) {
+                    p_target.classList.add("c2");
+                } else if (item.info.height > 750) {
+                    p_target.classList.add("c3");
+                } else if (item.info.height > 0){
+                    p_target.classList.add("c4");
+                }
+                break;
+            case "step":
+                if (item.done.step > 75) {
+                    p_target.classList.add("c1");
+                } else if (item.done.step > 50) {
+                    p_target.classList.add("c2");
+                } else if (item.done.step > 25) {
+                    p_target.classList.add("c3");
+                } else if (item.done.step > 0){
+                    p_target.classList.add("c4");
+                }
+                break;
+            default:
+                break;
+        }
+    });
 }
 
 play(4);

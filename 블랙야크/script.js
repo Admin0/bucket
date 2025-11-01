@@ -64,7 +64,7 @@ const points = [
     { no: 45, id: "불갑산(영광)", done: { step: 39, date: "2025.10.10." }, pos_0: { y: 35.1908333333, x: 126.5650472222 }, info: { peak: "연실봉", height: 517.7 } },
 
     { no: 46, id: "비슬산", done: { step: false, date: "" }, pos_0: { y: 35.71526, x: 128.523981 }, info: { peak: "천왕봉", height: 1084 } },
-    { no: 47, id: "삼악산", done: { step: false, date: "" }, pos_0: { y: 37.850896, x: 127.658911 }, info: { peak: "용화봉", height: 654 } },
+    { no: 47, id: "삼악산", done: { step: 45, date: "2025.11.01." }, pos_0: { y: 37.850896, x: 127.658911 }, info: { peak: "용화봉", height: 654 } },
     { no: 48, id: "선운산", done: { step: 27, date: "2025.06.08." }, pos_0: { y: 35.517657, x: 126.577097 }, info: { peak: "수리봉", height: 336 } },
     { no: 49, id: "설악산", done: { step: 42, date: "2025.10.25." }, pos_0: { y: 38.119135, x: 128.46544 }, info: { peak: "대청봉", height: 1708 } },
     { no: 50, id: "소백산", done: { step: false, date: "" }, pos_0: { y: 36.95786818, x: 128.4788661 }, info: { peak: "비로봉", height: 1439 } },
@@ -78,7 +78,7 @@ const points = [
     { no: 57, id: "오대산", done: { step: 40, date: "2025.10.24." }, pos_0: { y: 37.797038, x: 128.544074 }, info: { peak: "비로봉", height: 1563 } },
     { no: 58, id: "오봉산", done: { step: false, date: "" }, pos_0: { y: 38.00002881, x: 127.807132 }, info: { peak: "정상", height: 779 } },
     { no: 59, id: "오서산", done: { step: 2, date: "2024.11.03." }, pos_0: { y: 36.460056, x: 126.658811 }, info: { peak: "정상", height: 789.9 } },
-    { no: 60, id: "용문산", done: { step: false, date: "" }, pos_0: { y: 37.561979, x: 127.549637 }, info: { peak: "가섭봉", height: 1157 } },
+    { no: 60, id: "용문산", done: { step: 43, date: "2025.10.31." }, pos_0: { y: 37.561979, x: 127.549637 }, info: { peak: "가섭봉", height: 1157 } },
 
     { no: 61, id: "용봉산", done: { step: 6, date: "2025.01.19." }, pos_0: { y: 36.64365555, x: 126.64923888 }, info: { peak: "정상", height: 381 } },
     { no: 62, id: "용화산", done: { step: false, date: "" }, pos_0: { y: 38.0380386, x: 127.7479119 }, info: { peak: "정상", height: 878 } },
@@ -87,7 +87,7 @@ const points = [
     { no: 65, id: "월악산", done: { step: 5, date: "2025.01.12." }, pos_0: { y: 36.886045, x: 128.105844 }, info: { peak: "영봉", height: 1094 } },
 
     { no: 66, id: "월출산", done: { step: false, date: "" }, pos_0: { y: 34.766997, x: 126.704294 }, info: { peak: "천황봉", height: 809 } },
-    { no: 67, id: "유명산", done: { step: false, date: "" }, pos_0: { y: 37.575285, x: 127.48662 }, info: { peak: "정상", height: 862 } },
+    { no: 67, id: "유명산", done: { step: 46, date: "2025.11.01." }, pos_0: { y: 37.575285, x: 127.48662 }, info: { peak: "정상", height: 862 } },
     { no: 68, id: "응봉산", done: { step: false, date: "" }, pos_0: { y: 37.076597, x: 129.230461 }, info: { peak: "정상", height: 999 } },
     { no: 69, id: "장안산", done: { step: false, date: "" }, pos_0: { y: 35.625733, x: 127.593443 }, info: { peak: "정상", height: 1237 } },
     { no: 70, id: "재약산", done: { step: false, date: "" }, pos_0: { y: 35.557707, x: 128.97228 }, info: { peak: "수미봉", height: 1189 } },
@@ -117,7 +117,7 @@ const points = [
     { no: 90, id: "태화산", done: { step: false, date: "" }, pos_0: { y: 37.117601, x: 128.486345 }, info: { peak: "정상", height: 1027 } },
 
     { no: 91, id: "팔공산", done: { step: 35, date: "2025.08.29." }, pos_0: { y: 36.016137, x: 128.694901 }, info: { peak: "비로봉", height: 1193 } },
-    { no: 92, id: "팔봉산", done: { step: false, date: "" }, pos_0: { y: 37.696514, x: 127.695577 }, info: { peak: "2봉", height: 302 } },
+    { no: 92, id: "팔봉산", done: { step: 44, date: "2025.11.01." }, pos_0: { y: 37.696514, x: 127.695577 }, info: { peak: "2봉", height: 302 } },
     { no: 93, id: "팔영산", done: { step: false, date: "" }, pos_0: { y: 34.624358, x: 127.430924 }, info: { peak: "깃대봉", height: 609 } },
     { no: 94, id: "한라산", done: { step: 4, date: "2024.12.29." }, pos_0: { y: 33.361578, x: 126.535756 }, info: { peak: "백록담", height: 1950 } },
     { no: 95, id: "함백산", done: { step: false, date: "" }, pos_0: { y: 37.168522, x: 128.918228 }, info: { peak: "정상", height: 532 } },
