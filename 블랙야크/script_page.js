@@ -82,7 +82,7 @@ function sortClass(type) {
                 }
                 break;
             case "height":
-                if (item.info.height > 1500) {
+                if (item.info.height > 1250) {
                     p_target.classList.add("c1");
                 } else if (item.info.height > 1000) {
                     p_target.classList.add("c2");

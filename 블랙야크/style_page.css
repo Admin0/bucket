@@ -400,6 +400,7 @@ footer a:not(.o) {
     }
     #tooltip .info,
     #tooltip .done,
+    #tooltip .undone,
     #tooltip::after {
         padding-left: 1em;
     }
