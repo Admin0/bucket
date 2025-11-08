@@ -1,3 +1,10 @@
+function isMobile() {
+    const regex = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+    return regex.test(navigator.userAgent);
+}
+const link4mobile = isMobile() ? `<a href="//bac100.page.link/oBW476KYqErgWq5Q7" class="i o" title="점조직 산악회 페이지">점조직 산악회 (BAC)</a>` : `<a href="//bac.blackyak.com/profile/643244" class="i o" title="등산개굴 프로필 페이지">등산개굴 (BAC)</a>`;
+document.getElementsByTagName("footer")[0].insertAdjacentHTML('beforeend', link4mobile);
+
 // 테이블 만들기
 function createTableFromJSON(jsonData, tableId) {
     const tableBody = document.getElementById(tableId);
@@ -77,7 +84,7 @@ function sortClass(type) {
                     p_target.classList.add("c2");
                 } else if (item.no > 25) {
                     p_target.classList.add("c3");
-                } else if (item.no > 0){
+                } else if (item.no > 0) {
                     p_target.classList.add("c4");
                 }
                 break;
@@ -88,7 +95,7 @@ function sortClass(type) {
                     p_target.classList.add("c2");
                 } else if (item.info.height > 750) {
                     p_target.classList.add("c3");
-                } else if (item.info.height > 0){
+                } else if (item.info.height > 0) {
                     p_target.classList.add("c4");
                 }
                 break;
@@ -99,7 +106,7 @@ function sortClass(type) {
                     p_target.classList.add("c2");
                 } else if (item.done.step > 25) {
                     p_target.classList.add("c3");
-                } else if (item.done.step > 0){
+                } else if (item.done.step > 0) {
                     p_target.classList.add("c4");
                 }
                 break;

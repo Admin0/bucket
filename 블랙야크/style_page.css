@@ -82,9 +82,14 @@ h1 span.sub {
 #tooltip:not(:has(img)) {
 }
 #tooltip::before {
-    content: "";
+    content: "사진이 없어요!";
+    font-style: italic;
+    text-align: center;
+    color: #616161;
     background: #000000;
     background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(33, 33, 33, 1) 100%);
+    padding-top: calc(50% - .5em * 1.5);
+    padding-bottom: calc(50% - .5em * 1.5);
 }
 #tooltip:has(.done):has(img)::before {
 }
@@ -104,9 +109,7 @@ h1 span.sub {
     position: absolute;
     top: var(--margin-img);
 }
-#tooltip::before {
-    padding-bottom: calc(100% - var(--margin-img) * 2);
-}
+
 #tooltip .info {
     padding-top: calc(100% + 3em);
 }
@@ -168,7 +171,7 @@ h1 span.sub {
 
 #블랙야크_table tr.done {
     font-weight: bold;
-    color: #616161;
+    color: #424242;
 }
 #블랙야크_table tr:hover {
     color: var(--color-a400);
