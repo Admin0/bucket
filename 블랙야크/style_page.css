@@ -88,8 +88,9 @@ h1 span.sub {
     color: #616161;
     background: #000000;
     background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(33, 33, 33, 1) 100%);
-    padding-top: calc(50% - .5em * 1.5);
-    padding-bottom: calc(50% - .5em * 1.5);
+    padding-top: calc(50% - var(--margin-img));
+    padding-bottom: calc(50% - var(--margin-img));
+    height: 0;
 }
 #tooltip:has(.done):has(img)::before {
 }
@@ -228,6 +229,7 @@ footer a:not(.o) {
         max-width: 100vh;
         max-height: 100vh;
         top: 0;
+        background: transparent;
         /* left: calc(50% - 50vh); */
     }
     #블랙야크_canvas .point {
@@ -265,11 +267,11 @@ footer a:not(.o) {
     #tooltip::before,
     #tooltip img {
         width: calc(600px - var(--margin-img) * 2);
-        height: calc(600px - var(--margin-img) * 2);
+        /* height: calc(600px - var(--margin-img) * 2); */
         max-height: 100%;
         position: absolute;
         top: var(--margin-img);
-        padding: 0;
+        /* padding: 0; */
     }
 
     #tooltip .info,
@@ -302,12 +304,12 @@ footer a:not(.o) {
         width: 0.2em;
     }
     .tape:after {
-        background-image: linear-gradient(45deg, transparent 50%, hsla(0, 0%, 100%, 0.3) 50%), linear-gradient(-45deg, transparent 50%, hsla(0, 0%, 100%, 0.3) 50%);
+        background-image: linear-gradient(135deg, transparent 50%, hsla(0, 0%, 100%, 0.3) 50%), linear-gradient(45deg, transparent 50%, hsla(0, 0%, 100%, 0.3) 50%);
         background-position: 0 100%;
         left: -0.2em;
     }
     .tape:before {
-        background-image: linear-gradient(135deg, transparent 50%, hsla(0, 0%, 100%, 0.3) 50%), linear-gradient(-135deg, transparent 50%, hsla(0, 0%, 100%, 0.3) 50%);
+        background-image: linear-gradient(-135deg, transparent 50%, hsla(0, 0%, 100%, 0.3) 50%), linear-gradient(-45deg, transparent 50%, hsla(0, 0%, 100%, 0.3) 50%);
         background-position: 100% 100%;
         right: -0.2em;
     }

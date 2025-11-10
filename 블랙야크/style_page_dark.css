@@ -44,13 +44,16 @@
   #tooltip::before {
     background: #000000;
     background: linear-gradient(0deg, var(--background-color) 0%, rgba(16, 16, 16, 1) 100%);
-}
+  }
+  #tooltip:not(:has(.done))::after {
+    filter: invert(.75);
+  }
 
   #tooltip .done,
   #tooltip .undone {
     color: var(--color-secondary);
   }
-
+#tooltip::after
   #블랙야크_table {
     color: var(--color-secondary);
     background: var(--background-color);
@@ -102,6 +105,10 @@
     /* color: var(--color-secondary-variant); */
   }
 
+  #블랙야크_canvas {
+    background: transparent;
+  }
+  
   #블랙야크_table {
     /* color: var(--color-secondary-variant);
     background: #ffffffee; */
