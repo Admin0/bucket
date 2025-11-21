@@ -24,6 +24,10 @@
     color: var(--color-primary);
   }
 
+  #블랙야크_p .prog {
+    color: var(--color-a400);
+  }
+
   h1 span.sub {
     color: #BDBDBD;
   }

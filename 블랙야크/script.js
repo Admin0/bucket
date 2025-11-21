@@ -102,7 +102,7 @@ const points = [
     { no: 77, id: "지리산", done: { step: false, date: "" }, pos_0: { y: 35.275637, x: 127.578314 }, info: { peak: "반야봉", height: 1732 } },
     { no: 78, id: "천관산", done: { step: false, date: "" }, pos_0: { y: 34.535402, x: 126.911238 }, info: { peak: "연대봉", height: 723 } },
     { no: 79, id: "천마산", done: { step: 31, date: "2025.06.27." }, pos_0: { y: 37.680364, x: 127.273397 }, info: { peak: "정상", height: 812 } },
-    { no: 80, id: "천성산", done: { step: 51, date: "2025.11.17." }, pos_0: { y: 35.41542, x: 129.123144 }, info: { peak: "원효봉", height: 922 } },
+    { no: 80, id: "천성산", done: { step: 51, date: "2025.11.16." }, pos_0: { y: 35.41542, x: 129.123144 }, info: { peak: "원효봉", height: 922 } },
 
     { no: 81, id: "천태산", done: { step: 23, date: "2025.05.24." }, pos_0: { y: 36.159122, x: 127.600005 }, info: { peak: "정상", height: 715 } },
     { no: 82, id: "청계산", done: { step: 18, date: "2025.05.11." }, pos_0: { y: 37.433333, x: 127.05 }, info: { peak: "매봉", height: 582 } },

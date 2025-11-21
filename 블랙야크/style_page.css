@@ -92,7 +92,8 @@ h1 span.sub {
     padding-bottom: calc(50% - var(--margin-img));
     height: 0;
 }
-#tooltip:has(.done):has(img)::before {
+#tooltip:has(.undone)::before {
+    content: "인증 예정!";
 }
 #tooltip .done,
 #tooltip .undone {
