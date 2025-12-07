@@ -57,7 +57,7 @@ const points = [
     { no: 39, id: "방태산", done: { step: false, date: "" }, pos_0: { y: 37.888141, x: 128.390341 }, info: { peak: "주억봉", height: 1444 } },
     { no: 40, id: "백덕산", done: { step: false, date: "" }, pos_0: { y: 37.396072, x: 128.293787 }, info: { peak: "정상", height: 1350 } },
 
-    { no: 41, id: "백암산", done: { step: false, date: "" }, pos_0: { y: 35.461171, x: 126.868349 }, info: { peak: "상왕봉", height: 741 } },
+    { no: 41, id: "백암산", done: { step: 52, date: "2025.11.30." }, pos_0: { y: 35.461171, x: 126.868349 }, info: { peak: "상왕봉", height: 741 } },
     { no: 42, id: "백운산(광양)", done: { step: false, date: "" }, pos_0: { y: 35.106243, x: 127.621757 }, info: { peak: "상봉", height: 1218 } },
     { no: 43, id: "백운산(동강)", done: { step: false, date: "" }, pos_0: { y: 37.29869, x: 128.579145 }, info: { peak: "정상", height: 883 } },
     { no: 44, id: "북한산", done: { step: 24, date: "2025.05.30." }, pos_0: { y: 37.658657, x: 126.978056 }, info: { peak: "백운대", height: 837 } },
@@ -119,7 +119,7 @@ const points = [
     { no: 91, id: "팔공산", done: { step: 35, date: "2025.08.29." }, pos_0: { y: 36.016137, x: 128.694901 }, info: { peak: "비로봉", height: 1193 } },
     { no: 92, id: "팔봉산", done: { step: 44, date: "2025.11.01." }, pos_0: { y: 37.696514, x: 127.695577 }, info: { peak: "2봉", height: 302 } },
     { no: 93, id: "팔영산", done: { step: false, date: "" }, pos_0: { y: 34.624358, x: 127.430924 }, info: { peak: "깃대봉", height: 609 } },
-    { no: 94, id: "한라산", done: { step: 4, date: "2024.12.29." }, pos_0: { y: 33.361578, x: 126.535756 }, info: { peak: "백록담", height: 1950 } },
+    { no: 94, id: "한라산", done: { step: 4, date: "2024.12.29." }, pos_0: { y: 33.461578, x: 126.535756 }, info: { peak: "백록담", height: 1950 } },
     { no: 95, id: "함백산", done: { step: false, date: "" }, pos_0: { y: 37.168522, x: 128.918228 }, info: { peak: "정상", height: 532 } },
 
     { no: 96, id: "화악산", done: { step: false, date: "" }, pos_0: { y: 37.988856, x: 127.497655 }, info: { peak: "중봉", height: 1468 } },
@@ -130,10 +130,10 @@ const points = [
 ];
 
 const MAP_MARGIN = 0;
-const LATITUDE_MAX = 38.7;
-const LATITUDE_MIN = 33.5;
-const LONGITUDE_MAX = 131.3;
-const LONGITUDE_MIN = 124.35;
+const LATITUDE_MAX = 38.66;
+const LATITUDE_MIN = 33.17;
+const LONGITUDE_MAX = 131.26;
+const LONGITUDE_MIN = 124.38;
 
 // 이미지 경로 생성 함수
 function getImagePath(point) {
@@ -233,7 +233,7 @@ function draw() {
             //처음 1회만 실행
             point.pos = {
                 x: ((point.pos_0.x - LONGITUDE_MIN) / (LONGITUDE_MAX - LONGITUDE_MIN)) * 100,
-                y: ((LATITUDE_MAX - point.pos_0.y) / (LATITUDE_MAX - LATITUDE_MIN)) * 92,
+                y: ((LATITUDE_MAX - point.pos_0.y) / (LATITUDE_MAX - LATITUDE_MIN)) * 100,
             };
         }
 

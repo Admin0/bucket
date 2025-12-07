@@ -1,0 +1,148 @@
+body {
+    font-family: sans-serif;
+    background-color: #51695d;
+    color: #333;
+    margin: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.racetrack {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.track-lane {
+    width: 25%;
+    max-width: 100px;
+    min-height: 100vh;
+    background: #af483f;
+    padding: 15px;
+    white-space: nowrap;
+    border-right: 5px solid #eee;
+    border-top: 10px solid #eee;
+}
+.track-lane:first-of-type {
+    border-left: 10px solid #eee;
+}
+.track-lane:last-of-type {
+    border-right: 10px solid #eee;
+}
+
+h2 {
+    text-align: center;
+    color: #eee;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.best-record {
+    color: #eee;
+    transform-origin: top left;
+    transform: rotate(90deg);
+    height: 15em;
+    margin: 1em 75%;
+    font-size: 1em;
+}
+.best-record .official:before,
+.best-record .unofficial:before {
+    content: "★ ";
+    color: silver;
+}
+.best-record .official:before {
+    color: gold;
+}
+
+.timeline {
+    position: relative;
+    margin-top: 20px;
+}
+
+.year-marker {
+    position: absolute;
+    right: calc(100% + 2em); /* Center on the timeline bar */
+    width: 50px;
+    text-align: center;
+    background-color: #6c757d;
+    color: white;
+    padding: 3px 0;
+    border-radius: 5px;
+    z-index: 2;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.timeline-event {
+    position: absolute;
+}
+
+.timeline-event-content {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+    left: 25px;
+}
+
+.timeline-event:hover .timeline-event-content {
+    opacity: 1;
+    visibility: visible;
+}
+
+.timeline-event-content::before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: -10px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent white transparent transparent;
+}
+
+.timeline-icon {
+    position: absolute;
+    z-index: 1;
+    background: transparent;
+}
+
+.timeline-icon::before {
+    content: "★";
+    font-size: 1.5em;
+    color: silver;
+    display: inline-block;
+}
+.timeline-icon.official:before {
+    color: gold;
+}
+
+.date {
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 5px;
+    display: block;
+    font-size: 0.9em;
+}
+
+.title {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.9em;
+}

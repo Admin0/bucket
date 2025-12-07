@@ -1,12 +1,32 @@
+
 <!DOCTYPE html>
 <html lang="ko">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script defer src="script.js"></script>
-        <title>Document</title>
-    </head>
-    <body>
-        <div id="output"></div>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Running Records Timeline</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Running Records Timeline</h1>
+    <div class="racetrack">
+        <div class="track-lane">
+            <h2>FULL</h2>
+            <div class="timeline" id="timeline-full"></div>
+        </div>
+        <div class="track-lane">
+            <h2>HALF</h2>
+            <div class="timeline" id="timeline-half"></div>
+        </div>
+        <div class="track-lane">
+            <h2>10K</h2>
+            <div class="timeline" id="timeline-10k"></div>
+        </div>
+        <div class="track-lane">
+            <h2>5K</h2>
+            <div class="timeline" id="timeline-5k"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
 </html>

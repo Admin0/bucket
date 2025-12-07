@@ -2,8 +2,10 @@ function isMobile() {
     const regex = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
     return regex.test(navigator.userAgent);
 }
-const link4mobile = isMobile() ? `<a href="//bac100.page.link/oBW476KYqErgWq5Q7" class="i o" title="점조직 산악회 페이지">점조직 산악회 (BAC)</a>` : `<a href="//bac.blackyak.com/profile/643244" class="i o" title="등산개굴 프로필 페이지">등산개굴 (BAC)</a>`;
-document.getElementsByTagName("footer")[0].insertAdjacentHTML('beforeend', link4mobile);
+const link4mobile = isMobile()
+    ? `<a href="//bac100.page.link/oBW476KYqErgWq5Q7" class="i o" title="점조직 산악회 페이지">점조직 산악회 (BAC)</a>`
+    : `<a href="//bac.blackyak.com/profile/643244" class="i o" title="등산개굴 프로필 페이지">등산개굴 (BAC)</a>`;
+document.getElementsByTagName("footer")[0].insertAdjacentHTML("beforeend", link4mobile);
 
 // 테이블 만들기
 function createTableFromJSON(jsonData, tableId) {
@@ -60,7 +62,9 @@ async function play(no, done = true) {
 
     let p_target = document.querySelector(`#블랙야크_canvas .point:nth-of-type(${index + 1})`);
     p_target.classList.add("on");
-    tooltip.classList.add("on", "블랙야크");
+    setTimeout(() => {
+        tooltip.classList.add("on", "블랙야크");
+    }, 100);
 }
 
 // scroll to canvas
