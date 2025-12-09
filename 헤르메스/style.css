@@ -1,4 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=Offside&family=Stardos+Stencil:wght@400;700&display=swap");
+
+::selection {
+    background-color: rgba(0, 0, 0, 0);
+}
+
 body {
+    --color-track: #af483f;
+    --color-track-dark: #8a3a32;
+
     font-family: sans-serif;
     background-color: #51695d;
     color: #333;
@@ -17,20 +26,28 @@ h1 {
 }
 
 .track-lane {
-    width: 25%;
+    width: 20%;
     max-width: 100px;
     min-height: 100vh;
-    background: #af483f;
+    background: var(--color-track);
     padding: 15px;
     white-space: nowrap;
     border-right: 5px solid #eee;
     border-top: 10px solid #eee;
+    color: #ccc;
 }
 .track-lane:first-of-type {
     border-left: 10px solid #eee;
 }
 .track-lane:last-of-type {
     border-right: 10px solid #eee;
+}
+
+.year-label {
+    margin: 1em 0 0.5em 0;
+}
+.track-lane:not(:first-of-type) .year-label {
+    visibility: hidden;
 }
 
 h2 {
@@ -41,108 +58,88 @@ h2 {
     margin-bottom: 20px;
 }
 
-.best-record {
+.best-record-container {
     color: #eee;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+    position: relative;
+    height: 12em;
+}
+
+.best-record {
     transform-origin: top left;
     transform: rotate(90deg);
-    height: 15em;
-    margin: 1em 75%;
-    font-size: 1em;
+    position: absolute;
+    top: 10px;
+    white-space: nowrap;
+    width: 10em;
+    margin: 0;
 }
-.best-record .official:before,
-.best-record .unofficial:before {
+
+.best-record.official {
+    left: 40px;
+}
+
+.best-record.unofficial {
+    left: 70px;
+}
+
+.best-record.official:before {
     content: "★ ";
-    color: silver;
-}
-.best-record .official:before {
     color: gold;
 }
 
-.timeline {
+.best-record.unofficial:before {
+    content: "★ ";
+    color: silver;
+}
+
+.track {
     position: relative;
     margin-top: 20px;
 }
 
-.year-marker {
-    position: absolute;
-    right: calc(100% + 2em); /* Center on the timeline bar */
-    width: 50px;
-    text-align: center;
-    background-color: #6c757d;
-    color: white;
-    padding: 3px 0;
-    border-radius: 5px;
-    z-index: 2;
-    font-size: 13px;
-    font-weight: bold;
+.marker-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3px;
+    justify-items: center;
+}
+.marker-grid:hover .marker {
+    background-color: var(--color-track-dark);
+    border: 3px solid var(--color-track-dark);
+    border-radius: 3px;
 }
 
-.timeline-event {
-    position: absolute;
-}
-
-.timeline-event-content {
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    position: relative;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease-in-out;
-    left: 25px;
-}
-
-.timeline-event:hover .timeline-event-content {
-    opacity: 1;
-    visibility: visible;
-}
-
-.timeline-event-content::before {
-    content: "";
-    position: absolute;
-    top: 20px;
-    left: -10px;
-    width: 0;
+.marker {
+    width: calc(100% - 6px);
+    padding-bottom: calc(100% - 6px);
+    /* background-color: #8a3a32; */
+    border-radius: 6px;
+    cursor: default;
+    transition: 0.25s;
+    border: 3px solid var(--color-track);
     height: 0;
-    border-style: solid;
-    border-width: 10px 10px 10px 0;
-    border-color: transparent white transparent transparent;
+    font-size: 10px;
+    text-align: center;
+    line-height: 1.5;
+    color: rgba(0, 0, 0, 0);
+}
+.marker:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 12px rgba(0 0 0 / 0.25);
+    background-color: #bf584e;
+    border-color: #bf584e;
+    color: rgba(0, 0, 0, 0.5);
+}
+.marker.has-record {
+    cursor: pointer;
 }
 
-.timeline-icon {
-    position: absolute;
-    z-index: 1;
-    background: transparent;
+.marker-grid:hover .marker.official {
+    border-color: gold;
 }
 
-.timeline-icon::before {
-    content: "★";
-    font-size: 1.5em;
-    color: silver;
-    display: inline-block;
-}
-.timeline-icon.official:before {
-    color: gold;
-}
-
-.date {
-    font-weight: bold;
-    color: #007bff;
-    margin-bottom: 5px;
-    display: block;
-    font-size: 0.9em;
-}
-
-.title {
-    font-size: 1.1em;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-size: 0.9em;
+.marker-grid:hover .marker.unofficial {
+    border-color: silver;
 }
