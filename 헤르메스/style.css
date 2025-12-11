@@ -54,34 +54,29 @@ h2 {
     text-align: center;
     color: #eee;
     border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
+    padding-bottom: .5em;
     margin-bottom: 20px;
 }
 
 .best-record-container {
     color: #eee;
-    font-size: 0.9em;
-    margin-bottom: 15px;
     position: relative;
-    height: 12em;
+    margin: 3.5em auto 15em;
+    transform: rotate(90deg);
+}
+.best-record-container:has(.official):has(.unofficial) {
+    margin-top: 2.75em;
 }
 
 .best-record {
-    transform-origin: top left;
-    transform: rotate(90deg);
-    position: absolute;
-    top: 10px;
     white-space: nowrap;
-    width: 10em;
     margin: 0;
 }
 
 .best-record.official {
-    left: 40px;
 }
 
 .best-record.unofficial {
-    left: 70px;
 }
 
 .best-record.official:before {
@@ -107,7 +102,7 @@ h2 {
 }
 .marker-grid:hover .marker {
     background-color: var(--color-track-dark);
-    border: 3px solid var(--color-track-dark);
+    border-color: var(--color-track-dark);
     border-radius: 3px;
 }
 
@@ -138,8 +133,10 @@ h2 {
 
 .marker-grid:hover .marker.official {
     border-color: gold;
+    box-shadow: 0 0 5px 2px gold;
 }
 
 .marker-grid:hover .marker.unofficial {
-    border-color: silver;
+    /* border-color: silver; */
+    /* box-shadow: 0 0 10px silver; */
 }
