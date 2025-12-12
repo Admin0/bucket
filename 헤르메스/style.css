@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Offside&family=Stardos+Stencil:wght@400;700&display=swap");
-
 ::selection {
     background-color: rgba(0, 0, 0, 0);
 }
@@ -7,11 +5,15 @@
 body {
     --color-track: #af483f;
     --color-track-dark: #8a3a32;
+    --scoreboard-bg: #1a1a1a;
+    --scoreboard-text: #00ff7f;
+    --scoreboard-header: #ffff00;
 
     font-family: sans-serif;
     background-color: #51695d;
     color: #333;
     margin: 0;
+    overflow: hidden; /* Prevent body scroll */
 }
 
 h1 {
@@ -19,7 +21,15 @@ h1 {
     color: #333;
 }
 
+#main-container {
+    display: flex;
+    gap: 5em;
+    padding: 0 20px;
+    justify-content: center;
+}
+
 .racetrack {
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -28,13 +38,14 @@ h1 {
 .track-lane {
     width: 20%;
     max-width: 100px;
-    min-height: 100vh;
+    height: 100%; /* Use viewport height */
     background: var(--color-track);
     padding: 15px;
     white-space: nowrap;
     border-right: 5px solid #eee;
     border-top: 10px solid #eee;
     color: #ccc;
+    overflow-y: hidden;
 }
 .track-lane:first-of-type {
     border-left: 10px solid #eee;
@@ -54,8 +65,32 @@ h2 {
     text-align: center;
     color: #eee;
     border-bottom: 2px solid #eee;
-    padding-bottom: .5em;
+    padding-bottom: 0.5em;
     margin-bottom: 20px;
+}
+
+#trail-track-container {
+    position: relative;
+}
+#trail-filter-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    flex-direction: column;
+    position: absolute;
+    top: 15em;
+    left: 0;
+    font-size: 0.85em;
+}
+#trail-filter-container input {
+    display: none;
+}
+#trail-filter-container label {
+    padding: 0.5em 0;
+    cursor: pointer;
+}
+#trail-filter-container label:has(input:checked) {
+    color: gold;
 }
 
 .best-record-container {
@@ -67,16 +102,13 @@ h2 {
 .best-record-container:has(.official):has(.unofficial) {
     margin-top: 2.75em;
 }
-
+.unit {
+    font-size: 0.75em;
+    opacity: 0.75;
+}
 .best-record {
     white-space: nowrap;
     margin: 0;
-}
-
-.best-record.official {
-}
-
-.best-record.unofficial {
 }
 
 .best-record.official:before {
@@ -103,13 +135,13 @@ h2 {
 .marker-grid:hover .marker {
     background-color: var(--color-track-dark);
     border-color: var(--color-track-dark);
+    /* color: rgba(0, 0, 0, 0.5); */
     border-radius: 3px;
 }
 
 .marker {
     width: calc(100% - 6px);
     padding-bottom: calc(100% - 6px);
-    /* background-color: #8a3a32; */
     border-radius: 6px;
     cursor: default;
     transition: 0.25s;
@@ -121,11 +153,16 @@ h2 {
     color: rgba(0, 0, 0, 0);
 }
 .marker:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 12px rgba(0 0 0 / 0.25);
-    background-color: #bf584e;
-    border-color: #bf584e;
     color: rgba(0, 0, 0, 0.5);
+}
+.marker.official:hover,
+.marker.unofficial:hover,
+.marker-grid:hover .marker.official:hover,
+.marker-grid:hover .marker.unofficial:hover,
+.marker.highlight {
+    transform: translateY(-5px);
+    box-shadow: 0 0 5px 2px gold, 0 5px 12px rgba(0 0 0 / 0.25);
+    border-color: gold;
 }
 .marker.has-record {
     cursor: pointer;
@@ -136,7 +173,190 @@ h2 {
     box-shadow: 0 0 5px 2px gold;
 }
 
-.marker-grid:hover .marker.unofficial {
-    /* border-color: silver; */
-    /* box-shadow: 0 0 10px silver; */
+/* Table and Scoreboard Styles */
+
+#table-container {
+    max-width: 1280px;
+    background: var(--scoreboard-bg);
+    border: 5px solid #444;
+    border-radius: 10px;
+    padding: 15px;
+    height: 90vh; /* Match track lane height */
+    display: flex;
+    flex-direction: column;
+}
+
+#filters {
+    color: var(--scoreboard-text);
+    margin-bottom: 10px;
+}
+#filters fieldset {
+    border-color: #444;
+}
+#filters legend {
+    color: var(--scoreboard-header);
+}
+#course-filter-container.disabled {
+    color: #666;
+    pointer-events: none;
+}
+
+#records-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--scoreboard-bg);
+    flex-grow: 1; /* Table grows to fill available space */
+    display: block; /* Required for tbody scrolling */
+    overflow: hidden;
+}
+
+#records-table thead {
+    display: block;
+}
+
+#records-table thead th {
+    background: #333;
+    color: var(--scoreboard-header);
+    padding: 10px;
+    text-align: left;
+    text-shadow: 0 0 5px var(--scoreboard-header);
+    cursor: pointer;
+}
+#records-table thead th:hover {
+    background: #444;
+}
+
+#records-table tbody {
+    display: block;
+    overflow-y: auto; /* Enable vertical scrolling */
+    height: calc(100% - 40px); /* Adjust based on thead height */
+    color: var(--scoreboard-text);
+}
+
+#records-table th,
+#records-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #333;
+}
+
+#records-table tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+#records-table th:nth-child(1),
+#records-table td:nth-child(1) {
+    width: 5%;
+}
+#records-table th:nth-child(2),
+#records-table td:nth-child(2) {
+    width: 15%;
+}
+#records-table th:nth-child(3),
+#records-table td:nth-child(3) {
+    width: 25%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+#records-table th:nth-child(4),
+#records-table td:nth-child(4) {
+    width: 5%;
+}
+#records-table th:nth-child(5),
+#records-table td:nth-child(5) {
+    width: 15%;
+}
+#records-table th:nth-child(6),
+#records-table td:nth-child(6) {
+    width: 15%;
+}
+#records-table th:nth-child(7),
+#records-table td:nth-child(7) {
+    width: 20%;
+}
+
+#records-table tbody tr:hover,
+#records-table tbody tr.highlight {
+    background-color: #333;
+    text-shadow: 0 0 5px var(--scoreboard-text);
+}
+
+/* Scrollbar styling */
+*::-webkit-scrollbar {
+    width: 10px;
+}
+*::-webkit-scrollbar-track {
+    background: #222;
+}
+*::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 5px;
+}
+*::-webkit-scrollbar-thumb:hover {
+    background: #777;
+}
+
+#tooltip {
+    position: absolute;
+    display: none;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    pointer-events: none;
+    z-index: 1000;
+}
+#tooltip.on {
+    display: block;
+}
+
+/* mobile */
+
+@media screen and (max-width: 600px) {
+    body {
+        overflow: auto;
+    }
+    #main-container {
+        flex-direction: column;
+    }
+    .racetrack {
+        width: 100%;
+        height: auto;
+    }
+    .track-lane {
+        /* overflow-y: visible; */
+        border-right-width: 2px;
+        border-top-width: 5px;
+        border-bottom: 5px solid #eee;
+        padding: 0.25em;
+    }
+    .track-lane:first-of-type {
+        border-left-width: 5px;
+    }
+    .track-lane:last-of-type {
+        border-right-width: 5px;
+    }
+    .marker-grid {
+        gap: 0;
+    }
+    .marker {
+        width: 100%;
+        padding-bottom: 100%;
+        border: none;
+        border-radius: 0;
+    }
+
+    #table-container{
+        height: inherit;
+    }
+    #records-table {
+        overflow: inherit;
+    }
+    #tooltip {
+        left: 0 !important;
+        width: 100%;
+    }
 }

@@ -8,33 +8,89 @@
 </head>
 <body>
     <h1>#PROJECT HERMES: Running Records Track</h1>
-    <div class="racetrack">
-        <div class="track-lane">
-            <h2>FULL</h2>
-            <div class="best-record-container"></div>
-            <div class="track" id="track-full"></div>
+    
+    <div id="main-container">
+        <div class="racetrack">
+            <div class="track-lane">
+                <h2>FULL</h2>
+                <div class="best-record-container"></div>
+                <div class="track" id="track-full"></div>
+            </div>
+            <div class="track-lane">
+                <h2>HALF</h2>
+                <div class="best-record-container"></div>
+                <div class="track" id="track-half"></div>
+            </div>
+            <div class="track-lane">
+                <h2>10K</h2>
+                <div class="best-record-container"></div>
+                <div class="track" id="track-10k"></div>
+            </div>
+            <div class="track-lane">
+                <h2>5K</h2>
+                <div class="best-record-container"></div>
+                <div class="track" id="track-5k"></div>
+            </div>
+            <div class="track-lane">
+                <h2>TRAIL</h2>
+                <div id="trail-track-container">
+                    <div id="trail-filter-container">
+                        <label><input type="radio" name="trail-filter" value="elevation" checked> m ↑</label>
+                        <label><input type="radio" name="trail-filter" value="elevation_pace"> / m ↑</label>
+                        <label><input type="radio" name="trail-filter" value="distance"> km</label>
+                        <label><input type="radio" name="trail-filter" value="distance_pace"> /km</label>
+                    </div>
+                    <div class="best-record-container"></div>
+                    <div class="track" id="track-trail"></div>
+                </div>
+            </div>
         </div>
-        <div class="track-lane">
-            <h2>HALF</h2>
-            <div class="best-record-container"></div>
-            <div class="track" id="track-half"></div>
-        </div>
-        <div class="track-lane">
-            <h2>10K</h2>
-            <div class="best-record-container"></div>
-            <div class="track" id="track-10k"></div>
-        </div>
-        <div class="track-lane">
-            <h2>5K</h2>
-            <div class="best-record-container"></div>
-            <div class="track" id="track-5k"></div>
-        </div>
-        <div class="track-lane">
-            <h2>TRAIL</h2>
-            <div class="best-record-container"></div>
-            <div class="track" id="track-trail"></div>
+
+        <div id="table-container">
+            <div id="filters">
+                <fieldset>
+                    <legend>필터</legend>
+                    <button id="reset-filters">초기화</button>
+                    <span>|</span>
+                    <span id="type-filter-container">
+                        <label><input type="radio" name="type" value="all" checked> 전체</label>
+                        <label><input type="radio" name="type" value="run"> 러닝</label>
+                        <label><input type="radio" name="type" value="trail"> 트레일</label>
+                    </span>
+                    <span id="course-filter-container">
+                        <span>|</span>
+                        <label><input type="radio" name="course" value="all" checked> 전체</label>
+                        <label><input type="radio" name="course" value="5k"> 5K</label>
+                        <label><input type="radio" name="course" value="10k"> 10K</label>
+                        <label><input type="radio" name="course" value="half"> Half</label>
+                        <label><input type="radio" name="course" value="full"> Full</label>
+                    </span>
+                    <span id="year-filter-container">
+                        <span>|</span>
+                        <label><input type="radio" name="year" value="all" checked> 전체</label>
+                    </span>
+                </fieldset>
+            </div>
+            <table id="records-table">
+                <thead>
+                    <tr>
+                        <th data-sort="isOfficial">★</th>
+                        <th data-sort="date">날짜</th>
+                        <th data-sort="title">대회/장소</th>
+                        <th data-sort="course">종목</th>
+                        <th data-sort="distance">거리/높이</th>
+                        <th data-sort="record">기록</th>
+                        <th data-sort="pace">페이스</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
+
+    <div id="tooltip"></div>
+    <script src="script_records.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
