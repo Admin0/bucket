@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+
 ::selection {
     background-color: rgba(0, 0, 0, 0);
 }
@@ -13,7 +15,7 @@ body {
     background-color: #51695d;
     color: #333;
     margin: 0;
-    overflow: hidden; /* Prevent body scroll */
+    /* overflow: hidden;  */
 }
 
 h1 {
@@ -29,7 +31,7 @@ h1 {
 }
 
 .racetrack {
-    height: 100vh;
+    min-height: 90vh;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -38,7 +40,7 @@ h1 {
 .track-lane {
     width: 20%;
     max-width: 100px;
-    height: 100%; /* Use viewport height */
+    height: calc(100% - 40px);
     background: var(--color-track);
     padding: 15px;
     white-space: nowrap;
@@ -74,13 +76,15 @@ h2 {
 }
 #trail-filter-container {
     width: 100%;
-    display: grid;
+    /* display: grid;
     grid-template-columns: repeat(2, 1fr);
-    flex-direction: column;
+    flex-direction: column; */
+    transform: rotate(90deg);
     position: absolute;
-    top: 15em;
     left: 0;
     font-size: 0.85em;
+    top: 1.75em;
+    left: 3em;
 }
 #trail-filter-container input {
     display: none;
@@ -89,8 +93,15 @@ h2 {
     padding: 0.5em 0;
     cursor: pointer;
 }
+#trail-filter-container label:not(:first-of-type):before {
+    content: "·";
+    margin: 0 0.5em;
+    color: #999;
+}
 #trail-filter-container label:has(input:checked) {
-    color: gold;
+    color: #fff;
+    text-shadow: 0 0 5px #fff;
+    font-weight: bold;
 }
 
 .best-record-container {
@@ -171,17 +182,21 @@ h2 {
 .marker-grid:hover .marker.official {
     border-color: gold;
     box-shadow: 0 0 5px 2px gold;
+    z-index: 1;
 }
 
 /* Table and Scoreboard Styles */
 
 #table-container {
-    max-width: 1280px;
+    max-width: 720px;
     background: var(--scoreboard-bg);
-    border: 5px solid #444;
-    border-radius: 10px;
+    position: sticky;
+    top: 1em;
+    border: 1px solid #444;
+    /* border-radius: 10px; */
     padding: 15px;
-    height: 90vh; /* Match track lane height */
+    height: 90vh; 
+    /* height: fit-content; */
     display: flex;
     flex-direction: column;
 }
@@ -284,33 +299,68 @@ h2 {
     text-shadow: 0 0 5px var(--scoreboard-text);
 }
 
-/* Scrollbar styling */
-*::-webkit-scrollbar {
-    width: 10px;
-}
-*::-webkit-scrollbar-track {
-    background: #222;
-}
-*::-webkit-scrollbar-thumb {
-    background: #555;
-    border-radius: 5px;
-}
-*::-webkit-scrollbar-thumb:hover {
-    background: #777;
-}
-
 #tooltip {
+    width: min-content;
     position: absolute;
     display: none;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    pointer-events: none;
+    /* background: rgba(0, 0, 0, 0.8); */
+    background: #eee;
+    box-shadow: 0 5px 11px rgba(0, 0, 0, 0.25);
+    padding: 1em;
+    border-radius: 1em;
+    /* pointer-events: none; */
     z-index: 1000;
+    /* color: var(--scoreboard-header); */
+    color: #212121;
+    /* text-shadow: 0 0 5px var(--scoreboard-header); */
 }
+
 #tooltip.on {
     display: block;
+}
+#tooltip .title-container {
+    padding: 0 0 0.5em 0.5em;
+}
+#tooltip .type {
+    font-size: .85em;
+}
+#tooltip .title {
+    width: 100%;
+    clear: both;
+    font-size: 1.25em;
+    font-weight: bold;
+    margin-right: 0em;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+#tooltip .title .official {
+    background-color: gold;
+    color: goldenrod;
+    border-radius: 50%;
+    font-size: 0.9em;
+    padding: 0.25em;
+    font-variation-settings: "FILL" 1;
+}
+#tooltip .date {
+    float: right;
+    color: #777;
+    font-size: 0.85em;
+}
+#tooltip .data {
+    width: fit-content;
+    white-space: nowrap;
+    background-color: rgb(255, 255, 255);
+    padding: 1em;
+    border-radius: 2em;
+}
+
+#tooltip .material-symbols-outlined {
+    vertical-align: text-bottom;
+}
+.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
 }
 
 /* mobile */
@@ -319,8 +369,14 @@ h2 {
     body {
         overflow: auto;
     }
+    h2 {
+        font-size: 1em;
+    }
     #main-container {
         flex-direction: column;
+    }
+    .best-record-container {
+        margin: 2em auto 10em;
     }
     .racetrack {
         width: 100%;
@@ -331,7 +387,8 @@ h2 {
         border-right-width: 2px;
         border-top-width: 5px;
         border-bottom: 5px solid #eee;
-        padding: 0.25em;
+        padding: 2vw;
+        overflow: hidden;
     }
     .track-lane:first-of-type {
         border-left-width: 5px;
@@ -342,14 +399,26 @@ h2 {
     .marker-grid {
         gap: 0;
     }
+    .marker-grid:hover .marker {
+        border-radius: 0;
+    }
+
     .marker {
         width: 100%;
         padding-bottom: 100%;
         border: none;
         border-radius: 0;
     }
+    .marker.official:hover,
+    .marker.unofficial:hover,
+    .marker-grid:hover .marker.official:hover,
+    .marker-grid:hover .marker.unofficial:hover,
+    .marker.highlight {
+        transform: translateY(0);
+        border-color: gold;
+    }
 
-    #table-container{
+    #table-container {
         height: inherit;
     }
     #records-table {
@@ -357,6 +426,10 @@ h2 {
     }
     #tooltip {
         left: 0 !important;
-        width: 100%;
+        width: calc(100% - 2em);
+        top: inherit !important;
+        bottom: 0;
+        position: fixed;
+        border-radius: 0;
     }
 }

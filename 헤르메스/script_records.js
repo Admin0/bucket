@@ -12,27 +12,30 @@ const records = [
     // { date: "2023-12-12", course: "trail", distance: 3.74, elevation: 362, record: "01:14:44", title: "배방산" }, // 트레일 러닝 대회 더미
 
     // unofficial 2025 run
-    { date: "2025-12-06", distance: 21.26, record: "01:57:05", title: "장항선구철도길 좀만더가볼까하다가런" },
+    { date: "2025-12-18", distance: 10.01, record: "00:56:56", title: "장항선구철도길 이런저런" },
+    { date: "2025-12-14", distance: 5.16, record: "00:26:41", title: "장항선구철도길" },
+    { date: "2025-12-13", distance: 10.11, record: "00:55:34", title: "장항선구철도길 가민런" },
+    { date: "2025-12-06", distance: 21.26, record: "01:57:05", title: "장항선구철도길 어쩌다보니하프런" },
     { date: "2025-12-04", distance: 5.36, record: "00:30:54", title: "장항선구철도길 눈싸데기런" },
 
-    { date: "2025-11-26", distance: 6.35, record: "00:37:58", title: "신정호 정기모임런" },
-    { date: "2025-11-19", distance: 4.71, record: "00:37:58", title: "은행나무길 정기모임런" },
-    { date: "2025-11-12", distance: 6.14, record: "00:33:45", title: "신정호 영인호족회피런" },
+    { date: "2025-11-26", distance: 6.35, record: "00:37:58", title: "신정호 정기런" },
+    { date: "2025-11-19", distance: 4.71, record: "00:37:58", title: "은행나무길 정기런" },
+    { date: "2025-11-12", distance: 6.14, record: "00:33:45", title: "신정호 영인호족조우런" },
     { date: "2025-11-03", distance: 5.34, record: "00:29:52", title: "장항선구철도길 이런저런" },
 
-    { date: "2025-10-27", distance: 6.2, record: "00:40:43", title: "신정호 번개모임런" },
+    { date: "2025-10-27", distance: 6.2, record: "00:40:43", title: "신정호 러닝벙" },
     { date: "2025-10-21", distance: 5.33, record: "00:29:29", title: "장항선구철도길 이런저런" },
-    { date: "2025-10-18", distance: 6.2, record: "00:34:50", title: "신정호 등산화길들이기런" },
+    { date: "2025-10-18", distance: 6.2, record: "00:34:50", title: "신정호 등산화런" },
     { date: "2025-10-07", distance: 5.03, record: "00:24:44", title: "신정호 추석냠냠반성런" },
-    { date: "2025-10-03", distance: 7.16, record: "01:29:06", title: "알틴-아라산 아라쿨못보고옴런 (키르기스스탄)"},
+    { date: "2025-10-03", distance: 7.16, record: "01:29:06", title: "알틴-아라산 승마런 (키르기스스탄)"},
 
     { date: "2025-09-26", distance: 5.95, record: "00:32:40", title: "이순신종합운동장 판다러버런" },
     { date: "2025-09-23", distance: 5.78, record: "00:29:52", title: "장항선구철도길 이런저런" },
     { date: "2025-09-20", distance: 12.31, record: "01:13:08", title: "장항선구철도길 참깨런" },
     { date: "2025-09-16", distance: 5.03, record: "00:28:13", title: "장항선구철도길 이런저런" },
-    { date: "2025-09-11", distance: 5.04, record: "00:32:38", title: "성성호수공원 초록원정대런" },
-    { date: "2025-09-09", distance: 10.1, record: "00:55:08", title: "천안종합운동장 초록원정대런" },
-    { date: "2025-09-05", distance: 13.44, record: "01:16:02", title: "장항선구철도길 12시지나서오런완실패런" },
+    { date: "2025-09-11", distance: 5.04, record: "00:32:38", title: "성성호수공원 초록원정런" },
+    { date: "2025-09-09", distance: 10.1, record: "00:55:08", title: "천안종합운동장 초록원정런" },
+    { date: "2025-09-05", distance: 13.44, record: "01:16:02", title: "장항선구철도길 오런완실패런" },
     { date: "2025-09-03", distance: 6.30, record: "00:36:21", title: "신정호 정기모임런" },
 
     { date: "2025-08-28", distance: 6.25, record: "00:34:14", title: "신정호 이런저런" },
@@ -73,7 +76,7 @@ const records = [
     { date: "2025-12-06", distance: 3.56, elevation: 173, record: "01:03:23", title: "봉서산" },
 
     { date: "2025-11-30", distance: 10.0, elevation: 742, record: "02:27:32", title: "백암산" },
-    { date: "2025-11-16", distance: 7.36, elevation: 330, record: "01:58:36", title: "재약산" },
+    // { date: "2025-11-16", distance: 7.36, elevation: 330, record: "01:58:36", title: "재약산" },
     { date: "2025-11-15", distance: 11.15, elevation: 1055, record: "03:58:36", title: "신불산" },
     { date: "2025-11-14", distance: 5.8, elevation: 672, record: "01:57:07", title: "금오산" },
     { date: "2025-11-01", distance: 7.5, elevation: 821, record: "03:20:00", title: "삼악산" },

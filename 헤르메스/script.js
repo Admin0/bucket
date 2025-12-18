@@ -28,7 +28,7 @@ hermes.track = function () {
         let distance_pace = Infinity;
 
         if (isTrail) {
-            if (elevation > 0) elevation_pace = (time / elevation) / 2 * 100; // 100m당 페이스
+            if (elevation > 0) elevation_pace = (time / elevation / 2) * 60; // 60 m 당 페이스
             if (distance > 0) distance_pace = time / distance;
         }
 
@@ -64,8 +64,8 @@ hermes.track = function () {
         distance_paces: trailRecords.map((r) => r.distance_pace).filter((p) => p !== Infinity),
     };
 
-    const limitElevationPace = 21 * 60; // 20분/100m
-    const limitTrailDistancePace = 28 * 60; // 15분/km
+    const limitElevationPace = 12 * 60; // 12분/60 m
+    const limitTrailDistancePace = 28 * 60; // 28분/km
 
     hermes.trailStats.maxElevation = Math.max(0, ...hermes.trailStats.elevations);
     hermes.trailStats.minElevation = Math.min(...hermes.trailStats.elevations.filter((e) => e > 0));
@@ -133,11 +133,11 @@ hermes.track = function () {
                     if (bestRecord) {
                         let value, pace, unit;
                         if (trailFilterValue.includes("elevation")) {
-                            value = `${bestRecord.elevation.toLocaleString()} <span class="unit">m</span>`;
+                            value = `${bestRecord.elevation.toLocaleString()}m`;
                             pace = bestRecord.elevation_pace;
-                            unit = "/100m↑";
+                            unit = "/60 m↑";
                         } else {
-                            value = `${bestRecord.distance.toFixed(2)} <span class="unit">km</span>`;
+                            value = `${bestRecord.distance.toFixed(2)}km`;
                             pace = bestRecord.distance_pace;
                             unit = "/km";
                         }
@@ -205,8 +205,28 @@ hermes.track = function () {
                         marker.dataset.recordId = record.id;
                         marker.classList.add("has-record", record.isOfficial ? "official" : "unofficial");
 
-                        const tooltipPaceUnit = record.course === "trail" ? "/100m↑" : "/km";
-                        const tooltipContent = `${record.title} - ${record.record} (${Math.floor(record.pace / 60)}'${Math.floor(record.pace % 60)}''${tooltipPaceUnit}) - ${record.date}`;
+                        const tooltipPace = `${Math.floor(record.pace / 60)}'${Math.floor(record.pace % 60)}"${
+                            record.course === "trail" ? '<span class="unit">/60 m↑</span>' : '<span class="unit">/km</span>'
+                        }`;
+                        const tooltipDistance =
+                            record.course === "trail"
+                                ? `${record.elevation} <span class="unit">m</span>`
+                                // ? `${record.elevation} <span class="unit">m</span> <span class="unit">(${record.distance.toFixed(2)} km)</span>`
+                                : `${record.distance.toFixed(2)} <span class="unit">km</span>`;
+                        const tooltip_type = record.isOfficial ? "공식 대회" : record.course === "trail" ? "하이킹 / 트레일러닝" : "러닝";
+                        const tooltip__icon_distance = record.course === "trail" ? "altitude" : "route";
+
+                        const tooltipContent = `
+                        <div class="title-container">
+                            <span class="type"> ${tooltip_type} </span> 
+                            <span class="date">${record.date}</span>
+                            <div class="title">${record.title} ${record.isOfficial ? '<span class="material-symbols-outlined official"> crown </span>' : ""}</div> 
+                        </div>
+                        <div class="data">
+                            <span class="material-symbols-outlined"> ${tooltip__icon_distance} </span> <span class="distance">${tooltipDistance}</span> | 
+                            <span class="material-symbols-outlined"> timer </span> <span class="record">${record.record}</span> | 
+                            <span class="material-symbols-outlined"> speed </span> <span class="pace">${tooltipPace}</span>
+                        </div>`;
 
                         marker.addEventListener("mouseover", (e) => {
                             let tooltip = document.getElementById("tooltip");
@@ -365,10 +385,11 @@ hermes.table = function () {
         filteredRecords.forEach((record) => {
             const row = document.createElement("tr");
             row.dataset.recordId = record.id;
+            row.classList.add(record.course);
 
             const isTrail = record.course === "trail";
             const paceToUse = isTrail ? record.elevation_pace : record.pace;
-            const paceUnit = isTrail ? "/100m↑" : "/km";
+            const paceUnit = isTrail ? "/60 m↑" : "/km";
             const paceMinutes = Math.floor(paceToUse / 60);
             const paceSeconds = Math.floor(paceToUse % 60)
                 .toString()
@@ -376,10 +397,11 @@ hermes.table = function () {
             const paceString = paceToUse === Infinity || !paceToUse ? "-" : `${paceMinutes}'${paceSeconds}''<span class="unit">${paceUnit}</span>`;
 
             const distanceDetail = isTrail ? `${record.elevation.toLocaleString()} <span class="unit">m</span>` : `${record.distance.toFixed(2)} <span class="unit">km</span>`;
+            const dateString = `${record.dateObj.getFullYear()} w${getWeekNumber(record.dateObj)}`;
 
             row.innerHTML = `
                 <td>${record.isOfficial ? "★" : ""}</td>
-                <td>${record.date}</td>
+                <td title="${record.date}">${dateString}</td>
                 <td>${record.title}</td>
                 <td>${record.course}</td>
                 <td>${distanceDetail}</td>
