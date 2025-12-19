@@ -223,9 +223,9 @@ hermes.track = function () {
                             <div class="title">${record.title} ${record.isOfficial ? '<span class="material-symbols-outlined official"> crown </span>' : ""}</div> 
                         </div>
                         <div class="data">
-                            <span class="material-symbols-outlined"> ${tooltip__icon_distance} </span> <span class="distance">${tooltipDistance}</span> | 
-                            <span class="material-symbols-outlined"> timer </span> <span class="record">${record.record}</span> | 
-                            <span class="material-symbols-outlined"> speed </span> <span class="pace">${tooltipPace}</span>
+                            <span class="material-symbols-outlined icon distance"> ${tooltip__icon_distance} </span> <span class="distance">${tooltipDistance}</span> | 
+                            <span class="material-symbols-outlined icon record"> timer </span> <span class="record">${record.record}</span> | 
+                            <span class="material-symbols-outlined icon pace"> speed </span> <span class="pace">${tooltipPace}</span>
                         </div>`;
 
                         marker.addEventListener("mouseover", (e) => {
@@ -396,17 +396,22 @@ hermes.table = function () {
                 .padStart(2, "0");
             const paceString = paceToUse === Infinity || !paceToUse ? "-" : `${paceMinutes}'${paceSeconds}''<span class="unit">${paceUnit}</span>`;
 
-            const distanceDetail = isTrail ? `${record.elevation.toLocaleString()} <span class="unit">m</span>` : `${record.distance.toFixed(2)} <span class="unit">km</span>`;
-            const dateString = `${record.dateObj.getFullYear()} w${getWeekNumber(record.dateObj)}`;
+            const distanceDetail =
+            isTrail
+                    ? `${record.elevation} <span class="unit">m</span>`
+                    // ? `${record.elevation} <span class="unit">m</span> <span class="unit replace">(${record.distance.toFixed(2)} km)</span>`
+                    : `${record.distance.toFixed(2)} <span class="unit">km</span>`;
+            const icon_distance = record.course === "trail" ? "altitude" : "route";
+
 
             row.innerHTML = `
-                <td>${record.isOfficial ? "★" : ""}</td>
-                <td title="${record.date}">${dateString}</td>
-                <td>${record.title}</td>
-                <td>${record.course}</td>
-                <td>${distanceDetail}</td>
-                <td>${record.record}</td>
-                <td>${paceString}</td>
+                <td class="course">${record.course}</td>
+                <td class="date">${record.date}</td>
+                <td class="title">${record.title}</td>
+                <td class="isOfficial">${record.isOfficial ? "★" : ""}</td>
+                <td class="distance"><span class="material-symbols-outlined icon distance"> ${icon_distance} </span>${distanceDetail} </td>
+                <td class="record"><span class="material-symbols-outlined icon record"> timer </span>${record.record} </td>
+                <td class="pace"><span class="material-symbols-outlined icon pace"> speed </span>${paceString}</td>
             `;
 
             row.addEventListener("mouseover", () => document.querySelector(`.marker[data-record-id="${record.id}"]`)?.classList.add("highlight"));

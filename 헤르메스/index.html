@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>#헤르메스</title>
+    <title>#ABC</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <h1>#PROJECT HERMES: Running Records Track</h1>
-    
+    <div id="title">
+        <h1>Activity Board of Commit</h1>
+    </div>
+
     <div id="main-container">
         <div class="racetrack">
             <div class="track-lane">
@@ -31,6 +35,8 @@
                 <div class="best-record-container"></div>
                 <div class="track" id="track-5k"></div>
             </div>
+        </div>
+        <div class="racetrack">
             <div class="track-lane">
                 <h2>TRAIL</h2>
                 <div id="trail-track-container">
@@ -45,52 +51,54 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <div id="table-container">
-            <div id="filters">
-                <fieldset>
-                    <legend>필터</legend>
-                    <button id="reset-filters">초기화</button>
+
+    <div id="table-container">
+        <div id="filters">
+            <fieldset>
+                <legend>필터</legend>
+                <button id="reset-filters">초기화</button>
+                <span>|</span>
+                <span id="type-filter-container">
+                    <label><input type="radio" name="type" value="all" checked> 전체</label>
+                    <label><input type="radio" name="type" value="run"> 러닝</label>
+                    <label><input type="radio" name="type" value="trail"> 트레일</label>
+                </span>
+                <span id="course-filter-container">
                     <span>|</span>
-                    <span id="type-filter-container">
-                        <label><input type="radio" name="type" value="all" checked> 전체</label>
-                        <label><input type="radio" name="type" value="run"> 러닝</label>
-                        <label><input type="radio" name="type" value="trail"> 트레일</label>
-                    </span>
-                    <span id="course-filter-container">
-                        <span>|</span>
-                        <label><input type="radio" name="course" value="all" checked> 전체</label>
-                        <label><input type="radio" name="course" value="5k"> 5K</label>
-                        <label><input type="radio" name="course" value="10k"> 10K</label>
-                        <label><input type="radio" name="course" value="half"> Half</label>
-                        <label><input type="radio" name="course" value="full"> Full</label>
-                    </span>
-                    <span id="year-filter-container">
-                        <span>|</span>
-                        <label><input type="radio" name="year" value="all" checked> 전체</label>
-                    </span>
-                </fieldset>
-            </div>
-            <table id="records-table">
-                <thead>
-                    <tr>
-                        <th data-sort="isOfficial">★</th>
-                        <th data-sort="date">날짜</th>
-                        <th data-sort="title">대회/장소</th>
-                        <th data-sort="course">종목</th>
-                        <th data-sort="distance">거리/높이</th>
-                        <th data-sort="record">기록</th>
-                        <th data-sort="pace">페이스</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+                    <label><input type="radio" name="course" value="all" checked> 전체</label>
+                    <label><input type="radio" name="course" value="5k"> 5K</label>
+                    <label><input type="radio" name="course" value="10k"> 10K</label>
+                    <label><input type="radio" name="course" value="half"> Half</label>
+                    <label><input type="radio" name="course" value="full"> Full</label>
+                </span>
+                <span id="year-filter-container">
+                    <span>|</span>
+                    <label><input type="radio" name="year" value="all" checked> 전체</label>
+                </span>
+            </fieldset>
         </div>
+        <table id="records-table">
+            <thead>
+                <tr>
+                    <th data-sort="course"><span class="material-symbols-outlined"> directions_run </span>종목</th>
+                    <th data-sort="date"><span class="material-symbols-outlined"> event </span>날짜</th>
+                    <th data-sort="title"><span class="material-symbols-outlined"> flag </span>대회/장소</th>
+                    <th data-sort="isOfficial"><span class="material-symbols-outlined"> star_rate </span>공식/비공식</th>
+                    <th data-sort="distance"><span class="material-symbols-outlined"> route </span>거리/높이</th>
+                    <th data-sort="record"><span class="material-symbols-outlined"> timer </span>기록</th>
+                    <th data-sort="pace"><span class="material-symbols-outlined"> speed </span>페이스</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
 
     <div id="tooltip"></div>
     <script src="script_records.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
