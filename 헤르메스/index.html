@@ -55,17 +55,18 @@
 
 
     <div id="table-container">
+        <h2>RECORDS</h2>
         <div id="filters">
             <fieldset>
                 <legend>필터</legend>
                 <button id="reset-filters">초기화</button>
                 <span>|</span>
-                <span id="type-filter-container">
+                <span id="type-filter-container" class="filter">
                     <label><input type="radio" name="type" value="all" checked> 전체</label>
                     <label><input type="radio" name="type" value="run"> 러닝</label>
                     <label><input type="radio" name="type" value="trail"> 트레일</label>
                 </span>
-                <span id="course-filter-container">
+                <span id="course-filter-container" class="filter">
                     <span>|</span>
                     <label><input type="radio" name="course" value="all" checked> 전체</label>
                     <label><input type="radio" name="course" value="5k"> 5K</label>
@@ -73,7 +74,7 @@
                     <label><input type="radio" name="course" value="half"> Half</label>
                     <label><input type="radio" name="course" value="full"> Full</label>
                 </span>
-                <span id="year-filter-container">
+                <span id="year-filter-container" class="filter">
                     <span>|</span>
                     <label><input type="radio" name="year" value="all" checked> 전체</label>
                 </span>
@@ -82,13 +83,13 @@
         <table id="records-table">
             <thead>
                 <tr>
-                    <th data-sort="course"><span class="material-symbols-outlined"> directions_run </span>종목</th>
-                    <th data-sort="date"><span class="material-symbols-outlined"> event </span>날짜</th>
-                    <th data-sort="title"><span class="material-symbols-outlined"> flag </span>대회/장소</th>
-                    <th data-sort="isOfficial"><span class="material-symbols-outlined"> star_rate </span>공식/비공식</th>
-                    <th data-sort="distance"><span class="material-symbols-outlined"> route </span>거리/높이</th>
-                    <th data-sort="record"><span class="material-symbols-outlined"> timer </span>기록</th>
-                    <th data-sort="pace"><span class="material-symbols-outlined"> speed </span>페이스</th>
+                    <th data-sort="course"><span class="material-symbols-outlined"> directions_run </span><span class="text">종목</span></th>
+                    <th data-sort="date"><span class="material-symbols-outlined"> event </span><span class="text">날짜</span></th>
+                    <th data-sort="title"><span class="material-symbols-outlined"> flag </span><span class="text">대회/장소</span></th>
+                    <th data-sort="isOfficial"><span class="material-symbols-outlined"> star_rate </span><span class="text">공식/비공식</span></th>
+                    <th data-sort="distance"><span class="material-symbols-outlined"> route </span><span class="text">거리/높이</span></th>
+                    <th data-sort="record"><span class="material-symbols-outlined"> timer </span><span class="text">기록</span></th>
+                    <th data-sort="pace"><span class="material-symbols-outlined"> speed </span><span class="text">페이스</span></th>
                 </tr>
             </thead>
             <tbody>

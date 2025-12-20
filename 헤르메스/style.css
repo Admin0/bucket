@@ -19,7 +19,7 @@ body {
 
     /* --width--track-width: 1280px; */
     --width--track-width: 1280px;
-    --width--table-width: 80vw;
+    --width--table-width: 85vw;
 
     font-family: sans-serif;
     background-color: #eee;
@@ -37,7 +37,7 @@ h1 {
 #main-container {
     display: flex;
     gap: 2em;
-    padding: 2em;
+    /* padding: 2em; */
     justify-content: center;
     transform: rotate(-90deg) translateX(-100%) translateY(calc((100vw - 100%) / 2 - 0.5em));
     transform-origin: 0 0;
@@ -66,11 +66,14 @@ h1 {
     white-space: nowrap;
     /* border-right: 1px solid var(--color--track-border); */
     /* border-top: 10px solid var(--color--track-border); */
-    transition: background-color 0.25s, box-shadow 0.25s;
+    transition: background-color 0.25s, box-shadow 0.25s, transform 0.05s;
+    background-color: #fff;
 }
 
 .track-lane:hover {
     box-shadow: -5px 0 12px rgba(0 0 0 / 0.25);
+    z-index: 1;
+    transform: scale(1.05);
 }
 
 .track-lane:not(:last-of-type):after {
@@ -98,7 +101,7 @@ h1 {
     opacity: 0;
 }
 
-h2 {
+.racetrack h2 {
     text-align: center;
     border-bottom: 3px solid var(--color--track-border2);
     padding-bottom: 0.5em;
@@ -249,11 +252,36 @@ h2 {
 
 #filters {
 }
+#filters .filter {
+    background-color: #fff;
+    /* box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25); */
+    border-radius: 1em;
+    padding: 0.5em;
+    margin: 0.5em;
+    cursor: pointer;
+}
+#filters input {
+    display: none;
+}
+#filters label {
+    padding: 0.5em;
+    cursor: pointer;
+    border-radius: 2em;
+}
+#filters label:has(input:checked) {
+    background-color: #009688;
+}
 
 #filters fieldset {
+    background-color: #fff;
+    /* box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25); */
+    border-radius: 1em;
+    border: none;
+    padding: 1em;
 }
 
 #filters legend {
+    display: none;
 }
 
 #course-filter-container.disabled {
@@ -270,25 +298,34 @@ h2 {
     display: block;
     /* Required for tbody scrolling */
     /* overflow: hidden; */
+    cursor: default;
 }
 
 #records-table thead {
+    width: 100%;
     display: block;
+}
+#records-table thead tr {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 1em 0;
 }
 
 #records-table thead th {
-    padding: 1em;
     text-align: left;
     cursor: pointer;
 }
-
+#records-table thead th .text {
+    margin-left: 0.5em;
+}
 #records-table thead th:hover {
     background: var(--color--track-dark);
 }
 
 #records-table tbody {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, auto));
+    grid-template-columns: repeat(auto-fill, minmax(350px, auto));
     row-gap: 1.5em;
     column-gap: 1.5em;
 }
@@ -299,21 +336,29 @@ h2 {
 }
 #records-table td.isOfficial {
     display: inline-block;
-    /* margin-left: .5em; */
-    color: gold;
+    margin-right: -2em;
+}
+#records-table td.isOfficial .icon {
+    background-color: gold;
+    color: goldenrod;
+    border-radius: 1em;
+    padding: 4px;
+    font-variation-settings: "FILL" 1;
+    font-size: 16px;
 }
 #records-table td.date {
     font-size: 0.85em;
     color: #aaa;
-    /* position: absolute;
-    top: calc(1em/.75);
-    right: calc(1em/.75); */
     float: right;
 }
 #records-table td.title {
     display: inline-block;
     font-weight: bold;
     font-size: 1.125em;
+    max-width: calc(100% - 6.5em);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 #records-table td.course {
     display: inline-block;
@@ -329,11 +374,20 @@ h2 {
 #records-table td.record,
 #records-table td.pace {
     width: 150px;
+    white-space: nowrap;
 }
-#records-table td.distance .replace {
-    position: absolute;
-    left: 3.8em;
-    bottom: 0.25em;
+#records-table td .replace,
+#records-table tr:hover td .main {
+    display: none;
+}
+#records-table tr:hover td:has(.replace) {
+    background-color: var(--color--track-dark);
+    outline: 0.5em solid var(--color--track-dark);
+    border-radius: 1em;
+}
+
+#records-table tr:hover td .replace {
+    display: inline-block;
 }
 
 #records-table tr {
@@ -343,7 +397,7 @@ h2 {
     padding: 1em;
     border-radius: 1em;
     background: var(--color--track);
-    transition: 0.25s;
+    transition: 0.25s, transform 0.05s;
 }
 #records-table tr:has(th) {
     background-color: transparent;
@@ -352,6 +406,7 @@ h2 {
 #records-table tbody tr:hover,
 #records-table tbody tr.highlight {
     box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+    transform: scale(1.05);
 }
 
 #tooltip {
@@ -363,7 +418,7 @@ h2 {
     box-shadow: 0 5px 11px rgba(0, 0, 0, 0.25);
     padding: 1em;
     border-radius: 1em;
-    /* pointer-events: none; */
+    pointer-events: none;
     z-index: 1000;
     /* color: var(--color--scoreboard-header); */
     color: #212121;
@@ -442,7 +497,7 @@ h2 {
 @media screen and (min-width: 1440px) {
     #table-container {
         width: var(--width--table-width);
-        margin: 0 10vw;
+        margin: 0 calc((100vw - var(--width--table-width)) / 2);
     }
 }
 
@@ -451,15 +506,23 @@ h2 {
 @media screen and (max-width: 600px) {
     body {
         overflow: auto;
+        padding-bottom: 12em;
     }
-
+    h1 {
+        padding: 0 5vw;
+        text-align: left;
+    }
     h2 {
         font-size: 1em;
     }
 
     #main-container {
-        flex-direction: row;
+        gap: 0;
+        margin: auto;
         transform: none;
+        height: fit-content;
+        border-radius: 1.5em;
+        background: var(--color--track);
     }
 
     .best-record-container {
@@ -469,23 +532,35 @@ h2 {
     .racetrack {
         width: 100%;
         height: auto;
+        border-radius: 0;
+        background: transparent;
     }
 
     .track-lane {
-        /* overflow-y: visible; */
-        border-right-width: 2px;
-        border-top-width: 5px;
-        border-bottom: 5px solid #eee;
         padding: 2vw;
-        overflow: hidden;
+        height: fit-content;
+        width: calc((100vw - 10vw) / 5 - 4vw);
+        border-radius: 0;
+        background: transparent;
     }
-
+    .track-lane:hover {
+        transform: none;
+        box-shadow: none;
+    }
     .track-lane:first-of-type {
         border-left-width: 5px;
     }
 
     .track-lane:last-of-type {
         border-right-width: 5px;
+    }
+    .track-lane:not(:last-of-type):after {
+        top: 1em;
+        height: calc(100% - 2em);
+    }
+    .track {
+        /* overflow: visible; */
+        height: auto;
     }
     .marker-grid {
         gap: 0;
@@ -496,6 +571,7 @@ h2 {
     }
 
     .marker {
+        transform: none;
         width: 100%;
         padding-bottom: 100%;
         border: none;
@@ -511,14 +587,21 @@ h2 {
         border-color: gold;
     }
 
+    #trail-filter-container {
+        display: none;
+    }
     #table-container {
+        display: none;
         height: inherit;
+        position: inherit;
     }
 
     #records-table {
         overflow: inherit;
     }
-
+    #records-table th .text {
+        display: none;
+    }
     #tooltip {
         left: 0 !important;
         width: calc(100% - 2em);
@@ -526,5 +609,11 @@ h2 {
         bottom: 0;
         position: fixed;
         border-radius: 0;
+        box-shadow: 0 -5px 12px rgba(0, 0, 0, 0.25);
+    }
+    #tooltip .data {
+        width: calc(100% - 2em);
+        display: flex;
+        justify-content: space-evenly;
     }
 }

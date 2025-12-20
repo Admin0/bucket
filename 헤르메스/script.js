@@ -1,6 +1,6 @@
 const hermes = {};
 
-hermes.records = records;
+hermes.records = hermes_records;
 
 function getWeekNumber(d) {
     d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -398,17 +398,17 @@ hermes.table = function () {
 
             const distanceDetail =
             isTrail
-                    ? `${record.elevation} <span class="unit">m</span>`
-                    // ? `${record.elevation} <span class="unit">m</span> <span class="unit replace">(${record.distance.toFixed(2)} km)</span>`
-                    : `${record.distance.toFixed(2)} <span class="unit">km</span>`;
-            const icon_distance = record.course === "trail" ? "altitude" : "route";
-
+                    // ? `${record.elevation} <span class="unit">m</span>`
+                    ? `<span class="main">${record.elevation}<span class="unit"> m</span></span><span class="replace">${record.distance.toFixed(2)}<span class="unit"> km</span></span>`
+                    : `${record.distance.toFixed(2)} <span class="unit"> km</span>`;
+            const icon_distance = record.course === "trail" ? `<span class="main">altitude</span><span class="replace">route</span>` : "route";
+            const dateString = `w${getWeekNumber(record.dateObj)}`;
 
             row.innerHTML = `
                 <td class="course">${record.course}</td>
-                <td class="date">${record.date}</td>
+                <td class="date"><span class="main">${record.date}</span><span class="replace">${dateString}</span></td>
                 <td class="title">${record.title}</td>
-                <td class="isOfficial">${record.isOfficial ? "★" : ""}</td>
+                <td class="isOfficial">${record.isOfficial ?  '<span class="material-symbols-outlined icon"> crown </span>'  : ""}</td>
                 <td class="distance"><span class="material-symbols-outlined icon distance"> ${icon_distance} </span>${distanceDetail} </td>
                 <td class="record"><span class="material-symbols-outlined icon record"> timer </span>${record.record} </td>
                 <td class="pace"><span class="material-symbols-outlined icon pace"> speed </span>${paceString}</td>

@@ -1,5 +1,5 @@
 
-const records = [
+const hermes_records = [
     // official data
     { date: "2025-11-09", course: "10k", record: "01:00:07", title: "아산은행나무길 전국마라톤대회" },
     { date: "2025-10-19", course: "10k", record: "00:48:29", title: "꽈자런 천안", certi: "https://www.smartchip.co.kr/return_data_livephoto.asp?usedata=202550000229&nameorbibno=1975" },
