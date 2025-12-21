@@ -252,24 +252,40 @@ h1 {
 
 #filters {
 }
+#filters #reset-filters {
+    background-color: transparent;
+    border: none;
+    color: #388e3c;
+}
+#filters .div {
+    border-right: 1px solid silver;
+    margin: 0.5em;
+}
 #filters .filter {
     background-color: #fff;
     /* box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25); */
-    border-radius: 1em;
-    padding: 0.5em;
-    margin: 0.5em;
+    border-radius: 2em;
+    padding: 0.5em 0;
+    margin: 1em;
     cursor: pointer;
 }
 #filters input {
     display: none;
 }
+#filters button,
 #filters label {
     padding: 0.5em;
     cursor: pointer;
     border-radius: 2em;
 }
+#filters #reset-filters:hover,
+#filters label:hover {
+    background-color: #69f0ae;
+    transition: .125s;
+}
 #filters label:has(input:checked) {
-    background-color: #009688;
+    background-color: #00c853;
+    color: #fff;
 }
 
 #filters fieldset {
@@ -285,10 +301,15 @@ h1 {
 }
 
 #course-filter-container.disabled {
-    color: #666;
+    color: #aaa;
+    background-color: #ccc;
     pointer-events: none;
 }
 
+#filters .filter.disabled label:has(input:checked) {
+    color: #aaa;
+    background-color: #ccc;
+}
 #records-table {
     width: 100%;
     border-collapse: collapse;
@@ -304,6 +325,7 @@ h1 {
 #records-table thead {
     width: 100%;
     display: block;
+    margin: 1em 0;
 }
 #records-table thead tr {
     width: 100%;
@@ -329,7 +351,29 @@ h1 {
     row-gap: 1.5em;
     column-gap: 1.5em;
 }
-
+#records-table th.sort-asc:after,
+#records-table th.sort-desc:after {
+    color: #666;
+    content: "arrow_upward";
+    position: absolute;
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+    font-family: "Material Symbols Outlined";
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
+}
+#records-table th.sort-desc:after {
+    content: "arrow_downward";
+}
 #records-table th,
 #records-table td {
     /* border: 1px solid #333; */
@@ -559,7 +603,7 @@ h1 {
         height: calc(100% - 2em);
     }
     .track {
-        /* overflow: visible; */
+        overflow: visible;
         height: auto;
     }
     .marker-grid {

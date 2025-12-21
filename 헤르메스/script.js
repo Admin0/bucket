@@ -214,7 +214,7 @@ hermes.track = function () {
                                 // ? `${record.elevation} <span class="unit">m</span> <span class="unit">(${record.distance.toFixed(2)} km)</span>`
                                 : `${record.distance.toFixed(2)} <span class="unit">km</span>`;
                         const tooltip_type = record.isOfficial ? "공식 대회" : record.course === "trail" ? "하이킹 / 트레일러닝" : "러닝";
-                        const tooltip__icon_distance = record.course === "trail" ? "altitude" : "route";
+                        const tooltip__icon_distance = record.course === "trail" ? "altitude" : "conversion_path";
 
                         const tooltipContent = `
                         <div class="title-container">
@@ -401,7 +401,7 @@ hermes.table = function () {
                     // ? `${record.elevation} <span class="unit">m</span>`
                     ? `<span class="main">${record.elevation}<span class="unit"> m</span></span><span class="replace">${record.distance.toFixed(2)}<span class="unit"> km</span></span>`
                     : `${record.distance.toFixed(2)} <span class="unit"> km</span>`;
-            const icon_distance = record.course === "trail" ? `<span class="main">altitude</span><span class="replace">route</span>` : "route";
+            const icon_distance = record.course === "trail" ? `<span class="main">altitude</span><span class="replace">conversion_path</span>` : "conversion_path";
             const dateString = `w${getWeekNumber(record.dateObj)}`;
 
             row.innerHTML = `
