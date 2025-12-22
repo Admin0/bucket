@@ -211,8 +211,8 @@ hermes.track = function () {
                         const tooltipDistance =
                             record.course === "trail"
                                 ? `${record.elevation} <span class="unit">m</span>`
-                                // ? `${record.elevation} <span class="unit">m</span> <span class="unit">(${record.distance.toFixed(2)} km)</span>`
-                                : `${record.distance.toFixed(2)} <span class="unit">km</span>`;
+                                : // ? `${record.elevation} <span class="unit">m</span> <span class="unit">(${record.distance.toFixed(2)} km)</span>`
+                                  `${record.distance.toFixed(2)} <span class="unit">km</span>`;
                         const tooltip_type = record.isOfficial ? "공식 대회" : record.course === "trail" ? "하이킹 / 트레일러닝" : "러닝";
                         const tooltip__icon_distance = record.course === "trail" ? "altitude" : "conversion_path";
 
@@ -220,7 +220,7 @@ hermes.track = function () {
                         <div class="title-container">
                             <span class="type"> ${tooltip_type} </span> 
                             <span class="date">${record.date}</span>
-                            <div class="title">${record.title} ${record.isOfficial ? '<span class="material-symbols-outlined official"> crown </span>' : ""}</div> 
+                            <div class="title">${record.title} ${record.isOfficial ? '<span class="material-symbols official"> crown </span>' : ""}</div> 
                         </div>
                         <div class="data">
                             <span class="material-symbols-outlined icon distance"> ${tooltip__icon_distance} </span> <span class="distance">${tooltipDistance}</span> | 
@@ -231,13 +231,13 @@ hermes.track = function () {
                         marker.addEventListener("mouseover", (e) => {
                             let tooltip = document.getElementById("tooltip");
                             tooltip.innerHTML = tooltipContent;
-                            tooltip.style.display = "block";
-                            tooltip.style.left = e.pageX + 10 + "px";
-                            tooltip.style.top = e.pageY + 10 + "px";
+                            tooltip.classList.add('on');
+                            tooltip.style.left = marker.getBoundingClientRect().left + marker.getBoundingClientRect().width / 2 + "px";
+                            tooltip.style.top = marker.getBoundingClientRect().top + "px";
                             document.querySelector(`#records-table tr[data-record-id="${record.id}"]`)?.classList.add("highlight");
                         });
                         marker.addEventListener("mouseout", () => {
-                            document.getElementById("tooltip").style.display = "none";
+                            tooltip.classList.remove('on');
                             document.querySelector(`#records-table tr[data-record-id="${record.id}"]`)?.classList.remove("highlight");
                         });
 
@@ -332,7 +332,7 @@ hermes.table = function () {
             radio.name = "year";
             radio.value = year;
             label.appendChild(radio);
-            label.appendChild(document.createTextNode(` ${year}`));
+            label.appendChild(document.createTextNode(`${year}`));
             yearRadiosContainer.appendChild(label);
         });
     }
@@ -396,11 +396,10 @@ hermes.table = function () {
                 .padStart(2, "0");
             const paceString = paceToUse === Infinity || !paceToUse ? "-" : `${paceMinutes}'${paceSeconds}''<span class="unit">${paceUnit}</span>`;
 
-            const distanceDetail =
-            isTrail
-                    // ? `${record.elevation} <span class="unit">m</span>`
-                    ? `<span class="main">${record.elevation}<span class="unit"> m</span></span><span class="replace">${record.distance.toFixed(2)}<span class="unit"> km</span></span>`
-                    : `${record.distance.toFixed(2)} <span class="unit"> km</span>`;
+            const distanceDetail = isTrail
+                ? // ? `${record.elevation} <span class="unit">m</span>`
+                  `<span class="main">${record.elevation}<span class="unit"> m</span></span><span class="replace">${record.distance.toFixed(2)}<span class="unit"> km</span></span>`
+                : `${record.distance.toFixed(2)} <span class="unit"> km</span>`;
             const icon_distance = record.course === "trail" ? `<span class="main">altitude</span><span class="replace">conversion_path</span>` : "conversion_path";
             const dateString = `w${getWeekNumber(record.dateObj)}`;
 
@@ -408,7 +407,7 @@ hermes.table = function () {
                 <td class="course">${record.course}</td>
                 <td class="date"><span class="main">${record.date}</span><span class="replace">${dateString}</span></td>
                 <td class="title">${record.title}</td>
-                <td class="isOfficial">${record.isOfficial ?  '<span class="material-symbols-outlined icon"> crown </span>'  : ""}</td>
+                <td class="isOfficial">${record.isOfficial ? '<span class="material-symbols icon"> crown </span>' : ""}</td>
                 <td class="distance"><span class="material-symbols-outlined icon distance"> ${icon_distance} </span>${distanceDetail} </td>
                 <td class="record"><span class="material-symbols-outlined icon record"> timer </span>${record.record} </td>
                 <td class="pace"><span class="material-symbols-outlined icon pace"> speed </span>${paceString}</td>
