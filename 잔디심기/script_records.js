@@ -73,11 +73,19 @@ const hermes_records = [
     { date: "2025-01-26", distance: 5.01, record: "00:29:46", title: "신정호" },
 
     // unofficial 2025 trail
+    { date: "2025-12-27", distance: 5.35, elevation: 634, record: "02:06:59", title: "황석산" },
+    { date: "2025-12-27", distance: 6.48, elevation: 484, record: "01:39:30", title: "장안산" },
+    { date: "2025-12-25", distance: 2.66, elevation: 313, record: "01:01:34", title: "팔영산" },
+    { date: "2025-12-25", distance: 4.09, elevation: 449, record: "01:27:10", title: "천관산" },
+    { date: "2025-12-24", distance: 1.87, elevation: 271, record: "01:12:44", title: "덕룡산" },
+    { date: "2025-12-24", distance: 2.90, elevation: 351, record: "01:15:45", title: "달마산" },
+    { date: "2025-12-24", distance: 6.77, elevation: 685, record: "02:22:30", title: "두륜산" },
+    { date: "2025-12-23", distance: 9.81 , elevation: 800, record: "02:47:47", title: "월출산" },
     { date: "2025-12-12", distance: 3.74, elevation: 362, record: "01:14:44", title: "배방산" },
     { date: "2025-12-06", distance: 3.56, elevation: 173, record: "01:03:23", title: "봉서산" },
 
     { date: "2025-11-30", distance: 10.0, elevation: 742, record: "02:27:32", title: "백암산" },
-    // { date: "2025-11-16", distance: 7.36, elevation: 330, record: "01:58:36", title: "재약산" },
+    { date: "2025-11-16", distance: 7.36, elevation: 330, record: "01:58:36", title: "재약산" },
     { date: "2025-11-15", distance: 11.15, elevation: 1055, record: "03:58:36", title: "신불산" },
     { date: "2025-11-14", distance: 5.8, elevation: 672, record: "01:57:07", title: "금오산" },
     { date: "2025-11-01", distance: 7.5, elevation: 821, record: "03:20:00", title: "삼악산" },
@@ -100,11 +108,11 @@ const hermes_records = [
     { date: "2025-07-26", distance: 4.87, elevation: 385, record: "01:29:27", title: "배방산" },
     { date: "2025-07-06", distance: 3.68, elevation: 150, record: "01:15:07", title: "봉서산" },
 
-    // { date: "2025-06-29", distance: 3.46, elevation: 293, record: "01:28:51", title: "배방산" },
+    { date: "2025-06-29", distance: 3.46, elevation: 293, record: "01:28:51", title: "배방산" },
     { date: "2025-06-27", distance: 6.75, elevation: 645, record: "02:33:54", title: "천마산" },
     { date: "2025-06-21", distance: 8.38, elevation: 543, record: "02:25:23", title: "소요산" },
     { date: "2025-06-15", distance: 4.59, elevation: 218, record: "01:25:27", title: "영인산" },
-    // { date: "2025-06-08", distance: 6.77, elevation: 312, record: "01:42:49", title: "선운산" },
+    { date: "2025-06-08", distance: 6.77, elevation: 312, record: "01:42:49", title: "선운산" },
     { date: "2025-06-06", distance: 7.26, elevation: 545, record: "03:22:04", title: "관악산" },
     
     { date: "2025-05-31", distance: 11.68, elevation: 690, record: "03:54:34", title: "수락산" },

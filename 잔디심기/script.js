@@ -2,6 +2,14 @@ const hermes = {};
 
 hermes.records = hermes_records;
 
+hermes.courseCategories = {
+    "track-full": { course: "full", type: "run" },
+    "track-half": { course: "half", type: "run" },
+    "track-10k": { course: "10k", type: "run" },
+    "track-5k": { course: "5k", type: "run" },
+    "track-trail": { type: "trail" },
+};
+
 function getWeekNumber(d) {
     d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
     d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
@@ -83,19 +91,11 @@ hermes.track = function () {
     const startYear = years.length > 0 ? Math.min(...years) : new Date().getFullYear();
     const endYear = years.length > 0 ? Math.max(...years) : new Date().getFullYear();
 
-    const courseCategories = {
-        "track-full": { course: "full", type: "run" },
-        "track-half": { course: "half", type: "run" },
-        "track-10k": { course: "10k", type: "run" },
-        "track-5k": { course: "5k", type: "run" },
-        "track-trail": { type: "trail" },
-    };
-
     function renderTracks() {
         const trailFilterValue = document.querySelector('input[name="trail-filter"]:checked').value;
 
-        for (const trackId in courseCategories) {
-            const category = courseCategories[trackId];
+        for (const trackId in hermes.courseCategories) {
+            const category = hermes.courseCategories[trackId];
             const element = document.getElementById(trackId);
             if (!element) continue;
 
@@ -112,22 +112,11 @@ hermes.track = function () {
             if (category.type === "trail") {
                 if (categoryRecords.length > 0) {
                     let bestRecord;
-                    let higherIsBetter = false;
                     switch (trailFilterValue) {
-                        case "elevation":
-                            bestRecord = categoryRecords.reduce((best, cur) => (cur.elevation > best.elevation ? cur : best));
-                            higherIsBetter = true;
-                            break;
-                        case "elevation_pace":
-                            bestRecord = categoryRecords.reduce((best, cur) => (cur.elevation_pace < best.elevation_pace ? cur : best));
-                            break;
-                        case "distance":
-                            bestRecord = categoryRecords.reduce((best, cur) => (cur.distance > best.distance ? cur : best));
-                            higherIsBetter = true;
-                            break;
-                        case "distance_pace":
-                            bestRecord = categoryRecords.reduce((best, cur) => (cur.distance_pace < best.distance_pace ? cur : best));
-                            break;
+                        case "elevation": bestRecord = categoryRecords.reduce((best, cur) => (cur.elevation > best.elevation ? cur : best)); break;
+                        case "elevation_pace": bestRecord = categoryRecords.reduce((best, cur) => (cur.elevation_pace < best.elevation_pace ? cur : best)); break;
+                        case "distance": bestRecord = categoryRecords.reduce((best, cur) => (cur.distance > best.distance ? cur : best)); break;
+                        case "distance_pace": bestRecord = categoryRecords.reduce((best, cur) => (cur.distance_pace < best.distance_pace ? cur : best)); break;
                     }
 
                     if (bestRecord) {
@@ -142,9 +131,7 @@ hermes.track = function () {
                             unit = "/km";
                         }
                         const paceMinutes = Math.floor(pace / 60);
-                        const paceSeconds = Math.floor(pace % 60)
-                            .toString()
-                            .padStart(2, "0");
+                        const paceSeconds = Math.floor(pace % 60).toString().padStart(2, "0");
 
                         const p = document.createElement("p");
                         p.className = `best-record ${bestRecord.isOfficial ? "official" : "unofficial"}`;
@@ -189,100 +176,89 @@ hermes.track = function () {
                 const markerGrid = document.createElement("div");
                 markerGrid.className = "marker-grid";
 
-                const weeklyRecords = new Array(52).fill(null);
+                const weeklyRecords = new Array(52).fill(null).map(() => []);
                 yearRecords.forEach((record) => {
                     const week = getWeekNumber(record.dateObj);
                     if (week >= 1 && week <= 52) {
-                        if (!weeklyRecords[week - 1] || record.isOfficial) weeklyRecords[week - 1] = record;
+                        weeklyRecords[week - 1].push(record);
                     }
                 });
 
                 for (let i = 0; i < 52; i++) {
                     const marker = document.createElement("div");
+                    const weekNumber = 52 - i;
                     marker.className = "marker";
-                    const record = weeklyRecords[51 - i];
-                    if (record) {
-                        marker.dataset.recordId = record.id;
-                        marker.classList.add("has-record", record.isOfficial ? "official" : "unofficial");
+                    marker.dataset.year = year;
+                    marker.dataset.week = weekNumber;
 
-                        const tooltipPace = `${Math.floor(record.pace / 60)}'${Math.floor(record.pace % 60)}"${
-                            record.course === "trail" ? '<span class="unit">/60 m↑</span>' : '<span class="unit">/km</span>'
-                        }`;
-                        const tooltipDistance =
-                            record.course === "trail"
-                                ? `${record.elevation} <span class="unit">m</span>`
-                                : // ? `${record.elevation} <span class="unit">m</span> <span class="unit">(${record.distance.toFixed(2)} km)</span>`
-                                  `${record.distance.toFixed(2)} <span class="unit">km</span>`;
-                        const tooltip_type = record.isOfficial ? "공식 대회" : record.course === "trail" ? "하이킹 / 트레일러닝" : "러닝";
-                        const tooltip__icon_distance = record.course === "trail" ? "altitude" : "conversion_path";
+                    const recordsForWeek = weeklyRecords[weekNumber - 1];
+                    if (recordsForWeek && recordsForWeek.length > 0) {
+                        const representativeRecord = recordsForWeek.find(r => r.isOfficial) || recordsForWeek[0];
+                        
+                        marker.dataset.recordIds = JSON.stringify(recordsForWeek.map(r => r.id));
+                        marker.classList.add("has-record");
+                        if (recordsForWeek.some(r => r.isOfficial)) {
+                            marker.classList.add("official");
+                        } else {
+                            marker.classList.add("unofficial");
+                        }
+                        
+                        let tooltipContent = '';
+                        recordsForWeek.forEach(record => {
+                            const tooltipPace = `${Math.floor(record.pace / 60)}'${Math.floor(record.pace % 60)}"${record.course === "trail" ? '<span class="unit">/60 m↑</span>' : '<span class="unit">/km</span>'}`;
+                            const tooltipDistance = record.course === "trail" ? `${record.elevation} <span class="unit">m</span>` : `${record.distance.toFixed(2)} <span class="unit">km</span>`;
+                            const tooltip_type = record.isOfficial ? "공식 대회" : record.course === "trail" ? "하이킹 / 트레일러닝" : "러닝";
+                            const tooltip__icon_distance = record.course === "trail" ? "altitude" : "conversion_path";
 
-                        const tooltipContent = `
-                        <div class="title-container">
-                            <span class="type"> ${tooltip_type} </span> 
-                            <span class="date">${record.date}</span>
-                            <div class="title">${record.title} ${record.isOfficial ? '<span class="material-symbols official"> crown </span>' : ""}</div> 
-                        </div>
-                        <div class="data">
-                            <span class="material-symbols-outlined icon distance"> ${tooltip__icon_distance} </span> <span class="distance">${tooltipDistance}</span> | 
-                            <span class="material-symbols-outlined icon record"> timer </span> <span class="record">${record.record}</span> | 
-                            <span class="material-symbols-outlined icon pace"> speed </span> <span class="pace">${tooltipPace}</span>
-                        </div>`;
+                            tooltipContent += `
+                            <div class="tooltip-item">
+                                <div class="title-container">
+                                    <span class="type"> ${tooltip_type} </span> 
+                                    <span class="date">${record.date}</span>
+                                    <div class="title">${record.title} ${record.isOfficial ? '<span class="material-symbols official"> crown </span>' : ""}</div> 
+                                </div>
+                                <div class="data">
+                                    <span class="material-symbols-outlined icon distance"> ${tooltip__icon_distance} </span> <span class="distance">${tooltipDistance}</span> | 
+                                    <span class="material-symbols-outlined icon record"> timer </span> <span class="record">${record.record}</span> | 
+                                    <span class="material-symbols-outlined icon pace"> speed </span> <span class="pace">${tooltipPace}</span>
+                                </div>
+                            </div>`;
+                        });
+
 
                         marker.addEventListener("mouseover", (e) => {
                             let tooltip = document.getElementById("tooltip");
                             tooltip.innerHTML = tooltipContent;
                             tooltip.classList.add('on');
                             tooltip.style.left = marker.getBoundingClientRect().left + marker.getBoundingClientRect().width / 2 + "px";
-                            tooltip.style.top = marker.getBoundingClientRect().top + "px";
-                            document.querySelector(`#records-table tr[data-record-id="${record.id}"]`)?.classList.add("highlight");
+                            tooltip.style.top = marker.getBoundingClientRect().top + window.scrollY + "px";
+                            const recordIds = JSON.parse(marker.dataset.recordIds);
+                            recordIds.forEach(id => {
+                                document.querySelector(`#records-table tr[data-record-id="${id}"]`)?.classList.add("highlight");
+                            });
                         });
+
                         marker.addEventListener("mouseout", () => {
                             tooltip.classList.remove('on');
-                            document.querySelector(`#records-table tr[data-record-id="${record.id}"]`)?.classList.remove("highlight");
+                            const recordIds = JSON.parse(marker.dataset.recordIds);
+                            recordIds.forEach(id => {
+                                document.querySelector(`#records-table tr[data-record-id="${id}"]`)?.classList.remove("highlight");
+                            });
                         });
 
                         let colorValue = 0.5;
+                        const record = representativeRecord;
 
                         if (record.course === "trail") {
-                            let value,
-                                min,
-                                max,
-                                limit,
-                                higherIsBetter = false;
-
+                            let value, min, max, limit, higherIsBetter = false;
                             switch (trailFilterValue) {
-                                case "elevation":
-                                    value = record.elevation;
-                                    min = hermes.trailStats.minElevation;
-                                    max = hermes.trailStats.maxElevation;
-                                    higherIsBetter = true;
-                                    break;
-                                case "elevation_pace":
-                                    value = record.elevation_pace;
-                                    min = hermes.trailStats.minElevationPace;
-                                    max = hermes.trailStats.maxElevationPace;
-                                    limit = limitElevationPace;
-                                    break;
-                                case "distance":
-                                    value = record.distance;
-                                    min = hermes.trailStats.minDistance;
-                                    max = hermes.trailStats.maxDistance;
-                                    higherIsBetter = true;
-                                    break;
-                                case "distance_pace":
-                                    value = record.distance_pace;
-                                    min = hermes.trailStats.minDistancePace;
-                                    max = hermes.trailStats.maxDistancePace;
-                                    limit = limitTrailDistancePace;
-                                    break;
+                                case "elevation": value = record.elevation; min = hermes.trailStats.minElevation; max = hermes.trailStats.maxElevation; higherIsBetter = true; break;
+                                case "elevation_pace": value = record.elevation_pace; min = hermes.trailStats.minElevationPace; max = hermes.trailStats.maxElevationPace; limit = limitElevationPace; break;
+                                case "distance": value = record.distance; min = hermes.trailStats.minDistance; max = hermes.trailStats.maxDistance; higherIsBetter = true; break;
+                                case "distance_pace": value = record.distance_pace; min = hermes.trailStats.minDistancePace; max = hermes.trailStats.maxDistancePace; limit = limitTrailDistancePace; break;
                             }
-
                             if (limit) value = Math.min(value, limit);
-
-                            if (max > min) {
-                                colorValue = (value - min) / (max - min);
-                                if (!higherIsBetter) colorValue = 1 - colorValue;
-                            }
+                            if (max > min) { colorValue = (value - min) / (max - min); if (!higherIsBetter) colorValue = 1 - colorValue; }
                         } else if (record.pace !== Infinity && maxPace > minPace) {
                             colorValue = (Math.min(record.pace, limitPace) - minPace) / (maxPace - minPace);
                             colorValue = 1 - colorValue;
@@ -293,7 +269,7 @@ hermes.track = function () {
                         const b = Math.round(startColor[2] * colorValue + endColor[2] * (1 - colorValue));
                         marker.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
                     }
-                    marker.textContent = `${52 - i}`;
+                    marker.textContent = `${weekNumber}`;
                     markerGrid.appendChild(marker);
                 }
                 yearMarkerContainer.appendChild(markerGrid);
@@ -338,6 +314,16 @@ hermes.table = function () {
     }
     document.querySelectorAll('input[name="year"]').forEach((radio) => radio.addEventListener("change", filterAndRender));
 
+    function setDefaultYearFilter() {
+        const currentYear = new Date().getFullYear();
+        const currentYearRadio = document.querySelector(`input[name="year"][value="${currentYear}"]`);
+        if (currentYearRadio) {
+            currentYearRadio.checked = true;
+        } else {
+            document.querySelector('input[name="year"][value="all"]').checked = true;
+        }
+    }
+
     function toggleCourseFilter(disabled) {
         courseFilterContainer.classList.toggle("disabled", disabled);
         courseRadios.forEach((radio) => (radio.disabled = disabled));
@@ -367,14 +353,8 @@ hermes.table = function () {
             let valA = a[key];
             let valB = b[key];
 
-            if (key === "date") {
-                valA = a.dateObj;
-                valB = b.dateObj;
-            }
-            if (key === "distance") {
-                valA = a.course === "trail" ? a.elevation : a.distance;
-                valB = b.course === "trail" ? b.elevation : b.distance;
-            }
+            if (key === "date") { valA = a.dateObj; valB = b.dateObj; }
+            if (key === "distance") { valA = a.course === "trail" ? a.elevation : a.distance; valB = b.course === "trail" ? b.elevation : b.distance; }
 
             if (valA < valB) return currentSort.direction === "asc" ? -1 : 1;
             if (valA > valB) return currentSort.direction === "asc" ? 1 : -1;
@@ -387,19 +367,17 @@ hermes.table = function () {
             row.dataset.recordId = record.id;
             row.classList.add(record.course);
 
+            const recordYear = record.dateObj.getFullYear();
+            const recordWeek = getWeekNumber(record.dateObj);
+            
             const isTrail = record.course === "trail";
             const paceToUse = isTrail ? record.elevation_pace : record.pace;
             const paceUnit = isTrail ? "/60 m↑" : "/km";
             const paceMinutes = Math.floor(paceToUse / 60);
-            const paceSeconds = Math.floor(paceToUse % 60)
-                .toString()
-                .padStart(2, "0");
+            const paceSeconds = Math.floor(paceToUse % 60).toString().padStart(2, "0");
             const paceString = paceToUse === Infinity || !paceToUse ? "-" : `${paceMinutes}'${paceSeconds}''<span class="unit">${paceUnit}</span>`;
 
-            const distanceDetail = isTrail
-                ? // ? `${record.elevation} <span class="unit">m</span>`
-                  `<span class="main">${record.elevation}<span class="unit"> m</span></span><span class="replace">${record.distance.toFixed(2)}<span class="unit"> km</span></span>`
-                : `${record.distance.toFixed(2)} <span class="unit"> km</span>`;
+            const distanceDetail = isTrail ? `<span class="main">${record.elevation}<span class="unit"> m</span></span><span class="replace">${record.distance.toFixed(2)}<span class="unit"> km</span></span>` : `${record.distance.toFixed(2)} <span class="unit"> km</span>`;
             const icon_distance = record.course === "trail" ? `<span class="main">altitude</span><span class="replace">conversion_path</span>` : "conversion_path";
             const dateString = `w${getWeekNumber(record.dateObj)}`;
 
@@ -413,8 +391,28 @@ hermes.table = function () {
                 <td class="pace"><span class="material-symbols-outlined icon pace"> speed </span>${paceString}</td>
             `;
 
-            row.addEventListener("mouseover", () => document.querySelector(`.marker[data-record-id="${record.id}"]`)?.classList.add("highlight"));
-            row.addEventListener("mouseout", () => document.querySelector(`.marker[data-record-id="${record.id}"]`)?.classList.remove("highlight"));
+            row.addEventListener("mouseover", () => {
+                const courseType = record.course === "trail" ? "trail" : record.course;
+                const trackId = Object.keys(hermes.courseCategories).find(key => {
+                    const category = hermes.courseCategories[key];
+                    return category.type === 'trail' && courseType === 'trail' || category.course === courseType;
+                });
+                if (trackId) {
+                    const marker = document.querySelector(`#${trackId} .marker[data-year="${recordYear}"][data-week="${recordWeek}"]`);
+                    marker?.classList.add("highlight");
+                }
+            });
+            row.addEventListener("mouseout", () => {
+                 const courseType = record.course === "trail" ? "trail" : record.course;
+                 const trackId = Object.keys(hermes.courseCategories).find(key => {
+                    const category = hermes.courseCategories[key];
+                    return category.type === 'trail' && courseType === 'trail' || category.course === courseType;
+                });
+                if (trackId) {
+                    const marker = document.querySelector(`#${trackId} .marker[data-year="${recordYear}"][data-week="${recordWeek}"]`);
+                    marker?.classList.remove("highlight");
+                }
+            });
             tableBody.appendChild(row);
         });
     }
@@ -444,7 +442,7 @@ hermes.table = function () {
         resetButton.addEventListener("click", () => {
             document.querySelector('input[name="type"][value="all"]').checked = true;
             document.querySelector('input[name="course"][value="all"]').checked = true;
-            document.querySelector('input[name="year"][value="all"]').checked = true;
+            setDefaultYearFilter();
             toggleCourseFilter(false);
             currentSort = { key: "date", direction: "desc" };
             tableHeaders.forEach((th) => th.classList.remove("sort-asc", "sort-desc"));
@@ -453,6 +451,7 @@ hermes.table = function () {
         });
     }
 
+    setDefaultYearFilter();
     document.querySelector('th[data-sort="date"]').classList.add("sort-desc");
     filterAndRender();
 };
