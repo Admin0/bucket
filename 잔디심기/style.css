@@ -20,6 +20,7 @@ body {
     /* --width--track-width: 1280px; */
     --width--track-width: 1280px;
     --width--table-width: 85vw;
+    --margin--table-top: 33em;
 
     font-family: sans-serif;
     background-color: #eee;
@@ -249,9 +250,10 @@ h1 {
     width: calc(100% - 4em);
     background: var(--color--scoreboard-bg);
     padding: 2em;
+    margin-top: calc(var(--margin--table-top) * -1);
     /* height: fit-content; */
-    position: absolute;
-    top: 70em;
+    /* position: absolute; */
+    /* top: 70em; */
 }
 
 #filters {
@@ -441,8 +443,8 @@ h1 {
 #records-table tr {
     display: block;
     position: relative;
-    width: calc(100% - 2em);
-    padding: 1em;
+    width: calc(100% - 3em);
+    padding: 1.5em;
     border-radius: 1em;
     background: var(--color--track);
     transition: 0.25s, transform 0.05s;
@@ -464,8 +466,8 @@ h1 {
     /* background: rgba(0, 0, 0, 0.8); */
     background: rgb(238, 238, 238, 0.98);
     box-shadow: 0 5px 11px rgba(0, 0, 0, 0.25);
-    padding: 1em;
-    border-radius: 1em;
+    padding: 1.5em;
+    border-radius: 1.5em;
     pointer-events: none;
     z-index: 1000;
     /* color: var(--color--scoreboard-header); */
@@ -481,7 +483,7 @@ h1 {
 
 #tooltip .tooltip-item:not(:last-of-type) {
     border-bottom: 1px solid silver;
-    padding-bottom: 2em;
+    padding-bottom: 1.5em;
     margin-bottom: 1em;
 }
 
@@ -579,12 +581,21 @@ footer a:not(.o) {
     color: #757575;
 }
 
+/* track dynamic */
+
+@media screen and (max-width: calc(1280px + 8.125em)) {
+    #table-container {
+        margin-top: calc(-100vw + var(--margin--table-top) + 20em);
+    }
+}
+
 /* 4K */
 
 @media screen and (min-width: 1440px) {
     #table-container {
-        width: var(--width--table-width);
-        margin: 0 calc((100vw - var(--width--table-width)) / 2);
+        width: calc(var(--width--table-width) - 1em);
+        margin-left: calc((100vw - var(--width--table-width)) / 2);
+        margin-right: calc((100vw - var(--width--table-width)) / 2);
     }
 }
 
@@ -642,11 +653,22 @@ footer a:not(.o) {
     .track-lane:not(:only-child):after {
         border-right: 1px solid var(--color--track-border);
     }
+    .track-lane:hover:not(:last-of-type):after {
+        opacity: 1;
+    }
 
+    .racetrack h2 {
+    }
     .track {
         overflow: visible;
         height: auto;
     }
+
+    .track-lane:not(:first-of-type) .year-label ,
+    .track#track-trail .year-label {
+        opacity: 0;
+    }
+
     .marker-grid {
         gap: 0;
     }
@@ -698,7 +720,7 @@ footer a:not(.o) {
         transform: none;
     }
     #tooltip .data {
-        width: calc(100% - 2em);
+        width: calc(100% - 3em);
         display: flex;
         justify-content: space-evenly;
     }

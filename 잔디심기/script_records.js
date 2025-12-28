@@ -28,7 +28,7 @@ const hermes_records = [
     { date: "2025-10-21", distance: 5.33, record: "00:29:29", title: "장항선구철도길 이런저런" },
     { date: "2025-10-18", distance: 6.2, record: "00:34:50", title: "신정호 등산화런" },
     { date: "2025-10-07", distance: 5.03, record: "00:24:44", title: "신정호 추석냠냠반성런" },
-    { date: "2025-10-03", distance: 7.16, record: "01:29:06", title: "알틴-아라산 승마런 (키르기스스탄)"},
+    // { date: "2025-10-03", distance: 7.16, record: "01:29:06", title: "알틴-아라산 승마런 (키르기스스탄)"},
 
     { date: "2025-09-26", distance: 5.95, record: "00:32:40", title: "이순신종합운동장 판다러버런" },
     { date: "2025-09-23", distance: 5.78, record: "00:29:52", title: "장항선구철도길 이런저런" },
@@ -73,6 +73,7 @@ const hermes_records = [
     { date: "2025-01-26", distance: 5.01, record: "00:29:46", title: "신정호" },
 
     // unofficial 2025 trail
+    { date: "2025-12-28", distance: 3.47, elevation: 314, record: "01:46:44", title: "배방산" },
     { date: "2025-12-27", distance: 5.35, elevation: 634, record: "02:06:59", title: "황석산" },
     { date: "2025-12-27", distance: 6.48, elevation: 484, record: "01:39:30", title: "장안산" },
     { date: "2025-12-25", distance: 2.66, elevation: 313, record: "01:01:34", title: "팔영산" },
@@ -80,7 +81,7 @@ const hermes_records = [
     { date: "2025-12-24", distance: 1.87, elevation: 271, record: "01:12:44", title: "덕룡산" },
     { date: "2025-12-24", distance: 2.90, elevation: 351, record: "01:15:45", title: "달마산" },
     { date: "2025-12-24", distance: 6.77, elevation: 685, record: "02:22:30", title: "두륜산" },
-    { date: "2025-12-23", distance: 9.81 , elevation: 800, record: "02:47:47", title: "월출산" },
+    { date: "2025-12-23", distance: 9.81, elevation: 800, record: "02:47:47", title: "월출산" },
     { date: "2025-12-12", distance: 3.74, elevation: 362, record: "01:14:44", title: "배방산" },
     { date: "2025-12-06", distance: 3.56, elevation: 173, record: "01:03:23", title: "봉서산" },
 
