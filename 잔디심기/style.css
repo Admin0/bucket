@@ -23,28 +23,28 @@ body {
     --margin--table-top: 33em;
 
     font-family: sans-serif;
-    background-color: #eee;
-    color: #333;
+    color: var(--color--scoreboard-text);
+    background-color: var(--color--background);
     margin: 0;
     overflow-x: hidden;
 }
 
 h1 {
     text-align: center;
-    color: #333;
+    color: var(--color--scoreboard-text);
     margin: 5em 0;
 }
 
 #main-container {
     display: flex;
     gap: 2em;
-    /* padding: 2em; */
+    padding: 1em;
     justify-content: center;
     transform: rotate(-90deg) translateX(-100%) translateY(calc((100vw - 100%) / 2 - 0.5em));
     transform-origin: 0 0;
     height: calc(100vw - 5em);
     max-height: var(--width--track-width);
-    max-width: fit-content;
+    width: fit-content;
 }
 
 .racetrack {
@@ -68,7 +68,7 @@ h1 {
     /* border-right: 1px solid var(--color--track-border); */
     /* border-top: 10px solid var(--color--track-border); */
     transition: background-color 0.25s, box-shadow 0.25s, transform 0.05s;
-    background-color: #fff;
+    background-color: var(--color--track);
 }
 
 .track-lane:hover {
@@ -268,7 +268,7 @@ h1 {
     margin: 0.5em;
 }
 #filters .filter {
-    background-color: #fff;
+    /* background-color: #fff; */
     /* box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25); */
     border-radius: 2em;
     padding: 0.5em 0;
@@ -291,11 +291,11 @@ h1 {
 }
 #filters label:has(input:checked) {
     background-color: #00c853;
-    color: #fff;
+    color: var(--color--track);
 }
 
 #filters fieldset {
-    background-color: #fff;
+    background-color: var(--color--track);
     /* box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25); */
     border-radius: 1em;
     border: none;
@@ -307,14 +307,14 @@ h1 {
 }
 
 #course-filter-container.disabled {
-    color: #aaa;
-    background-color: #ccc;
+    color: var(--color--track-border);
+    background-color: var(--color--track-dark);
     pointer-events: none;
 }
 
 #filters .filter.disabled label:has(input:checked) {
-    color: #aaa;
-    background-color: #ccc;
+    color: var(--color--track-border);
+    background-color: var(--color--track-dark);
 }
 #records-table {
     width: 100%;
@@ -558,8 +558,8 @@ footer {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    color: #9e9e9e;
-    background-color: #f5f5f5;
+    color: var(--color--track-text);
+    background-color: var(--color--track-dark);
 }
 footer .i {
     margin: 0 1em;
@@ -578,14 +578,14 @@ footer a {
 }
 footer a:not(.o) {
     font-weight: bold;
-    color: #757575;
+    color: var(--color--track-text);
 }
 
 /* track dynamic */
 
-@media screen and (max-width: calc(1280px + 8.125em)) {
+@media screen and (max-width: calc(1280px + 5em)) {
     #table-container {
-        margin-top: calc(-100vw + var(--margin--table-top) + 20em);
+        margin-top: calc(-100vw + var(--margin--table-top) + 19em);
     }
 }
 
@@ -604,11 +604,12 @@ footer a:not(.o) {
 @media screen and (max-width: 600px) {
     body {
         overflow: auto;
-        padding-bottom: 12em;
+        /* padding-bottom: 12em; */
     }
     h1 {
         padding: 0 5vw;
         text-align: left;
+        font-size: 1.5em;
     }
     h2 {
         font-size: 1em;
@@ -635,9 +636,9 @@ footer a:not(.o) {
     }
 
     .track-lane {
-        padding: 2vw;
+        padding: 0.5em;
         height: fit-content;
-        width: calc((100vw - 10vw) / 5 - 4vw);
+        width: calc((100vw - 2.5em) / 5 - 1.5em);
         border-radius: 0;
         background: transparent;
     }
@@ -664,7 +665,7 @@ footer a:not(.o) {
         height: auto;
     }
 
-    .track-lane:not(:first-of-type) .year-label ,
+    .track-lane:not(:first-of-type) .year-label,
     .track#track-trail .year-label {
         opacity: 0;
     }

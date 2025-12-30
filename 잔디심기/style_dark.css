@@ -1,0 +1,19 @@
+@media (prefers-color-scheme: dark) {
+    body {
+        --color--background: #151515;
+        --color--track: #292929;
+        --color--track-dark: #444;
+        --color--track-border: #6a6a6a;
+        --color--track-border2: #aaa;
+        --color--track-text: #e1dfdf;
+
+        --color--scoreboard-bg: transparent;
+        --color--scoreboard-text: #e1dfdf;
+        --color--scoreboard-header: #e1dfdf;
+    }
+
+    footer img {
+        opacity: inherit;
+        filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7150%) hue-rotate(2deg) brightness(119%) contrast(96%);
+    }
+}
