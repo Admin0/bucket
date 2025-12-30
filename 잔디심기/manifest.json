@@ -1,0 +1,16 @@
+{
+    "short_name": "#잔디심기",
+    "name": "#잔디심기",
+    "icons": [
+        {
+            "src": "imgs/icon-512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "start_url": ".",
+    "background_color": "#fff",
+    "display": "standalone",
+    "scope": ".",
+    "theme_color": "#fff"
+}

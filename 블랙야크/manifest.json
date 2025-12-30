@@ -1,0 +1,16 @@
+{
+    "short_name": "#블랙야크",
+    "name": "#블랙야크",
+    "icons": [
+        {
+            "src": "imgs/icon-512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "start_url": "/bucket/블랙야크/",
+    "background_color": "#fff",
+    "display": "standalone",
+    "scope": "/bucket/블랙야크/",
+    "theme_color": "#fff"
+}
