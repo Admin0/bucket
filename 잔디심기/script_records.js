@@ -11,6 +11,9 @@ const hermes_records = [
 
     // { date: "2023-12-12", course: "trail", distance: 3.74, elevation: 362, record: "01:14:44", title: "배방산" }, // 트레일 러닝 대회 더미
 
+    // unofficial 2026 run
+    { date: "2025-12-31", distance: 6.16, record: "00:36:38", title: "장항선구철도길" },
+
     // unofficial 2025 run
     { date: "2025-12-21", distance: 5.01, record: "00:27:40", title: "장항선구철도길" },
     { date: "2025-12-18", distance: 10.01, record: "00:56:56", title: "장항선구철도길 이런저런" },
