@@ -7,7 +7,7 @@
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
         <link rel="stylesheet" href="style.css" />
         <link rel="stylesheet" type="text/css" href="style_dark.css" />
-        <link rel="manifest" href="manifest.json">
+        <link rel="manifest" href="manifest.json" />
         <script src="script_records.js"></script>
         <script src="script_gpxparser.js"></script>
         <script src="script.js"></script>
@@ -15,7 +15,9 @@
 
     <body>
         <div id="title">
-            <h1>#잔디심기<span class="unit" style="font-style: italic;">: 액티비티 <span title="커밋 더 프로그와 함깨해도 좋습니다">커밋</span> & <span title="Push to the limit">푸시</span></span></h1>
+            <h1>
+                #잔디심기<span class="unit" style="font-style: italic">: 액티비티 <span title="커밋 더 프로그와 함깨해도 좋습니다">커밋</span> & <span title="Push to the limit">푸시</span></span>
+            </h1>
         </div>
 
         <div id="main-container">
@@ -44,16 +46,14 @@
             <div class="racetrack">
                 <div class="track-lane">
                     <h2>TRAIL</h2>
-                    <div id="trail-track-container">
-                        <div id="trail-filter-container">
-                            <label><input type="radio" name="trail-filter" value="elevation" checked /> m ↑</label>
-                            <label><input type="radio" name="trail-filter" value="elevation_pace" /> /m ↑</label>
-                            <label><input type="radio" name="trail-filter" value="distance" /> km</label>
-                            <label><input type="radio" name="trail-filter" value="distance_pace" /> /km</label>
-                        </div>
-                        <div class="best-record-container"></div>
-                        <div class="track" id="track-trail"></div>
+                    <div id="trail-filter-container">
+                        <label><input type="radio" name="trail-filter" value="elevation" checked /> m ↑</label>
+                        <label><input type="radio" name="trail-filter" value="elevation_pace" /> /m ↑</label>
+                        <label><input type="radio" name="trail-filter" value="distance" /> km</label>
+                        <label><input type="radio" name="trail-filter" value="distance_pace" /> /km</label>
                     </div>
+                    <div class="best-record-container"></div>
+                    <div class="track" id="track-trail"></div>
                 </div>
             </div>
         </div>
@@ -102,7 +102,7 @@
 
         <footer>
             <a href="//www.instagram.com/jinh.kr/" class="i o" title="러닝개굴의 본체 인스타그램 바로가기">
-                <img style="opacity: .65;" src="../img/icon_instragram.svg" alt="">
+                <img style="opacity: 0.65" src="../img/icon_instragram.svg" alt="" />
             </a>
             <a href="//jinh.kr/bucket/#잔디심기" class="i" title="상위 프로젝트: 버킷리스트">#버킷리스트</a>
             <a href="//jinh.kr/bucket/블랙야크/" class="i" title="자매 프로젝트: 블랙야크">/블랙야크/</a>

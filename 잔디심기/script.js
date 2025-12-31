@@ -10,12 +10,12 @@ hermes.courseCategories = {
     "track-trail": { type: "trail" },
 };
 
-function getWeekNumber(d) {
+function getWeekInfo(d) {
     d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
     d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-    var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-    var weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
-    return weekNo;
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    const weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
+    return { year: d.getUTCFullYear(), week: weekNo };
 }
 
 hermes.track = function () {
@@ -40,6 +40,8 @@ hermes.track = function () {
             if (distance > 0) distance_pace = time / distance;
         }
 
+        const dateObj = new Date(record.date);
+
         return {
             ...record,
             id: index,
@@ -51,7 +53,8 @@ hermes.track = function () {
             elevation_pace: isTrail ? elevation_pace : distance > 0 ? time / distance : Infinity,
             distance_pace,
             course: record.course || (isTrail ? "trail" : distance >= 42.195 ? "full" : distance >= 21.0975 ? "half" : distance >= 10 ? "10k" : "5k"),
-            dateObj: new Date(record.date),
+            dateObj: dateObj,
+            weekInfo: getWeekInfo(dateObj),
         };
     });
 
@@ -87,7 +90,7 @@ hermes.track = function () {
     const startColor = [0, 255, 127]; // SpringGreen (좋은 기록)
     const endColor = [0, 77, 64]; // Teal900 (나쁜 기록)
 
-    const years = [...new Set(allRecords.map((r) => r.dateObj.getFullYear()))];
+    const years = [...new Set(allRecords.map((r) => r.weekInfo.year))];
     const startYear = years.length > 0 ? Math.min(...years) : new Date().getFullYear();
     const endYear = years.length > 0 ? Math.max(...years) : new Date().getFullYear();
 
@@ -176,7 +179,7 @@ hermes.track = function () {
             }
 
             for (let year = endYear; year >= startYear; year--) {
-                const yearRecords = categoryRecords.filter((r) => r.dateObj.getFullYear() === year);
+                const yearRecords = categoryRecords.filter((r) => r.weekInfo.year === year);
                 const yearMarkerContainer = document.createElement("div");
                 yearMarkerContainer.className = "year-marker-container";
                 const yearLabel = document.createElement("div");
@@ -188,7 +191,7 @@ hermes.track = function () {
 
                 const weeklyRecords = new Array(52).fill(null).map(() => []);
                 yearRecords.forEach((record) => {
-                    const week = getWeekNumber(record.dateObj);
+                    const week = record.weekInfo.week;
                     if (week >= 1 && week <= 52) {
                         weeklyRecords[week - 1].push(record);
                     }
@@ -337,7 +340,7 @@ hermes.table = function () {
     let currentSort = { key: "date", direction: "desc" };
     let filteredRecords = [...hermes.allRecords];
 
-    const years = [...new Set(hermes.allRecords.map((r) => r.dateObj.getFullYear()))].sort((a, b) => b - a);
+    const years = [...new Set(hermes.allRecords.map((r) => r.weekInfo.year))].sort((a, b) => b - a);
     if (yearRadiosContainer.children.length < years.length + 1) {
         years.forEach((year) => {
             const label = document.createElement("label");
@@ -379,7 +382,7 @@ hermes.table = function () {
 
         filteredRecords = hermes.allRecords.filter((record) => {
             const recordType = record.course === "trail" ? "trail" : "run";
-            return (type === "all" || recordType === type) && (course === "all" || record.course === course || type === "trail") && (year === "all" || record.dateObj.getFullYear() == year);
+            return (type === "all" || recordType === type) && (course === "all" || record.course === course || type === "trail") && (year === "all" || record.weekInfo.year == year);
         });
 
         renderTable();
@@ -411,9 +414,6 @@ hermes.table = function () {
             row.dataset.recordId = record.id;
             row.classList.add(record.course);
 
-            const recordYear = record.dateObj.getFullYear();
-            const recordWeek = getWeekNumber(record.dateObj);
-
             const isTrail = record.course === "trail";
 
             const paceString = `${Math.floor(record.pace / 60)}'${Math.floor(record.pace % 60)
@@ -428,7 +428,7 @@ hermes.table = function () {
                 ? `<span class="main">${record.elevation}<span class="unit"> m</span></span><span class="replace">${record.distance.toFixed(2)}<span class="unit"> km</span></span>`
                 : `${record.distance.toFixed(2)} <span class="unit"> km</span>`;
             const icon_distance = record.course === "trail" ? `<span class="main">altitude</span><span class="replace">conversion_path</span>` : "conversion_path";
-            const dateString = `w${getWeekNumber(record.dateObj)}`;
+            const dateString = `w${record.weekInfo.week}`;
 
             row.innerHTML = `
                 <td class="course">${record.course}</td>
@@ -447,7 +447,7 @@ hermes.table = function () {
                     return (category.type === "trail" && courseType === "trail") || category.course === courseType;
                 });
                 if (trackId) {
-                    const marker = document.querySelector(`#${trackId} .marker[data-year="${recordYear}"][data-week="${recordWeek}"]`);
+                    const marker = document.querySelector(`#${trackId} .marker[data-year="${record.weekInfo.year}"][data-week="${record.weekInfo.week}"]`);
                     marker?.classList.add("highlight");
                 }
             });
@@ -458,7 +458,7 @@ hermes.table = function () {
                     return (category.type === "trail" && courseType === "trail") || category.course === courseType;
                 });
                 if (trackId) {
-                    const marker = document.querySelector(`#${trackId} .marker[data-year="${recordYear}"][data-week="${recordWeek}"]`);
+                    const marker = document.querySelector(`#${trackId} .marker[data-year="${record.weekInfo.year}"][data-week="${record.weekInfo.week}"]`);
                     marker?.classList.remove("highlight");
                 }
             });
@@ -513,4 +513,3 @@ hermes.initiate = function () {
 document.addEventListener('DOMContentLoaded', (event) => {
     hermes.initiate();
 });
-

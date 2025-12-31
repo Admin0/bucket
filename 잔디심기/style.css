@@ -74,7 +74,6 @@ h1 {
     /* border-top: 10px solid var(--color--track-border); */
     transition: background-color 0.25s, box-shadow 0.25s, transform 0.05s;
     background-color: var(--color--track);
-    overflow-y: hidden;
 }
 
 .track-lane:hover {
@@ -136,7 +135,7 @@ h1 {
     position: absolute;
     left: 0;
     font-size: 0.85em;
-    top: 1.75em;
+    top: 11.75em;
     left: 3em;
 }
 
@@ -193,7 +192,7 @@ h1 {
     position: relative;
     margin-top: 20px;
     overflow-y: scroll;
-    height: calc(100vw - 30.5em);
+    height: calc(100% - 24.5em);
 }
 .track::-webkit-scrollbar {
     display: none;
