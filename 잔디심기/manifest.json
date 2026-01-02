@@ -3,9 +3,9 @@
     "name": "#잔디심기",
     "icons": [
         {
-            "src": "imgs/icon-512.png",
+            "src": "imgs/icon-128.png",
             "type": "image/png",
-            "sizes": "512x512"
+            "sizes": "128x128"
         }
     ],
     "start_url": ".",

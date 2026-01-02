@@ -1,0 +1,195 @@
+#calendar-container {
+    margin: 10em 2em;
+    width: calc(100% - 4em);
+    margin-top: calc(var(--margin--table-top) * -1);
+}
+
+#calendar-grid {
+    border-radius: 1.5em;
+    background-color: var(--color--track);
+}
+
+#calendar-grid table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+#calendar-grid thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+#calendar-grid th,
+#calendar-grid td {
+    border-bottom: 1px solid #ddd;
+    padding: 0;
+    background-color: var(--color--track);
+    border-radius: 1.5em;
+}
+
+#calendar-grid th {
+    font-size: 0.8em;
+    padding: 1em 1.5em;
+    height: auto;
+    text-align: center;
+    font-weight: normal;
+}
+#calendar-grid th.year {
+    width: 10em;
+    font-size: 1.25em;
+    text-align: left;
+}
+
+#calendar-grid .week-summary {
+    font-size: 1.2em;
+    width: 15em;
+    padding: 1em 0 1em 1.5em;
+    vertical-align: middle;
+}
+
+#calendar-grid .week-info {
+    margin-bottom: 5px;
+}
+#calendar-grid .week-stats .week-distance,
+#calendar-grid .week-stats .week-elevation {
+    width: 45%;
+    display: inline-block;
+}
+#calendar-grid .week-stats .week-distance:before,
+#calendar-grid .week-stats .week-elevation:before {
+    font-size: 0.6em;
+    opacity: 0.7;
+    display: block;
+    margin-top: 2em;
+}
+#calendar-grid .week-stats .week-distance:before {
+    content: "주간 이동 거리";
+}
+#calendar-grid .week-stats .week-elevation:before {
+    content: "주간 상승 고도";
+}
+
+.day-cell {
+    position: relative;
+    width: calc((100% - 150px) / 7);
+}
+
+#calendar-grid .activity-circle {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    max-width: 5em;
+    transform: translateX(-50%);
+}
+
+#calendar-grid .date-in-circle {
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+}
+
+.activity-icons {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+}
+
+.activity-icons .material-symbols-outlined {
+    opacity: .5;
+}
+.activity-icons:has(.rest) {
+    font-size: 0.75em;
+    color: var(--color--track-border);
+    /* background-color: var(--color--track-dark); */
+    width: 3em;
+    height: 3em;
+    border-radius: 50%;
+    bottom: 50%;
+    transform: translate(-50%, 50%);
+    align-items: center;
+    justify-content: center;
+}
+
+.dark-mode .activity-icons .material-symbols-outlined {
+    color: #f2f2f2;
+}
+
+.official-race-icon {
+    color: gold !important;
+}
+
+#calendar-grid .empty {
+    background-color: #fafafa;
+}
+
+.empty-week {
+    display: none;
+}
+
+#calendar-load-more-container {
+    text-align: center;
+    margin-top: 1em;
+}
+
+#load-more-calendar {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin: 0 5px;
+    border-radius: 5px;
+}
+
+#load-more-calendar:hover {
+    background-color: #45a049;
+}
+
+#calendar-grid .year-stats-row th {
+    font-size: 1em;
+    padding: 1.5em;
+    text-align: left;
+}
+
+.year-stats-row .stat-item {
+    width: 10em;
+    display: inline-block;
+}
+
+.year-stats-row .label {
+    font-size: 0.8em;
+}
+
+.year-stats-row .value {
+    font-size: 1.2em;
+}
+
+@media screen and (max-width: calc(1280px + 4em)) {
+    #calendar-container {
+        margin-top: calc(-100vw + var(--margin--table-top) + 34em);
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    #calendar-container {
+        width: calc(var(--width--table-width) - 1em);
+        margin-left: calc((100vw - var(--width--table-width)) / 2);
+        margin-right: calc((100vw - var(--width--table-width)) / 2);
+    }
+}
+
+/* mobile */
+
+@media screen and (max-width: 600px) {
+    #calendar-container {
+        height: inherit;
+        position: inherit;
+    }
+}

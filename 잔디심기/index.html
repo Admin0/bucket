@@ -7,10 +7,12 @@
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
         <link rel="stylesheet" href="style.css" />
         <link rel="stylesheet" type="text/css" href="style_dark.css" />
+        <link rel="stylesheet" href="style_calendar.css" />
         <link rel="manifest" href="manifest.json" />
         <script src="script_records.js"></script>
         <script src="script_gpxparser.js"></script>
         <script src="script.js"></script>
+        <script src="script_calendar.js"></script>
     </head>
 
     <body>
@@ -19,6 +21,25 @@
                 #잔디심기<span class="unit" style="font-style: italic">: 액티비티 <span title="커밋 더 프로그와 함깨해도 좋습니다">커밋</span> & <span title="Push to the limit">푸시</span></span>
             </h1>
         </div>
+
+        <header id="stats-header">
+            <div class="stat-item">
+                <span class="label">거리</span>
+                <span id="total-distance" class="value">0 km</span>
+            </div>
+            <div class="stat-item">
+                <span class="label">러닝 거리</span>
+                <span id="total-running-distance" class="value">0 km</span>
+            </div>
+            <div class="stat-item">
+                <span class="label">트레일 상승고도</span>
+                <span id="total-trail-elevation" class="value">0 m</span>
+            </div>
+            <div class="stat-item">
+                <span class="label">활동</span>
+                <span id="total-record-count" class="value">0</span>
+            </div>
+        </header>
 
         <div id="main-container">
             <div class="racetrack">
@@ -55,6 +76,14 @@
                     <div class="best-record-container"></div>
                     <div class="track" id="track-trail"></div>
                 </div>
+            </div>
+        </div>
+
+        <div id="calendar-container">
+            <h2>DETAILS</h2>
+            <div id="calendar-grid"></div>
+            <div id="calendar-load-more-container">
+                <button id="load-more-calendar">더보기</button>
             </div>
         </div>
 

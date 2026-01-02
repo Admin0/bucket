@@ -13,9 +13,10 @@ hermes.courseCategories = {
 function getWeekInfo(d) {
     d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
     d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-    const weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
-    return { year: d.getUTCFullYear(), week: weekNo };
+    const year = d.getUTCFullYear();
+    const yearStart = new Date(Date.UTC(year, 0, 1));
+    const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+    return { year, week: weekNo };
 }
 
 hermes.track = function () {
@@ -60,6 +61,23 @@ hermes.track = function () {
 
     hermes.allRecords = allRecords;
     if (!hermes.allRecords || hermes.allRecords.length === 0) return;
+
+    const totalDistance = allRecords
+        .reduce((sum, r) => sum + r.distance, 0);
+
+    const totalRunningDistance = allRecords
+        .filter(r => r.course !== 'trail')
+        .reduce((sum, r) => sum + r.distance, 0);
+
+    const totalTrailElevation = allRecords
+        .filter(r => r.course === 'trail')
+        .reduce((sum, r) => sum + r.elevation, 0);
+
+    document.getElementById('total-distance').innerHTML = `${totalDistance.toLocaleString('en-US', { maximumFractionDigits: 0 })} <span class="unit">km</span>`;
+    document.getElementById('total-running-distance').innerHTML = `${totalRunningDistance.toLocaleString('en-US', { maximumFractionDigits: 0 })} <span class="unit">km</span>`;
+    document.getElementById('total-trail-elevation').innerHTML = `${(totalTrailElevation/1000).toLocaleString('en-US', { maximumFractionDigits: 0 })} <span class="unit">km</span>`;
+    document.getElementById('total-record-count').innerHTML = allRecords.length.toLocaleString();
+
 
     const runRecords = allRecords.filter((r) => r.course !== "trail");
     const runPaces = runRecords.map((r) => r.pace).filter((p) => p !== Infinity);
@@ -317,6 +335,22 @@ hermes.track = function () {
                 element.appendChild(yearMarkerContainer);
             }
         }
+        
+        const tracks = document.querySelectorAll(".track");
+        tracks.forEach(track => {
+            
+            const updateShadows = () => {
+                const { scrollTop, scrollHeight, clientHeight } = track;
+                const isAtTop = scrollTop === 0;
+                const isAtBottom = scrollTop + clientHeight >= scrollHeight -1; 
+
+                track.classList.toggle("shadow-top", !isAtTop);
+                track.classList.toggle("shadow-bottom", !isAtBottom);
+            };
+
+            track.addEventListener("scroll", updateShadows);
+            updateShadows(); 
+        });
     }
 
     renderTracks();
@@ -507,9 +541,10 @@ hermes.table = function () {
 
 hermes.initiate = function () {
     hermes.track();
+    hermes.calendar();
     hermes.table();
 };
 
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener("DOMContentLoaded", (event) => {
     hermes.initiate();
 });
