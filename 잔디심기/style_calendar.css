@@ -1,6 +1,7 @@
 #calendar-container {
-    margin: 10em 2em;
+    margin: 10em auto;
     width: calc(100% - 4em);
+    max-width: var(--width--track-width);
     margin-top: calc(var(--margin--table-top) * -1);
 }
 
@@ -11,22 +12,43 @@
 
 #calendar-grid table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate; /* Don't collapse */
+    border-spacing: 0;
     table-layout: fixed;
 }
 
-#calendar-grid thead {
+#calendar-grid thead,
+#calendar-grid .month-stats-row {
     position: sticky;
     top: 0;
     z-index: 1;
+    background-color: var(--color--track);
+}
+#calendar-grid .month-stats-row {
+    top: 113.39px;
 }
 
 #calendar-grid th,
 #calendar-grid td {
-    border-bottom: 1px solid #ddd;
     padding: 0;
-    background-color: var(--color--track);
-    border-radius: 1.5em;
+    /* border-radius: 1.5em; */
+    vertical-align: top;
+    width: 100%;
+}
+
+#calendar-grid tr {
+    position: relative;
+}
+
+#calendar-grid tr:after {
+    border-bottom: 1px solid var(--color--track-border);
+}
+#calendar-grid tr:after {
+    width: calc(100% - 3em);
+    content: "";
+    position: absolute;
+    left: 1.5em;
+    bottom: 0;
 }
 
 #calendar-grid th {
@@ -36,10 +58,14 @@
     text-align: center;
     font-weight: normal;
 }
-#calendar-grid th.year {
+#calendar-grid th:first-of-type {
     width: 10em;
     font-size: 1.25em;
     text-align: left;
+    border-radius: 1.5em 0 0 0;
+}
+#calendar-grid th:last-of-type {
+    border-radius: 0 1.5em 0 0;
 }
 
 #calendar-grid .week-summary {
@@ -65,60 +91,71 @@
     margin-top: 2em;
 }
 #calendar-grid .week-stats .week-distance:before {
-    content: "주간 이동 거리";
+    content: "거리";
 }
 #calendar-grid .week-stats .week-elevation:before {
-    content: "주간 상승 고도";
+    content: "상승 고도";
 }
 
 .day-cell {
     position: relative;
-    width: calc((100% - 150px) / 7);
+    height: 7em; /* Set a fixed height */
+}
+.day-cell.hidden {
+    visibility: hidden;
+}
+
+.day-cell .date-display {
+    position: absolute;
+    left: calc(1em/0.8);
+    top: 1em;
+    font-size: 0.8em;
+    opacity: 0.7;
 }
 
 #calendar-grid .activity-circle {
-    width: 100%;
-    height: 100%;
+    width: 4em;
+    height: 4em;
     position: absolute;
-    top: 0;
     left: 50%;
-    max-width: 5em;
-    transform: translateX(-50%);
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
-#calendar-grid .date-in-circle {
-    text-anchor: middle;
-    dominant-baseline: central;
-    pointer-events: none;
+#calendar-grid .activity-circle circle {
+    transform-origin: 50% 50%;
+    transform: scale(var(--gg, 0));
+}
+
+.activity-stats {
+    bottom: 1em;
+    left: 1em;
+    position: absolute;
+    opacity: 0.7;
+}
+.activity-stats .distance,
+.activity-stats .elevation {
+    display: inline-block;
+    margin-right: .5em;
 }
 
 .activity-icons {
+    opacity: 0.7;
     position: absolute;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
     display: flex;
     gap: 4px;
-}
 
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    left: 1em;
+    bottom: 2.5em;
+}
 .activity-icons .material-symbols-outlined {
-    opacity: .5;
 }
 .activity-icons:has(.rest) {
-    font-size: 0.75em;
+    background-color: var(--color--track-dark);
     color: var(--color--track-border);
-    /* background-color: var(--color--track-dark); */
-    width: 3em;
-    height: 3em;
-    border-radius: 50%;
-    bottom: 50%;
-    transform: translate(-50%, 50%);
-    align-items: center;
-    justify-content: center;
-}
-
-.dark-mode .activity-icons .material-symbols-outlined {
-    color: #f2f2f2;
 }
 
 .official-race-icon {
@@ -152,23 +189,35 @@
     background-color: #45a049;
 }
 
-#calendar-grid .year-stats-row th {
+#calendar-grid .year-stats-row th,
+#calendar-grid .month-stats-row td {
     font-size: 1em;
-    padding: 1.5em;
+    padding: 0 0 1em 1.5em;
     text-align: left;
 }
 
-.year-stats-row .stat-item {
+.year-stats-row .stat-item,
+.month-stats-row .stat-item {
     width: 10em;
     display: inline-block;
 }
-
-.year-stats-row .label {
+.year-stats-row .stat-item:first-of-type,
+.month-stats-row .stat-item:first-of-type {
+    margin-right: 6em;
+}
+.year-stats-row .label,
+.month-stats-row .label {
     font-size: 0.8em;
 }
 
-.year-stats-row .value {
+.year-stats-row .value,
+.month-stats-row .value {
     font-size: 1.2em;
+}
+
+.month-stats-row .stat-item:first-child .label {
+    font-size: 1.2em;
+    font-weight: bold;
 }
 
 @media screen and (max-width: calc(1280px + 4em)) {
@@ -178,18 +227,23 @@
 }
 
 @media screen and (min-width: 1440px) {
-    #calendar-container {
-        width: calc(var(--width--table-width) - 1em);
-        margin-left: calc((100vw - var(--width--table-width)) / 2);
-        margin-right: calc((100vw - var(--width--table-width)) / 2);
-    }
+    /* Adjustments for larger screens if needed */
 }
 
 /* mobile */
-
 @media screen and (max-width: 600px) {
     #calendar-container {
         height: inherit;
         position: inherit;
+    }
+    .day-cell {
+        height: 5em;
+    }
+    #calendar-grid .activity-circle {
+        width: 2.5em;
+        height: 2.5em;
+    }
+    .activity-stats {
+        font-size: 0.6em;
     }
 }

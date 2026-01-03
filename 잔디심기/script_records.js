@@ -10,10 +10,12 @@ const hermes_records = [
 
     // { date: "2023-12-12", course: "trail", distance: 3.74, elevation: 362, record: "01:14:44", title: "배방산" }, // 트레일 러닝 대회 더미
 
-    // unofficial 2026 run
-    { date: "2025-12-31", distance: 6.16, record: "00:36:38", title: "장항선구철도길" },
+    // unofficial 2026
+    { date: "2026-01-03", distance: 21.28, record: "02:00:00", title: "장항선구철도길 2026런" },
+    { date: "2026-01-01", distance: 8.68, elevation: 292, record: "02:19:02", title: "영인산 새해맞이일출등" },
 
     // unofficial 2025 run
+    { date: "2025-12-31", distance: 6.16, record: "00:36:38", title: "장항선구철도길" },
     { date: "2025-12-21", distance: 5.01, record: "00:27:40", title: "장항선구철도길" },
     { date: "2025-12-18", distance: 10.01, record: "00:56:56", title: "장항선구철도길 이런저런" },
     { date: "2025-12-14", distance: 5.16, record: "00:26:41", title: "장항선구철도길" },
@@ -83,9 +85,6 @@ const hermes_records = [
     { date: "2025-02-25", distance: 5.01, record: "00:29:34", title: "신정호" },
 
     { date: "2025-01-26", distance: 5.01, record: "00:29:46", title: "신정호" },
-
-    // unofficial 2026 trail
-    { date: "2026-01-01", distance: 8.68, elevation: 292, record: "02:19:02", title: "영인산 새해맞이일출등" },
 
     // unofficial 2025 trail
     { date: "2025-12-28", distance: 3.47, elevation: 314, record: "01:46:44", title: "배방산" },
@@ -166,45 +165,69 @@ const hermes_records = [
     // unofficial 2024 run
     { date: "2024-12-12", distance: 5.07, record: "00:28:25", title: "신정호" },
     { date: "2024-12-07", distance: 5.01, record: "00:28:48", title: "신정호" },
+    { date: "2024-12-01", distance: 5.02, record: "00:36:45", title: "신정호" },
 
     { date: "2024-11-19", distance: 5.01, record: "00:29:46", title: "신정호" },
     { date: "2024-11-07", distance: 5.01, record: "00:27:43", title: "신정호" },
+    { date: "2024-11-06", distance: 5.03, record: "00:36:50", title: "신정호" },
+    { date: "2024-11-04", distance: 5.04, record: "00:29:21", title: "신정호" },
 
     { date: "2024-10-31", distance: 5.03, record: "00:27:41", title: "신정호" },
+    { date: "2024-10-29", distance: 5.02, record: "00:31:53", title: "신정호" },
     { date: "2024-10-23", distance: 5.01, record: "00:31:57", title: "신정호" },
     { date: "2024-10-15", distance: 5.01, record: "00:28:58", title: "신정호" },
+    { date: "2024-10-13", distance: 5.01, record: "00:29:00", title: "신정호" },
     { date: "2024-10-12", distance: 5.01, record: "00:28:43", title: "신정호" },
+    { date: "2024-10-11", distance: 5.02, record: "00:30:08", title: "신정호" },
+    { date: "2024-10-09", distance: 5.02, record: "00:30:21", title: "신정호" },
+    { date: "2024-10-07", distance: 5.0, record: "00:29:04", title: "신정호" },
     { date: "2024-10-05", distance: 5.0, record: "00:30:55", title: "신정호" },
 
+    { date: "2024-09-30", distance: 5.03, record: "00:32:10", title: "신정호" },
     { date: "2024-09-28", distance: 5.01, record: "00:31:41", title: "신정호" },
+    { date: "2024-09-24", distance: 4.86, record: "00:35:23", title: "신정호" },
     { date: "2024-09-23", distance: 10.01, record: "01:15:07", title: "신정호 마라톤대회대비런" },
 
     { date: "2024-08-27", distance: 5.01, record: "00:31:05", title: "신정호" },
+    { date: "2024-08-26", distance: 5.03, record: "00:32:21", title: "신정호" },
+    { date: "2024-08-23", distance: 4.94, record: "00:35:05", title: "신정호" },
 
     { date: "2024-07-21", distance: 5.01, record: "00:36:37", title: "신정호" },
+    { date: "2024-07-15", distance: 5.00, record: "00:33:30", title: "신정호" },
     { date: "2024-07-05", distance: 5.09, record: "00:43:34", title: "신정호" },
 
     { date: "2024-06-23", distance: 5.01, record: "00:37:21", title: "신정호" },
     { date: "2024-06-10", distance: 5.02, record: "00:32:49", title: "신정호" },
     { date: "2024-06-08", distance: 5.01, record: "00:33:41", title: "신정호" },
+    { date: "2024-06-10", distance: 4.60, record: "00:35:31", title: "신정호" },
+    { date: "2024-06-06", distance: 5.02, record: "00:35:31", title: "신정호" },
+    { date: "2024-06-01", distance: 5.07, record: "00:36:31", title: "신정호" },
 
     { date: "2024-05-31", distance: 5.08, record: "00:31:04", title: "신정호" },
-    { date: "2024-05-19", distance: 5.01, record: "00:28:59", title: "신정호" },
-    { date: "2024-05-16", distance: 5.12, record: "00:32:08", title: "신정호" },
+    { date: "2024-05-19", distance: 5.01, record: "00:28:59", title: "장항선구철도길" },
+    { date: "2024-05-16", distance: 5.12, record: "00:30:23", title: "신정호" },
     { date: "2024-05-09", distance: 5.02, record: "00:31:54", title: "신정호" },
     { date: "2024-05-01", distance: 5.02, record: "00:33:45", title: "신정호" },
-
+    
+    { date: "2024-04-29", distance: 4.91, record: "00:32:20", title: "신정호" },
+    { date: "2024-04-21", distance: 4.75, record: "00:39:31", title: "신정호" },
     { date: "2024-04-16", distance: 5.01, record: "00:33:17", title: "신정호" },
     { date: "2024-04-11", distance: 5.01, record: "00:34:44", title: "신정호" },
+    { date: "2024-04-08", distance: 4.91, record: "00:35:36", title: "신정호" },
     { date: "2024-04-01", distance: 5.02, record: "00:32:53", title: "신정호" },
 
     { date: "2024-03-26", distance: 5.01, record: "00:53:19", title: "신정호" },
+    { date: "2024-03-23", distance: 4.93, record: "00:39:41", title: "신정호" },
+    { date: "2024-03-18", distance: 4.87, record: "00:32:34", title: "신정호" },
     { date: "2024-03-15", distance: 5.03, record: "00:37:09", title: "신정호" },
+    { date: "2024-03-13", distance: 4.91, record: "00:37:59", title: "신정호" },
+    { date: "2024-03-12", distance: 4.68, record: "00:39:02", title: "장항선구철도길" },
+    { date: "2024-03-11", distance: 4.94, record: "00:36:00", title: "신정호" },
     { date: "2024-03-09", distance: 5.17, record: "00:43:40", title: "신정호" },
 
     // unofficial 2024 trail
     { date: "2024-12-29", distance: 19.0, elevation: 1460, record: "07:14:58", title: "한라산" },
-    { date: "2024-12-22", distance: 5.98, elevation: 1189, record: "02:55:13", title: "치악산" },
+    { date: "2024-12-22", distance: 12.98, elevation: 1189, record: "04:27:13", title: "치악산" },
     { date: "2024-12-08", distance: 3.48, elevation: 391, record: "01:58:29", title: "덕숭산" },
     { date: "2024-12-01", distance: 3.12, elevation: 319, record: "01:37:59", title: "배방산" },
 
@@ -213,9 +236,12 @@ const hermes_records = [
 
     { date: "2024-10-27", distance: 4.59, elevation: 507, record: "01:50:34", title: "광덕산" },
     { date: "2024-10-09", distance: 3.97, elevation: 410, record: "03:04:38", title: "설화산" },
+    { date: "2024-10-06", distance: 4.37, elevation: 279, record: "01:48:07", title: "아미산" },
     { date: "2024-10-03", distance: 6.22, elevation: 406, record: "02:42:04", title: "봉수산" },
+    { date: "2024-10-01", distance: 8.72, elevation: 562, record: "03:35:02", title: "영인산" },
 
     { date: "2024-09-14", distance: 4.38, elevation: 346, record: "02:07:31", title: "설화산" },
+    { date: "2024-09-08", distance: 3.82, elevation: 321, record: "01:41:19", title: "배방산" },
 
     { date: "2024-07-20", distance: 3.16, elevation: 122, record: "01:27:44", title: "고용산" },
     { date: "2024-07-13", distance: 8.01, elevation: 645, record: "02:52:37", title: "광덕산" },
@@ -223,4 +249,10 @@ const hermes_records = [
     { date: "2024-06-22", distance: 8.0, elevation: 487, record: "02:10:13", title: "태조산" },
     { date: "2024-06-15", distance: 8.88, elevation: 444, record: "02:10:13", title: "영인산" },
     { date: "2024-06-09", distance: 8.45, elevation: 594, record: "02:48:51", title: "광덕산" },
+
+    // unofficial 2023 trail
+    { date: "2023-04-30", distance: 9.26, elevation: 412, record: "02:58:26", title: "천황산 - 재약산" },
+    { date: "2023-04-22", distance: 15.79, elevation: 1668, record: "09:09:00", title: "가지산 - 운문산" },
+    { date: "2023-04-16", distance: 6.05, elevation: 545, record: "02:14:06", title: "고헌산" },
+    { date: "2023-04-10", distance: 19.02, elevation: 1322, record: "08:56:00", title: "영축산 - 신불산 - 간월산" },
 ];

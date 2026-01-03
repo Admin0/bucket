@@ -15,12 +15,12 @@ function getWeekInfo(d) {
     d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
     const year = d.getUTCFullYear();
     const yearStart = new Date(Date.UTC(year, 0, 1));
-    const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+    const weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
     return { year, week: weekNo };
 }
 
-hermes.track = function () {
-    const allRecords = hermes.records.map((record, index) => {
+hermes.recordInit = function () {
+    hermes.records = hermes.records.map((record, index) => {
         const parts = record.record.split(":").map(Number);
         let time;
         if (parts.length === 3) {
@@ -49,6 +49,7 @@ hermes.track = function () {
             isOfficial: record.course !== undefined,
             time,
             distance,
+            distance_pace : time / distance,
             elevation,
             pace: time / distance,
             elevation_pace: isTrail ? elevation_pace : distance > 0 ? time / distance : Infinity,
@@ -57,35 +58,30 @@ hermes.track = function () {
             dateObj: dateObj,
             weekInfo: getWeekInfo(dateObj),
         };
+        
     });
+};
 
-    hermes.allRecords = allRecords;
-    if (!hermes.allRecords || hermes.allRecords.length === 0) return;
+hermes.track = function () {
 
-    const totalDistance = allRecords
-        .reduce((sum, r) => sum + r.distance, 0);
+    if (!hermes.records || hermes.records.length === 0) return;
 
-    const totalRunningDistance = allRecords
-        .filter(r => r.course !== 'trail')
-        .reduce((sum, r) => sum + r.distance, 0);
+    const totalDistance = hermes.records.reduce((sum, r) => sum + r.distance, 0);
+    const totalRunningDistance = hermes.records.filter((r) => r.course !== "trail").reduce((sum, r) => sum + r.distance, 0);
+    const totalTrailElevation = hermes.records.filter((r) => r.course === "trail").reduce((sum, r) => sum + r.elevation, 0);
 
-    const totalTrailElevation = allRecords
-        .filter(r => r.course === 'trail')
-        .reduce((sum, r) => sum + r.elevation, 0);
+    document.getElementById("total-distance").innerHTML = `<span class="material-symbols-outlined "> conversion_path </span> ${totalDistance.toLocaleString("en-US", { maximumFractionDigits: 0 })} <span class="unit">km</span>`;
+    document.getElementById("total-running-distance").innerHTML = `<span class="material-symbols-outlined "> sprint </span> ${totalRunningDistance.toLocaleString("en-US", { maximumFractionDigits: 0 })} <span class="unit">km</span>`;
+    document.getElementById("total-trail-elevation").innerHTML = `<span class="material-symbols-outlined "> altitude </span> ${(totalTrailElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 0 })} <span class="unit">km</span>`;
+    document.getElementById("total-record-count").innerHTML = '<span class="material-symbols-outlined "> accessibility_new </span> ' + hermes.records.length.toLocaleString();
 
-    document.getElementById('total-distance').innerHTML = `${totalDistance.toLocaleString('en-US', { maximumFractionDigits: 0 })} <span class="unit">km</span>`;
-    document.getElementById('total-running-distance').innerHTML = `${totalRunningDistance.toLocaleString('en-US', { maximumFractionDigits: 0 })} <span class="unit">km</span>`;
-    document.getElementById('total-trail-elevation').innerHTML = `${(totalTrailElevation/1000).toLocaleString('en-US', { maximumFractionDigits: 0 })} <span class="unit">km</span>`;
-    document.getElementById('total-record-count').innerHTML = allRecords.length.toLocaleString();
-
-
-    const runRecords = allRecords.filter((r) => r.course !== "trail");
+    const runRecords = hermes.records.filter((r) => r.course !== "trail");
     const runPaces = runRecords.map((r) => r.pace).filter((p) => p !== Infinity);
     const limitPace = 7 * 60; // 7분/km
     const minPace = runPaces.length > 0 ? Math.min(...runPaces) : 0;
     const maxPace = runPaces.length > 0 ? Math.min(Math.max(...runPaces), limitPace) : limitPace;
 
-    const trailRecords = allRecords.filter((r) => r.course === "trail");
+    const trailRecords = hermes.records.filter((r) => r.course === "trail");
     hermes.trailStats = {
         elevations: trailRecords.map((r) => r.elevation),
         elevation_paces: trailRecords.map((r) => r.elevation_pace).filter((p) => p !== Infinity),
@@ -108,7 +104,7 @@ hermes.track = function () {
     const startColor = [0, 255, 127]; // SpringGreen (좋은 기록)
     const endColor = [0, 77, 64]; // Teal900 (나쁜 기록)
 
-    const years = [...new Set(allRecords.map((r) => r.weekInfo.year))];
+    const years = [...new Set(hermes.records.map((r) => r.weekInfo.year))];
     const startYear = years.length > 0 ? Math.min(...years) : new Date().getFullYear();
     const endYear = years.length > 0 ? Math.max(...years) : new Date().getFullYear();
 
@@ -122,7 +118,7 @@ hermes.track = function () {
 
             element.innerHTML = "";
 
-            let categoryRecords = allRecords.filter((r) => {
+            let categoryRecords = hermes.records.filter((r) => {
                 if (category.type === "trail") return r.course === "trail";
                 return r.course === category.course;
             });
@@ -335,21 +331,20 @@ hermes.track = function () {
                 element.appendChild(yearMarkerContainer);
             }
         }
-        
+
         const tracks = document.querySelectorAll(".track");
-        tracks.forEach(track => {
-            
+        tracks.forEach((track) => {
             const updateShadows = () => {
                 const { scrollTop, scrollHeight, clientHeight } = track;
                 const isAtTop = scrollTop === 0;
-                const isAtBottom = scrollTop + clientHeight >= scrollHeight -1; 
+                const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
 
                 track.classList.toggle("shadow-top", !isAtTop);
                 track.classList.toggle("shadow-bottom", !isAtBottom);
             };
 
             track.addEventListener("scroll", updateShadows);
-            updateShadows(); 
+            updateShadows();
         });
     }
 
@@ -369,12 +364,12 @@ hermes.table = function () {
     const yearRadiosContainer = document.getElementById("year-filter-container");
     const resetButton = document.getElementById("reset-filters");
 
-    if (!hermes.allRecords || hermes.allRecords.length === 0) return;
+    if (!hermes.records || hermes.records.length === 0) return;
 
     let currentSort = { key: "date", direction: "desc" };
-    let filteredRecords = [...hermes.allRecords];
+    let filteredRecords = [...hermes.records];
 
-    const years = [...new Set(hermes.allRecords.map((r) => r.weekInfo.year))].sort((a, b) => b - a);
+    const years = [...new Set(hermes.records.map((r) => r.weekInfo.year))].sort((a, b) => b - a);
     if (yearRadiosContainer.children.length < years.length + 1) {
         years.forEach((year) => {
             const label = document.createElement("label");
@@ -414,7 +409,7 @@ hermes.table = function () {
 
         toggleCourseFilter(type === "trail");
 
-        filteredRecords = hermes.allRecords.filter((record) => {
+        filteredRecords = hermes.records.filter((record) => {
             const recordType = record.course === "trail" ? "trail" : "run";
             return (type === "all" || recordType === type) && (course === "all" || record.course === course || type === "trail") && (year === "all" || record.weekInfo.year == year);
         });
@@ -540,6 +535,7 @@ hermes.table = function () {
 };
 
 hermes.initiate = function () {
+    hermes.recordInit();
     hermes.track();
     hermes.calendar();
     hermes.table();

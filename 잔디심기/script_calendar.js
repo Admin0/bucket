@@ -1,5 +1,6 @@
+
 hermes.calendar = function () {
-    const records = hermes_records.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const records = hermes.records.sort((a, b) => new Date(b.date) - new Date(a.date));
     const calendarGrid = document.getElementById("calendar-grid");
     const tooltip = document.getElementById("tooltip");
     const loadMoreButton = document.getElementById("load-more-calendar");
@@ -37,6 +38,22 @@ hermes.calendar = function () {
         }
     });
 
+    const toYYYYMMDD = (d) => {
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    const getWeekInfo = (d) => {
+        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+        const year = d.getUTCFullYear();
+        const yearStart = new Date(Date.UTC(year, 0, 1));
+        const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+        return { weekNo, year };
+    };
+
     const renderCalendar = () => {
         const visibleYears = allYears.slice(0, visibleYearCount);
         let fullHtml = "";
@@ -61,6 +78,9 @@ hermes.calendar = function () {
                 <tr class="year-stats-row">
                     <th colspan="8">
                         <div class="stat-item">
+                            <span class="value">${year}</span>
+                        </div>
+                        <div class="stat-item">
                             <span class="label">거리</span>
                             <span class="value">${yearTotalDistance.toFixed(2)} km</span>
                         </div>
@@ -82,186 +102,188 @@ hermes.calendar = function () {
                 </tr>
             `;
 
-            const newestDate = new Date(yearRecords[0].date);
-            const oldestDate = new Date(yearRecords[yearRecords.length - 1].date);
+            let tableHtml = `<table><thead>`;
+            tableHtml += `<tr><th></th><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>
+${statsHtml}
+</thead>
+<tbody>`;
+            
+            let monthRows = '';
 
-            let html = "<table><thead>";
-            html += `<tr><th class="year">${year}</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th></tr>
-            ${statsHtml}
-            </thead>
-            <tbody>`;
+            for (let month = 11; month >= 0; month--) {
+                const monthRecords = yearRecords.filter(r => new Date(r.date).getMonth() === month);
+                if(monthRecords.length === 0) continue;
 
-            let weekRows = [];
-            let lastYear = null;
+                let currentMonthHtml = '';
 
-            let currentSunday = new Date(newestDate);
-            if (currentSunday.getDay() !== 0) {
-                currentSunday.setDate(currentSunday.getDate() + (7 - currentSunday.getDay()));
-            }
-
-            let oldestMonday = new Date(oldestDate);
-            let dayOfWeek = oldestMonday.getDay();
-            let offset = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-            oldestMonday.setDate(oldestMonday.getDate() - offset);
-
-            const getWeekInfo = (d) => {
-                d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-                d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-                const year = d.getUTCFullYear();
-                const yearStart = new Date(Date.UTC(year, 0, 1));
-                const weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
-                return { weekNo, year };
-            };
-
-            const monthFormatter = new Intl.DateTimeFormat("en-US", { month: "short" });
-
-            while (currentSunday >= oldestMonday) {
-                let weeklyDistance = 0;
-                let weeklyElevation = 0;
-                let hasActivity = false;
-
-                const startOfWeek = new Date(currentSunday);
-                startOfWeek.setDate(startOfWeek.getDate() - 6);
-
-                for (let i = 0; i < 7; i++) {
-                    const day = new Date(startOfWeek);
-                    day.setDate(startOfWeek.getDate() + i);
-                    const dateString = day.toISOString().split("T")[0];
-                    if (recordsByDate[dateString]) {
-                        hasActivity = true;
-                        recordsByDate[dateString].forEach((rec) => {
-                            weeklyDistance += rec.distance || 0;
-                            weeklyElevation += rec.elevation || 0;
-                        });
+                let monthTotalDistance = 0;
+                let monthRunningDistance = 0;
+                let monthTrailElevation = 0;
+                monthRecords.forEach(rec => {
+                    monthTotalDistance += rec.distance || 0;
+                    if (rec.elevation > 0) {
+                        monthTrailElevation += rec.elevation || 0;
+                    } else {
+                        monthRunningDistance += rec.distance || 0;
                     }
-                }
+                });
 
-                let weekHtml = `<tr class="${hasActivity ? "" : "empty-week"}">`;
+                const monthStatsHtml = `
+                <tr class="month-stats-row">
+                    <td colspan="8">
+                        <div class="stat-item">
+                            <span class="value">${new Intl.DateTimeFormat("en-US", { month: "short" }).format(new Date(year, month, 1))}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="label">거리</span>
+                            <span class="value">${monthTotalDistance.toFixed(2)} km</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="label">러닝 거리</span>
+                            <span class="value">${monthRunningDistance.toFixed(2)} km</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="label">트레일 상승고도</span>
+                            <span class="value">${monthTrailElevation > 1000 ? (monthTrailElevation / 1000).toFixed(2) + ` <span class="unit">km</span>` : monthTrailElevation.toFixed(0) + ` <span class="unit">m</span>`}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="label">활동</span>
+                            <span class="value">${monthRecords.length}</span>
+                        </div>
+                    </td>
+                </tr>
+            `;
+                currentMonthHtml += monthStatsHtml;
 
-                const { weekNo, year: weekYear } = getWeekInfo(startOfWeek);
-                let yearPrefix = "";
-                if (lastYear !== weekYear) {
-                    yearPrefix = weekYear + " ";
-                    lastYear = weekYear;
-                }
+                const firstDateOfMonth = new Date(year, month, 1);
+                const lastDateOfMonth = new Date(year, month + 1, 0);
 
-                const startMonth = monthFormatter.format(startOfWeek) + ".";
-                const startDay = startOfWeek.getDate();
-                const endMonth = monthFormatter.format(currentSunday) + ".";
-                const endDay = currentSunday.getDate();
+                let currentCalendarSunday = new Date(firstDateOfMonth);
+                currentCalendarSunday.setDate(currentCalendarSunday.getDate() - currentCalendarSunday.getDay());
+                
+                while(currentCalendarSunday <= lastDateOfMonth) {
+                    const thursdayOfCalendarRow = new Date(currentCalendarSunday);
+                    thursdayOfCalendarRow.setDate(thursdayOfCalendarRow.getDate() + 4);
 
-                let dateRange;
-                if (startMonth === endMonth) {
-                    dateRange = `${startMonth} ${startDay} – ${endDay}`;
-                } else {
-                    dateRange = `${startMonth} ${startDay} – ${endMonth} ${endDay}`;
-                }
+                    const { weekNo, year: weekYear } = getWeekInfo(thursdayOfCalendarRow);
+                    
+                    const mondayOfISOWeek = new Date(thursdayOfCalendarRow);
+                    mondayOfISOWeek.setDate(mondayOfISOWeek.getDate() - 3);
 
-                const weekInfo = `${yearPrefix}w${weekNo} <br> ${dateRange}`;
+                    const sundayOfISOWeek = new Date(mondayOfISOWeek);
+                    sundayOfISOWeek.setDate(mondayOfISOWeek.getDate() + 6);
 
-                weekHtml += `<td class="week-summary">
-                            <div class="week-info">${weekInfo}</div>
-                            <div class="week-stats">
-                                <div class="week-distance">${weeklyDistance.toFixed(2)} <span class="unit">km</span></div>
-                                <div class="week-elevation">${
-                                    weeklyElevation > 1000 ? (weeklyElevation / 1000).toFixed(2) + ` <span class="unit">km</span>` : weeklyElevation.toFixed(0) + ` <span class="unit">m</span>`
-                                } </div>
-                            </div>
-                         </td>`;
+                    let weeklyDistance = 0;
+                    let weeklyElevation = 0;
 
-                for (let i = 0; i < 7; i++) {
-                    const day = new Date(startOfWeek);
-                    day.setDate(startOfWeek.getDate() + i);
-                    const dateString = day.toISOString().split("T")[0];
-
-                    weekHtml += `<td class="day-cell" data-date="${dateString}">`;
-
-                    if (recordsByDate[dateString]) {
-                        let dailyDistance = 0;
-                        let dailyElevation = 0;
-                        recordsByDate[dateString].forEach((rec) => {
-                            if (/5k|10k|half|full/.test(rec.course)) {
-                                if (rec.course === "5k") dailyDistance += 5;
-                                if (rec.course === "10k") dailyDistance += 10;
-                                if (rec.course === "half") dailyDistance += 21.0975;
-                                if (rec.course === "full") dailyDistance += 42.195;
-                            } else {
-                                dailyDistance += rec.distance || 0;
-                            }
-                            dailyElevation += rec.elevation || 0;
-                        });
-
-                        const radius = Math.min(45, (dailyDistance / maxActivity) * 45 * 2);
-
-                        let colorIntensity = Math.min(1, (dailyDistance - 5) / maxActivity);
-
-                        const startColor = [0, 77, 64]; // Darkest color
-                        const endColor = [0, 255, 127]; // Brightest color
-
-                        const r = Math.round(startColor[0] * (1 - colorIntensity) + endColor[0] * colorIntensity);
-                        const g = Math.round(startColor[1] * (1 - colorIntensity) + endColor[1] * colorIntensity);
-                        const b = Math.round(startColor[2] * (1 - colorIntensity) + endColor[2] * colorIntensity);
-                        const color = `rgb(${r}, ${g}, ${b})`;
-
-                        const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
-                        const textColor = luminance > 128 ? "#000000" : "#FFFFFF";
-
-                        const showUnit = radius > 30;
-                        const distanceUnit = showUnit ? " km" : "";
-                        const elevationUnit = showUnit ? (dailyElevation > 1000 ? " km" : " m") : "";
-
-                        const distanceText = dailyDistance > 0 ? `${dailyDistance.toFixed(1)}${distanceUnit}` : "";
-                        const elevationText =
-                            dailyElevation > 0 ? (dailyElevation > 1000 ? `${(dailyElevation / 1000).toFixed(1)}${elevationUnit}` : `${dailyElevation.toFixed(0)}${elevationUnit}`) : "";
-
-                        let textContent = "";
-                        const textAttributes = `class="date-in-circle" fill="${textColor}" text-anchor="middle" dominant-baseline="central"`;
-
-                        if (radius > 15) {
-                            if (elevationText && distanceText) {
-                                textContent = `
-                                <text x="50%" y="50%" ${textAttributes}>
-                                    <tspan x="50%" dy="-0.6em">${distanceText}</tspan>
-                                    <tspan x="50%" dy="1.2em">${elevationText}</tspan>
-                                </text>
-                            `;
-                            } else if (distanceText) {
-                                textContent = `<text x="50%" y="50%" ${textAttributes}>${distanceText}</text>`;
-                            } else if (elevationText) {
-                                textContent = `<text x="50%" y="50%" ${textAttributes}>${elevationText}</text>`;
-                            }
+                    for (let d = new Date(mondayOfISOWeek); d <= sundayOfISOWeek; d.setDate(d.getDate() + 1)) {
+                        const dateString = toYYYYMMDD(d);
+                        if (recordsByDate[dateString]) {
+                            recordsByDate[dateString].forEach((rec) => {
+                                if (/5k|10k|half|full/.test(rec.course)) {
+                                    if (rec.course === "5k") weeklyDistance += 5;
+                                    else if (rec.course === "10k") weeklyDistance += 10;
+                                    else if (rec.course === "half") weeklyDistance += 21.0975;
+                                    else if (rec.course === "full") weeklyDistance += 42.195;
+                                } else {
+                                    weeklyDistance += rec.distance || 0;
+                                }
+                                weeklyElevation += rec.elevation || 0;
+                            });
+                        }
+                    }
+                    
+                    let weekHtml = `<tr>`;
+                    weekHtml += `<td class="week-summary">
+                                    <div class="week-info">w${weekNo}</div>
+                                    <div class="week-stats">
+                                        <div class="week-distance">${weeklyDistance.toFixed(1)} <span class="unit">km</span></div>
+                                        <div class="week-elevation">${
+                                            weeklyElevation > 1000 ? (weeklyElevation / 1000).toFixed(1) + ` <span class="unit">km</span>` : weeklyElevation.toFixed(0) + ` <span class="unit">m</span>`
+                                        } </div>
+                                    </div>
+                                 </td>`;
+                    
+                    for (let i = 0; i < 7; i++) {
+                        const day = new Date(currentCalendarSunday);
+                        day.setDate(day.getDate() + i);
+                        
+                        if (day.getMonth() !== month) {
+                            weekHtml += `<td class="day-cell hidden"></td>`;
+                            continue;
                         }
 
-                        weekHtml += `<svg class="activity-circle" viewBox="0 0 100 100">
-                                        <circle cx="50" cy="50" r="${radius}" fill="${color}" />
-                                        ${textContent}
-                                     </svg>`;
+                        const dateString = toYYYYMMDD(day);
+                        const { weekNo: dayWeek, year: dayYear } = getWeekInfo(day);
 
-                        let iconsHtml = '<div class="activity-icons">';
-                        recordsByDate[dateString].forEach((rec) => {
-                            const isOfficialRace = /5k|10k|half|full/.test(rec.course);
-                            const iconName = isOfficialRace ? "emoji_events" : rec.elevation > 0 ? "terrain" : "directions_run";
-                            const iconClass = isOfficialRace ? "material-symbols-outlined official-race-icon" : "material-symbols-outlined";
-                            iconsHtml += `<i class="${iconClass}">${iconName}</i>`;
-                        });
-                        iconsHtml += "</div>";
-                        weekHtml += iconsHtml;
-                    } else {
-                        weekHtml += '<div class="activity-icons"><span class="rest">rest</span></div>';
-                        // weekHtml += '<div class="activity-icons"><i class="material-symbols-outlined rest">heart_plus</i></div>';
+                        weekHtml += `<td class="day-cell y${dayYear.toString().slice(2)} w${dayWeek}" data-date="${dateString}">
+                        <span class="date-display">${day.getDate()}</span>`;
+
+                        if (recordsByDate[dateString]) {
+                            let dailyDistance = 0;
+                            let dailyElevation = 0;
+                            recordsByDate[dateString].forEach((rec) => {
+                                if (/5k|10k|half|full/.test(rec.course)) {
+                                    if (rec.course === "5k") dailyDistance += 5;
+                                    if (rec.course === "10k") dailyDistance += 10;
+                                    if (rec.course === "half") dailyDistance += 21.0975;
+                                    if (rec.course === "full") dailyDistance += 42.195;
+                                } else {
+                                    dailyDistance += rec.distance || 0;
+                                }
+                                dailyElevation += rec.elevation || 0;
+                            });
+
+                            const radius = Math.sqrt(dailyDistance / maxActivity);
+                            
+                            let colorIntensity = Math.min(1, (dailyDistance - 5) / (maxActivity * 0.8));
+
+                            const startColor = [0, 77, 64]; 
+                            const endColor = [0, 255, 127]; 
+
+                            const r = Math.round(startColor[0] * (1 - colorIntensity) + endColor[0] * colorIntensity);
+                            const g = Math.round(startColor[1] * (1 - colorIntensity) + endColor[1] * colorIntensity);
+                            const b = Math.round(startColor[2] * (1 - colorIntensity) + endColor[2] * colorIntensity);
+                            const color = `rgb(${r}, ${g}, ${b})`;
+
+                            const distanceText = dailyDistance > 0 ? `${dailyDistance.toFixed(1)}<span class="unit">km</span>` : "";
+                            const elevationText = dailyElevation > 0 ? (dailyElevation > 1000 ? `${(dailyElevation / 1000).toFixed(1)}<span class="unit">km</span>` : `${dailyElevation.toFixed(0)}<span class="unit">m</span>`) : "";
+
+                            weekHtml += `<div class="activity-circle" style="--gg:${radius};">
+                                            <svg viewBox="0 0 100 100">
+                                                <circle cx="50" cy="50" r="45" fill="${color}" />
+                                            </svg>
+                                         </div>
+                                         <div class="activity-stats">
+                                            ${distanceText ? `<div class="distance">${distanceText}</div>` : ''}
+                                            ${elevationText ? `<div class="elevation">${elevationText}</div>` : ''}
+                                         </div>
+                                         `;
+
+                            let iconsHtml = '<div class="activity-icons">';
+                            recordsByDate[dateString].forEach((rec) => {
+                                const iconName = rec.isOfficial ? "emoji_events" : rec.elevation > 0 ? "terrain" : "directions_run";
+                                const iconClass = rec.isOfficial ? "material-symbols-outlined official-race-icon" : "material-symbols-outlined";
+                                iconsHtml += `<i class="${iconClass}">${iconName}</i>`;
+                            });
+                            iconsHtml += "</div>";
+                            weekHtml += iconsHtml;
+                        } else {
+                            // weekHtml += '<div class="activity-icons"><i class="material-symbols-outlined rest">heart_plus</i></div>';
+                            weekHtml += '<div class="activity-icons"><i class="material-symbols-outlined rest"></i></div>';
+                        }
+                        weekHtml += "</td>";
                     }
-                    weekHtml += "</td>";
+                    weekHtml += "</tr>";
+                    currentMonthHtml += weekHtml;
+                    currentCalendarSunday.setDate(currentCalendarSunday.getDate() + 7);
                 }
-
-                weekHtml += "</tr>";
-                weekRows.push(weekHtml);
-
-                currentSunday.setDate(currentSunday.getDate() - 7);
+                monthRows += currentMonthHtml;
             }
 
-            html += weekRows.join("");
-            html += "</tbody></table>";
-            fullHtml += html;
+            tableHtml += monthRows;
+            tableHtml += "</tbody></table>";
+            fullHtml += tableHtml;
         });
 
         calendarGrid.innerHTML = fullHtml;
@@ -287,19 +309,45 @@ hermes.calendar = function () {
 
         if (dayRecords) {
             tooltip.classList.add("on");
+            // let tooltipContent = "";
+            // dayRecords.forEach((rec) => {
+            //     const type = rec.elevation > 0 ? "trail" : "run";
+            //     const title = rec.title;
+            //     const distance = rec.distance ? `<span class="icon distance"></span>${rec.distance.toFixed(2)}<span class="unit">km</span>` : "";
+            //     const elevation = rec.elevation ? `<span class="icon elevation"></span>${rec.elevation}<span class="unit">m</span>` : "";
+            //     tooltipContent += `<div class="tooltip-item">
+            //                            <div class="type">${type}</div>
+            //                            <div class="title">${title}</div>
+            //                            <div class="data">${distance} ${elevation}</div>
+            //                        </div>`;
+            // });
+
             let tooltipContent = "";
             dayRecords.forEach((rec) => {
-                const type = rec.elevation > 0 ? "trail" : "run";
-                const title = rec.title;
-                const distance = rec.distance ? `<span class="icon distance"></span>${rec.distance.toFixed(2)}<span class="unit">km</span>` : "";
-                const elevation = rec.elevation ? `<span class="icon elevation"></span>${rec.elevation}<span class="unit">m</span>` : "";
-                tooltipContent += `<div class="tooltip-item">
-                                       <div class="type">${type}</div>
-                                       <div class="title">${title}</div>
-                                       <div class="data">${distance} ${elevation}</div>
-                                   </div>`;
+                const tooltipPace = `${Math.floor((rec.course === "trail" ? rec.elevation_pace : rec.pace) / 60)}'${Math.floor(
+                    (rec.course === "trail" ? rec.elevation_pace : rec.pace) % 60
+                )}"${rec.course === "trail" ? '<span class="unit">/60 m↑</span>' : '<span class="unit">/km</span>'}`;
+                const tooltipDistance = rec.course === "trail" ? `${rec.elevation} <span class="unit">m</span>` : `${rec.distance.toFixed(2)} <span class="unit">km</span>`;
+                const tooltip_type = rec.isOfficial ? "공식 대회" : rec.course === "trail" ? "하이킹 / 트레일러닝" : "러닝";
+                const tooltip__icon_distance = rec.course === "trail" ? "altitude" : "conversion_path";
+
+                tooltipContent += `
+                <div class="tooltip-item">
+                    <div class="title-container">
+                        <span class="type"> ${tooltip_type} </span> 
+                        <span class="date">${rec.date}</span>
+                        <div class="title">${rec.title} ${rec.isOfficial ? '<span class="material-symbols official"> crown </span>' : ""}</div> 
+                    </div>
+                    <div class="data">
+                        <span class="material-symbols-outlined icon distance"> ${tooltip__icon_distance} </span> <span class="distance">${tooltipDistance}</span> | 
+                        <span class="material-symbols-outlined icon rec"> timer </span> <span class="rec">${rec.record}</span> | 
+                        <span class="material-symbols-outlined icon pace"> speed </span> <span class="pace">${tooltipPace}</span>
+                    </div>
+                </div>`;
             });
+
             tooltip.innerHTML = tooltipContent;
+
         }
     });
 

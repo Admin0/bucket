@@ -3,7 +3,7 @@
   "name": "BUCKET LIST",
   "icons": [
     {
-      "src": "//jinh.kr/images/icon__bucket.png",
+      "src": "/images/icon__bucket.png",
       "type": "image/png",
       "sizes": "512x512"
     }

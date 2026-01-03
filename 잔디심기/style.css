@@ -66,9 +66,9 @@ h1 {
     gap: 2em;
     padding: 1em;
     justify-content: center;
-    transform: rotate(-90deg) translateX(-100%) translateY(calc((100vw - 100%) / 2));
+    transform: rotate(-90deg) translateX(-100%) translateY(calc((100vw - 100%) / 2 - .5em ));
     transform-origin: 0 0;
-    height: calc(100vw - 4em);
+    height: calc(100vw - 5em);
     max-height: var(--width--track-width);
     width: fit-content;
 }
@@ -209,7 +209,6 @@ h1 {
 }
 
 .track {
-    position: relative;
     margin-top: 20px;
     overflow-y: scroll;
     height: calc(100% - 24.5em);
@@ -222,18 +221,15 @@ h1 {
 .shadow-bottom:before,
 .shadow-top.shadow-bottom:before {
     content: "";
-    position: fixed;
-    width: 100%;
-    max-width: 100px;
-    height: calc(100% - 28.5em);
-    /* background-color: gold; */
+    position: absolute;
+    width: calc(100% - 2em);
+    height: calc(100% - 26.5em);
     z-index: 1;
     pointer-events: none;
 }
 .track-lane:hover .shadow-top:before,
 .track-lane:hover .shadow-bottom:before,
 .track-lane:hover .shadow-top.shadow-bottom:before {
-transform: scale(1.075);
 }
 
 .shadow-top:before {
