@@ -31,7 +31,7 @@ hermes.recordInit = function () {
 
         const distance = record.distance || (record.course == "full" ? 42.195 : record.course == "half" ? 21.0975 : record.course == "10k" ? 10 : record.course == "5k" ? 5 : 0);
         const elevation = record.elevation || 0;
-        const isTrail = elevation > 0;
+        const isTrail = record.type == "trail";
 
         let elevation_pace = Infinity;
         let distance_pace = Infinity;
@@ -49,7 +49,7 @@ hermes.recordInit = function () {
             isOfficial: record.course !== undefined,
             time,
             distance,
-            distance_pace : time / distance,
+            distance_pace: time / distance,
             elevation,
             pace: time / distance,
             elevation_pace: isTrail ? elevation_pace : distance > 0 ? time / distance : Infinity,
@@ -58,22 +58,59 @@ hermes.recordInit = function () {
             dateObj: dateObj,
             weekInfo: getWeekInfo(dateObj),
         };
-        
     });
 };
 
+hermes.stats = () => {
+    let totalDistance = 0;
+    let totalRunningDistance = 0;
+    let totalElevation = 0;
+    let totalTrailElevation = 0;
+    hermes.records.forEach((record) => {
+        totalDistance += record.distance || 0;
+        totalElevation += record.elevation || 0;
+        if (record.type == "trail") {
+            totalTrailElevation += record.elevation || 0;
+        } else {
+            totalRunningDistance += record.distance || 0;
+        }
+    });
+
+    const statsHeader = document.getElementById("stats-header");
+    statsHeader.innerHTML = `
+            <div class="stat-item">
+                <span class="label">거리</span>
+                <span class="value"><span class="material-symbols-outlined icon"> conversion_path </span> ${totalDistance.toLocaleString("en-US", { maximumFractionDigits: 1 })} <span class="unit"> km</span></span>
+            </div>
+            <div class="stat-item">
+                <span class="label">러닝 거리</span>
+                <span class="value"><span class="material-symbols-outlined icon"> sprint </span> ${totalRunningDistance.toLocaleString("en-US", { maximumFractionDigits: 1 })} <span class="unit"> km</span></span>
+            </div>
+            <div class="stat-item">
+                <span class="label">상승고도</span>
+                <span class="value"><span class="material-symbols-outlined icon"> altitude </span> ${
+                    totalElevation > 1000
+                        ? (totalElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> km</span>`
+                        : totalElevation.toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> m</span>`
+                } </span>
+            </div>
+            <div class="stat-item">
+                <span class="label">트레일 상승고도</span>
+                <span class="value"><span class="material-symbols-outlined icon"> hiking </span> ${
+                    totalTrailElevation > 1000
+                        ? (totalTrailElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> km</span>`
+                        : totalTrailElevation.toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> m</span>`
+                } </span>
+            </div>
+            <div class="stat-item">
+                <span class="label">활동</span>
+                <span class="value"><span class="material-symbols-outlined icon"> accessibility_new </span> ${hermes.records.length}</span>
+            </div>
+        `;
+};
+
 hermes.track = function () {
-
     if (!hermes.records || hermes.records.length === 0) return;
-
-    const totalDistance = hermes.records.reduce((sum, r) => sum + r.distance, 0);
-    const totalRunningDistance = hermes.records.filter((r) => r.course !== "trail").reduce((sum, r) => sum + r.distance, 0);
-    const totalTrailElevation = hermes.records.filter((r) => r.course === "trail").reduce((sum, r) => sum + r.elevation, 0);
-
-    document.getElementById("total-distance").innerHTML = `<span class="material-symbols-outlined "> conversion_path </span> ${totalDistance.toLocaleString("en-US", { maximumFractionDigits: 0 })} <span class="unit">km</span>`;
-    document.getElementById("total-running-distance").innerHTML = `<span class="material-symbols-outlined "> sprint </span> ${totalRunningDistance.toLocaleString("en-US", { maximumFractionDigits: 0 })} <span class="unit">km</span>`;
-    document.getElementById("total-trail-elevation").innerHTML = `<span class="material-symbols-outlined "> altitude </span> ${(totalTrailElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 0 })} <span class="unit">km</span>`;
-    document.getElementById("total-record-count").innerHTML = '<span class="material-symbols-outlined "> accessibility_new </span> ' + hermes.records.length.toLocaleString();
 
     const runRecords = hermes.records.filter((r) => r.course !== "trail");
     const runPaces = runRecords.map((r) => r.pace).filter((p) => p !== Infinity);
@@ -539,6 +576,7 @@ hermes.initiate = function () {
     hermes.track();
     hermes.calendar();
     hermes.table();
+    hermes.stats();
 };
 
 document.addEventListener("DOMContentLoaded", (event) => {

@@ -58,15 +58,17 @@ h1 {
 .stat-item .value {
     display: block;
     font-size: 1.5em;
-    /* font-weight: bold; */
 }
-
+.stat-item .value .icon {
+    line-height: inherit;
+}
 #main-container {
+    --width--track-padding: 0.5em;
     display: flex;
     gap: 2em;
-    padding: 1em;
+    padding: var(--width--track-padding);
     justify-content: center;
-    transform: rotate(-90deg) translateX(-100%) translateY(calc((100vw - 100%) / 2 - .5em ));
+    transform: rotate(-90deg) translateX(-100%) translateY(calc((100vw - 100%) / 2 - 0.5em));
     transform-origin: 0 0;
     height: calc(100vw - 5em);
     max-height: var(--width--track-width);
@@ -93,7 +95,7 @@ h1 {
     white-space: nowrap;
     /* border-right: 1px solid var(--color--track-border); */
     /* border-top: 10px solid var(--color--track-border); */
-    transition: background-color 0.25s, box-shadow 0.25s, transform 0.05s;
+    transition: 0.25s, transform 0.05s;
     background-color: var(--color--track);
 }
 
@@ -312,18 +314,18 @@ h1 {
     /* top: 70em; */
 }
 
-#filters {
+.filters {
 }
-#filters #reset-filters {
+.filters #reset-filters {
     background-color: transparent;
     border: none;
     color: #388e3c;
 }
-#filters .div {
+.filters .div {
     border-right: 1px solid silver;
     margin: 0.5em;
 }
-#filters .filter {
+.filters .filter {
     /* background-color: #fff; */
     /* box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25); */
     border-radius: 2em;
@@ -331,27 +333,27 @@ h1 {
     margin: 1em;
     cursor: pointer;
 }
-#filters input {
+.filters input {
     display: none;
 }
-#filters button,
-#filters label {
+.filters button,
+.filters label {
     padding: 0.5em;
     cursor: pointer;
     border-radius: 2em;
 }
-#filters #reset-filters:hover,
-#filters label:hover {
+.filters #reset-filters:hover,
+.filters label:hover {
     background-color: #69f0ae;
     transition: 0.125s;
     color: var(--color--track);
 }
-#filters label:has(input:checked) {
+.filters label:has(input:checked) {
     background-color: #00c853;
     color: var(--color--track);
 }
 
-#filters fieldset {
+.filters fieldset {
     background-color: var(--color--track);
     /* box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25); */
     border-radius: 1.5em;
@@ -359,7 +361,7 @@ h1 {
     padding: 1em;
 }
 
-#filters legend {
+.filters legend {
     display: none;
 }
 
@@ -369,7 +371,7 @@ h1 {
     pointer-events: none;
 }
 
-#filters .filter.disabled label:has(input:checked) {
+.filters .filter.disabled label:has(input:checked) {
     color: var(--color--track-border);
     background-color: var(--color--track-dark);
 }
@@ -641,7 +643,7 @@ footer a:not(.o) {
 
 /* track dynamic */
 
-@media screen and (max-width: calc(1280px + 4em)) {
+@media screen and (max-width: calc(1440px + 4em)) {
     /* #table-container {
         margin-top: calc(-100vw + var(--margin--table-top) + 18em);
     } */
@@ -673,6 +675,14 @@ footer a:not(.o) {
     h2 {
         font-size: 1em;
     }
+    .stat-item .value {
+        font-size: 1.2em;
+    }
+    #stats-header .icon,
+    .stat-item:nth-of-type(2),
+    .stat-item:nth-of-type(4) {
+        display: none;
+    }
 
     #main-container {
         gap: 0;
@@ -697,7 +707,7 @@ footer a:not(.o) {
     .track-lane {
         padding: 0.5em;
         height: fit-content;
-        width: calc((100vw - 2.5em) / 5 - 1.5em);
+        width: calc((100vw - 2.5em) / 5 - 1em - var(--width--track-padding) / 2);
         border-radius: 0;
         background: transparent;
     }

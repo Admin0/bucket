@@ -81,15 +81,20 @@
 
         <div id="calendar-container">
             <h2>DETAILS</h2>
-            <div id="calendar-grid"></div>
-            <div id="calendar-load-more-container">
-                <button id="load-more-calendar">더보기</button>
+            <div class="filters">
+                <fieldset>
+                    <legend>필터</legend>
+                    <span id="calendar-year-filter-container" class="filter">
+                        <label title="전체"><input type="radio" name="calendar-year" value="all" checked /><span class="material-symbols-outlined"> event </span></label>
+                    </span>
+                </fieldset>
             </div>
+            <div id="calendar-grid"></div>
         </div>
 
         <div id="table-container">
             <h2>RECORDS</h2>
-            <div id="filters">
+            <div class="filters">
                 <fieldset>
                     <legend>필터</legend>
                     <button id="reset-filters"><span class="material-symbols-outlined"> replay </span></button>
