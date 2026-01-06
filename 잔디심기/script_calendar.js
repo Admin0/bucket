@@ -84,11 +84,11 @@ hermes.calendar = () => {
                     </div>
                     <div class="stat-item">
                         <span class="label">거리</span>
-                        <span class="value">${yearTotalDistance.toFixed(2)} km</span>
+                        <span class="value">${yearTotalDistance.toFixed(2)} <span class="unit"> km</span></span>
                     </div>
                     <div class="stat-item">
                         <span class="label">러닝 거리</span>
-                        <span class="value">${yearRunningDistance.toFixed(2)} km</span>
+                        <span class="value">${yearRunningDistance.toFixed(2)} <span class="unit"> km</span></span>
                     </div>
                     <div class="stat-item">
                         <span class="label">상승고도</span>
@@ -141,22 +141,22 @@ hermes.calendar = () => {
                         </div>
                         <div class="stat-item">
                             <span class="label">거리</span>
-                            <span class="value">${monthTotalDistance.toFixed(2)} km</span>
+                            <span class="value">${monthTotalDistance.toFixed(2)} <span class="unit"> km</span></span>
                         </div>
                         <div class="stat-item">
                             <span class="label">러닝 거리</span>
-                            <span class="value">${monthRunningDistance.toFixed(2)} km</span>
+                            <span class="value">${monthRunningDistance.toFixed(2)} <span class="unit"> km</span></span>
                         </div>
                         <div class="stat-item">
                             <span class="label">상승고도</span>
                             <span class="value">${
-                                monthElevation > 1000 ? (monthElevation / 1000).toFixed(2) + ` <span class="unit">km</span>` : monthElevation.toFixed(0) + ` <span class="unit">m</span>`
+                                monthElevation > 1000 ? (monthElevation / 1000).toFixed(2) + ` <span class="unit"> km</span>` : monthElevation.toFixed(0) + ` <span class="unit">m</span>`
                             }</span>
                         </div>
                         <div class="stat-item">
                             <span class="label">트레일 상승고도</span>
                             <span class="value">${
-                                monthTrailElevation > 1000 ? (monthTrailElevation / 1000).toFixed(2) + ` <span class="unit">km</span>` : monthTrailElevation.toFixed(0) + ` <span class="unit">m</span>`
+                                monthTrailElevation > 1000 ? (monthTrailElevation / 1000).toFixed(2) + ` <span class="unit"> km</span>` : monthTrailElevation.toFixed(0) + ` <span class="unit">m</span>`
                             }</span>
                         </div>
                         <div class="stat-item">
@@ -210,9 +210,9 @@ hermes.calendar = () => {
                     weekHtml += `<td class="week-summary y${weekYear.toString().slice(2)} w${weekNo}">
                                     <div class="week-info">w${weekNo}</div>
                                     <div class="week-stats">
-                                        <div class="week-distance">${weeklyDistance.toFixed(1)} <span class="unit">km</span></div>
+                                        <div class="week-distance">${weeklyDistance.toFixed(1)} <span class="unit"> km</span></div>
                                         <div class="week-elevation">${
-                                            weeklyElevation > 1000 ? (weeklyElevation / 1000).toFixed(1) + ` <span class="unit">km</span>` : weeklyElevation.toFixed(0) + ` <span class="unit">m</span>`
+                                            weeklyElevation > 1000 ? (weeklyElevation / 1000).toFixed(1) + ` <span class="unit"> km</span>` : weeklyElevation.toFixed(0) + ` <span class="unit"> m</span>`
                                         } </div>
                                     </div>
                                  </td>`;
@@ -259,12 +259,12 @@ hermes.calendar = () => {
                             const b = Math.round(startColor[2] * (1 - colorIntensity) + endColor[2] * colorIntensity);
                             const color = `rgb(${r}, ${g}, ${b})`;
 
-                            const distanceText = dailyDistance > 0 ? `${dailyDistance.toFixed(1)}<span class="unit">km</span>` : "";
+                            const distanceText = dailyDistance > 0 ? `${dailyDistance.toFixed(1)}<span class="unit"> km</span>` : "";
                             const elevationText =
                                 dailyElevation > 0
                                     ? dailyElevation > 1000
-                                        ? `${(dailyElevation / 1000).toFixed(1)}<span class="unit">km</span>`
-                                        : `${dailyElevation.toFixed(0)}<span class="unit">m</span>`
+                                        ? `${(dailyElevation / 1000).toFixed(1)}<span class="unit"> km</span>`
+                                        : `${dailyElevation.toFixed(0)}<span class="unit"> m</span>`
                                     : "";
 
                             weekHtml += `<div class="activity-circle" style="--gg:${radius};">
@@ -326,7 +326,7 @@ hermes.calendar = () => {
                 const tooltipPace = `${Math.floor((rec.course === "trail" ? rec.elevation_pace : rec.pace) / 60)}'${Math.floor((rec.course === "trail" ? rec.elevation_pace : rec.pace) % 60)}"${
                     rec.course === "trail" ? '<span class="unit">/60 m↑</span>' : '<span class="unit">/km</span>'
                 }`;
-                const tooltipDistance = rec.course === "trail" ? `${rec.elevation} <span class="unit">m</span>` : `${rec.distance.toFixed(2)} <span class="unit">km</span>`;
+                const tooltipDistance = rec.course === "trail" ? `${rec.elevation} <span class="unit"> m</span>` : `${rec.distance.toFixed(2)} <span class="unit"> km</span>`;
                 const tooltip_type = rec.isOfficial ? "공식 대회" : rec.course === "trail" ? "하이킹 / 트레일러닝" : "러닝";
                 const tooltip__icon_distance = rec.course === "trail" ? "altitude" : "conversion_path";
 

@@ -22,8 +22,8 @@ body {
     --color--scoreboard-text: #212121;
     --color--scoreboard-header: #212121;
 
-    /* --width--track-width: 1280px; */
-    --width--track-width: 1440px;
+    --width--track-width: 1280px;
+    /* --width--track-width: 1440px; */
     --width--table-width: 85vw;
     --margin--table-top: 25em;
 
@@ -104,10 +104,6 @@ h1 {
     box-shadow: -5px 0 12px var(--color--track-shadow);
     z-index: 1;
     transform: scale(1.05);
-}
-
-.track-lane:hover .marker {
-    border-color: var(--color--track-hover);
 }
 
 .track-lane:after {
@@ -244,6 +240,17 @@ h1 {
     box-shadow: inset 0 24px 13px -18px rgba(0 0 0 / 0.25), inset 0 -24px 13px -18px rgba(0 0 0 / 0.25);
 }
 
+
+.track-lane:hover .marker {
+    border-color: var(--color--track-hover);
+}
+
+#calendar-grid .day-cell:has(.official-race-icon) svg,
+.track-lane:hover .marker.official {
+    filter: hue-rotate(-90deg);
+    z-index: 1;
+}
+
 .marker-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -293,15 +300,6 @@ h1 {
 .marker.has-record {
     cursor: pointer;
 }
-
-.marker-grid:hover .marker.official {
-    /* border-color: SpringGreen; */
-    filter: hue-rotate(-90deg);
-    /* box-shadow: 0 0 5px 2px gold; */
-    /* box-shadow: inset 0 0 0 1em gold; */
-    z-index: 1;
-}
-/* Table and Scoreboard Styles */
 
 #table-container {
     /* max-width: 720px; */
@@ -679,8 +677,8 @@ footer a:not(.o) {
         font-size: 1.2em;
     }
     #stats-header .icon,
-    .stat-item:nth-of-type(2),
-    .stat-item:nth-of-type(4) {
+    .stat-item:nth-of-type(1),
+    .stat-item:nth-of-type(3) {
         display: none;
     }
 

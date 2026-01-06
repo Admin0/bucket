@@ -41,6 +41,7 @@ const hermes_records = [
     { date: "2024-11-10", type: "run", course: "10k", elevation: 0, record: "00:58:43", title: "아산은행나무길 전국마라톤대회", certi: "https://time.spct.kr/m2.php?E=2024111004&B=001956" },
 
     // unofficial 2026
+    { date: "2026-01-06", type: "run", distance: 6.21, elevation: 17, record: "00:33:38", title: "신정호 이런저런" },
     { date: "2026-01-03", type: "run", distance: 21.28, elevation: 109, record: "02:00:00", title: "장항선구철도길 2026런" },
     { date: "2026-01-01", type: "trail", distance: 8.68, elevation: 292, record: "02:19:02", title: "영인산 새해맞이일출등" },
 

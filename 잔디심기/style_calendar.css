@@ -1,9 +1,27 @@
 #calendar-container {
-    margin: 10em auto;
     width: calc(100% - 4em);
-    max-width: var(--width--track-width);
+    margin: 10em auto;
     margin-top: calc(var(--margin--table-top) * -1);
 }
+
+#calendar-container .months-grid {
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4em;
+}
+
+#calendar-container h2,
+#calendar-container #calendar-grid .year-stats ,
+#calendar-container .filters,
+/* #calendar-container .year-container, */
+#calendar-container .month-table-container {
+    max-width: var(--width--track-width);
+    width: calc(100% - 4em);
+    margin: 1em auto;
+}
+
 #calendar-year-filter-container {
     margin: 0;
     line-height: 2;
@@ -18,13 +36,9 @@
     border-collapse: separate; /* Don't collapse */
     border-spacing: 0;
     table-layout: fixed;
-    margin-bottom: 2em;
     background-color: var(--color--track);
 }
 
-#calendar-grid .year-stats {
-    margin: 1em 0 .5em;
-}
 #calendar-grid thead,
 #calendar-grid .month-stats-row {
     position: sticky;
@@ -249,24 +263,58 @@ td.on {
 /* mobile */
 @media screen and (max-width: 600px) {
     #calendar-container {
-        width: calc(100% - 2em);
+        width: calc(100% - 3em);
         margin-top: 5em;
         height: inherit;
         position: inherit;
     }
     .day-cell {
-        height: 5em;
+        height: 3em;
+    }
+    .day-cell .date-display {
+        display: none;
+        left: 50%;
+        top: 50%;
+        z-index: 1;
+        transform: translate(-50%, -50%);
+    }
+    .month-table-container:hover .day-cell .date-display {
+        display: block;
     }
     #calendar-grid .activity-circle {
         width: 2.5em;
         height: 2.5em;
     }
-    .activity-stats {
-        font-size: 0.6em;
+    #calendar-grid th:nth-of-type(2) {
+        border-radius: 1.5em 0 0 0;
     }
-
+    .shadow-bottom:before,
     #calendar-grid tr:not(.year-stats) th:nth-of-type(1),
-    #calendar-grid tr:not(.month-stats-row) td:nth-of-type(1) {
+    #calendar-grid tr:not(.month-stats-row) td:nth-of-type(1),
+    .year-stats .stat-item,
+    .month-stats-row .stat-item:nth-of-type(2),
+    .year-stats .stat-item,
+    .month-stats-row .stat-item:nth-of-type(4),
+    .activity-icons,
+    .activity-stats {
         display: none;
+    }
+    .year-stats .stat-item,
+    .month-stats-row .stat-item:nth-of-type(1) {
+        width: 100%;
+    }
+    .year-stats .stat-item,
+    .month-stats-row .stat-item {
+        width: fit-content;
+        margin-right: 1em;
+    }
+    #calendar-container h2,
+    #calendar-container #calendar-grid .year-stats,
+    #calendar-container .filters,
+    #calendar-container .month-table-container {
+        width: 100%;
+    }
+    #calendar-container .months-grid {
+        gap: 0;
     }
 }
