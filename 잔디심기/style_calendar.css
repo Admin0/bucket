@@ -21,7 +21,9 @@
     width: calc(100% - 4em);
     margin: 1em auto;
 }
-
+#calendar-container .month-table-container {
+    margin: 0;
+}
 #calendar-year-filter-container {
     margin: 0;
     line-height: 2;
@@ -53,7 +55,6 @@
 #calendar-grid th,
 #calendar-grid td {
     padding: 0;
-    /* border-radius: 1.5em; */
     vertical-align: top;
     width: 100%;
 }
@@ -118,9 +119,16 @@
 #calendar-grid .week-stats .week-elevation:before {
     content: "상승 고도";
 }
-
+td {
+    transition: outline-width 0.25s;
+    outline-color: var(--color--track-hover);
+    position: relative;
+}
+#calendar-grid .week-summary.on,
 td.on {
     background-color: var(--color--track-hover);
+    outline: 1em solid var(--color--track-hover);
+    z-index: 2;
 }
 
 .day-cell {

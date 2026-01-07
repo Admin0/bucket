@@ -6,11 +6,16 @@
             "src": "imgs/icon-128.png",
             "type": "image/png",
             "sizes": "128x128"
+        },
+        {
+            "src": "imgs/icon-256.png",
+            "type": "image/png",
+            "sizes": "256ㅌ256"
         }
     ],
-    "start_url": ".",
+    "start_url": "https://jinh.kr/bucket/잔디심기/",
+    "id": "/",
+    "theme_color": "#00ff7f",
     "background_color": "#fff",
-    "display": "standalone",
-    "scope": ".",
-    "theme_color": "#fff"
+    "display": "standalone"
 }
