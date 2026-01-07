@@ -10,11 +10,11 @@
         {
             "src": "imgs/icon-256.png",
             "type": "image/png",
-            "sizes": "256ㅌ256"
+            "sizes": "256x256"
         }
     ],
     "start_url": "https://jinh.kr/bucket/잔디심기/",
-    "id": "/",
+    "id": "잔디심기",
     "theme_color": "#00ff7f",
     "background_color": "#fff",
     "display": "standalone"
