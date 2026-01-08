@@ -80,11 +80,15 @@ hermes.stats = () => {
     statsHeader.innerHTML = `
             <div class="stat-item">
                 <span class="label">거리</span>
-                <span class="value"><span class="material-symbols-outlined icon"> conversion_path </span> ${totalDistance.toLocaleString("en-US", { maximumFractionDigits: 1 })} <span class="unit"> km</span></span>
+                <span class="value"><span class="material-symbols-outlined icon"> conversion_path </span> ${totalDistance.toLocaleString("en-US", {
+                    maximumFractionDigits: 1,
+                })} <span class="unit"> km</span></span>
             </div>
             <div class="stat-item">
                 <span class="label">러닝 거리</span>
-                <span class="value"><span class="material-symbols-outlined icon"> sprint </span> ${totalRunningDistance.toLocaleString("en-US", { maximumFractionDigits: 1 })} <span class="unit"> km</span></span>
+                <span class="value"><span class="material-symbols-outlined icon"> sprint </span> ${totalRunningDistance.toLocaleString("en-US", {
+                    maximumFractionDigits: 1,
+                })} <span class="unit"> km</span></span>
             </div>
             <div class="stat-item">
                 <span class="label">상승고도</span>
@@ -281,7 +285,9 @@ hermes.track = function () {
                                 <div class="title-container">
                                     <span class="type"> ${tooltip_type} </span> 
                                     <span class="date">${record.date}</span>
-                                    <div class="title">${record.title} ${record.isOfficial ? '<span class="material-symbols official"> crown </span>' : ""}</div> 
+                                    <div class="title">${record.title} <span class="comment">${record.comment}</span>  ${
+                                record.isOfficial ? '<span class="material-symbols official"> crown </span>' : ""
+                            }</div> 
                                 </div>
                                 <div class="data">
                                     <span class="material-symbols-outlined icon distance"> ${tooltip__icon_distance} </span> <span class="distance">${tooltipDistance}</span> | 

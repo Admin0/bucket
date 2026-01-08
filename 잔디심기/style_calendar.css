@@ -120,15 +120,11 @@
     content: "상승 고도";
 }
 td {
-    transition: outline-width 0.25s;
-    outline-color: var(--color--track-hover);
     position: relative;
 }
 #calendar-grid .week-summary.on,
 td.on {
     background-color: var(--color--track-hover);
-    outline: 1em solid var(--color--track-hover);
-    z-index: 2;
 }
 
 .day-cell {
@@ -271,13 +267,14 @@ td.on {
 /* mobile */
 @media screen and (max-width: 600px) {
     #calendar-container {
+        font-size: 0.7em;
         width: calc(100% - 3em);
         margin-top: 5em;
         height: inherit;
         position: inherit;
     }
     .day-cell {
-        height: 3em;
+        height: 4em;
     }
     .day-cell .date-display {
         display: none;
@@ -286,12 +283,18 @@ td.on {
         z-index: 1;
         transform: translate(-50%, -50%);
     }
-    .month-table-container:hover .day-cell .date-display {
+    .day-cell:has(.activity-circle) .date-display {
+        color: var(--color--body-background);
+    }
+    .month-table-container:hover .day-cell.on .date-display {
         display: block;
     }
     #calendar-grid .activity-circle {
         width: 2.5em;
         height: 2.5em;
+    }
+    #calendar-grid th {
+        padding: 1em 0;
     }
     #calendar-grid th:nth-of-type(2) {
         border-radius: 1.5em 0 0 0;

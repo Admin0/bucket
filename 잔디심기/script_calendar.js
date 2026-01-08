@@ -249,15 +249,16 @@ hermes.calendar = () => {
 
                             const radius = Math.sqrt(dailyDistance / maxActivity);
 
-                            let colorIntensity = Math.min(1, (dailyDistance - 5) / (maxActivity * 0.8));
+                            // let colorIntensity = Math.min(1, (dailyDistance - 5) / (maxActivity * 0.8));
 
-                            const startColor = [0, 77, 64];
-                            const endColor = [0, 255, 127];
+                            // const startColor = [0, 77, 64];
+                            // const endColor = [0, 255, 127];
 
-                            const r = Math.round(startColor[0] * (1 - colorIntensity) + endColor[0] * colorIntensity);
-                            const g = Math.round(startColor[1] * (1 - colorIntensity) + endColor[1] * colorIntensity);
-                            const b = Math.round(startColor[2] * (1 - colorIntensity) + endColor[2] * colorIntensity);
-                            const color = `rgb(${r}, ${g}, ${b})`;
+                            // const r = Math.round(startColor[0] * (1 - colorIntensity) + endColor[0] * colorIntensity);
+                            // const g = Math.round(startColor[1] * (1 - colorIntensity) + endColor[1] * colorIntensity);
+                            // const b = Math.round(startColor[2] * (1 - colorIntensity) + endColor[2] * colorIntensity);
+                            // const color = `rgb(${r}, ${g}, ${b})`;
+                            const color = `rgb(0, 255, 127)`;
 
                             const distanceText = dailyDistance > 0 ? `${dailyDistance.toFixed(1)}<span class="unit"> km</span>` : "";
                             const elevationText =

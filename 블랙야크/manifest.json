@@ -8,9 +8,9 @@
             "sizes": "512x512"
         }
     ],
-    "start_url": "/bucket/블랙야크/",
-    "background_color": "#fff",
-    "display": "standalone",
-    "scope": "/bucket/블랙야크/",
-    "theme_color": "#fff"
+    "start_url": "https://jinh.kr/bucket/블랙야크/",
+    "id": "블랙야크",
+    "theme_color": "#212121",
+    "background_color": "#212121",
+    "display": "standalone"
 }

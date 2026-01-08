@@ -240,7 +240,6 @@ h1 {
     box-shadow: inset 0 24px 13px -18px rgba(0 0 0 / 0.25), inset 0 -24px 13px -18px rgba(0 0 0 / 0.25);
 }
 
-
 .track-lane:hover .marker {
     border-color: var(--color--track-hover);
 }
@@ -518,7 +517,7 @@ h1 {
 }
 
 #tooltip {
-    width: min-content;
+    width: 400px;
     position: absolute;
     opacity: 0;
     /* background: rgba(0, 0, 0, 0.8); */
@@ -564,7 +563,12 @@ h1 {
     overflow: hidden;
     white-space: nowrap;
 }
-
+#tooltip .title .comment {
+    font-size: 0.7em;
+    opacity: 0.7;
+    font-style: italic;
+    font-weight: normal;
+}
 #tooltip .title .official {
     background-color: gold;
     color: goldenrod;
@@ -581,7 +585,8 @@ h1 {
 }
 
 #tooltip .data {
-    width: fit-content;
+    display: flex;
+    justify-content: space-around;
     white-space: nowrap;
     background-color: rgb(255, 255, 255);
     padding: 1em;
@@ -779,6 +784,7 @@ footer a:not(.o) {
     }
     #tooltip {
         left: 0 !important;
+        padding: 1em;
         width: calc(100% - 2em);
         top: inherit !important;
         bottom: 0;
@@ -788,7 +794,7 @@ footer a:not(.o) {
         transform: none;
     }
     #tooltip .data {
-        width: calc(100% - 3em);
+        /* width: calc(100% - 2em); */
         display: flex;
         justify-content: space-evenly;
     }

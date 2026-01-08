@@ -11,6 +11,11 @@
             "src": "imgs/icon-256.png",
             "type": "image/png",
             "sizes": "256x256"
+        },
+        {
+            "src": "imgs/icon.svg",
+            "type": "image/svg",
+            "sizes": "256x256"
         }
     ],
     "start_url": "https://jinh.kr/bucket/잔디심기/",
