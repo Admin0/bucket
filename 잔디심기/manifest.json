@@ -1,6 +1,6 @@
 {
-    "short_name": "#잔디심기",
     "name": "#잔디심기",
+    "short_name": "잔디",
     "icons": [
         {
             "src": "imgs/icon-128.png",
@@ -14,13 +14,15 @@
         },
         {
             "src": "imgs/icon.svg",
-            "type": "image/svg",
-            "sizes": "256x256"
+            "type": "image/svg+xml",
+            "sizes": "any",
+            "purpose": "maskable any"
         }
     ],
-    "start_url": "https://jinh.kr/bucket/잔디심기/",
+    "start_url": "/",
+    "scope": "/bucket/잔디심기/",
     "id": "잔디심기",
-    "theme_color": "#00ff7f",
-    "background_color": "#fff",
-    "display": "standalone"
+    "display": "standalone",
+    "theme_color": "#00b264",
+    "background_color": "#fff"
 }

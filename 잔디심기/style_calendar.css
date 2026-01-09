@@ -66,6 +66,9 @@
 #calendar-grid tr:after {
     border-bottom: 1px solid var(--color--track-border);
 }
+#calendar-grid tbody tr:last-of-type:after {
+    border-bottom: none;
+}
 #calendar-grid tr:after {
     width: calc(100% - 3em);
     content: "";
@@ -120,6 +123,7 @@
     content: "상승 고도";
 }
 td {
+    transition: 0.05s;
     position: relative;
 }
 #calendar-grid .week-summary.on,
@@ -155,6 +159,10 @@ td.on {
 #calendar-grid .activity-circle circle {
     transform-origin: 50% 50%;
     transform: scale(var(--gg, 0));
+    fill: rgb(0, 178, 100);
+}
+#calendar-grid .day-cell:has(.official-race-icon) .activity-circle circle {
+    fill: gold;
 }
 
 .activity-stats {
@@ -254,6 +262,26 @@ td.on {
     font-weight: bold;
 }
 
+/* compact */
+#calendar-grid.compact .activity-icons,
+#calendar-grid.compact .activity-stats,
+.month-stats-row .stat-item:nth-of-type(2),
+.month-stats-row .stat-item:nth-of-type(4),
+#calendar-grid.compact tr:not(.year-stats) th:nth-of-type(1),
+#calendar-grid.compact tr:not(.month-stats-row) td:nth-of-type(1) {
+    display: none;
+}
+
+#calendar-grid.compact th:nth-of-type(2) {
+    border-radius: 1.5em 0 0 0;
+}
+#calendar-grid.compact .month-table-container {
+    width: 800px;
+}
+#calendar-grid.compact .day-cell {
+    height: 5em;
+}
+
 @media screen and (max-width: calc(1440px + 4em)) {
     #calendar-container {
         margin-top: calc(-100vw + var(--margin--table-top) + 34em);
@@ -267,12 +295,16 @@ td.on {
 /* mobile */
 @media screen and (max-width: 600px) {
     #calendar-container {
-        font-size: 0.7em;
         width: calc(100% - 3em);
         margin-top: 5em;
         height: inherit;
         position: inherit;
     }
+    
+    .calendar-grid {
+        font-size: 0.7em;
+    }
+
     .day-cell {
         height: 4em;
     }
@@ -302,9 +334,7 @@ td.on {
     .shadow-bottom:before,
     #calendar-grid tr:not(.year-stats) th:nth-of-type(1),
     #calendar-grid tr:not(.month-stats-row) td:nth-of-type(1),
-    .year-stats .stat-item,
     .month-stats-row .stat-item:nth-of-type(2),
-    .year-stats .stat-item,
     .month-stats-row .stat-item:nth-of-type(4),
     .activity-icons,
     .activity-stats {

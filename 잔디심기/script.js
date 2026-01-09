@@ -271,35 +271,9 @@ hermes.track = function () {
                             marker.classList.add("unofficial");
                         }
 
-                        let tooltipContent = "";
-                        recordsForWeek.forEach((record) => {
-                            const tooltipPace = `${Math.floor((record.course === "trail" ? record.elevation_pace : record.pace) / 60)}'${Math.floor(
-                                (record.course === "trail" ? record.elevation_pace : record.pace) % 60
-                            )}"${record.course === "trail" ? '<span class="unit">/60 m↑</span>' : '<span class="unit">/km</span>'}`;
-                            const tooltipDistance = record.course === "trail" ? `${record.elevation} <span class="unit">m</span>` : `${record.distance.toFixed(2)} <span class="unit">km</span>`;
-                            const tooltip_type = record.isOfficial ? "공식 대회" : record.course === "trail" ? "하이킹 / 트레일러닝" : "러닝";
-                            const tooltip__icon_distance = record.course === "trail" ? "altitude" : "conversion_path";
-
-                            tooltipContent += `
-                            <div class="tooltip-item">
-                                <div class="title-container">
-                                    <span class="type"> ${tooltip_type} </span> 
-                                    <span class="date">${record.date}</span>
-                                    <div class="title">${record.title} <span class="comment">${record.comment}</span>  ${
-                                record.isOfficial ? '<span class="material-symbols official"> crown </span>' : ""
-                            }</div> 
-                                </div>
-                                <div class="data">
-                                    <span class="material-symbols-outlined icon distance"> ${tooltip__icon_distance} </span> <span class="distance">${tooltipDistance}</span> | 
-                                    <span class="material-symbols-outlined icon record"> timer </span> <span class="record">${record.record}</span> | 
-                                    <span class="material-symbols-outlined icon pace"> speed </span> <span class="pace">${tooltipPace}</span>
-                                </div>
-                            </div>`;
-                        });
-
                         marker.addEventListener("mouseover", (e) => {
                             let tooltip = document.getElementById("tooltip");
-                            tooltip.innerHTML = tooltipContent;
+                            tooltip.innerHTML = hermes.tooltip(recordsForWeek);
                             tooltip.classList.add("on");
                             tooltip.style.left = marker.getBoundingClientRect().left + marker.getBoundingClientRect().width / 2 + "px";
                             tooltip.style.top = marker.getBoundingClientRect().top + window.scrollY + "px";
@@ -550,7 +524,7 @@ hermes.table = function () {
                 currentSort.direction = currentSort.direction === "asc" ? "desc" : "asc";
             } else {
                 currentSort.key = sortKey;
-                currentSort.direction = sortKey === "date" ? "desc" : "asc";
+                currentSort.direction = ["date", "isOfficial", "distance"].includes(sortKey) ? "desc" : "asc";
             }
             tableHeaders.forEach((th) => th.classList.remove("sort-asc", "sort-desc"));
             header.classList.add(`sort-${currentSort.direction}`);
@@ -577,12 +551,41 @@ hermes.table = function () {
     filterAndRender();
 };
 
+hermes.tooltip = (records) => {
+    let tooltipContent = "";
+    records.forEach((rec) => {
+        const tooltipPace = `${Math.floor((rec.course === "trail" ? rec.elevation_pace : rec.pace) / 60)}'${Math.floor((rec.course === "trail" ? rec.elevation_pace : rec.pace) % 60)}"${
+            rec.course === "trail" ? '<span class="unit">/60 m↑</span>' : '<span class="unit">/km</span>'
+        }`;
+        const tooltipDistance = rec.course === "trail" ? `${rec.elevation} <span class="unit"> m</span>` : `${rec.distance.toFixed(2)} <span class="unit"> km</span>`;
+        const tooltip_type = rec.isOfficial ? "공식 대회" : rec.course === "trail" ? "하이킹 / 트레일러닝" : "러닝";
+        const tooltip__icon_distance = rec.course === "trail" ? "altitude" : "conversion_path";
+        const comment = rec.comment ? `<span class="comment">${rec.comment}</span>` : "";
+
+        tooltipContent += `
+        <div class="tooltip-item">
+            <div class="title-container">
+                <span class="type"> ${tooltip_type} </span>
+                <span class="date">${rec.date}</span>
+                <div class="title">${rec.title} ${comment} ${rec.isOfficial ? '<span class="material-symbols official"> crown </span>' : ""}</div>
+            </div>
+            <div class="data">
+                <span class="material-symbols-outlined icon distance"> ${tooltip__icon_distance} </span> <span class="distance">${tooltipDistance}</span> |
+                <span class="material-symbols-outlined icon record"> timer </span> <span class="rec">${rec.record}</span> |
+                <span class="material-symbols-outlined icon pace"> speed </span> <span class="pace">${tooltipPace}</span>
+            </div>
+        </div>`;
+    });
+    return tooltipContent;
+};
+
 hermes.initiate = function () {
     hermes.recordInit();
     hermes.track();
     hermes.calendar();
     hermes.table();
     hermes.stats();
+
 };
 
 document.addEventListener("DOMContentLoaded", (event) => {

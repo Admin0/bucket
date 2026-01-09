@@ -1,6 +1,6 @@
 {
-    "short_name": "#블랙야크",
     "name": "#블랙야크",
+    "short_name": "야크",
     "icons": [
         {
             "src": "imgs/icon-512.png",
@@ -8,9 +8,10 @@
             "sizes": "512x512"
         }
     ],
-    "start_url": "https://jinh.kr/bucket/블랙야크/",
+    "start_url": "/",
+    "scope": "/bucket/블랙야크/",
     "id": "블랙야크",
+    "display": "standalone",
     "theme_color": "#212121",
-    "background_color": "#212121",
-    "display": "standalone"
+    "background_color": "#212121"
 }

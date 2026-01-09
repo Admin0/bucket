@@ -40,12 +40,15 @@ h1 {
     margin: 5em 0 0;
 }
 
+a {
+    color: inherit;
+}
 #stats-header {
     display: flex;
     justify-content: center;
     gap: 2em;
     padding: 1em;
-    margin: 3em 0 10em 0;
+    margin: 5em 0 6em 0;
 }
 .stat-item {
     /* text-align: center; */
@@ -244,7 +247,6 @@ h1 {
     border-color: var(--color--track-hover);
 }
 
-#calendar-grid .day-cell:has(.official-race-icon) svg,
 .track-lane:hover .marker.official {
     filter: hue-rotate(-90deg);
     z-index: 1;
@@ -332,6 +334,9 @@ h1 {
 }
 .filters input {
     display: none;
+}
+.filters input:checked + .material-symbols-outlined {
+    font-variation-settings: "FILL" 1;
 }
 .filters button,
 .filters label {
@@ -672,8 +677,8 @@ footer a:not(.o) {
     }
     h1 {
         padding: 0 5vw;
-        text-align: left;
         font-size: 1.5em;
+        margin-top: 1em;
     }
     h2 {
         font-size: 1em;

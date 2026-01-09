@@ -3,6 +3,8 @@ hermes.calendar = () => {
     const calendarGrid = document.getElementById("calendar-grid");
     const tooltip = document.getElementById("tooltip");
     const yearFilterContainer = document.getElementById("calendar-year-filter-container");
+    const recordYearFilterContainer = document.getElementById("year-filter-container");
+    const calendarViewFilterContainer = document.getElementById('calendar-view-filter-container');
 
     if (!records.length) {
         return;
@@ -52,8 +54,25 @@ hermes.calendar = () => {
     };
 
     const renderCalendar = () => {
-        const selectedYear = document.querySelector('input[name="calendar-year"]:checked').value;
-        const yearsToRender = selectedYear === 'all' ? allYears : [parseInt(selectedYear)];
+        const selectedValue = document.querySelector('input[name="calendar-year"]:checked').value;
+        const calendarView = document.querySelector('input[name="calendar-view"]:checked').value;
+
+        calendarGrid.classList.toggle('compact', calendarView === 'compact');
+
+        let yearsToRender;
+        let monthsToRender;
+        const today = new Date();
+
+        if (selectedValue === 'recent') {
+            yearsToRender = [today.getFullYear()];
+            monthsToRender = [today.getMonth()];
+        } else if (selectedValue === 'all') {
+            yearsToRender = allYears;
+            monthsToRender = Array.from({length: 12}, (_, i) => i);
+        } else {
+            yearsToRender = [parseInt(selectedValue)];
+            monthsToRender = Array.from({length: 12}, (_, i) => i);
+        }
 
         let fullHtml = "";
 
@@ -112,9 +131,9 @@ hermes.calendar = () => {
 
             fullHtml += `<div class="months-grid">`;
 
-            for (let month = 11; month >= 0; month--) {
+            monthsToRender.slice().reverse().forEach((month) => {
                 const monthRecords = yearRecords.filter((r) => new Date(r.date).getMonth() === month);
-                if (monthRecords.length === 0) continue;
+                if (monthRecords.length === 0 && selectedValue !== 'recent') return;
 
                 let monthTableHtml = `<div class="month-table-container"><table>`;
                 monthTableHtml += `<thead><tr><th></th><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody>`;
@@ -248,17 +267,7 @@ hermes.calendar = () => {
                             });
 
                             const radius = Math.sqrt(dailyDistance / maxActivity);
-
-                            // let colorIntensity = Math.min(1, (dailyDistance - 5) / (maxActivity * 0.8));
-
-                            // const startColor = [0, 77, 64];
-                            // const endColor = [0, 255, 127];
-
-                            // const r = Math.round(startColor[0] * (1 - colorIntensity) + endColor[0] * colorIntensity);
-                            // const g = Math.round(startColor[1] * (1 - colorIntensity) + endColor[1] * colorIntensity);
-                            // const b = Math.round(startColor[2] * (1 - colorIntensity) + endColor[2] * colorIntensity);
-                            // const color = `rgb(${r}, ${g}, ${b})`;
-                            const color = `rgb(0, 255, 127)`;
+                            const color = `#00b264`;
 
                             const distanceText = dailyDistance > 0 ? `${dailyDistance.toFixed(1)}<span class="unit"> km</span>` : "";
                             const elevationText =
@@ -298,7 +307,7 @@ hermes.calendar = () => {
                 }
                 monthTableHtml += "</tbody></table></div>";
                 fullHtml += monthTableHtml;
-            }
+            });
             fullHtml += `</div></div>`; // Close months-grid and year-container
         });
 
@@ -321,32 +330,8 @@ hermes.calendar = () => {
         const dayRecords = recordsByDate[date];
 
         if (dayRecords) {
+            tooltip.innerHTML = hermes.tooltip(dayRecords);
             tooltip.classList.add("on");
-            let tooltipContent = "";
-            dayRecords.forEach((rec) => {
-                const tooltipPace = `${Math.floor((rec.course === "trail" ? rec.elevation_pace : rec.pace) / 60)}'${Math.floor((rec.course === "trail" ? rec.elevation_pace : rec.pace) % 60)}"${
-                    rec.course === "trail" ? '<span class="unit">/60 m↑</span>' : '<span class="unit">/km</span>'
-                }`;
-                const tooltipDistance = rec.course === "trail" ? `${rec.elevation} <span class="unit"> m</span>` : `${rec.distance.toFixed(2)} <span class="unit"> km</span>`;
-                const tooltip_type = rec.isOfficial ? "공식 대회" : rec.course === "trail" ? "하이킹 / 트레일러닝" : "러닝";
-                const tooltip__icon_distance = rec.course === "trail" ? "altitude" : "conversion_path";
-
-                tooltipContent += `
-                <div class="tooltip-item">
-                    <div class="title-container">
-                        <span class="type"> ${tooltip_type} </span>
-                        <span class="date">${rec.date}</span>
-                        <div class="title">${rec.title} ${rec.isOfficial ? '<span class="material-symbols official"> crown </span>' : ""}</div>
-                    </div>
-                    <div class="data">
-                        <span class="material-symbols-outlined icon distance"> ${tooltip__icon_distance} </span> <span class="distance">${tooltipDistance}</span> |
-                        <span class="material-symbols-outlined icon record"> timer </span> <span class="rec">${rec.record}</span> |
-                        <span class="material-symbols-outlined icon pace"> speed </span> <span class="pace">${tooltipPace}</span>
-                    </div>
-                </div>`;
-            });
-
-            tooltip.innerHTML = tooltipContent;
         }
     });
 
@@ -376,31 +361,59 @@ hermes.calendar = () => {
 
     // Populate year filter
     allYears.forEach((year) => {
-        const label = document.createElement("label");
-        const radio = document.createElement("input");
-        radio.type = "radio";
-        radio.name = "calendar-year";
-        radio.value = year;
-        label.appendChild(radio);
-        label.appendChild(document.createTextNode(year));
-        yearFilterContainer.appendChild(label);
+        const calendarLabel = document.createElement("label");
+        const calendarRadio = document.createElement("input");
+        calendarRadio.type = "radio";
+        calendarRadio.name = "calendar-year";
+        calendarRadio.value = year;
+        calendarLabel.appendChild(calendarRadio);
+        calendarLabel.appendChild(document.createTextNode(year));
+        yearFilterContainer.appendChild(calendarLabel);
+        
+        const recordLabel = document.createElement("label");
+        const recordRadio = document.createElement("input");
+        recordRadio.type = "radio";
+        recordRadio.name = "year";
+        recordRadio.value = year;
+        recordLabel.appendChild(recordRadio);
+        recordLabel.appendChild(document.createTextNode(year));
+        recordYearFilterContainer.appendChild(recordLabel);
     });
+    
+    const handleYearFilterChange = (e) => {
+        const selectedValue = e.target.value;
+        
+        document.querySelectorAll('input[name="calendar-year"]').forEach(radio => {
+            radio.checked = radio.value === selectedValue;
+        });
+        document.querySelectorAll('input[name="year"]').forEach(radio => {
+            radio.checked = radio.value === selectedValue;
+        });
+
+        if (selectedValue === 'recent') {
+            document.querySelector('input[name="calendar-view"][value="normal"]').checked = true;
+        } else {
+            document.querySelector('input[name="calendar-view"][value="compact"]').checked = true;
+        }
+
+        renderCalendar();
+    };
 
     document.querySelectorAll('input[name="calendar-year"]').forEach((radio) => {
-        radio.addEventListener("change", renderCalendar);
+        radio.addEventListener("change", handleYearFilterChange);
     });
+    document.querySelectorAll('input[name="year"]').forEach((radio) => {
+        radio.addEventListener("change", handleYearFilterChange);
+    });
+    calendarViewFilterContainer.addEventListener('change', renderCalendar);
 
     function setDefaultCalendarYearFilter() {
-        const currentYear = new Date().getFullYear().toString();
-        const currentYearRadio = document.querySelector(`input[name="calendar-year"][value="${currentYear}"]`);
-        if (currentYearRadio) {
-            currentYearRadio.checked = true;
-        } else {
-            // If no records for the current year, check 'all'
-            document.querySelector('input[name="calendar-year"][value="all"]').checked = true;
+        const recentRadio = document.querySelector('input[name="calendar-year"][value="recent"]');
+        if (recentRadio) {
+            recentRadio.checked = true;
+            handleYearFilterChange({target: recentRadio});
         }
     }
     
     setDefaultCalendarYearFilter();
-    renderCalendar();
 };
