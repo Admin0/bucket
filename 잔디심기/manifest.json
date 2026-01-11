@@ -19,7 +19,7 @@
             "purpose": "maskable any"
         }
     ],
-    "start_url": "/",
+    "start_url": "/bucket/잔디심기/",
     "scope": "/bucket/잔디심기/",
     "id": "잔디심기",
     "display": "standalone",

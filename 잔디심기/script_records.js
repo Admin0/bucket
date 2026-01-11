@@ -92,7 +92,7 @@ const hermes_records = [
     { date: "2025-11-26", type: "run", distance: 6.35, elevation: 9, record: "00:37:58", title: "신정호", comment: "@당근 정기일정" },
     { date: "2025-11-25", type: "run", distance: 6.25, elevation: 9, record: "00:36:21", title: "신정호", comment: "" },
     { date: "2025-11-19", type: "run", distance: 4.71, elevation: 0, record: "00:37:58", title: "은행나무길", comment: "@당근 정기일정" },
-    { date: "2025-11-12", type: "run", distance: 6.14, elevation: 8, record: "00:33:45", title: "신정호 영인호족조우런", comment: "영인면 호족과의 조우... 화들짝!" },
+    { date: "2025-11-12", type: "run", distance: 6.14, elevation: 8, record: "00:33:45", title: "신정호", comment: "영인면 호족과의 조우... 화들짝!" },
     { date: "2025-11-11", type: "run", distance: 5.19, elevation: 20, record: "00:34:57", title: "장항선구철도길", comment: "" },
     { date: "2025-11-05", type: "run", distance: 5.68, elevation: 0, record: "00:36:03", title: "은행나무길", comment: "@당근 정기일정" },
     { date: "2025-11-04", type: "run", distance: 5.13, elevation: 20, record: "00:32:16", title: "장항선구철도길", comment: "" },

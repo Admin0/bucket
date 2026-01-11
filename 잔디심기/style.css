@@ -18,6 +18,8 @@ body {
     --color--track-text: #212121;
     --color--track-shadow: rgba(0 0 0 / 0.25);
 
+    --color--gpx: #00ff80;
+
     --color--scoreboard-bg: transparent;
     --color--scoreboard-text: #212121;
     --color--scoreboard-header: #212121;
@@ -491,6 +493,9 @@ a {
 #records-table tr:hover td .main {
     display: none;
 }
+#records-table td:has(.replace) {
+    outline-color: var(--color--track-dark);
+}
 #records-table tr:hover td:has(.replace) {
     background-color: var(--color--track-dark);
     outline: 0.5em solid var(--color--track-dark);
@@ -526,14 +531,14 @@ a {
     position: absolute;
     opacity: 0;
     /* background: rgba(0, 0, 0, 0.8); */
-    background: rgb(238, 238, 238, 0.98);
+    background: var(--color--track-dark);
     box-shadow: 0 5px 11px var(--color--track-shadow);
     padding: 1.5em;
     border-radius: 1.5em;
     pointer-events: none;
     z-index: 1000;
     /* color: var(--color--scoreboard-header); */
-    color: #212121;
+    color: var(--color--body-text);
     /* text-shadow: 0 0 5px var(--color--scoreboard-header); */
     transform: translate(-50%, calc(-100% - 2em));
     transition: opacity 0.25s;
@@ -593,9 +598,16 @@ a {
     display: flex;
     justify-content: space-around;
     white-space: nowrap;
-    background-color: rgb(255, 255, 255);
+    background-color: var(--color--track);
     padding: 1em;
     border-radius: 2em;
+}
+
+#tooltip svg {
+    background-color: var(--color--track);
+    border-radius: 1.5em;
+    stroke-width: 20px;
+    stroke-linejoin: round;
 }
 
 .icon.distance {

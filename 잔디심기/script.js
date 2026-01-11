@@ -564,6 +564,9 @@ hermes.tooltip = (records) => {
 
         tooltipContent += `
         <div class="tooltip-item">
+            <div class="gpx d-${rec.date}">
+                <svg></svg>
+            </div>
             <div class="title-container">
                 <span class="type"> ${tooltip_type} </span>
                 <span class="date">${rec.date}</span>
@@ -575,9 +578,54 @@ hermes.tooltip = (records) => {
                 <span class="material-symbols-outlined icon pace"> speed </span> <span class="pace">${tooltipPace}</span>
             </div>
         </div>`;
+        // hermes.gpx2svg(`records/${new Date(rec.date).getFullYear()}/${rec.date}.gpx`, `#pa`);
+        hermes.gpx2svg(`records/${new Date(rec.date).getFullYear()}/${rec.date}.gpx`, `.tooltip-item .gpx.d-${rec.date} svg`);
     });
     return tooltipContent;
 };
+
+hermes.gpx2svg = async (gpxUrl, svgElementId) => {
+    // 1. GPX 데이터 가져오기
+    const response = await fetch(gpxUrl);
+    const gpxText = await response.text();
+    const parser = new DOMParser();
+    const gpxDoc = parser.parseFromString(gpxText, "text/xml");
+
+    // 2. 위도, 경도 좌표 추출
+    const pts = Array.from(gpxDoc.querySelectorAll("trkpt")).map((pt) => ({
+        lat: parseFloat(pt.getAttribute("lat")),
+        lon: parseFloat(pt.getAttribute("lon")),
+    }));
+
+    // 3. 화면 좌표 변환을 위한 경계값(Bounding Box) 계산
+    const lats = pts.map((p) => p.lat);
+    const lons = pts.map((p) => p.lon);
+    const minLat = Math.min(...lats),
+        maxLat = Math.max(...lats);
+    const minLon = Math.min(...lons),
+        maxLon = Math.max(...lons);
+
+    // 4. SVG 경로(path) 데이터 생성 (단순 평면 투영)
+    // SVG는 좌상단이 (0,0)이므로 Y축(위도)은 반전시켜야 합니다.
+    const width = 250;
+    const height = ((maxLat - minLat) / (maxLon - minLon)) * 250;
+    const tolerance = 10;
+    const pathData = pts
+        .map((p, i) => {
+            const x = ((p.lon - minLon) / (maxLon - minLon)) * width * (1 - tolerance / 50) + width * (tolerance / 100);
+            const y = height - ((p.lat - minLat) / (maxLat - minLat)) * height * (1 - tolerance / 50) - height * (tolerance / 100);
+            return `${i === 0 ? "M" : "L"} ${x} ${y}`;
+        })
+        .join(" ");
+
+    // 5. SVG 요소에 주입
+    const svg = document.querySelector(svgElementId);
+    svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    svg.innerHTML = `<path d="${pathData}" fill="none" stroke="var(--color--gpx)" stroke-width="2" />`;
+};
+
+// 호출 예시
+// renderGpxToSvg('records/2025-12-15__5k__신정호.gpx', 'pa');
 
 hermes.initiate = function () {
     hermes.recordInit();
@@ -585,7 +633,6 @@ hermes.initiate = function () {
     hermes.calendar();
     hermes.table();
     hermes.stats();
-
 };
 
 document.addEventListener("DOMContentLoaded", (event) => {

@@ -8,7 +8,7 @@
             "sizes": "512x512"
         }
     ],
-    "start_url": "/",
+    "start_url": "/bucket/블랙야크/",
     "scope": "/bucket/블랙야크/",
     "id": "블랙야크",
     "display": "standalone",
