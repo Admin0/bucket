@@ -45,7 +45,7 @@
 #calendar-grid .month-stats-row {
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: 2;
     background-color: var(--color--track);
 }
 #calendar-grid .month-stats-row {
@@ -117,10 +117,10 @@
     margin-top: 2em;
 }
 #calendar-grid .week-stats .week-distance:before {
-    content: "거리";
+    content: "러닝 거리";
 }
 #calendar-grid .week-stats .week-elevation:before {
-    content: "상승 고도";
+    content: "트레일 상승고도";
 }
 td {
     transition: 0.05s;
@@ -236,6 +236,7 @@ td.on {
     font-size: 1em;
     padding: 0 0 1em 1.5em;
     text-align: left;
+    z-index: 2;
 }
 
 .year-stats .stat-item,
@@ -263,6 +264,12 @@ td.on {
 }
 
 /* compact */
+#calendar-grid.compact {
+    width: calc(var(--width--table-width) - 2em);
+    margin-left: calc((100vw - var(--width--table-width)) / 2);
+    margin-right: calc((100vw - var(--width--table-width)) / 2);
+    padding: 0;
+}
 #calendar-grid.compact .activity-icons,
 #calendar-grid.compact .activity-stats,
 .month-stats-row .stat-item:nth-of-type(2),
@@ -272,16 +279,32 @@ td.on {
     display: none;
 }
 
+#calendar-grid.compact .day-cell .date-display {
+    left: 50%;
+    top: 50%;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+}
+#calendar-grid.compact .day-cell:has(.activity-circle) .date-display {
+    color: var(--color--body-background);
+    font-weight: bold;
+}
 #calendar-grid.compact th:nth-of-type(2) {
     border-radius: 1.5em 0 0 0;
 }
+#calendar-grid.compact .months-grid {
+    justify-content: space-around;
+}
 #calendar-grid.compact .month-table-container {
-    width: 800px;
+    width: 750px;
 }
 #calendar-grid.compact .day-cell {
-    height: 5em;
+    height: 4em;
 }
-
+#calendar-grid.compact .year-stats .stat-item,
+.month-stats-row .stat-item {
+    width: 8em;
+}
 @media screen and (max-width: calc(1440px + 4em)) {
     #calendar-container {
         margin-top: calc(-100vw + var(--margin--table-top) + 34em);
@@ -295,21 +318,24 @@ td.on {
 /* mobile */
 @media screen and (max-width: 600px) {
     #calendar-container {
-        width: calc(100% - 3em);
+        width: calc(100% - 2em);
         margin-top: 5em;
         height: inherit;
         position: inherit;
     }
-    
+
+    #calendar-grid.compact,
     .calendar-grid {
-        font-size: 0.7em;
+        width: 100%;
+        margin: auto;
+        /* font-size: 0.7em; */
     }
 
     .day-cell {
         height: 4em;
     }
     .day-cell .date-display {
-        display: none;
+        /* display: none; */
         left: 50%;
         top: 50%;
         z-index: 1;
@@ -318,9 +344,9 @@ td.on {
     .day-cell:has(.activity-circle) .date-display {
         color: var(--color--body-background);
     }
-    .month-table-container:hover .day-cell.on .date-display {
+    /* .month-table-container:hover .day-cell.on .date-display {
         display: block;
-    }
+    } */
     #calendar-grid .activity-circle {
         width: 2.5em;
         height: 2.5em;
@@ -356,6 +382,6 @@ td.on {
         width: 100%;
     }
     #calendar-container .months-grid {
-        gap: 0;
+        gap: 1em;
     }
 }

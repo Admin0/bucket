@@ -81,30 +81,28 @@ hermes.stats = () => {
             <div class="stat-item">
                 <span class="label">거리</span>
                 <span class="value"><span class="material-symbols-outlined icon"> conversion_path </span> ${totalDistance.toLocaleString("en-US", {
-                    maximumFractionDigits: 1,
-                })} <span class="unit"> km</span></span>
+        maximumFractionDigits: 1,
+    })} <span class="unit"> km</span></span>
             </div>
             <div class="stat-item">
                 <span class="label">러닝 거리</span>
                 <span class="value"><span class="material-symbols-outlined icon"> sprint </span> ${totalRunningDistance.toLocaleString("en-US", {
-                    maximumFractionDigits: 1,
-                })} <span class="unit"> km</span></span>
+        maximumFractionDigits: 1,
+    })} <span class="unit"> km</span></span>
             </div>
             <div class="stat-item">
                 <span class="label">상승고도</span>
-                <span class="value"><span class="material-symbols-outlined icon"> altitude </span> ${
-                    totalElevation > 1000
-                        ? (totalElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> km</span>`
-                        : totalElevation.toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> m</span>`
-                } </span>
+                <span class="value"><span class="material-symbols-outlined icon"> altitude </span> ${totalElevation > 1000
+            ? (totalElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> km</span>`
+            : totalElevation.toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> m</span>`
+        } </span>
             </div>
             <div class="stat-item">
                 <span class="label">트레일 상승고도</span>
-                <span class="value"><span class="material-symbols-outlined icon"> hiking </span> ${
-                    totalTrailElevation > 1000
-                        ? (totalTrailElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> km</span>`
-                        : totalTrailElevation.toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> m</span>`
-                } </span>
+                <span class="value"><span class="material-symbols-outlined icon"> hiking </span> ${totalTrailElevation > 1000
+            ? (totalTrailElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> km</span>`
+            : totalTrailElevation.toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> m</span>`
+        } </span>
             </div>
             <div class="stat-item">
                 <span class="label">활동</span>
@@ -271,7 +269,7 @@ hermes.track = function () {
                             marker.classList.add("unofficial");
                         }
 
-                        marker.addEventListener("mouseover", (e) => {
+                        marker.addEventListener("mouseenter", (e) => {
                             let tooltip = document.getElementById("tooltip");
                             tooltip.innerHTML = hermes.tooltip(recordsForWeek);
                             tooltip.classList.add("on");
@@ -283,7 +281,7 @@ hermes.track = function () {
                             });
                         });
 
-                        marker.addEventListener("mouseout", () => {
+                        marker.addEventListener("mouseleave", () => {
                             tooltip.classList.remove("on");
                             const recordIds = JSON.parse(marker.dataset.recordIds);
                             recordIds.forEach((id) => {
@@ -554,17 +552,19 @@ hermes.table = function () {
 hermes.tooltip = (records) => {
     let tooltipContent = "";
     records.forEach((rec) => {
-        const tooltipPace = `${Math.floor((rec.course === "trail" ? rec.elevation_pace : rec.pace) / 60)}'${Math.floor((rec.course === "trail" ? rec.elevation_pace : rec.pace) % 60)}"${
-            rec.course === "trail" ? '<span class="unit">/60 m↑</span>' : '<span class="unit">/km</span>'
-        }`;
+        const tooltipPace = `${Math.floor((rec.course === "trail" ? rec.elevation_pace : rec.pace) / 60)}'${Math.floor((rec.course === "trail" ? rec.elevation_pace : rec.pace) % 60)}"${rec.course === "trail" ? '<span class="unit">/60 m↑</span>' : '<span class="unit">/km</span>'
+            }`;
         const tooltipDistance = rec.course === "trail" ? `${rec.elevation} <span class="unit"> m</span>` : `${rec.distance.toFixed(2)} <span class="unit"> km</span>`;
         const tooltip_type = rec.isOfficial ? "공식 대회" : rec.course === "trail" ? "하이킹 / 트레일러닝" : "러닝";
         const tooltip__icon_distance = rec.course === "trail" ? "altitude" : "conversion_path";
         const comment = rec.comment ? `<span class="comment">${rec.comment}</span>` : "";
 
+        const gpxFileName = rec.date + (rec.over !== undefined ? "_" + rec.over : "");
+        // console.log(gpxFileName);
+
         tooltipContent += `
         <div class="tooltip-item">
-            <div class="gpx d-${rec.date}">
+            <div class="gpx d-${gpxFileName}">
                 <svg></svg>
             </div>
             <div class="title-container">
@@ -578,55 +578,14 @@ hermes.tooltip = (records) => {
                 <span class="material-symbols-outlined icon pace"> speed </span> <span class="pace">${tooltipPace}</span>
             </div>
         </div>`;
+
+        
         // hermes.gpx2svg(`records/${new Date(rec.date).getFullYear()}/${rec.date}.gpx`, `#pa`);
-        hermes.gpx2svg(`records/${new Date(rec.date).getFullYear()}/${rec.date}.gpx`, `.tooltip-item .gpx.d-${rec.date} svg`);
+        hermes.gpx2svg(`records/${new Date(rec.date).getFullYear()}/${gpxFileName}.gpx`, `#tooltip .gpx.d-${gpxFileName} svg`);
     });
+    
     return tooltipContent;
 };
-
-hermes.gpx2svg = async (gpxUrl, svgElementId) => {
-    // 1. GPX 데이터 가져오기
-    const response = await fetch(gpxUrl);
-    const gpxText = await response.text();
-    const parser = new DOMParser();
-    const gpxDoc = parser.parseFromString(gpxText, "text/xml");
-
-    // 2. 위도, 경도 좌표 추출
-    const pts = Array.from(gpxDoc.querySelectorAll("trkpt")).map((pt) => ({
-        lat: parseFloat(pt.getAttribute("lat")),
-        lon: parseFloat(pt.getAttribute("lon")),
-    }));
-
-    // 3. 화면 좌표 변환을 위한 경계값(Bounding Box) 계산
-    const lats = pts.map((p) => p.lat);
-    const lons = pts.map((p) => p.lon);
-    const minLat = Math.min(...lats),
-        maxLat = Math.max(...lats);
-    const minLon = Math.min(...lons),
-        maxLon = Math.max(...lons);
-
-    // 4. SVG 경로(path) 데이터 생성 (단순 평면 투영)
-    // SVG는 좌상단이 (0,0)이므로 Y축(위도)은 반전시켜야 합니다.
-    const width = 250;
-    const height = ((maxLat - minLat) / (maxLon - minLon)) * 250;
-    const tolerance = 10;
-    const pathData = pts
-        .map((p, i) => {
-            const x = ((p.lon - minLon) / (maxLon - minLon)) * width * (1 - tolerance / 50) + width * (tolerance / 100);
-            const y = height - ((p.lat - minLat) / (maxLat - minLat)) * height * (1 - tolerance / 50) - height * (tolerance / 100);
-            return `${i === 0 ? "M" : "L"} ${x} ${y}`;
-        })
-        .join(" ");
-
-    // 5. SVG 요소에 주입
-    const svg = document.querySelector(svgElementId);
-    svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-    svg.innerHTML = `<path d="${pathData}" fill="none" stroke="var(--color--gpx)" stroke-width="2" />`;
-};
-
-// 호출 예시
-// renderGpxToSvg('records/2025-12-15__5k__신정호.gpx', 'pa');
-
 hermes.initiate = function () {
     hermes.recordInit();
     hermes.track();

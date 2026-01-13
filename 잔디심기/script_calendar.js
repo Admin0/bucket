@@ -23,15 +23,7 @@ hermes.calendar = () => {
 
     let maxActivity = 0;
     Object.values(recordsByDate).forEach((dayRecords) => {
-        const dailyDistance = dayRecords.reduce((sum, rec) => {
-            if (/5k|10k|half|full/.test(rec.course)) {
-                if (rec.course === "5k") return sum + 5;
-                if (rec.course === "10k") return sum + 10;
-                if (rec.course === "half") return sum + 21.0975;
-                if (rec.course === "full") return sum + 42.195;
-            }
-            return sum + (rec.distance || 0);
-        }, 0);
+        const dailyDistance = dayRecords.reduce((sum, rec) => sum + (rec.distance || 0), 0);
         if (dailyDistance > maxActivity) {
             maxActivity = dailyDistance;
         }
@@ -54,8 +46,8 @@ hermes.calendar = () => {
     };
 
     const renderCalendar = () => {
-        const selectedValue = document.querySelector('input[name="calendar-year"]:checked').value;
-        const calendarView = document.querySelector('input[name="calendar-view"]:checked').value;
+        const selectedValue = document.querySelector('input[name=\"calendar-year\"]:checked').value;
+        const calendarView = document.querySelector('input[name=\"calendar-view\"]:checked').value;
 
         calendarGrid.classList.toggle('compact', calendarView === 'compact');
 
@@ -80,7 +72,7 @@ hermes.calendar = () => {
             const yearRecords = records.filter((r) => new Date(r.date).getFullYear() === year);
             if (!yearRecords.length) return;
 
-            fullHtml += `<div class="year-container" id="year-${year}">`;
+            fullHtml += `<div class=\"year-container\" id=\"year-${year}\">`;
 
             let yearTotalDistance = 0;
             let yearRunningDistance = 0;
@@ -97,45 +89,45 @@ hermes.calendar = () => {
             });
 
             const statsHtml = `
-                <div class="year-stats">
-                    <div class="stat-item">
-                        <span class="value">${year}</span>
+                <div class=\"year-stats\">
+                    <div class=\"stat-item\">
+                        <span class=\"value\">${year}</span>
                     </div>
-                    <div class="stat-item">
-                        <span class="label">거리</span>
-                        <span class="value">${yearTotalDistance.toFixed(2)} <span class="unit"> km</span></span>
+                    <div class=\"stat-item\">
+                        <span class=\"label\">거리</span>
+                        <span class=\"value\">${yearTotalDistance.toFixed(2)} <span class=\"unit\"> km</span></span>
                     </div>
-                    <div class="stat-item">
-                        <span class="label">러닝 거리</span>
-                        <span class="value">${yearRunningDistance.toFixed(2)} <span class="unit"> km</span></span>
+                    <div class=\"stat-item\">
+                        <span class=\"label\">러닝 거리</span>
+                        <span class=\"value\">${yearRunningDistance.toFixed(2)} <span class=\"unit\"> km</span></span>
                     </div>
-                    <div class="stat-item">
-                        <span class="label">상승고도</span>
-                        <span class="value">${
-                            yearElevation > 1000 ? (yearElevation / 1000).toFixed(2) + ` <span class="unit">km</span>` : yearElevation.toFixed(0) + ` <span class="unit">m</span>`
+                    <div class=\"stat-item\">
+                        <span class=\"label\">상승고도</span>
+                        <span class=\"value\">${
+                            yearElevation > 1000 ? (yearElevation / 1000).toFixed(2) + ` <span class=\"unit\">km</span>` : yearElevation.toFixed(0) + ` <span class=\"unit\">m</span>`
                         } </span>
                     </div>
-                    <div class="stat-item">
-                        <span class="label">트레일 상승고도</span>
-                        <span class="value">${
-                            yearTrailElevation > 1000 ? (yearTrailElevation / 1000).toFixed(2) + ` <span class="unit">km</span>` : yearTrailElevation.toFixed(0) + ` <span class="unit">m</span>`
+                    <div class=\"stat-item\">
+                        <span class=\"label\">트레일 상승고도</span>
+                        <span class=\"value\">${
+                            yearTrailElevation > 1000 ? (yearTrailElevation / 1000).toFixed(2) + ` <span class=\"unit\">km</span>` : yearTrailElevation.toFixed(0) + ` <span class=\"unit\">m</span>`
                         } </span>
                     </div>
-                    <div class="stat-item">
-                        <span class="label">활동</span>
-                        <span class="value">${yearRecords.length}</span>
+                    <div class=\"stat-item\">
+                        <span class=\"label\">활동</span>
+                        <span class=\"value\">${yearRecords.length}</span>
                     </div>
                 </div>
             `;
             fullHtml += statsHtml;
 
-            fullHtml += `<div class="months-grid">`;
+            fullHtml += `<div class=\"months-grid\">`;
 
             monthsToRender.slice().reverse().forEach((month) => {
                 const monthRecords = yearRecords.filter((r) => new Date(r.date).getMonth() === month);
                 if (monthRecords.length === 0 && selectedValue !== 'recent') return;
 
-                let monthTableHtml = `<div class="month-table-container"><table>`;
+                let monthTableHtml = `<div class=\"month-table-container\"><table>`;
                 monthTableHtml += `<thead><tr><th></th><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody>`;
 
                 let monthTotalDistance = 0;
@@ -153,34 +145,34 @@ hermes.calendar = () => {
                 });
 
                 const monthStatsHtml = `
-                <tr class="month-stats-row">
-                    <td colspan="8">
-                        <div class="stat-item">
-                            <span class="value">${new Intl.DateTimeFormat("en-US", { month: "short" }).format(new Date(year, month, 1))}</span>
+                <tr class=\"month-stats-row\">
+                    <td colspan=\"8\">
+                        <div class=\"stat-item\">
+                            <span class=\"value\">${new Intl.DateTimeFormat("en-US", { month: "short" }).format(new Date(year, month, 1))}</span>
                         </div>
-                        <div class="stat-item">
-                            <span class="label">거리</span>
-                            <span class="value">${monthTotalDistance.toFixed(2)} <span class="unit"> km</span></span>
+                        <div class=\"stat-item\">
+                            <span class=\"label\">거리</span>
+                            <span class=\"value\">${monthTotalDistance.toFixed(2)} <span class=\"unit\"> km</span></span>
                         </div>
-                        <div class="stat-item">
-                            <span class="label">러닝 거리</span>
-                            <span class="value">${monthRunningDistance.toFixed(2)} <span class="unit"> km</span></span>
+                        <div class=\"stat-item\">
+                            <span class=\"label\">러닝 거리</span>
+                            <span class=\"value\">${monthRunningDistance.toFixed(2)} <span class=\"unit\"> km</span></span>
                         </div>
-                        <div class="stat-item">
-                            <span class="label">상승고도</span>
-                            <span class="value">${
-                                monthElevation > 1000 ? (monthElevation / 1000).toFixed(2) + ` <span class="unit"> km</span>` : monthElevation.toFixed(0) + ` <span class="unit">m</span>`
+                        <div class=\"stat-item\">
+                            <span class=\"label\">상승고도</span>
+                            <span class=\"value\">${
+                                monthElevation > 1000 ? (monthElevation / 1000).toFixed(2) + ` <span class=\"unit\"> km</span>` : monthElevation.toFixed(0) + ` <span class=\"unit\">m</span>`
                             }</span>
                         </div>
-                        <div class="stat-item">
-                            <span class="label">트레일 상승고도</span>
-                            <span class="value">${
-                                monthTrailElevation > 1000 ? (monthTrailElevation / 1000).toFixed(2) + ` <span class="unit"> km</span>` : monthTrailElevation.toFixed(0) + ` <span class="unit">m</span>`
+                        <div class=\"stat-item\">
+                            <span class=\"label\">트레일 상승고도</span>
+                            <span class=\"value\">${
+                                monthTrailElevation > 1000 ? (monthTrailElevation / 1000).toFixed(2) + ` <span class=\"unit\"> km</span>` : monthTrailElevation.toFixed(0) + ` <span class=\"unit\">m</span>`
                             }</span>
                         </div>
-                        <div class="stat-item">
-                            <span class="label">활동</span>
-                            <span class="value">${monthRecords.length}</span>
+                        <div class=\"stat-item\">
+                            <span class=\"label\">활동</span>
+                            <span class=\"value\">${monthRecords.length}</span>
                         </div>
                     </td>
                 </tr>
@@ -205,99 +197,72 @@ hermes.calendar = () => {
                     const sundayOfISOWeek = new Date(mondayOfISOWeek);
                     sundayOfISOWeek.setDate(mondayOfISOWeek.getDate() + 6);
 
-                    let weeklyDistance = 0;
-                    let weeklyElevation = 0;
+                    let weeklyRunningDistance = 0;
+                    let weeklyTrailElevation = 0;
 
                     for (let d = new Date(mondayOfISOWeek); d <= sundayOfISOWeek; d.setDate(d.getDate() + 1)) {
                         const dateString = toYYYYMMDD(d);
                         if (recordsByDate[dateString]) {
                             recordsByDate[dateString].forEach((rec) => {
-                                if (/5k|10k|half|full/.test(rec.course)) {
-                                    if (rec.course === "5k") weeklyDistance += 5;
-                                    else if (rec.course === "10k") weeklyDistance += 10;
-                                    else if (rec.course === "half") weeklyDistance += 21.0975;
-                                    else if (rec.course === "full") weeklyDistance += 42.195;
+                                if (rec.type === 'trail') {
+                                    weeklyTrailElevation += rec.elevation || 0;
                                 } else {
-                                    weeklyDistance += rec.distance || 0;
+                                    weeklyRunningDistance += rec.distance || 0;
                                 }
-                                weeklyElevation += rec.elevation || 0;
                             });
                         }
                     }
 
                     let weekHtml = `<tr>`;
-                    weekHtml += `<td class="week-summary y${weekYear.toString().slice(2)} w${weekNo}">
-                                    <div class="week-info">w${weekNo}</div>
-                                    <div class="week-stats">
-                                        <div class="week-distance">${weeklyDistance.toFixed(1)} <span class="unit"> km</span></div>
-                                        <div class="week-elevation">${
-                                            weeklyElevation > 1000 ? (weeklyElevation / 1000).toFixed(1) + ` <span class="unit"> km</span>` : weeklyElevation.toFixed(0) + ` <span class="unit"> m</span>`
-                                        } </div>
-                                    </div>
-                                 </td>`;
+                    weekHtml += `<td class=\"week-summary y${weekYear.toString().slice(2)} w${weekNo}\">\n                                    <div class=\"week-info\">w${weekNo}</div>\n                                    <div class=\"week-stats\">\n                                        <div class=\"week-distance\">${weeklyRunningDistance.toFixed(1)} <span class=\"unit\"> km</span></div>\n                                        <div class=\"week-elevation\">${
+                                            weeklyTrailElevation > 1000 ? (weeklyTrailElevation / 1000).toFixed(1) + ` <span class=\"unit\"> km</span>` : weeklyTrailElevation.toFixed(0) + ` <span class=\"unit\"> m</span>`
+                                        } </div>\n                                    </div>\n                                 </td>`;
 
                     for (let i = 0; i < 7; i++) {
                         const day = new Date(currentCalendarSunday);
                         day.setDate(day.getDate() + i);
 
                         if (day.getMonth() !== month) {
-                            weekHtml += `<td class="day-cell hidden"></td>`;
+                            weekHtml += `<td class=\"day-cell hidden\"></td>`;
                             continue;
                         }
 
                         const dateString = toYYYYMMDD(day);
                         const { weekNo: dayWeek, year: dayYear } = getWeekInfo(day);
 
-                        weekHtml += `<td class="day-cell y${dayYear.toString().slice(2)} w${dayWeek}" data-date="${dateString}">
-                        <span class="date-display">${day.getDate()}</span>`;
+                        weekHtml += `<td class=\"day-cell y${dayYear.toString().slice(2)} w${dayWeek}\" data-date=\"${dateString}\">\n                        <span class=\"date-display\">${day.getDate()}</span>`;
 
                         if (recordsByDate[dateString]) {
                             let dailyDistance = 0;
                             let dailyElevation = 0;
                             recordsByDate[dateString].forEach((rec) => {
-                                if (/5k|10k|half|full/.test(rec.course)) {
-                                    if (rec.course === "5k") dailyDistance += 5;
-                                    if (rec.course === "10k") dailyDistance += 10;
-                                    if (rec.course === "half") dailyDistance += 21.0975;
-                                    if (rec.course === "full") dailyDistance += 42.195;
-                                } else {
-                                    dailyDistance += rec.distance || 0;
-                                }
+                                dailyDistance += rec.distance || 0;
                                 dailyElevation += rec.elevation || 0;
                             });
 
                             const radius = Math.sqrt(dailyDistance / maxActivity);
                             const color = `#00b264`;
 
-                            const distanceText = dailyDistance > 0 ? `${dailyDistance.toFixed(1)}<span class="unit"> km</span>` : "";
+                            const distanceText = dailyDistance > 0 ? `${dailyDistance.toFixed(1)}<span class=\"unit\"> km</span>` : "";
                             const elevationText =
                                 dailyElevation > 0
                                     ? dailyElevation > 1000
-                                        ? `${(dailyElevation / 1000).toFixed(1)}<span class="unit"> km</span>`
-                                        : `${dailyElevation.toFixed(0)}<span class="unit"> m</span>`
+                                        ? `${(dailyElevation / 1000).toFixed(1)}<span class=\"unit\"> km</span>`
+                                        : `${dailyElevation.toFixed(0)}<span class=\"unit\"> m</span>`
                                     : "";
 
-                            weekHtml += `<div class="activity-circle" style="--gg:${radius};">
-                                            <svg viewBox="0 0 100 100">
-                                                <circle cx="50" cy="50" r="45" fill="${color}" />
-                                            </svg>
-                                         </div>
-                                         <div class="activity-stats">
-                                            ${distanceText ? `<div class="distance">${distanceText}</div>` : ""}
-                                            ${elevationText ? `<div class="elevation">${elevationText}</div>` : ""}
-                                         </div>
-                                         `;
+                            weekHtml += `<div class=\"activity-circle\" style=\"--gg:${radius};\">\n                                            <svg viewBox=\"0 0 100 100\">\n                                                <circle cx=\"50\" cy=\"50\" r=\"45\" fill=\"${color}\" />\n                                            </svg>\n                                         </div>\n                                         <div class=\"activity-stats\">\n                                            ${distanceText ? `<div class=\"distance\">${distanceText}</div>` : ""}\n                                            ${elevationText ? `<div class=\"elevation\">${elevationText}</div>` : ""}\n                                         </div>\n                                         `;
 
-                            let iconsHtml = '<div class="activity-icons">';
+                            let iconsHtml = '<div class=\"activity-icons\">';
                             recordsByDate[dateString].forEach((rec) => {
                                 const iconName = rec.isOfficial ? "emoji_events" : rec.type == "trail" ? "terrain" : "directions_run";
                                 const iconClass = rec.isOfficial ? "material-symbols-outlined official-race-icon" : "material-symbols-outlined";
-                                iconsHtml += `<i class="${iconClass}">${iconName}</i>`;
+                                iconsHtml += `<i class=\"${iconClass}\">${iconName}</i>`;
                             });
                             iconsHtml += "</div>";
                             weekHtml += iconsHtml;
                         } else {
-                            weekHtml += '<div class="activity-icons"><i class="material-symbols-outlined rest"></i></div>';
+                            weekHtml += '<div class=\"activity-icons\"><i class=\"material-symbols-outlined rest\"></i></div>';
                         }
                         weekHtml += "</td>";
                     }
@@ -312,45 +277,45 @@ hermes.calendar = () => {
         });
 
         calendarGrid.innerHTML = fullHtml;
+
+        const dayCells = document.querySelectorAll('.day-cell');
+        dayCells.forEach(cell => {
+            cell.addEventListener('mouseenter', e => {
+                const targetCell = e.currentTarget;
+                const yearClass = Array.from(targetCell.classList).find(c => /^y\d+/.test(c));
+                const weekClass = Array.from(targetCell.classList).find(c => /^w\d+/.test(c));
+
+                if (yearClass && weekClass) {
+                    const cellsToHighlight = document.querySelectorAll(`#calendar-grid .${yearClass}.${weekClass}`);
+                    
+                    cellsToHighlight.forEach(c => c.classList.add('on'));
+                }
+
+                const date = targetCell.dataset.date;
+                const dayRecords = recordsByDate[date];
+
+                if (dayRecords) {
+                    tooltip.innerHTML = hermes.tooltip(dayRecords);
+                    tooltip.classList.add("on");
+                }
+            });
+
+            cell.addEventListener('mouseleave', e => {
+                const targetCell = e.currentTarget;
+                const yearClass = Array.from(targetCell.classList).find(c => /^y\d+/.test(c));
+                const weekClass = Array.from(targetCell.classList).find(c => /^w\d+/.test(c));
+
+                if (yearClass && weekClass) {
+                    const cellsToHighlight = document.querySelectorAll(`#calendar-grid .${yearClass}.${weekClass}`);
+                    cellsToHighlight.forEach(c => c.classList.remove('on'));
+                }
+
+                if (tooltip.classList.contains("on")) {
+                    tooltip.classList.remove("on");
+                }
+            });
+        });
     };
-
-    calendarGrid.addEventListener("mouseover", (e) => {
-        const cell = e.target.closest(".day-cell, .week-summary");
-        if (!cell) return;
-
-        const yearClass = Array.from(cell.classList).find(c => /^y\d+/.test(c));
-        const weekClass = Array.from(cell.classList).find(c => /^w\d+/.test(c));
-
-        if (yearClass && weekClass) {
-            const cellsToHighlight = document.querySelectorAll(`#calendar-grid .${yearClass}.${weekClass}`);
-            cellsToHighlight.forEach(c => c.classList.add('on'));
-        }
-
-        const date = cell.dataset.date;
-        const dayRecords = recordsByDate[date];
-
-        if (dayRecords) {
-            tooltip.innerHTML = hermes.tooltip(dayRecords);
-            tooltip.classList.add("on");
-        }
-    });
-
-    calendarGrid.addEventListener("mouseout", (e) => {
-        const cell = e.target.closest(".day-cell, .week-summary");
-        if (!cell) return;
-
-        const yearClass = Array.from(cell.classList).find(c => /^y\d+/.test(c));
-        const weekClass = Array.from(cell.classList).find(c => /^w\d+/.test(c));
-
-        if (yearClass && weekClass) {
-            const cellsToHighlight = document.querySelectorAll(`#calendar-grid .${yearClass}.${weekClass}`);
-            cellsToHighlight.forEach(c => c.classList.remove('on'));
-        }
-
-        if (tooltip.classList.contains("on")) {
-            tooltip.classList.remove("on");
-        }
-    });
 
     document.addEventListener("mousemove", (e) => {
         if (tooltip.classList.contains("on")) {
@@ -383,32 +348,32 @@ hermes.calendar = () => {
     const handleYearFilterChange = (e) => {
         const selectedValue = e.target.value;
         
-        document.querySelectorAll('input[name="calendar-year"]').forEach(radio => {
+        document.querySelectorAll('input[name=\"calendar-year\"]').forEach(radio => {
             radio.checked = radio.value === selectedValue;
         });
-        document.querySelectorAll('input[name="year"]').forEach(radio => {
+        document.querySelectorAll('input[name=\"year\"]').forEach(radio => {
             radio.checked = radio.value === selectedValue;
         });
 
         if (selectedValue === 'recent') {
-            document.querySelector('input[name="calendar-view"][value="normal"]').checked = true;
+            document.querySelector('input[name=\"calendar-view\"][value=\"normal\"]').checked = true;
         } else {
-            document.querySelector('input[name="calendar-view"][value="compact"]').checked = true;
+            document.querySelector('input[name=\"calendar-view\"][value=\"compact\"]').checked = true;
         }
 
         renderCalendar();
     };
 
-    document.querySelectorAll('input[name="calendar-year"]').forEach((radio) => {
+    document.querySelectorAll('input[name=\"calendar-year\"]').forEach((radio) => {
         radio.addEventListener("change", handleYearFilterChange);
     });
-    document.querySelectorAll('input[name="year"]').forEach((radio) => {
+    document.querySelectorAll('input[name=\"year\"]').forEach((radio) => {
         radio.addEventListener("change", handleYearFilterChange);
     });
     calendarViewFilterContainer.addEventListener('change', renderCalendar);
 
     function setDefaultCalendarYearFilter() {
-        const recentRadio = document.querySelector('input[name="calendar-year"][value="recent"]');
+        const recentRadio = document.querySelector('input[name=\"calendar-year\"][value=\"recent\"]');
         if (recentRadio) {
             recentRadio.checked = true;
             handleYearFilterChange({target: recentRadio});
