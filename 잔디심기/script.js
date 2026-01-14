@@ -79,29 +79,29 @@ hermes.stats = () => {
     const statsHeader = document.getElementById("stats-header");
     statsHeader.innerHTML = `
             <div class="stat-item">
-                <span class="label">거리</span>
-                <span class="value"><span class="material-symbols-outlined icon"> conversion_path </span> ${totalDistance.toLocaleString("en-US", {
-        maximumFractionDigits: 1,
-    })} <span class="unit"> km</span></span>
-            </div>
-            <div class="stat-item">
                 <span class="label">러닝 거리</span>
                 <span class="value"><span class="material-symbols-outlined icon"> sprint </span> ${totalRunningDistance.toLocaleString("en-US", {
         maximumFractionDigits: 1,
     })} <span class="unit"> km</span></span>
             </div>
             <div class="stat-item">
-                <span class="label">상승고도</span>
-                <span class="value"><span class="material-symbols-outlined icon"> altitude </span> ${totalElevation > 1000
-            ? (totalElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> km</span>`
-            : totalElevation.toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> m</span>`
-        } </span>
+                <span class="label">거리</span>
+                <span class="value"><span class="material-symbols-outlined icon"> conversion_path </span> ${totalDistance.toLocaleString("en-US", {
+        maximumFractionDigits: 1,
+    })} <span class="unit"> km</span></span>
             </div>
             <div class="stat-item">
                 <span class="label">트레일 상승고도</span>
                 <span class="value"><span class="material-symbols-outlined icon"> hiking </span> ${totalTrailElevation > 1000
             ? (totalTrailElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> km</span>`
             : totalTrailElevation.toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> m</span>`
+        } </span>
+            </div>
+            <div class="stat-item">
+                <span class="label">상승고도</span>
+                <span class="value"><span class="material-symbols-outlined icon"> altitude </span> ${totalElevation > 1000
+            ? (totalElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> km</span>`
+            : totalElevation.toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> m</span>`
         } </span>
             </div>
             <div class="stat-item">
@@ -549,43 +549,6 @@ hermes.table = function () {
     filterAndRender();
 };
 
-hermes.tooltip = (records) => {
-    let tooltipContent = "";
-    records.forEach((rec) => {
-        const tooltipPace = `${Math.floor((rec.course === "trail" ? rec.elevation_pace : rec.pace) / 60)}'${Math.floor((rec.course === "trail" ? rec.elevation_pace : rec.pace) % 60)}"${rec.course === "trail" ? '<span class="unit">/60 m↑</span>' : '<span class="unit">/km</span>'
-            }`;
-        const tooltipDistance = rec.course === "trail" ? `${rec.elevation} <span class="unit"> m</span>` : `${rec.distance.toFixed(2)} <span class="unit"> km</span>`;
-        const tooltip_type = rec.isOfficial ? "공식 대회" : rec.course === "trail" ? "하이킹 / 트레일러닝" : "러닝";
-        const tooltip__icon_distance = rec.course === "trail" ? "altitude" : "conversion_path";
-        const comment = rec.comment ? `<span class="comment">${rec.comment}</span>` : "";
-
-        const gpxFileName = rec.date + (rec.over !== undefined ? "_" + rec.over : "");
-        // console.log(gpxFileName);
-
-        tooltipContent += `
-        <div class="tooltip-item">
-            <div class="gpx d-${gpxFileName}">
-                <svg></svg>
-            </div>
-            <div class="title-container">
-                <span class="type"> ${tooltip_type} </span>
-                <span class="date">${rec.date}</span>
-                <div class="title">${rec.title} ${comment} ${rec.isOfficial ? '<span class="material-symbols official"> crown </span>' : ""}</div>
-            </div>
-            <div class="data">
-                <span class="material-symbols-outlined icon distance"> ${tooltip__icon_distance} </span> <span class="distance">${tooltipDistance}</span> |
-                <span class="material-symbols-outlined icon record"> timer </span> <span class="rec">${rec.record}</span> |
-                <span class="material-symbols-outlined icon pace"> speed </span> <span class="pace">${tooltipPace}</span>
-            </div>
-        </div>`;
-
-        
-        // hermes.gpx2svg(`records/${new Date(rec.date).getFullYear()}/${rec.date}.gpx`, `#pa`);
-        hermes.gpx2svg(`records/${new Date(rec.date).getFullYear()}/${gpxFileName}.gpx`, `#tooltip .gpx.d-${gpxFileName} svg`);
-    });
-    
-    return tooltipContent;
-};
 hermes.initiate = function () {
     hermes.recordInit();
     hermes.track();
