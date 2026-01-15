@@ -34,7 +34,7 @@ body {
     color: var(--color--scoreboard-text);
     background-color: var(--color--body-background);
     margin: 0;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
 }
 
 h1 {
@@ -734,7 +734,7 @@ footer a:not(.o) {
 
 @media screen and (max-width: 600px) {
     body {
-        overflow: auto;
+        /* overflow-x: auto; */
         /* padding-bottom: 12em; */
     }
 
@@ -789,6 +789,7 @@ footer a:not(.o) {
     .track-lane:hover {
         transform: none;
         box-shadow: none;
+        background-color: inherit;
     }
 
     .track-lane:after {

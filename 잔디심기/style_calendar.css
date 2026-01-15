@@ -23,6 +23,7 @@
 }
 #calendar-container .month-table-container {
     margin: 0;
+    max-width: calc(100vw - 2em);
 }
 #calendar-year-filter-container {
     margin: 0;
@@ -330,7 +331,17 @@ td.on {
         margin: auto;
         /* font-size: 0.7em; */
     }
-
+    #calendar-grid .year-stats {
+        padding: 0;
+    }
+    #calendar-grid.compact .year-stats .stat-item,
+    .month-stats-row .stat-item {
+        width: fit-content;
+    }
+    .year-stats .stat-item:first-of-type,
+    .month-stats-row .stat-item:first-of-type {
+        margin-right: 4em;
+    }
     .day-cell {
         height: 4em;
     }
@@ -359,6 +370,8 @@ td.on {
     }
     .shadow-bottom:before,
     #calendar-grid tr:not(.year-stats) th:nth-of-type(1),
+    #calendar-container #calendar-grid .year-stats .stat-item:nth-of-type(2),
+    #calendar-container #calendar-grid .year-stats .stat-item:nth-of-type(4),
     #calendar-grid tr:not(.month-stats-row) td:nth-of-type(1),
     .month-stats-row .stat-item:nth-of-type(2),
     .month-stats-row .stat-item:nth-of-type(4),
@@ -368,7 +381,7 @@ td.on {
     }
     .year-stats .stat-item,
     .month-stats-row .stat-item:nth-of-type(1) {
-        width: 100%;
+        /* width: 100%; */
     }
     .year-stats .stat-item,
     .month-stats-row .stat-item {
@@ -376,7 +389,7 @@ td.on {
         margin-right: 1em;
     }
     #calendar-container h2,
-    #calendar-container #calendar-grid .year-stats,
+    /* #calendar-container #calendar-grid .year-stats, */
     #calendar-container .filters,
     #calendar-container .month-table-container {
         width: 100%;
