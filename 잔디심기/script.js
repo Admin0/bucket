@@ -265,6 +265,9 @@ hermes.track = function () {
                         marker.classList.add("has-record");
                         if (recordsForWeek.some((r) => r.isOfficial)) {
                             marker.classList.add("official");
+                            marker.addEventListener("click", () => {
+                                open(representativeRecord.certi);
+                            });
                         } else {
                             marker.classList.add("unofficial");
                         }

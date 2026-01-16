@@ -11,7 +11,9 @@
         --color--track-text: #e1dfdf;
         --color--track-shadow: rgba(0 0 0 / 0.75);
         
-        --color--gpx: #00ff80;
+        --color--red: #EF5350;
+        --color--teal: #26A69A;
+        --color--indigo: #5C6BC0;
 
         --color--scoreboard-bg: transparent;
         --color--scoreboard-text: #e1dfdf;

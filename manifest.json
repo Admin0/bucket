@@ -1,6 +1,6 @@
 {
+  "name": "버킷리스트",
   "short_name": "#bucket",
-  "name": "BUCKET LIST",
   "icons": [
     {
       "src": "/images/icon__bucket.png",
@@ -9,8 +9,9 @@
     }
   ],
   "start_url": "/bucket/",
-  "background_color": "#fff",
-  "display": "standalone",
   "scope": "/bucket/",
-  "theme_color": "#fff"
+  "id": "버킷리스트",
+  "display": "standalone",
+  "theme_color": "#fff",
+  "background_color": "#fff"
 }
