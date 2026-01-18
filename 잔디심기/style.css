@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Material+Symbols:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
 
 ::selection {
     background-color: rgba(0, 0, 0, 0);
@@ -19,19 +19,21 @@ body {
     --color--track-text: #212121;
     --color--track-shadow: rgba(0 0 0 / 0.25);
 
+    --color--calendar-hover: #f7f7f7;
+
     --color--gpx-start: #00ff80;
     --color--gpx-middle: #00b264;
     --color--gpx-end: #005c45;
-    --color--red: #F44336;
+    --color--red: #f44336;
     --color--teal: #009688;
-    --color--indigo: #3F51B5;
+    --color--indigo: #3f51b5;
 
     --color--scoreboard-bg: transparent;
     --color--scoreboard-text: #212121;
     --color--scoreboard-header: #212121;
 
-    --width--track-width: 1280px;
-    /* --width--track-width: 1440px; */
+    --width--track: 1280px;
+    /* --width--track: 1440px; */
     --width--table-width: 85vw;
     --margin--table-top: 25em;
 
@@ -39,7 +41,7 @@ body {
     color: var(--color--scoreboard-text);
     background-color: var(--color--body-background);
     margin: 0;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
     cursor: default;
 }
 
@@ -66,7 +68,6 @@ a {
     color: var(--color--red);
 }
 
-
 #stats-header:hover .stat-item:nth-of-type(3),
 #stats-header:hover .stat-item:nth-of-type(4) {
     color: var(--color--teal);
@@ -88,7 +89,7 @@ a {
 
 .stat-item .value .icon {
     line-height: inherit;
-    opacity: .5;
+    opacity: 0.5;
 }
 
 #main-container {
@@ -100,7 +101,7 @@ a {
     transform: rotate(-90deg) translateX(-100%) translateY(calc((100vw - 100%) / 2 - 0.5em));
     transform-origin: 0 0;
     height: calc(100vw - 5em);
-    max-height: var(--width--track-width);
+    max-height: var(--width--track);
     width: fit-content;
 }
 
@@ -137,7 +138,7 @@ a {
 
 .track-lane:after {
     height: calc(100vw - 9em);
-    max-height: calc(var(--width--track-width) - 4em);
+    max-height: calc(var(--width--track) - 4em);
     content: "";
     position: absolute;
     top: 2em;
@@ -259,7 +260,8 @@ a {
 
 .track-lane:hover .shadow-top:before,
 .track-lane:hover .shadow-bottom:before,
-.track-lane:hover .shadow-top.shadow-bottom:before {}
+.track-lane:hover .shadow-top.shadow-bottom:before {
+}
 
 .shadow-top:before {
     box-shadow: inset 0 24px 13px -18px rgba(0 0 0 / 0.25);
@@ -337,7 +339,7 @@ a {
     width: calc(100% - 4em);
     background: var(--color--scoreboard-bg);
     padding: 0 2em;
-    /* margin-top: calc(var(--margin--table-top) * -1); */
+    margin-top: 10em;
     /* height: fit-content; */
     /* position: absolute; */
     /* top: 70em; */
@@ -384,7 +386,7 @@ a {
     display: none;
 }
 
-.filters input:checked+.material-symbols-outlined {
+.filters input:checked + .material-symbols-outlined {
     font-variation-settings: "FILL" 1;
 }
 
@@ -581,20 +583,26 @@ a {
     transform: scale(1.05);
 }
 
+/* ----------------------------------------
+ * tooltip
+ * ---------------------------------------- */
+
 #tooltip {
-    width: 400px;
+    --width--tooltip: 450px;
+    --width--tooltip-padding: 1.5em;
+    --width--tooltip-svg: 6em;
+
+    width: var(--width--tooltip);
     position: absolute;
     opacity: 0;
     /* background: rgba(0, 0, 0, 0.8); */
     background: var(--color--track-dark);
     box-shadow: 0 5px 11px var(--color--track-shadow);
-    padding: 1.5em;
-    border-radius: 1.5em;
+    padding: var(--width--tooltip-padding);
+    border-radius: var(--width--tooltip-padding);
     pointer-events: none;
     z-index: 1000;
-    /* color: var(--color--scoreboard-header); */
     color: var(--color--body-text);
-    /* text-shadow: 0 0 5px var(--color--scoreboard-header); */
     transform: translate(-50%, calc(-100% - 2em));
     transition: opacity 0.25s;
 }
@@ -622,14 +630,11 @@ a {
 }
 
 #tooltip .title {
-    width: 100%;
-    clear: both;
+    width: calc(var(--width--tooltip) - var(--width--tooltip-svg));
     font-size: 1.25em;
     font-weight: bold;
-    margin-right: 0em;
-    display: inline-block;
-    text-overflow: ellipsis;
     overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
 }
 
@@ -650,12 +655,14 @@ a {
 }
 
 #tooltip .date {
-    float: right;
+    position: absolute;
+    right: calc(var(--width--tooltip-svg) + var(--width--tooltip-padding) * 2);
     color: #777;
     font-size: 0.85em;
 }
 
 #tooltip .data {
+    width: calc(var(--width--tooltip) - var(--width--tooltip-svg) - var(--width--tooltip-padding) * 2);
     display: flex;
     justify-content: space-around;
     white-space: nowrap;
@@ -667,8 +674,8 @@ a {
 #tooltip svg {
     position: absolute;
     top: 50%;
-    transform: translate(-100%, -50%);
-    left: -3em;
+    transform: translate(50%, -50%);
+    right: 3em;
     stroke-linejoin: round;
 }
 
@@ -731,14 +738,6 @@ footer a:not(.o) {
     color: var(--color--track-text);
 }
 
-/* track dynamic */
-
-@media screen and (max-width: calc(1440px + 4em)) {
-    /* #table-container {
-        margin-top: calc(-100vw + var(--margin--table-top) + 18em);
-    } */
-}
-
 /* 4K */
 
 @media screen and (min-width: 1440px) {
@@ -750,14 +749,18 @@ footer a:not(.o) {
     }
 }
 
-/* mobile */
+/* track dynamic */
 
-@media screen and (max-width: 600px) {
-    body {
-        /* overflow-x: auto; */
-        /* padding-bottom: 12em; */
-    }
+@media screen and (max-width: calc(1440px + 4em)) {
+    /* #table-container {
+        margin-top: calc(-100vw + var(--margin--table-top) + 18em);
+    } */
+}
 
+/* ========================================
+ * tablet
+ * ======================================== */
+@media screen and (max-width: 768px) {
     h1 {
         padding: 0 5vw;
         font-size: 1.5em;
@@ -768,6 +771,10 @@ footer a:not(.o) {
         font-size: 1em;
     }
 
+    /* ----------------------------------------
+     * stats
+     * ---------------------------------------- */
+
     .stat-item .value {
         font-size: 1.2em;
     }
@@ -777,6 +784,10 @@ footer a:not(.o) {
     .stat-item:nth-of-type(3) {
         display: none;
     }
+
+    /* ----------------------------------------
+     * tracks
+     * ---------------------------------------- */
 
     #main-container {
         gap: 0;
@@ -792,18 +803,13 @@ footer a:not(.o) {
     }
 
     .racetrack {
-        width: 100%;
         height: auto;
         border-radius: 0;
         background: transparent;
     }
 
     .track-lane {
-        padding: 0.5em;
-        height: fit-content;
-        width: calc((100vw - 2em) / 5 - 1em - var(--width--track-padding) / 2);
-        border-radius: 0;
-        background: transparent;
+        max-width: 4em;
     }
 
     .track-lane:hover {
@@ -825,7 +831,8 @@ footer a:not(.o) {
         opacity: 1;
     }
 
-    .racetrack h2 {}
+    .racetrack h2 {
+    }
 
     .track {
         overflow: visible;
@@ -880,30 +887,22 @@ footer a:not(.o) {
         display: none;
     }
 
+    /* ----------------------------------------
+     * tooltip
+     * ---------------------------------------- */
     #tooltip {
-        left: 0 !important;
-        padding: 1em;
-        width: calc(100% - 2em);
+        left: 50% !important;
         top: inherit !important;
         bottom: 0;
         position: fixed;
-        border-radius: 0;
-        box-shadow: 0 -5px 12px var(--color--track-shadow);
-        transform: none;
+        border-radius: 1.5em 1.5em 0 0;
+        /* box-shadow: 0 -5px 12px var(--color--track-shadow); */
+        transform: translate(-50%, 0%);
     }
 
-    #tooltip .data {
-        /* width: calc(100% - 2em); */
-        display: flex;
-        justify-content: space-evenly;
-    }
-
-    #tooltip svg {
-        top: 50%;
-        transform: translate(-50%, -75%);
-        left: 50%;
-        stroke-linejoin: round;
-    }
+    /* ----------------------------------------
+     * footer
+     * ---------------------------------------- */
 
     footer a {
         white-space: nowrap;
@@ -915,5 +914,33 @@ footer a:not(.o) {
 
     footer .i:not(:first-child)::before {
         margin-right: 0.5em;
+    }
+}
+
+/* ========================================
+ * mobile
+ * ======================================== */
+
+@media screen and (max-width: 425px) {
+    .track-lane {
+        width: calc((100vw - 2em) / 5 - 1em - var(--width--track-padding) / 2);
+        padding: 0.5em;
+    }
+
+    #tooltip {
+        width: calc(100% - 2em);
+        padding: 1em;
+        border-radius: 0;
+        box-shadow: 0 -5px 12px var(--color--track-shadow);
+    }
+
+    #tooltip .date {
+        right: 0;
+    }
+
+    #tooltip .data {
+        width: calc(100% - 2em);
+        display: flex;
+        justify-content: space-evenly;
     }
 }

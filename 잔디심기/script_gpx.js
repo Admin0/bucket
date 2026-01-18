@@ -8,8 +8,8 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
     if (!svg) return;
 
     // 1. Show loading indicator
-    svg.innerHTML = `<image href="imgs/icon_loading.svg" width="20" height="20" x="250" y="65"/>`;
-    svgNotFound = '<image href="imgs/icon_notfound.svg" width="20" height="20" x="250" y="65"/>';
+    svg.innerHTML = `<image href="imgs/icon_loading.svg" width="20" height="20" x="140" y="65"/>`;
+    svgNotFound = '<image href="imgs/icon_notfound.svg" width="20" height="20" x="140" y="65"/>';
 
     // Check cache first
     const cachedData = hermes.svgCache[gpxUrl];

@@ -63,6 +63,7 @@ const hermes_records = [
     },
 
     // unofficial 2026
+    { date: "2026-01-17", type: "trail", distance: 5.16, elevation: 590 , record: "03:13:33", title: "광덕산", comment: "@당근" },
     { date: "2026-01-14", type: "run", distance: 5.16, elevation: 23, record: "00:29:50", title: "장항선구철도길", comment: "@이런저런" },
     { date: "2026-01-12", type: "run", distance: 5.21, elevation: 17, record: "00:31:57", title: "장항선구철도길", comment: "@이런저런" },
     { date: "2026-01-11", type: "run", distance: 5.04, elevation: 11, record: "00:27:52", title: "삼천", comment: "" },
