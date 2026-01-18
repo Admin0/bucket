@@ -80,33 +80,33 @@ hermes.stats = () => {
     statsHeader.innerHTML = `
             <div class="stat-item">
                 <span class="label">러닝 거리</span>
-                <span class="value"><span class="material-symbols-outlined icon"> sprint </span> ${totalRunningDistance.toLocaleString("en-US", {
+                <span class="value" title="야외 러닝으로 이동한 거리입니다."><span class="material-symbols-outlined icon"> sprint </span> ${totalRunningDistance.toLocaleString("en-US", {
         maximumFractionDigits: 1,
     })} <span class="unit"> km</span></span>
             </div>
             <div class="stat-item">
                 <span class="label">거리</span>
-                <span class="value"><span class="material-symbols-outlined icon"> conversion_path </span> ${totalDistance.toLocaleString("en-US", {
+                <span class="value" title="모든 야외 활동 중 이동한 거리입니다."><span class="material-symbols-outlined icon"> conversion_path </span> ${totalDistance.toLocaleString("en-US", {
         maximumFractionDigits: 1,
     })} <span class="unit"> km</span></span>
             </div>
             <div class="stat-item">
                 <span class="label">트레일 상승고도</span>
-                <span class="value"><span class="material-symbols-outlined icon"> hiking </span> ${totalTrailElevation > 1000
+                <span class="value" title="트레일 러닝 혹은 등산으로 상승한 높이입니다."><span class="material-symbols-outlined icon"> hiking </span> ${totalTrailElevation > 1000
             ? (totalTrailElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> km</span>`
             : totalTrailElevation.toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> m</span>`
         } </span>
             </div>
             <div class="stat-item">
                 <span class="label">상승고도</span>
-                <span class="value"><span class="material-symbols-outlined icon"> altitude </span> ${totalElevation > 1000
+                <span class="value" title="모든 야외 활동 중 상승한 높이입니다."><span class="material-symbols-outlined icon"> altitude </span> ${totalElevation > 1000
             ? (totalElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> km</span>`
             : totalElevation.toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> m</span>`
         } </span>
             </div>
             <div class="stat-item">
                 <span class="label">활동</span>
-                <span class="value"><span class="material-symbols-outlined icon"> accessibility_new </span> ${hermes.records.length}</span>
+                <span class="value" title="야외 활동을 했던 횟수입니다."><span class="material-symbols-outlined icon"> accessibility_new </span> ${hermes.records.length}</span>
             </div>
         `;
 };

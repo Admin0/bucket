@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Material+Symbols:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Oswald:wght@200..700&display=swap");
 
 ::selection {
     background-color: rgba(0, 0, 0, 0);
@@ -20,6 +20,7 @@ body {
     --color--track-shadow: rgba(0 0 0 / 0.25);
 
     --color--calendar-hover: #f7f7f7;
+    --color--calendar-icon: #1b5e20;
 
     --color--gpx-start: #00ff80;
     --color--gpx-middle: #00b264;
@@ -34,15 +35,27 @@ body {
 
     --width--track: 1280px;
     /* --width--track: 1440px; */
-    --width--table-width: 85vw;
+    --width--table: 85vw;
     --margin--table-top: 25em;
 
-    font-family: "Noto Sans KR", sans-serif;
+    font-family: "Oswald", "Noto Sans KR", sans-serif;
     color: var(--color--scoreboard-text);
     background-color: var(--color--body-background);
     margin: 0;
     /* overflow-x: hidden; */
     cursor: default;
+}
+
+#title [title] {
+    text-decoration: underline;
+}
+
+#title div {
+    font-size: 1.2em;
+    margin-top: 0.5em;
+    font-family: "Noto Sans KR", sans-serif;
+    font-style: italic;
+    text-align: center;
 }
 
 h1 {
@@ -98,9 +111,9 @@ a {
     gap: 2em;
     padding: var(--width--track-padding);
     justify-content: center;
-    transform: rotate(-90deg) translateX(-100%) translateY(calc((100vw - 100%) / 2 - 0.5em));
+    transform: rotate(-90deg) translateX(-100%) translateY(calc((100vw - 100%) / 2 - 0em));
     transform-origin: 0 0;
-    height: calc(100vw - 5em);
+    height: calc(100vw - 4em);
     max-height: var(--width--track);
     width: fit-content;
 }
@@ -335,14 +348,13 @@ a {
 }
 
 #table-container {
-    /* max-width: 720px; */
-    width: calc(100% - 4em);
+    width: calc(var(--width--table) - 1em);
+    margin-left: calc((100vw - var(--width--table)) / 2);
+    margin-right: calc((100vw - var(--width--table)) / 2);
+    padding: 0;
+
     background: var(--color--scoreboard-bg);
-    padding: 0 2em;
     margin-top: 10em;
-    /* height: fit-content; */
-    /* position: absolute; */
-    /* top: 70em; */
 }
 
 .filters {
@@ -592,6 +604,9 @@ a {
     --width--tooltip-padding: 1.5em;
     --width--tooltip-svg: 6em;
 
+    display: flex;
+    flex-direction: column-reverse;
+
     width: var(--width--tooltip);
     position: absolute;
     opacity: 0;
@@ -616,9 +631,9 @@ a {
 }
 
 #tooltip .tooltip-item:not(:last-of-type) {
-    border-bottom: 1px solid silver;
-    padding-bottom: 1.5em;
-    margin-bottom: 1em;
+    border-top: 1px solid silver;
+    padding-top: 1.5em;
+    margin-top: 1em;
 }
 
 #tooltip .title-container {
@@ -738,23 +753,23 @@ footer a:not(.o) {
     color: var(--color--track-text);
 }
 
-/* 4K */
+/* ========================================
+ * 4K
+ * ======================================== */
 
-@media screen and (min-width: 1440px) {
-    #table-container {
-        width: calc(var(--width--table-width) - 1em);
-        margin-left: calc((100vw - var(--width--table-width)) / 2);
-        margin-right: calc((100vw - var(--width--table-width)) / 2);
-        padding: 0;
-    }
+@media screen and (min-width: 1280px) {
 }
 
-/* track dynamic */
+/* ========================================
+ * track dynamic
+ * ======================================== */
 
-@media screen and (max-width: calc(1440px + 4em)) {
-    /* #table-container {
-        margin-top: calc(-100vw + var(--margin--table-top) + 18em);
-    } */
+@media screen and (max-width: calc((1280px + 4em)*1.2)) {
+    #table-container {
+        width: calc(100% - 4em);
+        margin-left: auto;
+        padding: 0 2em;
+    }
 }
 
 /* ========================================

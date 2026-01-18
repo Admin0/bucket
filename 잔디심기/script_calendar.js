@@ -139,12 +139,14 @@ hermes.calendar = () => {
                 const monthStatsHtml = `
                     <tr class="month-stats-row">
                         <td colspan="8">
-                            <div class="stat-item"><span class="value">${new Intl.DateTimeFormat("en-US", { month: "short" }).format(new Date(year, month, 1))}</span></div>
-                            <div class="stat-item"><span class="label">러닝 거리</span><span class="value">${monthRunningDistance.toFixed(1)} <span class="unit"> km</span></span></div>
-                            <div class="stat-item"><span class="label">거리</span><span class="value">${monthTotalDistance.toFixed(1)} <span class="unit"> km</span></span></div>
-                            <div class="stat-item"><span class="label">트레일 상승고도</span><span class="value">${monthTrailElevation > 1000 ? (monthTrailElevation / 1000).toFixed(1) + ` <span class="unit"> km</span>` : monthTrailElevation.toFixed(0) + ` <span class="unit">m</span>`}</span></div>
-                            <div class="stat-item"><span class="label">상승고도</span><span class="value">${monthElevation > 1000 ? (monthElevation / 1000).toFixed(1) + ` <span class="unit"> km</span>` : monthElevation.toFixed(0) + ` <span class="unit">m</span>`}</span></div>
-                            <div class="stat-item"><span class="label">활동</span><span class="value">${monthRecords.length}</span></div>
+                            <div class="month-stats">
+                                <div class="stat-item"><span class="value">${new Intl.DateTimeFormat("en-US", { month: "short" }).format(new Date(year, month, 1))}</span></div>
+                                <div class="stat-item"><span class="label">러닝 거리</span><span class="value">${monthRunningDistance.toFixed(1)} <span class="unit"> km</span></span></div>
+                                <div class="stat-item"><span class="label">거리</span><span class="value">${monthTotalDistance.toFixed(1)} <span class="unit"> km</span></span></div>
+                                <div class="stat-item"><span class="label">트레일 상승고도</span><span class="value">${monthTrailElevation > 1000 ? (monthTrailElevation / 1000).toFixed(1) + ` <span class="unit"> km</span>` : monthTrailElevation.toFixed(0) + ` <span class="unit">m</span>`}</span></div>
+                                <div class="stat-item"><span class="label">상승고도</span><span class="value">${monthElevation > 1000 ? (monthElevation / 1000).toFixed(1) + ` <span class="unit"> km</span>` : monthElevation.toFixed(0) + ` <span class="unit">m</span>`}</span></div>
+                                <div class="stat-item"><span class="label">활동</span><span class="value">${monthRecords.length}</span></div>
+                            </div>
                         </td>
                     </tr>
                 `;
@@ -248,7 +250,7 @@ hermes.calendar = () => {
         calendarGrid.innerHTML = fullHtml; // 생성된 HTML을 그리드에 삽입합니다.
 
         // 각 날짜 셀에 마우스 이벤트를 추가하여 툴팁과 하이라이트를 제어합니다.
-        const dayCells = document.querySelectorAll(".day-cell");
+        const dayCells = document.querySelectorAll(".day-cell, .week-summary");
         dayCells.forEach((cell) => {
             cell.addEventListener("mouseenter", (e) => {
                 // 주간 하이라이트 및 툴팁 표시 로직

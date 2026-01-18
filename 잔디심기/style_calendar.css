@@ -3,9 +3,9 @@
 
     /* width: calc(100% - 4em); */
     /* margin: 10em auto; */
-    width: calc(var(--width--table-width) - 1em);
-    margin-left: calc((100vw - var(--width--table-width)) / 2);
-    margin-right: calc((100vw - var(--width--table-width)) / 2);
+    width: calc(var(--width--table) - 1em);
+    margin-left: calc((100vw - var(--width--table)) / 2);
+    margin-right: calc((100vw - var(--width--table)) / 2);
     padding: 0px;
 
     margin-top: calc(var(--margin--table-top) * -1);
@@ -25,7 +25,7 @@
 /* #calendar-container .year-container, */
 #calendar-container .month-table-container {
     max-width: var(--width--track);
-    width: calc(100% - 4em);
+    /* width: calc(100% - 4em); */
     margin: 1em auto;
 }
 
@@ -78,8 +78,6 @@
 
 #calendar-grid th,
 #calendar-grid td {
-    padding: 0;
-    vertical-align: top;
     width: 100%;
 }
 
@@ -168,6 +166,7 @@ td.on {
     top: 1em;
     font-size: 0.8em;
     opacity: 0.7;
+    line-height: 1;
 }
 
 #calendar-grid .activity-circle {
@@ -210,14 +209,16 @@ td.on {
 .activity-icons {
     left: 50%;
     top: 50%;
-    color: #005c45;
+    color: var(--color--calendar-icon);
     transform: translate(-50%, -50%);
     /* opacity: 0.7; */
     position: absolute;
     display: flex;
+    flex-direction: row-reverse;
 }
 
-.activity-icons .material-symbols-outlined {
+.activity-icons i {
+    margin: 0 -0.125em;
 }
 
 .activity-icons:has(.rest) {
@@ -260,31 +261,37 @@ td.on {
     background-color: #45a049;
 }
 
+/* ----------------------------------------
+ * stats
+ * ---------------------------------------- */
+
 #calendar-grid .year-stats,
-#calendar-grid .month-stats-row td {
+#calendar-grid .month-stats {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: nowrap;
     padding: 0 0 1em;
-    text-align: left;
     z-index: 2;
 }
 
 #calendar-grid .year-stats .stat-item,
-.month-stats-row .stat-item {
-    width: 8em;
+#calendar-grid .month-stats .stat-item {
+    flex-grow: 1;
     display: inline-block;
 }
 
 #calendar-grid .year-stats .stat-item:first-of-type,
-.month-stats-row .stat-item:first-of-type {
-    margin-right: 6em;
+#calendar-grid .month-stats .stat-item:first-of-type {
+    flex-grow: 2;
 }
 
 #calendar-grid .year-stats .label,
-#calendar-grid .month-stats-row .label {
+#calendar-grid .month-stats .label {
     font-size: 0.8em;
 }
 
 #calendar-grid .year-stats .value,
-#calendar-grid .month-stats-row .value {
+#calendar-grid .month-stats .value {
     font-size: 1.2em;
 }
 
@@ -303,20 +310,11 @@ td.on {
 
 #calendar-grid.compact .activity-icons,
 #calendar-grid.compact .activity-stats,
-#calendar-grid.compact .month-stats-row .stat-item:nth-of-type(2),
-#calendar-grid.compact .month-stats-row .stat-item:nth-of-type(4),
-#calendar-grid.compact tr:not(.year-stats) th:nth-of-type(1),
-#calendar-grid.compact tr:not(.month-stats-row) td:nth-of-type(1) {
+#calendar-grid.compact .month-stats .stat-item:nth-of-type(3),
+#calendar-grid.compact .month-stats .stat-item:nth-of-type(5),
+#calendar-grid.compact th:first-of-type,
+#calendar-grid.compact td.week-summary {
     display: none;
-}
-
-#calendar-grid.compact .month-stats-row .stat-item {
-    width: fit-content;
-    margin-right: 2em;
-}
-#calendar-grid .year-stats .stat-item:first-of-type,
-#calendar-grid .month-stats-row .stat-item:first-of-type {
-    margin-right: 6em;
 }
 
 #calendar-grid.compact .day-cell .date-display {
@@ -332,7 +330,9 @@ td.on {
 #calendar-grid.compact .day-cell:has(.activity-circle) .date-display {
     font-weight: bold;
 }
-
+#calendar-grid.compact .day-cell:has(.activity-circle).official .date-display {
+    color: #212121;
+}
 #calendar-grid.compact .months-grid {
     justify-content: space-between;
 }
@@ -346,9 +346,23 @@ td.on {
     height: 4em;
 }
 
-@media screen and (max-width: calc(1440px + 4em)) {
+/* ========================================
+ * 4K
+ * ======================================== */
+
+@media screen and (min-width: 1280px) {
+    /* Adjustments for larger screens if needed */
+}
+
+/* ========================================
+ * track dynamic
+ * ======================================== */
+
+@media screen and (max-width: calc((1280px + 4em)*1.2)) {
     #calendar-container {
-        margin-top: calc(-100vw + var(--margin--table-top) + 34em);
+        width: calc(100% - 4em);
+        margin-left: auto;
+        margin-right: auto;
     }
     #calendar-container .filters,
     #calendar-container h2 {
@@ -358,8 +372,10 @@ td.on {
     }
 }
 
-@media screen and (min-width: 1440px) {
-    /* Adjustments for larger screens if needed */
+@media screen and (max-width: calc(1280px + 4em)) {
+    #calendar-container {
+        margin-top: calc(-100vw + var(--margin--table-top) + 34em);
+    }
 }
 
 /* ========================================
@@ -379,22 +395,14 @@ td.on {
         /* font-size: 0.7em; */
     }
 
-    #calendar-grid .year-stats .stat-item,
-    #calendar-grid .month-stats-row .stat-item {
-        width: fit-content;
-        margin-right: 2em;
-    }
-    #calendar-grid .year-stats .stat-item:first-of-type,
-    #calendar-grid .month-stats-row .stat-item:first-of-type {
-        margin-right: 6em;
-    }
-
+    #calendar-grid.compact .day-cell,
     .day-cell {
-        height: 4em;
+        height: 3em;
     }
 
     .day-cell .date-display {
         /* display: none; */
+        font-size: 0.5em;
         left: 50%;
         top: 50%;
         z-index: 1;
@@ -422,15 +430,15 @@ td.on {
         font-size: 0.8em;
     }
 
-    .shadow-bottom:before,
-    #calendar-grid tr:not(.year-stats) th:nth-of-type(1),
-    #calendar-container #calendar-grid .year-stats .stat-item:nth-of-type(2),
-    #calendar-container #calendar-grid .year-stats .stat-item:nth-of-type(4),
-    #calendar-grid tr:not(.month-stats-row) td:nth-of-type(1),
-    .month-stats-row .stat-item:nth-of-type(2),
-    .month-stats-row .stat-item:nth-of-type(4),
-    .activity-icons,
-    .activity-stats {
+    #calendar-grid .activity-icons,
+    #calendar-grid .activity-stats,
+    #calendar-grid .year-stats .stat-item:nth-of-type(3),
+    #calendar-grid .year-stats .stat-item:nth-of-type(5),
+    #calendar-grid .month-stats .stat-item:nth-of-type(3),
+    #calendar-grid .month-stats .stat-item:nth-of-type(5),
+    #calendar-grid th:first-of-type,
+    #calendar-grid td.week-summary,
+    .shadow-bottom:before {
         display: none;
     }
 
