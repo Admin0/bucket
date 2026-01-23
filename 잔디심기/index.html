@@ -100,18 +100,18 @@
 
         <div id="table-container">
             <h2>RECORDS</h2>
-            <div class="filters" onclick="location.href='#table-container'">
+            <div class="filters">
                 <fieldset>
                     <legend>필터</legend>
-                    <label id="reset-filters"><span class="material-symbols-outlined"> replay </span></label>
+                    <label id="reset-filters"><span class="material-symbols-outlined" onclick="location.href='#table-container'"> replay </span></label>
                     <span class="div"></span>
-                    <span id="type-filter-container" class="filter">
+                    <span id="type-filter-container" class="filter" onclick="location.href='#table-container'">
                             <label title="전체"><input type="radio" name="type" value="all" checked /><span class="material-symbols-outlined"> done_all </span></label>
                             <label title="러닝"><input type="radio" name="type" value="run" /><span class="material-symbols-outlined"> directions_run </span></label>
                             <label title="트레일"><input type="radio" name="type" value="trail" /><span class="material-symbols-outlined"> hiking </span></label>
                     </span>
                     <span class="div"></span>
-                    <span id="course-filter-container" class="filter">
+                    <span id="course-filter-container" class="filter" onclick="location.href='#table-container'">
                         <label title="전체"><input type="radio" name="course" value="all" checked /><span class="material-symbols-outlined"> straighten </span></label>
                         <label title="5K"><input type="radio" name="course" value="5k" /><span class="material-symbols-outlined"> timer_5_shutter </span></label>
                         <label title="10K"><input type="radio" name="course" value="10k" /><span class="material-symbols-outlined"> timer_10 </span></label>
@@ -119,9 +119,11 @@
                         <label title="full"><input type="radio" name="course" value="full" /><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1"> circle </span></label>
                     </span>
                     <span class="div"></span>
-                    <span id="year-filter-container" class="filter">
+                    <span id="year-filter-container" class="filter" onclick="location.href='#table-container'">
                         <label title="전체" ><input type="radio" name="year" value="all" checked /><span class="material-symbols-outlined"> calendar_month </span></label>
                     </span>
+                    <span class="div"></span>
+                        <label title="search"><span class="material-symbols-outlined"> search </span><input type="search" id="search-input" placeholder="Search..." /></label>
                 </fieldset>
             </div>
             <table id="records-table">

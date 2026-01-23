@@ -1,7 +1,10 @@
+// 전역 'hermes' 객체 초기화
 const hermes = {};
 
+// 외부 'hermes_records' 데이터로 'hermes' 객체의 'records' 속성 설정
 hermes.records = hermes_records;
 
+// 코스 카테고리 정의: 트랙 ID를 코스 및 유형 정보에 매핑
 hermes.courseCategories = {
     "track-full": { course: "full", type: "run" },
     "track-half": { course: "half", type: "run" },
@@ -10,6 +13,7 @@ hermes.courseCategories = {
     "track-trail": { type: "trail" },
 };
 
+// 날짜를 기반으로 주차 정보(연도, 주)를 가져오는 헬퍼 함수
 function getWeekInfo(d) {
     d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
     d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
@@ -19,8 +23,10 @@ function getWeekInfo(d) {
     return { year, week: weekNo };
 }
 
+// 기록 데이터 초기화 및 계산된 속성 추가
 hermes.recordInit = function () {
     hermes.records = hermes.records.map((record, index) => {
+        // 기록 시간을 초로 변환
         const parts = record.record.split(":").map(Number);
         let time;
         if (parts.length === 3) {
@@ -29,20 +35,23 @@ hermes.recordInit = function () {
             time = parts[0] * 60 + parts[1];
         }
 
+        // 거리, 고도, 트레일 여부 설정
         const distance = record.distance || (record.course == "full" ? 42.195 : record.course == "half" ? 21.0975 : record.course == "10k" ? 10 : record.course == "5k" ? 5 : 0);
         const elevation = record.elevation || 0;
         const isTrail = record.type == "trail";
 
+        // 페이스 계산
         let elevation_pace = Infinity;
         let distance_pace = Infinity;
 
         if (isTrail) {
-            if (elevation > 0) elevation_pace = (time / elevation / 2) * 60; // 60 m 당 페이스
+            if (elevation > 0) elevation_pace = (time / elevation / 2) * 60; // 60m당 페이스
             if (distance > 0) distance_pace = time / distance;
         }
 
         const dateObj = new Date(record.date);
 
+        // 계산된 속성을 포함하여 새로운 기록 객체 반환
         return {
             ...record,
             id: index,
@@ -61,6 +70,7 @@ hermes.recordInit = function () {
     });
 };
 
+// 전체 통계 계산 및 표시
 hermes.stats = () => {
     let totalDistance = 0;
     let totalRunningDistance = 0;
@@ -81,28 +91,30 @@ hermes.stats = () => {
             <div class="stat-item">
                 <span class="label">러닝 거리</span>
                 <span class="value" title="야외 러닝으로 이동한 거리입니다."><span class="material-symbols-outlined icon"> sprint </span> ${totalRunningDistance.toLocaleString("en-US", {
-        maximumFractionDigits: 1,
-    })} <span class="unit"> km</span></span>
+                    maximumFractionDigits: 1,
+                })} <span class="unit"> km</span></span>
             </div>
             <div class="stat-item">
                 <span class="label">거리</span>
                 <span class="value" title="모든 야외 활동 중 이동한 거리입니다."><span class="material-symbols-outlined icon"> conversion_path </span> ${totalDistance.toLocaleString("en-US", {
-        maximumFractionDigits: 1,
-    })} <span class="unit"> km</span></span>
+                    maximumFractionDigits: 1,
+                })} <span class="unit"> km</span></span>
             </div>
             <div class="stat-item">
                 <span class="label">트레일 상승고도</span>
-                <span class="value" title="트레일 러닝 혹은 등산으로 상승한 높이입니다."><span class="material-symbols-outlined icon"> hiking </span> ${totalTrailElevation > 1000
-            ? (totalTrailElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> km</span>`
-            : totalTrailElevation.toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> m</span>`
-        } </span>
+                <span class="value" title="트레일 러닝 혹은 등산으로 상승한 높이입니다."><span class="material-symbols-outlined icon"> hiking </span> ${
+                    totalTrailElevation > 1000
+                        ? (totalTrailElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> km</span>`
+                        : totalTrailElevation.toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> m</span>`
+                } </span>
             </div>
             <div class="stat-item">
                 <span class="label">상승고도</span>
-                <span class="value" title="모든 야외 활동 중 상승한 높이입니다."><span class="material-symbols-outlined icon"> altitude </span> ${totalElevation > 1000
-            ? (totalElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> km</span>`
-            : totalElevation.toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> m</span>`
-        } </span>
+                <span class="value" title="모든 야외 활동 중 상승한 높이입니다."><span class="material-symbols-outlined icon"> altitude </span> ${
+                    totalElevation > 1000
+                        ? (totalElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> km</span>`
+                        : totalElevation.toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> m</span>`
+                } </span>
             </div>
             <div class="stat-item">
                 <span class="label">활동</span>
@@ -111,15 +123,18 @@ hermes.stats = () => {
         `;
 };
 
+// 트랙 시각화 생성
 hermes.track = function () {
     if (!hermes.records || hermes.records.length === 0) return;
 
+    // 달리기 기록 페이스 계산
     const runRecords = hermes.records.filter((r) => r.course !== "trail");
     const runPaces = runRecords.map((r) => r.pace).filter((p) => p !== Infinity);
     const limitPace = 7 * 60; // 7분/km
     const minPace = runPaces.length > 0 ? Math.min(...runPaces) : 0;
     const maxPace = runPaces.length > 0 ? Math.min(Math.max(...runPaces), limitPace) : limitPace;
 
+    // 트레일 기록 통계 계산
     const trailRecords = hermes.records.filter((r) => r.course === "trail");
     hermes.trailStats = {
         elevations: trailRecords.map((r) => r.elevation),
@@ -128,7 +143,7 @@ hermes.track = function () {
         distance_paces: trailRecords.map((r) => r.distance_pace).filter((p) => p !== Infinity),
     };
 
-    const limitElevationPace = 12 * 60; // 12분/60 m
+    const limitElevationPace = 12 * 60; // 12분/60m
     const limitTrailDistancePace = 28 * 60; // 28분/km
 
     hermes.trailStats.maxElevation = Math.max(0, ...hermes.trailStats.elevations);
@@ -140,13 +155,16 @@ hermes.track = function () {
     hermes.trailStats.maxDistancePace = Math.min(Math.max(0, ...hermes.trailStats.distance_paces), limitTrailDistancePace);
     hermes.trailStats.minDistancePace = Math.min(...hermes.trailStats.distance_paces);
 
+    // 마커 색상 그라데이션 설정
     const startColor = [0, 255, 127]; // SpringGreen (좋은 기록)
     const endColor = [0, 77, 64]; // Teal900 (나쁜 기록)
 
+    // 기록의 시작 및 종료 연도 설정
     const years = [...new Set(hermes.records.map((r) => r.weekInfo.year))];
     const startYear = years.length > 0 ? Math.min(...years) : new Date().getFullYear();
     const endYear = years.length > 0 ? Math.max(...years) : new Date().getFullYear();
 
+    // 트랙 렌더링 함수
     function renderTracks() {
         const trailFilterValue = document.querySelector('input[name="trail-filter"]:checked').value;
 
@@ -165,6 +183,7 @@ hermes.track = function () {
             const bestRecordContainer = element.parentElement.querySelector(".best-record-container");
             if (bestRecordContainer) bestRecordContainer.innerHTML = "";
 
+            // 최고 기록 표시
             if (category.type === "trail") {
                 if (categoryRecords.length > 0) {
                     let bestRecord;
@@ -231,6 +250,7 @@ hermes.track = function () {
                 bestRecordContainer.appendChild(p);
             }
 
+            // 연도별 마커 생성
             for (let year = endYear; year >= startYear; year--) {
                 const yearRecords = categoryRecords.filter((r) => r.weekInfo.year === year);
                 const yearMarkerContainer = document.createElement("div");
@@ -272,6 +292,7 @@ hermes.track = function () {
                             marker.classList.add("unofficial");
                         }
 
+                        // 마커에 대한 툴팁 및 하이라이트 이벤트 리스너
                         marker.addEventListener("mouseenter", (e) => {
                             let tooltip = document.getElementById("tooltip");
                             tooltip.innerHTML = hermes.tooltip(recordsForWeek);
@@ -292,6 +313,7 @@ hermes.track = function () {
                             });
                         });
 
+                        // 기록 값에 따라 마커 색상 계산
                         let colorValue = 0.5;
                         const record = representativeRecord;
 
@@ -350,6 +372,7 @@ hermes.track = function () {
             }
         }
 
+        // 트랙 스크롤 시 그림자 효과 업데이트
         const tracks = document.querySelectorAll(".track");
         tracks.forEach((track) => {
             const updateShadows = () => {
@@ -368,11 +391,13 @@ hermes.track = function () {
 
     renderTracks();
 
+    // 트레일 필터 변경 시 트랙 다시 렌더링
     document.querySelectorAll('input[name="trail-filter"]').forEach((radio) => {
         radio.addEventListener("change", renderTracks);
     });
 };
 
+// 기록 테이블 생성 및 관리
 hermes.table = function () {
     const tableBody = document.querySelector("#records-table tbody");
     const tableHeaders = document.querySelectorAll("#records-table th");
@@ -381,12 +406,14 @@ hermes.table = function () {
     const courseRadios = document.querySelectorAll('input[name="course"]');
     const yearRadiosContainer = document.getElementById("year-filter-container");
     const resetButton = document.getElementById("reset-filters");
+    const searchInput = document.getElementById("search-input"); // 검색 입력 필드
 
     if (!hermes.records || hermes.records.length === 0) return;
 
     let currentSort = { key: "date", direction: "desc" };
     let filteredRecords = [...hermes.records];
 
+    // 연도 필터 동적 생성
     const years = [...new Set(hermes.records.map((r) => r.weekInfo.year))].sort((a, b) => b - a);
     if (yearRadiosContainer.children.length < years.length + 1) {
         years.forEach((year) => {
@@ -402,6 +429,7 @@ hermes.table = function () {
     }
     document.querySelectorAll('input[name="year"]').forEach((radio) => radio.addEventListener("change", filterAndRender));
 
+    // 기본 연도 필터 설정
     function setDefaultYearFilter() {
         const currentYear = new Date().getFullYear();
         const currentYearRadio = document.querySelector(`input[name="year"][value="${currentYear}"]`);
@@ -412,6 +440,7 @@ hermes.table = function () {
         }
     }
 
+    // 코스 필터 활성화/비활성화
     function toggleCourseFilter(disabled) {
         courseFilterContainer.classList.toggle("disabled", disabled);
         courseRadios.forEach((radio) => (radio.disabled = disabled));
@@ -420,22 +449,32 @@ hermes.table = function () {
         }
     }
 
+    // 기록 필터링 및 렌더링
     function filterAndRender() {
         const type = document.querySelector('input[name="type"]:checked').value;
         const course = document.querySelector('input[name="course"]:checked').value;
         const year = document.querySelector('input[name="year"]:checked').value;
+        const searchTerm = searchInput.value.toLowerCase(); // 검색어
 
         toggleCourseFilter(type === "trail");
 
         filteredRecords = hermes.records.filter((record) => {
             const recordType = record.course === "trail" ? "trail" : "run";
-            return (type === "all" || recordType === type) && (course === "all" || record.course === course || type === "trail") && (year === "all" || record.weekInfo.year == year);
+            const matchesType = type === "all" || recordType === type;
+            const matchesCourse = course === "all" || record.course === course || type === "trail";
+            const matchesYear = year === "all" || record.weekInfo.year == year;
+            const matchesSearch =
+                searchTerm === "" || record.title.toLowerCase().includes(searchTerm) || record.course.toLowerCase().includes(searchTerm) || record.comment.toLowerCase().includes(searchTerm);
+
+            return matchesType && matchesCourse && matchesYear && matchesSearch;
         });
 
         renderTable();
     }
 
+    // 테이블 렌더링
     function renderTable() {
+        // 현재 정렬 기준에 따라 기록 정렬
         filteredRecords.sort((a, b) => {
             const key = currentSort.key;
             let valA = a[key];
@@ -463,12 +502,13 @@ hermes.table = function () {
 
             const isTrail = record.course === "trail";
 
-            const paceString = `${Math.floor(record.pace / 60)}'${Math.floor(record.pace % 60)
+            // 페이스 및 거리 문자열 형식화
+            const paceString = `${Math.floor(record.pace / 60)}′${Math.floor(record.pace % 60)
                 .toString()
-                .padStart(2, "0")}''<span class="unit">/km</span>`;
-            const paceStringTrail = `${Math.floor(record.elevation_pace / 60)}'${Math.floor(record.elevation_pace % 60)
+                .padStart(2, "0")}″<span class="unit">/km</span>`;
+            const paceStringTrail = `${Math.floor(record.elevation_pace / 60)}′${Math.floor(record.elevation_pace % 60)
                 .toString()
-                .padStart(2, "0")}''<span class="unit">/60 m↑</span>`;
+                .padStart(2, "0")}″<span class="unit">/60 m↑</span>`;
             const paceDetail = isTrail ? `<span class="replace">${paceString}</span><span class="main">${paceStringTrail}</span>` : `${paceString}`;
 
             const distanceDetail = isTrail
@@ -477,16 +517,19 @@ hermes.table = function () {
             const icon_distance = record.course === "trail" ? `<span class="main">altitude</span><span class="replace">conversion_path</span>` : "conversion_path";
             const dateString = `w${record.weekInfo.week}`;
 
+            // 테이블 행 내용 설정
             row.innerHTML = `
                 <td class="course">${record.course}</td>
                 <td class="date"><span class="main">${record.date}</span><span class="replace">${dateString}</span></td>
                 <td class="title">${record.title}</td>
                 <td class="isOfficial">${record.isOfficial ? '<span class="material-symbols icon"> crown </span>' : ""}</td>
+                ${record.comment !== null && record.comment !== "" ? `<div class="comment unit">${record.comment}</div>` : ""}
                 <td class="distance"><span class="material-symbols-outlined icon distance"> ${icon_distance} </span>${distanceDetail} </td>
                 <td class="record"><span class="material-symbols-outlined icon record"> timer </span>${record.record} </td>
                 <td class="pace"><span class="material-symbols-outlined icon pace"> speed </span>${paceDetail}</td>
             `;
 
+            // 행에 마우스 오버/아웃 시 트랙 마커 하이라이트
             row.addEventListener("mouseover", () => {
                 const courseType = record.course === "trail" ? "trail" : record.course;
                 const trackId = Object.keys(hermes.courseCategories).find((key) => {
@@ -513,9 +556,12 @@ hermes.table = function () {
         });
     }
 
+    // 필터 변경 이벤트 리스너
     typeRadios.forEach((radio) => radio.addEventListener("change", filterAndRender));
     courseRadios.forEach((radio) => radio.addEventListener("change", filterAndRender));
+    searchInput.addEventListener("input", filterAndRender); // 검색 입력 시 필터링
 
+    // 테이블 헤더 클릭 시 정렬
     tableHeaders.forEach((header) => {
         header.addEventListener("click", () => {
             const sortKey = header.dataset.sort;
@@ -534,10 +580,12 @@ hermes.table = function () {
         });
     });
 
+    // 필터 초기화 버튼
     if (resetButton) {
         resetButton.addEventListener("click", () => {
             document.querySelector('input[name="type"][value="all"]').checked = true;
             document.querySelector('input[name="course"][value="all"]').checked = true;
+            searchInput.value = ""; // 검색 필드 초기화
             setDefaultYearFilter();
             toggleCourseFilter(false);
             currentSort = { key: "date", direction: "desc" };
@@ -547,11 +595,13 @@ hermes.table = function () {
         });
     }
 
+    // 초기화
     setDefaultYearFilter();
     document.querySelector('th[data-sort="date"]').classList.add("sort-desc");
     filterAndRender();
 };
 
+// 애플리케이션 초기화 함수
 hermes.initiate = function () {
     hermes.recordInit();
     hermes.track();
@@ -560,6 +610,7 @@ hermes.initiate = function () {
     hermes.stats();
 };
 
+// DOM 콘텐츠 로드 완료 시 애플리케이션 초기화
 document.addEventListener("DOMContentLoaded", (event) => {
     hermes.initiate();
 });

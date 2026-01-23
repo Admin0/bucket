@@ -22,12 +22,16 @@ body {
     --color--calendar-hover: #f7f7f7;
     --color--calendar-icon: #1b5e20;
 
+    --color--theme: #00b264;
+    --color--theme-light: #69f0ae;
     --color--gpx-start: #00ff80;
     --color--gpx-middle: #00b264;
     --color--gpx-end: #005c45;
     --color--red: #f44336;
     --color--teal: #009688;
     --color--indigo: #3f51b5;
+    --color--gold: #ffd700;
+    --color--gold-dark: #f57f17;
 
     --color--scoreboard-bg: transparent;
     --color--scoreboard-text: #212121;
@@ -347,6 +351,10 @@ a {
     cursor: pointer;
 }
 
+/* ----------------------------------------
+ * table
+ * ---------------------------------------- */
+
 #table-container {
     width: calc(var(--width--table) - 1em);
     margin-left: calc((100vw - var(--width--table)) / 2);
@@ -359,7 +367,7 @@ a {
 
 .filters {
     background-color: var(--color--track);
-    border-radius: 1.5em;
+    border-radius: 2em;
     border: none;
     overflow-x: auto;
 }
@@ -368,6 +376,7 @@ a {
     border: none;
     white-space: nowrap;
     padding: 1em;
+    line-height: 2;
 }
 
 .filters legend {
@@ -377,12 +386,13 @@ a {
 .filters #reset-filters {
     background-color: transparent;
     border: none;
-    color: #388e3c;
+    color: var(--color--theme);
 }
 
 .filters .div {
     border-right: 1px solid silver;
     margin: 0.5em;
+    opacity: 0.5;
 }
 
 .filters .filter {
@@ -394,7 +404,7 @@ a {
     cursor: pointer;
 }
 
-.filters input {
+.filters input:not([type="search"]) {
     display: none;
 }
 
@@ -408,16 +418,33 @@ a {
     cursor: pointer;
     border-radius: 2em;
 }
+.filters input#search-input,
+.filters input#search-input:focus {
+    border: none;
+    outline: none;
+    font-size: 1em;
+    background-color: transparent;
+    width: 0;
+    transition: 0.25s;
+    padding: 0;
+}
 
+.filters input#search-input:focus,
+.filters input#search-input:not(:placeholder-shown) {
+    width: 10em;
+    margin-left: 0.5em;
+}
 .filters #reset-filters:hover,
 .filters label:hover {
-    background-color: #69f0ae;
+    background-color: var(--color--theme-light);
     transition: 0.125s;
     color: var(--color--track);
 }
 
-.filters label:has(input:checked) {
-    background-color: #00c853;
+.filters label:has(input:checked),
+.filters label:has(input#search-input:focus),
+.filters label:has(input#search-input:not(:placeholder-shown)) {
+    background-color: var(--color--theme);
     color: var(--color--track);
 }
 
@@ -460,14 +487,19 @@ a {
 #records-table thead th {
     text-align: left;
     cursor: pointer;
+    padding-right: 1.5em;
 }
 
 #records-table thead th .text {
     margin-left: 0.5em;
 }
 
-#records-table thead th:hover {
-    background: var(--color--track-dark);
+#records-table thead th:hover,
+#records-table thead th[class^="sort"] {
+    background: var(--color--theme);
+    outline: 1em solid var(--color--theme);
+    color: var(--color--body-background);
+    border-radius: 1.5em;
 }
 
 #records-table tbody {
@@ -477,9 +509,8 @@ a {
     column-gap: 1.5em;
 }
 
-#records-table th.sort-asc:after,
-#records-table th.sort-desc:after {
-    color: #666;
+#records-table th[class^="sort"]:after {
+    color: var(--color--calendar-icon);
     content: "arrow_upward";
     position: absolute;
     font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
@@ -509,12 +540,12 @@ a {
 
 #records-table td.isOfficial {
     display: inline-block;
-    margin-right: -2em;
+    margin: 0 -2em 0 0em;
 }
 
 #records-table td.isOfficial .icon {
-    background-color: gold;
-    color: goldenrod;
+    background-color: var(--color--gold);
+    color: var(--color--gold-dark);
     border-radius: 1em;
     padding: 4px;
     font-variation-settings: "FILL" 1;
@@ -555,9 +586,19 @@ a {
     white-space: nowrap;
 }
 
-#records-table td .replace,
-#records-table tr:hover td .main {
+#records-table tr .replace,
+#records-table tr:hover td .main,
+#records-table tr .comment {
     display: none;
+}
+#records-table tr .comment {
+    position: absolute;
+    font-size: 0.8em;
+    font-style: italic;
+    font-weight: normal;
+    z-index: 1;
+    bottom: calc(1.5em / 0.8);
+    left: calc(1.5em / 0.8);
 }
 
 #records-table td:has(.replace) {
@@ -570,7 +611,8 @@ a {
     border-radius: 1em;
 }
 
-#records-table tr:hover td .replace {
+#records-table tr:hover td .replace,
+#records-table tr:hover .comment {
     display: inline-block;
 }
 
@@ -593,6 +635,11 @@ a {
     background-color: var(--color--track-hover);
     box-shadow: 0 5px 12px var(--color--track-shadow);
     transform: scale(1.05);
+}
+#records-table tbody tr:hover:has(.comment) {
+    z-index: 1;
+    padding-bottom: 1.5em;
+    margin-bottom: -1.5em;
 }
 
 /* ----------------------------------------
@@ -631,7 +678,7 @@ a {
 }
 
 #tooltip .tooltip-item:not(:last-of-type) {
-    border-top: 1px solid silver;
+    border-top: 1px solid var(--color--track-border);
     padding-top: 1.5em;
     margin-top: 1em;
 }
@@ -661,8 +708,8 @@ a {
 }
 
 #tooltip .title .official {
-    background-color: gold;
-    color: goldenrod;
+    background-color: var(--color--gold);
+    color: var(--color--gold-dark);
     border-radius: 50%;
     font-size: 0.9em;
     padding: 0.25em;
@@ -718,6 +765,17 @@ a {
 .material-symbols {
     font-variation-settings: "FILL" 1;
 }
+#tooltip:has(.tooltip-comment) {
+    width: fit-content;
+    background: var(--color--track);
+}
+#tooltip .tooltip-comment {
+    line-height: 0;
+}
+
+/* ----------------------------------------
+ * footer
+ * ---------------------------------------- */
 
 footer {
     font-size: 0.85em;

@@ -63,7 +63,9 @@ const hermes_records = [
     },
 
     // unofficial 2026
-    { date: "2026-01-17", type: "trail", distance: 5.16, elevation: 590 , record: "03:13:33", title: "광덕산", comment: "@당근" },
+    { date: "2026-01-23", type: "run", distance: 10.03, elevation: 39 , record: "00:56:26", title: "장항선구철도길-신정호", comment: "신상 패딩 개시런" },
+    { date: "2026-01-19", type: "run", distance: 10.05, elevation: 95 , record: "01:00:42", title: "신창역-신정호", comment: "-10° 한파런" },
+    { date: "2026-01-17", type: "trail", distance: 5.16, elevation: 590, record: "03:13:33", title: "광덕산", comment: "@당근" },
     { date: "2026-01-14", type: "run", distance: 5.16, elevation: 23, record: "00:29:50", title: "장항선구철도길", comment: "@이런저런" },
     { date: "2026-01-12", type: "run", distance: 5.21, elevation: 17, record: "00:31:57", title: "장항선구철도길", comment: "@이런저런" },
     { date: "2026-01-11", type: "run", distance: 5.04, elevation: 11, record: "00:27:52", title: "삼천", comment: "" },
@@ -153,7 +155,7 @@ const hermes_records = [
     { date: "2025-09-14", type: "trail", distance: 6.2, elevation: 509, record: "01:38:36", title: "두타산", comment: "벨포레 퇴실하면서 가볍게 올라 보았음" },
     { date: "2025-09-13", type: "trail", distance: 2.36, elevation: 136, record: "00:55:55", title: "감악산", comment: "조주 기능사 합격 기원 (합격했습니다!)" },
     { date: "2025-09-07", type: "trail", distance: 6.83, elevation: 539, record: "02:48:40", title: "광덕산", comment: "@당근" },
-    { date: "2025-09-06", type: "trail", distance: 4.65, elevation: 316, record: "01:33:06", title: "국사봉", comment: "", over: 1  },
+    { date: "2025-09-06", type: "trail", distance: 4.65, elevation: 316, record: "01:33:06", title: "국사봉", comment: "", over: 1 },
     { date: "2025-09-06", type: "trail", distance: 2.3, elevation: 153, record: "00:41:08", title: "취암산", comment: "" },
 
     { date: "2025-08-30", type: "run", distance: 5.92, elevation: 11, record: "00:36:35", title: "신정호", comment: "@당근", over: 1 },
@@ -206,15 +208,15 @@ const hermes_records = [
     { date: "2025-07-26", type: "trail", distance: 4.87, elevation: 385, record: "01:29:27", title: "배방산", comment: "@당근 야등" },
     { date: "2025-07-06", type: "trail", distance: 3.68, elevation: 150, record: "01:15:07", title: "봉서산", comment: "@당근" },
 
-    { date: "2025-06-29", type: "run", distance: 4.90, elevation: 5, record: "00:32:08", title: "장항선구철도길", comment: "심박수는 있는데 gpx 파일 누락" },
-    { date: "2025-06-28", type: "run", distance: 5.00, elevation: 5, record: "00:29:29", title: "신정호", comment: "" },
+    { date: "2025-06-29", type: "run", distance: 4.9, elevation: 5, record: "00:32:08", title: "장항선구철도길", comment: "심박수는 있는데 gpx 파일 누락" },
+    { date: "2025-06-28", type: "run", distance: 5.0, elevation: 5, record: "00:29:29", title: "신정호", comment: "" },
     { date: "2025-06-26", type: "run", distance: 5.03, elevation: 5, record: "00:31:16", title: "신정호", comment: "" },
     { date: "2025-06-25", type: "run", distance: 5.02, elevation: 5, record: "00:28:19", title: "신정호", comment: "" },
     { date: "2025-06-19", type: "run", distance: 5.01, elevation: 5, record: "00:29:38", title: "신정호", comment: "" },
     { date: "2025-06-18", type: "run", distance: 5.01, elevation: 5, record: "00:28:51", title: "신정호", comment: "" },
     { date: "2025-06-14", type: "run", distance: 5.01, elevation: 5, record: "00:29:15", title: "신정호", comment: "" },
     { date: "2025-06-12", type: "run", distance: 5.01, elevation: 5, record: "00:30:56", title: "신정호", comment: "" },
-    { date: "2025-06-10", type: "run", distance: 5.00, elevation: 5, record: "00:30:07", title: "신정호", comment: "" },
+    { date: "2025-06-10", type: "run", distance: 5.0, elevation: 5, record: "00:30:07", title: "신정호", comment: "" },
     { date: "2025-06-08", type: "run", distance: 5.03, elevation: 5, record: "00:31:20", title: "신정호", comment: "", over: 2 },
     { date: "2025-06-29", type: "trail", distance: 3.46, elevation: 293, record: "01:28:51", title: "배방산", comment: "@당근" },
     { date: "2025-06-27", type: "trail", distance: 6.75, elevation: 645, record: "02:33:54", title: "천마산", comment: "@당근 원정대" },

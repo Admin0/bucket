@@ -187,7 +187,12 @@ hermes.calendar = () => {
                     }
 
                     let weekHtml = `<tr>`;
-                    weekHtml += `<td class="week-summary y${weekYear.toString().slice(2)} w${weekNo}"><div class="week-info">w${weekNo}</div><div class="week-stats"><div class="week-distance">${weeklyRunningDistance.toFixed(1)} <span class="unit"> km</span></div><div class="week-elevation">${weeklyTrailElevation > 1000 ? (weeklyTrailElevation / 1000).toFixed(1) + ` <span class="unit"> km</span>` : weeklyTrailElevation.toFixed(0) + ` <span class="unit"> m</span>`} </div></div></td>`;
+                    weekHtml += `<td class="week-summary y${weekYear.toString().slice(2)} w${weekNo}">
+                        <div class="week-info">w${weekNo}</div>
+                        <div class="week-stats">
+                        <div class="week-distance">${weeklyRunningDistance.toFixed(1)} <span class="unit"> km</span></div>
+                        <div class="week-elevation">${weeklyTrailElevation > 1000 ? (weeklyTrailElevation / 1000).toFixed(1) + ` <span class="unit"> km</span>` : weeklyTrailElevation.toFixed(0) + ` <span class="unit"> m</span>`} </div></div>
+                    </td>`;
 
                     for (let i = 0; i < 7; i++) {
                         const day = new Date(currentCalendarSunday);

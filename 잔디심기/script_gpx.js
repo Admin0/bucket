@@ -160,24 +160,31 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
     }
 };
 
-
-
-// 호출 예시
-// renderGpxToSvg('records/2025-12-15__5k__신정호.gpx', 'pa');
-
+/**
+ * --- 1. 활동 기록 툴팁 (기존 기능 완벽 복원) ---
+ * hermes.tooltip
+ * 활동 기록 배열을 받아 GPX 경로를 포함한 상세 툴팁 HTML을 생성합니다.
+ * 기존의 모든 기능과 CSS 클래스 구조를 그대로 유지합니다.
+ */
 hermes.tooltip = (records) => {
     let tooltipContent = "";
+    if (!Array.isArray(records)) {
+        records = [records];
+    }
+    records.sort((a, b) => new Date(a.date) - new Date(b.date));
+
     records.forEach((rec) => {
-        const tooltipPace = `${Math.floor((rec.course === "trail" ? rec.elevation_pace : rec.pace) / 60)}'${Math.floor((rec.course === "trail" ? rec.elevation_pace : rec.pace) % 60)}"${rec.course === "trail" ? '<span class="unit">/60 m↑</span>' : '<span class="unit">/km</span>'
-            }`;
+        // pace, distance 등 툴팁에 필요한 변수들 (기존 로직 유지)
+        const tooltipPace = `${Math.floor((rec.course === "trail" ? rec.elevation_pace : rec.pace) / 60)}′${Math.floor((rec.course === "trail" ? rec.elevation_pace : rec.pace) % 60)
+            .toString()
+            .padStart(2, "0")}″${rec.course === "trail" ? '<span class="unit">/60 m↑</span>' : '<span class="unit">/km</span>'}`;
         const tooltipDistance = rec.course === "trail" ? `${rec.elevation} <span class="unit"> m</span>` : `${rec.distance.toFixed(2)} <span class="unit"> km</span>`;
         const tooltip_type = rec.isOfficial ? "공식 대회" : rec.course === "trail" ? "하이킹 / 트레일러닝" : "러닝";
         const tooltip__icon_distance = rec.course === "trail" ? "altitude" : "conversion_path";
         const comment = rec.comment ? `<span class="comment">${rec.comment}</span>` : "";
-
         const gpxFileName = rec.date + (rec.over !== undefined ? "_" + rec.over : "");
-        // console.log(gpxFileName);
 
+        // SVG와 상세 정보가 포함된 기존 툴팁 HTML 구조를 그대로 사용합니다.
         tooltipContent += `
         <div class="tooltip-item ${rec.isOfficial ? "official" : ""}">
             <div class="gpx d-${gpxFileName}">
@@ -195,9 +202,60 @@ hermes.tooltip = (records) => {
             </div>
         </div>`;
 
-        // hermes.gpx2svg(`records/${new Date(rec.date).getFullYear()}/${rec.date}.gpx`, `#pa`);
+        // 툴팁이 생성된 후, 해당 SVG를 그리는 함수를 호출합니다. (기존 로직 유지)
         hermes.gpx2svg(`records/${new Date(rec.date).getFullYear()}/${gpxFileName}.gpx`, `#tooltip .gpx.d-${gpxFileName} svg`);
     });
 
     return tooltipContent;
 };
+
+/**
+ * --- 2. 일반 툴팁 기능 (충돌 방지) ---
+ * 'title' 속성을 가진 일반 HTML 요소에 대해 커스텀 툴팁을 활성화합니다.
+ */
+function initializeGenericTooltips() {
+    const tooltip = document.getElementById("tooltip");
+    if (!tooltip) return;
+
+    document.body.addEventListener("mouseover", (e) => {
+        const target = e.target.closest("[title]");
+        // 활동 기록 툴팁을 사용하는 .day-cell, .marker는 제외하여 충돌을 방지합니다.
+        if (target && target.title && !target.closest(".day-cell, .marker")) {
+            target.setAttribute("data-generic-tooltip", target.title);
+            target.removeAttribute("title");
+
+            tooltip.innerHTML = `<div class="tooltip-comment">${target.getAttribute("data-generic-tooltip")}</div>`;
+            tooltip.classList.add("on", "generic");
+        }
+    });
+
+    document.body.addEventListener("mouseout", (e) => {
+        const target = e.target.closest("[data-generic-tooltip]");
+        if (target) {
+            target.setAttribute("title", target.getAttribute("data-generic-tooltip"));
+            target.removeAttribute("data-generic-tooltip");
+
+            if (tooltip.classList.contains("generic")) {
+                tooltip.classList.remove("on", "generic");
+            }
+        }
+    });
+}
+
+/**
+ * --- 3. 툴팁 위치 조정을 위한 공통 리스너 ---
+ * 모든 툴팁('on' 클래스가 있는 경우)이 마우스를 따라다니도록 합니다.
+ */
+if (!hermes.tooltipListenerAttached) {
+    document.addEventListener("mousemove", (e) => {
+        const tooltipEl = document.getElementById("tooltip");
+        if (tooltipEl && tooltipEl.classList.contains("on")) {
+            tooltipEl.style.left = e.pageX + 'px';
+            tooltipEl.style.top = e.pageY + 'px';
+        }
+    });
+    hermes.tooltipListenerAttached = true;
+}
+
+// DOM 로드 후 일반 툴팁 기능을 활성화합니다.
+document.addEventListener("DOMContentLoaded", initializeGenericTooltips);
