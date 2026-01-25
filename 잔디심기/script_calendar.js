@@ -88,7 +88,7 @@ hermes.calendar = () => {
 
             fullHtml += `<div class="year-container" id="year-${year}">`;
 
-            // (생략) 연간 통계 계산 및 HTML 생성
+            // 연간 통계 계산 및 HTML 생성
             let yearTotalDistance = 0, yearRunningDistance = 0, yearElevation = 0, yearTrailElevation = 0;
             yearRecords.forEach((rec) => {
                 yearTotalDistance += rec.distance || 0;
@@ -117,8 +117,6 @@ hermes.calendar = () => {
 
             // 월별로 (역순으로) 캘린더 테이블을 생성합니다.
             monthsToRender.slice().reverse().forEach((month) => {
-                // (생략) 월별 통계 및 테이블 생성 로직
-                // 각 날짜 셀(<td>)은 활동 데이터와 시각적 요소로 채워집니다.
                 const monthRecords = yearRecords.filter((r) => new Date(r.date).getMonth() === month);
                 if (monthRecords.length === 0 && selectedValue !== "recent") return;
 
@@ -170,13 +168,15 @@ hermes.calendar = () => {
                     const sundayOfISOWeek = new Date(mondayOfISOWeek);
                     sundayOfISOWeek.setDate(mondayOfISOWeek.getDate() + 6);
 
-                    let weeklyRunningDistance = 0;
-                    let weeklyTrailElevation = 0;
+                    // --- 주간 통계 계산 로직 수정 --- //
+                    let weeklyDistance = 0, weeklyRunningDistance = 0, weeklyElevation = 0, weeklyTrailElevation = 0;
 
                     for (let d = new Date(mondayOfISOWeek); d <= sundayOfISOWeek; d.setDate(d.getDate() + 1)) {
                         const dateString = toYYYYMMDD(d);
                         if (recordsByDate[dateString]) {
                             recordsByDate[dateString].forEach((rec) => {
+                                weeklyDistance += rec.distance || 0;
+                                weeklyElevation += rec.elevation || 0;
                                 if (rec.type === "trail") {
                                     weeklyTrailElevation += rec.elevation || 0;
                                 } else {
@@ -185,14 +185,26 @@ hermes.calendar = () => {
                             });
                         }
                     }
+                    // --- 주간 통계 계산 로직 끝 --- //
+
+                    // --- 주간 통계 HTML 출력 수정 --- //
+                    const weeklyDistanceHTML =  `${weeklyRunningDistance.toFixed(1)} <span class="unit">km</span>` ;
+                    const weeklyTotalDistanceHTML =  `${weeklyDistance.toFixed(1)} <span class="unit">km</span>`;
+                    
+                    const weeklyElevationHTML = `${weeklyTrailElevation > 1000 ? (weeklyTrailElevation/1000).toFixed(1) + `<span class="unit">km</span>` : weeklyTrailElevation.toFixed(0) + `<span class="unit">m</span>`}` ;
+                    const weeklyTotalElevationHTML = `${weeklyElevation > 1000 ? (weeklyElevation/1000).toFixed(1) + `<span class="unit">km</span>` : weeklyElevation.toFixed(0) + `<span class="unit">m</span>`}` ;
 
                     let weekHtml = `<tr>`;
                     weekHtml += `<td class="week-summary y${weekYear.toString().slice(2)} w${weekNo}">
                         <div class="week-info">w${weekNo}</div>
                         <div class="week-stats">
-                        <div class="week-distance">${weeklyRunningDistance.toFixed(1)} <span class="unit"> km</span></div>
-                        <div class="week-elevation">${weeklyTrailElevation > 1000 ? (weeklyTrailElevation / 1000).toFixed(1) + ` <span class="unit"> km</span>` : weeklyTrailElevation.toFixed(0) + ` <span class="unit"> m</span>`} </div></div>
+                            <div class="week-distance main">${weeklyDistanceHTML} </div>
+                            <div class="week-distance-total replace">${weeklyTotalDistanceHTML}</div>
+                            <div class="week-elevation main">${weeklyElevationHTML} </div>
+                            <div class="week-elevation-total replace"> ${weeklyTotalElevationHTML}</div>
+                        </div>
                     </td>`;
+                    // --- 주간 통계 HTML 출력 끝 --- //
 
                     for (let i = 0; i < 7; i++) {
                         const day = new Date(currentCalendarSunday);
@@ -268,11 +280,13 @@ hermes.calendar = () => {
                 }
 
                 const date = targetCell.dataset.date;
-                const dayRecords = recordsByDate[date];
-
-                if (dayRecords) {
-                    tooltip.innerHTML = hermes.tooltip(dayRecords);
-                    tooltip.classList.add("on");
+                if(date) {
+                    const dayRecords = recordsByDate[date];
+    
+                    if (dayRecords) {
+                        tooltip.innerHTML = hermes.tooltip(dayRecords);
+                        tooltip.classList.add("on");
+                    }
                 }
             });
 
@@ -293,12 +307,8 @@ hermes.calendar = () => {
         });
     };
 
-    // [FIX] 이벤트 위임을 사용하여 캘린더 그리드에 클릭 리스너를 한 번만 추가합니다.
-    // 이렇게 하면 캘린더가 다시 렌더링될 때마다 리스너가 중복으로 추가되는 것을 방지할 수 있습니다.
     calendarGrid.addEventListener("click", (e) => {
-        // 이벤트가 발생한 가장 가까운 '.day-cell.official' 요소를 찾습니다.
         const cell = e.target.closest(".day-cell.official");
-        // 해당 셀과 'data-certi' 속성이 유효한 경우에만 링크를 엽니다.
         if (cell && cell.dataset.certi && cell.dataset.certi !== 'null') {
             window.open(cell.dataset.certi, "_blank");
         }
@@ -314,7 +324,6 @@ hermes.calendar = () => {
 
     // 연도 필터 옵션을 동적으로 생성합니다.
     allYears.forEach((year) => {
-        // (생략) 캘린더와 기록 테이블 모두에 대한 연도 필터 라디오 버튼 생성
         const calendarLabel = document.createElement("label");
         const calendarRadio = document.createElement("input");
         calendarRadio.type = "radio";
@@ -344,7 +353,6 @@ hermes.calendar = () => {
         const selectedValue = e.target.value;
         const sourceName = e.target.name;
 
-        // 두 연도 필터(캘린더, 기록)를 동기화합니다.
         if (sourceName !== "calendar-year") {
             document.querySelectorAll('input[name="calendar-year"]').forEach((radio) => {
                 radio.checked = radio.value === selectedValue;
@@ -360,7 +368,6 @@ hermes.calendar = () => {
             });
         }
         
-        // '최근' 보기에서는 '일반' 뷰로, 다른 연도에서는 '컴팩트' 뷰로 자동 전환
         if (selectedValue === "recent") {
             document.querySelector('input[name="calendar-view"][value="normal"]').checked = true;
         } else {

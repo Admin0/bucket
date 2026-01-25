@@ -771,6 +771,7 @@ a {
 }
 #tooltip .tooltip-comment {
     line-height: 0;
+    white-space: nowrap;
 }
 
 /* ----------------------------------------
@@ -963,7 +964,7 @@ footer a:not(.o) {
     /* ----------------------------------------
      * tooltip
      * ---------------------------------------- */
-    #tooltip {
+    #tooltip:not(:has(.tooltip-comment)) {
         left: 50% !important;
         top: inherit !important;
         bottom: 0;

@@ -63,8 +63,9 @@ const hermes_records = [
     },
 
     // unofficial 2026
-    { date: "2026-01-23", type: "run", distance: 10.03, elevation: 39 , record: "00:56:26", title: "장항선구철도길-신정호", comment: "신상 패딩 개시런" },
-    { date: "2026-01-19", type: "run", distance: 10.05, elevation: 95 , record: "01:00:42", title: "신창역-신정호", comment: "-10° 한파런" },
+    { date: "2026-01-25", type: "trail", distance: 5.86, elevation: 759, record: "02:35:17", title: "운악산", comment: "" },
+    { date: "2026-01-23", type: "run", distance: 10.03, elevation: 39, record: "00:56:26", title: "장항선구철도길-신정호", comment: "신상 패딩 개시런" },
+    { date: "2026-01-19", type: "run", distance: 10.05, elevation: 95, record: "01:00:42", title: "신창역-신정호", comment: "-10° 한파런" },
     { date: "2026-01-17", type: "trail", distance: 5.16, elevation: 590, record: "03:13:33", title: "광덕산", comment: "@당근" },
     { date: "2026-01-14", type: "run", distance: 5.16, elevation: 23, record: "00:29:50", title: "장항선구철도길", comment: "@이런저런" },
     { date: "2026-01-12", type: "run", distance: 5.21, elevation: 17, record: "00:31:57", title: "장항선구철도길", comment: "@이런저런" },

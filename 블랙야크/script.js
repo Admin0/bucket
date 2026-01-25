@@ -82,7 +82,7 @@ const points = [
 
     { no: 61, id: "용봉산", done: { step: 6, date: "2025.01.19." }, pos_0: { y: 36.64365555, x: 126.64923888 }, info: { peak: "정상", height: 381 } },
     { no: 62, id: "용화산", done: { step: false, date: "" }, pos_0: { y: 38.0380386, x: 127.7479119 }, info: { peak: "정상", height: 878 } },
-    { no: 63, id: "운악산", done: { step: false, date: "" }, pos_0: { y: 37.878718, x: 127.322893 }, info: { peak: "서봉", height: 936 } },
+    { no: 63, id: "운악산", done: { step: 61, date: "2026.01.25." }, pos_0: { y: 37.878718, x: 127.322893 }, info: { peak: "서봉", height: 936 } },
     { no: 64, id: "운장산", done: { step: 33, date: "2025.08.08." }, pos_0: { y: 35.915653, x: 127.363019 }, info: { peak: "운장대", height: 1126 } },
     { no: 65, id: "월악산", done: { step: 5, date: "2025.01.12." }, pos_0: { y: 36.886045, x: 128.105844 }, info: { peak: "영봉", height: 1094 } },
 

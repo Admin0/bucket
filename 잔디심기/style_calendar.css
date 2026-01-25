@@ -75,7 +75,7 @@
 }
 
 #calendar-grid .month-stats-row {
-    top: 46px;
+    top: 44px;
 }
 
 #calendar-grid th,
@@ -98,7 +98,7 @@
 
 #calendar-grid th {
     font-size: 0.8em;
-    padding: 1em 1.5em;
+    padding: calc(0.75em / 0.8) 1.5em;
     height: auto;
     text-align: center;
     font-weight: normal;
@@ -120,14 +120,20 @@
     margin-bottom: 5px;
 }
 
-#calendar-grid .week-stats .week-distance,
-#calendar-grid .week-stats .week-elevation {
+#calendar-grid .week-summary [class^="week"].main,
+#calendar-grid .week-summary:hover [class^="week"].replace {
     width: 45%;
     display: inline-block;
 }
 
-#calendar-grid .week-stats .week-distance:before,
-#calendar-grid .week-stats .week-elevation:before {
+#calendar-grid .week-summary:hover [class^="week"].main,
+#calendar-grid .week-summary [class^="week"].replace {
+    display: none;
+}
+#calendar-grid .week-summary [class^="week"].replace{
+    color: var(--color--theme);
+}
+#calendar-grid .week-stats [class^="week"]:before {
     font-size: 0.6em;
     opacity: 0.7;
     display: block;
@@ -140,6 +146,14 @@
 
 #calendar-grid .week-stats .week-elevation:before {
     content: "트레일 상승고도";
+}
+
+#calendar-grid .week-stats .week-distance-total:before {
+    content: "거리";
+}
+
+#calendar-grid .week-stats .week-elevation-total:before {
+    content: "상승고도";
 }
 
 td {
@@ -390,6 +404,14 @@ td.on {
         position: inherit;
     }
 
+    #calendar-view-filter-container label {
+        color: var(--color--track-border);
+        background-color: var(--color--track-dark);
+        pointer-events: none;
+    }
+    .filters #calendar-view-filter-container input:checked + .material-symbols-outlined {
+        font-variation-settings: "FILL" 0;
+    }
     #calendar-grid.compact,
     .calendar-grid {
         width: 100%;
@@ -410,12 +432,21 @@ td.on {
         transform: translate(-50%, -50%);
     }
 
-    .day-cell:has(.activity-circle) .date-display {
+    #calendar-grid .day-cell:has(.activity-circle) .date-display {
         color: var(--color--body-background);
+    }
+    #calendar-grid .day-cell:has(.activity-circle) .date-display {
+        font-weight: bold;
+    }
+    #calendar-grid .day-cell:has(.activity-circle).official .date-display {
+        color: #212121;
     }
 
     #calendar-grid th {
-        padding: 1em 0;
+        padding: calc(0.5em / 0.8) 0;
+    }
+    #calendar-grid .month-stats-row {
+        top: 36px;
     }
 
     #calendar-grid .year-stats,
