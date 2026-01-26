@@ -499,6 +499,8 @@ hermes.table = function () {
             const row = document.createElement("tr");
             row.dataset.recordId = record.id;
             row.classList.add(record.course);
+            row.title = record.comment;
+
 
             const isTrail = record.course === "trail";
 
@@ -523,7 +525,6 @@ hermes.table = function () {
                 <td class="date"><span class="main">${record.date}</span><span class="replace">${dateString}</span></td>
                 <td class="title">${record.title}</td>
                 <td class="isOfficial">${record.isOfficial ? '<span class="material-symbols icon"> crown </span>' : ""}</td>
-                ${record.comment !== null && record.comment !== "" ? `<div class="comment unit">${record.comment}</div>` : ""}
                 <td class="distance"><span class="material-symbols-outlined icon distance"> ${icon_distance} </span>${distanceDetail} </td>
                 <td class="record"><span class="material-symbols-outlined icon record"> timer </span>${record.record} </td>
                 <td class="pace"><span class="material-symbols-outlined icon pace"> speed </span>${paceDetail}</td>

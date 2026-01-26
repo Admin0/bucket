@@ -13,16 +13,16 @@
             "sizes": "256x256"
         },
         {
-            "src": "imgs/icon.svg",
-            "type": "image/svg+xml",
-            "sizes": "any",
-            "purpose": "any"
-        },
-        {
             "src": "imgs/icon_maskable.svg",
             "type": "image/svg+xml",
             "sizes": "any",
             "purpose": "maskable any"
+        },
+        {
+            "src": "imgs/icon.svg",
+            "type": "image/svg+xml",
+            "sizes": "any",
+            "purpose": "any"
         }
     ],
     "start_url": "/bucket/잔디심기/",

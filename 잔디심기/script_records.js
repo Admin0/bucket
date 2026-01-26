@@ -63,7 +63,8 @@ const hermes_records = [
     },
 
     // unofficial 2026
-    { date: "2026-01-25", type: "trail", distance: 5.86, elevation: 759, record: "02:35:17", title: "운악산", comment: "" },
+    { date: "2026-01-26", type: "run", distance: 5.21, elevation: 14 , record: "00:30:18", title: "장항선구철도길", comment: "@이런저런" },
+    { date: "2026-01-25", type: "trail", distance: 5.86, elevation: 759, record: "02:35:17", title: "운악산", comment: "극도로 위험" },
     { date: "2026-01-23", type: "run", distance: 10.03, elevation: 39, record: "00:56:26", title: "장항선구철도길-신정호", comment: "신상 패딩 개시런" },
     { date: "2026-01-19", type: "run", distance: 10.05, elevation: 95, record: "01:00:42", title: "신창역-신정호", comment: "-10° 한파런" },
     { date: "2026-01-17", type: "trail", distance: 5.16, elevation: 590, record: "03:13:33", title: "광덕산", comment: "@당근" },
@@ -154,7 +155,7 @@ const hermes_records = [
     { date: "2025-09-01", type: "run", distance: 5.25, elevation: 14, record: "00:36:23", title: "신정호", comment: "@이런저런" },
     { date: "2025-09-21", type: "trail", distance: 11.41, elevation: 893, record: "04:08:26", title: "망경산", comment: "@두한" },
     { date: "2025-09-14", type: "trail", distance: 6.2, elevation: 509, record: "01:38:36", title: "두타산", comment: "벨포레 퇴실하면서 가볍게 올라 보았음" },
-    { date: "2025-09-13", type: "trail", distance: 2.36, elevation: 136, record: "00:55:55", title: "감악산", comment: "조주 기능사 합격 기원 (합격했습니다!)" },
+    { date: "2025-09-13", type: "trail", distance: 2.36, elevation: 136, record: "00:55:55", title: "감악산(원주)", comment: "조주 기능사 합격 기원 (합격했습니다!)" },
     { date: "2025-09-07", type: "trail", distance: 6.83, elevation: 539, record: "02:48:40", title: "광덕산", comment: "@당근" },
     { date: "2025-09-06", type: "trail", distance: 4.65, elevation: 316, record: "01:33:06", title: "국사봉", comment: "", over: 1 },
     { date: "2025-09-06", type: "trail", distance: 2.3, elevation: 153, record: "00:41:08", title: "취암산", comment: "" },
@@ -223,7 +224,7 @@ const hermes_records = [
     { date: "2025-06-27", type: "trail", distance: 6.75, elevation: 645, record: "02:33:54", title: "천마산", comment: "@당근 원정대" },
     { date: "2025-06-22", type: "trail", distance: 8.34, elevation: 650, record: "03:17:53", title: "광덕산", comment: "@당근 모임 출범 기념" },
     { date: "2025-06-21", type: "trail", distance: 6.25, elevation: 454, record: "01:53:14", title: "마니산", comment: "", over: 2 },
-    { date: "2025-06-21", type: "trail", distance: 1.46, elevation: 91, record: "00:29:53", title: "감악산", comment: "꼭대기 근처까지 차타고 올라가는 치트 사용", over: 1 },
+    { date: "2025-06-21", type: "trail", distance: 1.46, elevation: 91, record: "00:29:53", title: "감악산(파주)", comment: "꼭대기 근처까지 차타고 올라가는 치트 사용", over: 1 },
     { date: "2025-06-21", type: "trail", distance: 8.38, elevation: 543, record: "02:25:23", title: "소요산", comment: "" },
     { date: "2025-06-15", type: "trail", distance: 4.59, elevation: 218, record: "01:25:27", title: "영인산", comment: "@오르락2기" },
     { date: "2025-06-08", type: "trail", distance: 6.77, elevation: 312, record: "01:42:49", title: "선운산", comment: "", over: 1 },

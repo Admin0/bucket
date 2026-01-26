@@ -41,6 +41,7 @@ body {
     /* --width--track: 1440px; */
     --width--table: 85vw;
     --margin--table-top: 25em;
+    --margin--body-lr: 2em;
 
     font-family: "Oswald", "Noto Sans KR", sans-serif;
     color: var(--color--scoreboard-text);
@@ -93,6 +94,7 @@ a {
 #stats-header:hover .stat-item:nth-of-type(5) {
     color: var(--color--indigo);
 }
+
 .stat-item .label {
     font-size: 0.8em;
     color: var(--color--track-text);
@@ -111,6 +113,7 @@ a {
 
 #main-container {
     --width--track-padding: 0.5em;
+    --width--track-lane-padding: 1em;
     display: flex;
     gap: 2em;
     padding: var(--width--track-padding);
@@ -277,8 +280,7 @@ a {
 
 .track-lane:hover .shadow-top:before,
 .track-lane:hover .shadow-bottom:before,
-.track-lane:hover .shadow-top.shadow-bottom:before {
-}
+.track-lane:hover .shadow-top.shadow-bottom:before {}
 
 .shadow-top:before {
     box-shadow: inset 0 24px 13px -18px rgba(0 0 0 / 0.25);
@@ -408,7 +410,7 @@ a {
     display: none;
 }
 
-.filters input:checked + .material-symbols-outlined {
+.filters input:checked+.material-symbols-outlined {
     font-variation-settings: "FILL" 1;
 }
 
@@ -418,6 +420,7 @@ a {
     cursor: pointer;
     border-radius: 2em;
 }
+
 .filters input#search-input,
 .filters input#search-input:focus {
     border: none;
@@ -434,6 +437,7 @@ a {
     width: 10em;
     margin-left: 0.5em;
 }
+
 .filters #reset-filters:hover,
 .filters label:hover {
     background-color: var(--color--theme-light);
@@ -591,6 +595,7 @@ a {
 #records-table tr .comment {
     display: none;
 }
+
 #records-table tr .comment {
     position: absolute;
     font-size: 0.8em;
@@ -636,11 +641,6 @@ a {
     box-shadow: 0 5px 12px var(--color--track-shadow);
     transform: scale(1.05);
 }
-#records-table tbody tr:hover:has(.comment) {
-    z-index: 1;
-    padding-bottom: 1.5em;
-    margin-bottom: -1.5em;
-}
 
 /* ----------------------------------------
  * tooltip
@@ -655,6 +655,7 @@ a {
     flex-direction: column-reverse;
 
     width: var(--width--tooltip);
+    max-width: calc(100% - var(--width--tooltip-padding) * 2);
     position: absolute;
     opacity: 0;
     /* background: rgba(0, 0, 0, 0.8); */
@@ -765,10 +766,12 @@ a {
 .material-symbols {
     font-variation-settings: "FILL" 1;
 }
+
 #tooltip:has(.tooltip-comment) {
     width: fit-content;
     background: var(--color--track);
 }
+
 #tooltip .tooltip-comment {
     line-height: 0;
     white-space: nowrap;
@@ -816,8 +819,7 @@ footer a:not(.o) {
  * 4K
  * ======================================== */
 
-@media screen and (min-width: 1280px) {
-}
+@media screen and (min-width: 1280px) {}
 
 /* ========================================
  * track dynamic
@@ -835,6 +837,7 @@ footer a:not(.o) {
  * tablet
  * ======================================== */
 @media screen and (max-width: 768px) {
+
     h1 {
         padding: 0 5vw;
         font-size: 1.5em;
@@ -864,6 +867,7 @@ footer a:not(.o) {
      * ---------------------------------------- */
 
     #main-container {
+        --width--track-lane-padding: 1em;
         gap: 0;
         margin: auto;
         transform: none;
@@ -883,7 +887,8 @@ footer a:not(.o) {
     }
 
     .track-lane {
-        max-width: 4em;
+        max-width: calc((100vw - var(--width--track-padding) * 2 - var(--margin--body-lr) *2) / 5 - var(--width--track-lane-padding) * 2);
+        width: 4em;
     }
 
     .track-lane:hover {
@@ -905,8 +910,7 @@ footer a:not(.o) {
         opacity: 1;
     }
 
-    .racetrack h2 {
-    }
+    .racetrack h2 {}
 
     .track {
         overflow: visible;
@@ -996,13 +1000,17 @@ footer a:not(.o) {
  * ======================================== */
 
 @media screen and (max-width: 425px) {
+    body {
+        --margin--body-lr: 1em;
+    }
+
     .track-lane {
-        width: calc((100vw - 2em) / 5 - 1em - var(--width--track-padding) / 2);
+        --width--track-lane-padding: 0.5em;
         padding: 0.5em;
     }
 
-    #tooltip {
-        width: calc(100% - 2em);
+    #tooltip:not(:has(.tooltip-comment)) {
+        --width--tooltip-padding: 1em;
         padding: 1em;
         border-radius: 0;
         box-shadow: 0 -5px 12px var(--color--track-shadow);
