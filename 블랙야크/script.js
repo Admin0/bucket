@@ -30,7 +30,7 @@ const points = [
     { no: 16, id: "금정산", done: { step: 14, date: "2025.04.26." }, pos_0: { y: 35.280118, x: 129.050542 }, info: { peak: "고당봉", height: 802 } },
     { no: 17, id: "남산(경주)", done: { step: 15, date: "2025.04.26." }, pos_0: { y: 35.767661, x: 129.225369 }, info: { peak: "금오봉", height: 468 } },
     { no: 18, id: "내변산(변산)", done: { step: 11, date: "2025.04.11." }, pos_0: { y: 35.616667, x: 126.583333 }, info: { peak: "관음봉", height: 424 } },
-    { no: 19, id: "내연산", done: { step: false, date: "" }, pos_0: { y: 36.263301, x: 129.258523 }, info: { peak: "삼지봉", height: 710 } },
+    { no: 19, id: "내연산", done: { step: 63, date: "2025.01.31" }, pos_0: { y: 36.263301, x: 129.258523 }, info: { peak: "삼지봉", height: 710 } },
     { no: 20, id: "내장산", done: { step: 7, date: "2025.01.25." }, pos_0: { y: 35.478299, x: 126.888994 }, info: { peak: "신선봉", height: 763 } },
 
     { no: 21, id: "달마산", done: { step: 55, date: "2025.12.24." }, pos_0: { y: 34.382545, x: 126.585159 }, info: { peak: "달마봉", height: 498.8 } },
@@ -94,7 +94,7 @@ const points = [
 
     { no: 71, id: "조계산", done: { step: false, date: "" }, pos_0: { y: 35.001211, x: 127.313555 }, info: { peak: "장군봉", height: 884 } },
     { no: 72, id: "조령산", done: { step: false, date: "" }, pos_0: { y: 36.77083, x: 128.043553 }, info: { peak: "정상", height: 1027 } },
-    { no: 73, id: "주왕산", done: { step: false, date: "" }, pos_0: { y: 36.389337, x: 129.162417 }, info: { peak: "주봉", height: 721 } },
+    { no: 73, id: "주왕산", done: { step: 62, date: "2026.01.31." }, pos_0: { y: 36.389337, x: 129.162417 }, info: { peak: "주봉", height: 721 } },
     { no: 74, id: "주흘산", done: { step: 19, date: "2025.05.17." }, pos_0: { y: 36.78844, x: 128.101271 }, info: { peak: "주봉", height: 1106 } },
     { no: 75, id: "지리산", done: { step: false, date: "" }, pos_0: { y: 35.336971, x: 127.730474 }, info: { peak: "천왕봉", height: 1915 } },
 

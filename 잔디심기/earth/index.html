@@ -3,8 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>./잔디어스 🌏/</title>
-        <!-- 라이브러리 버전을 최신으로 업데이트 -->
+        <title>#잔디심기 🌏 earth</title>
         <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
         <style>
             body {
@@ -39,8 +38,6 @@
             #gpx-counter {
                 position: fixed;
                 top: 8px;
-                left: 50%; /* 초기 위치, JS로 업데이트 됨 */
-                transform: translateX(-50%);
                 z-index: 1000;
                 background: rgba(0, 0, 0, 0.7);
                 color: white;
@@ -51,30 +48,58 @@
                 white-space: nowrap;
                 box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
                 transition: opacity 0.5s ease-out, left 0.2s ease-out, transform 0.2s ease-out;
+                transform: translateX(-100%);
             }
-            
-            /* --- 테마 스위처 스타일 --- */
-            #theme-switcher {
+
+            /* --- 커스텀 컨트롤 버튼 그룹 스타일 --- */
+            .custom-controls {
                 position: fixed;
-                top: 80px; /* maplibregl.NavigationControl 아래에 위치 */
+                top: 11.6em; /* NavigationControl 바로 아래에 위치 */
                 right: 10px;
                 z-index: 1001;
+            }
+
+            /* 활성 상태 버튼 스타일 */
+            .custom-controls button.active {
+                fill: #33b5e5;
+            }
+            
+            /* --- 디버그 패널 스타일 --- */
+            #debug-panel {
+                position: fixed;
+                top: 18em;
+                right: 10px;
+                background: rgba(0,0,0,0.7);
+                color: white;
+                padding: 10px;
+                border-radius: 5px;
+                font-size: 12px;
+                max-height: 200px;
+                overflow-y: auto;
+                display: none; /* 기본적으로 숨김 */
             }
         </style>
     </head>
     <body>
         <div id="progress-container">
             <div id="progress-bar"></div>
+            <div id="gpx-counter">0 / 0</div>
         </div>
         <div id="map"></div>
-        <div id="gpx-counter">0 / 0</div>
-        <div id="theme-switcher" class="maplibregl-ctrl maplibregl-ctrl-group" style="top:11.6em;">
-            <button><span class="maplibregl-ctrl-icon" style="background-size: 70%; background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iNTQuODQ5cHgiIGhlaWdodD0iNTQuODQ5cHgiIHZpZXdCb3g9IjAgMCA1NC44NDkgNTQuODQ5IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1NC44NDkgNTQuODQ5OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PGc+PGc+PGc+PHBhdGggZD0iTTU0LjQ5NywzOS42MTRsLTEwLjM2My00LjQ5bC0xNC45MTcsNS45NjhjLTAuNTM3LDAuMjE0LTEuMTY1LDAuMzE5LTEuNzkzLDAuMzE5Yy0wLjYyNywwLTEuMjU0LTAuMTA0LTEuNzktMC4zMThsLTE0LjkyMS01Ljk2OEwwLjM1MSwzOS42MTRjLTAuNDcyLDAuMjAzLTAuNDY3LDAuNTI0LDAuMDEsMC43MTZMMjYuNTYsNTAuODFjMC40NzcsMC4xOTEsMS4yNTEsMC4xOTEsMS43MjksMEw1NC40ODgsNDAuMzNDNTQuOTY0LDQwLjEzOSw1NC45NjksMzkuODE3LDU0LjQ5NywzOS42MTR6Ii8+PHBhdGggZD0iTTU0LjQ5NywyNy41MTJsLTEwLjM2NC00LjQ5MWwtMTQuOTE2LDUuOTY2Yy0wLjUzNiwwLjIxNS0xLjE2NSwwLjMyMS0xLjc5MiwwLjMyMWMtMC42MjgsMC0xLjI1Ni0wLjEwNi0xLjc5My0wLjMyMWwtMTQuOTE4LTUuOTY2TDAuMzUxLDI3LjUxMmMtMC40NzIsMC4yMDMtMC40NjcsMC41MjMsMC4wMSwwLjcxNkwyNi41NiwzOC43MDZjMC40NzcsMC4xOSwxLjI1MSwwLjE5LDEuNzI5LDBsMjYuMTk5LTEwLjQ3OUM1NC45NjQsMjguMDM2LDU0Ljk2OSwyNy43MTYsNTQuNDk3LDI3LjUxMnoiLz48cGF0aCBkPSJNMC4zNjEsMTYuMTI1bDEzLjY2Miw1LjQ2NWwxMi41MzcsNS4wMTVjMC40NzcsMC4xOTEsMS4yNTEsMC4xOTEsMS43MjksMGwxMi41NDEtNS4wMTZsMTMuNjU4LTUuNDYzYzAuNDc3LTAuMTkxLDAuNDgtMC41MTEsMC4wMS0wLjcxNkwyOC4yNzcsNC4wNDhjLTAuNDcxLTAuMjA0LTEuMjM2LTAuMjA0LTEuNzA4LDBMMC4zNTEsMTUuNDFDLTAuMTIxLDE1LjYxNC0wLjExNiwxNS45MzUsMC4zNjEsMTYuMTI1eiIvPjwvZz48L2c+PC9nPjxnPjwvZz48Zz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PGc+PC9nPjwvc3ZnPg==);"></span></button>
-        </div>
 
-        <!-- 라이브러리 버전을 최신으로 업데이트 -->
-        <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
-        <script src="../script_records.js"></script>
-        <script src="script.js"></script>
+        <div class="custom-controls maplibregl-ctrl maplibregl-ctrl-group">
+            <button id="terrain-switcher" title="Toggle Terrain">
+                <span class="maplibregl-ctrl-icon" style="background-image: url('icon--terrain-switcher.svg')"></span>
+            </button>
+            <button id="theme-switcher" title="Switch Theme">
+                <span class="maplibregl-ctrl-icon" style="background-size: 70%; background-image: url('icon--theme-switcher.svg')"></span>
+            </button>
+        </div>
+        <div id="debug-panel"></div>
+
+        <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js" defer></script>
+        <script src="https://unpkg.com/maplibre-contour@0.1.0/dist/index.min.js"></script>
+        <script src="../script_records.js" defer></script>
+        <script src="script.js" defer></script>
     </body>
 </html>

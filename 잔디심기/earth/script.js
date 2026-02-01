@@ -1,206 +1,440 @@
 const map = new maplibregl.Map({
-    container: 'map',
-    style: 'theme-dark.json',
+    container: "map",
+    style: "theme-dark.json",
     center: [127.5, 36],
     zoom: 8,
+    maxZoom: 16,
+    minZoom: 3,
 });
 
-map.addControl(
-    new maplibregl.NavigationControl({
-        visualizePitch: true,
-        showZoom: true,
-        showCompass: true,
-    })
-);
-
-// 1. 현재 위치 추적 컨트롤을 생성합니다.
-const geolocate = new maplibregl.GeolocateControl({
-    positionOptions: {
-        enableHighAccuracy: true, // 높은 정확도의 위치 정보를 요청합니다.
-    },
-    trackUserLocation: true, // 사용자의 위치를 지속적으로 추적합니다.
-    showUserHeading: true, // 사용자가 바라보는 방향을 표시합니다.
+// --- DEM & Contour Source Setup ---
+const demSource = new mlcontour.DemSource({
+    url: "https://tiles.mapterhorn.com/{z}/{x}/{y}.webp",
+    encoding: "terrarium",
+    worker: true,
+    cacheSize: 100,
+    timeoutMs: 10_000,
 });
+demSource.setupMaplibre(maplibregl);
 
-// 2. 생성한 컨트롤을 지도에 추가합니다. (화면에 버튼이 나타납니다)
-map.addControl(geolocate);
+// --- Map Controls ---
+map.addControl(new maplibregl.NavigationControl({ visualizePitch: true, showZoom: true, showCompass: true }));
+map.addControl(new maplibregl.GeolocateControl({ positionOptions: { enableHighAccuracy: true }, trackUserLocation: true, showUserHeading: true }));
 
-// --- Global state ---
-let allCoordinates = [];
-let isDataLoadingOrLoaded = false;
+// --- Global State & UI Elements ---
+let allFeatures = [];
+let isInitialLoadStarted = false;
 let currentTheme = "dark";
+let isTerrainEnabled = true;
 
-// --- Theme switcher ---
-document.getElementById("theme-switcher").addEventListener("click", () => {
+const terrainSwitcher = document.getElementById("terrain-switcher");
+const themeSwitcher = document.getElementById("theme-switcher");
+
+// --- Event Listeners for Controls ---
+themeSwitcher.addEventListener("click", () => {
     currentTheme = currentTheme === "dark" ? "light" : "dark";
     map.setStyle(currentTheme === "dark" ? "theme-dark.json" : "theme.json");
 });
 
-// --- UI update function ---
-function updateProgress(loaded, total) {
-    const progressBar = document.getElementById("progress-bar");
-    const gpxCounter = document.getElementById("gpx-counter");
-    const progressContainer = document.getElementById("progress-container");
+terrainSwitcher.addEventListener("click", () => {
+    if (terrainSwitcher.disabled) return;
+    isTerrainEnabled = !isTerrainEnabled;
+    updateTerrainAndRelatedLayers();
+    terrainSwitcher.classList.toggle("active", isTerrainEnabled);
+});
 
-    const percentage = total > 0 ? (loaded / total) * 100 : 0;
+// --- Coordinate Decoding ---
+function decodeCoordinates(encoded) {
+    if (!encoded) return [];
+    let coordinates = [],
+        index = 0,
+        len = encoded.length,
+        lat = 0,
+        lon = 0;
+    while (index < len) {
+        let b,
+            shift = 0,
+            result = 0;
+        do {
+            b = encoded.charCodeAt(index++) - 63;
+            result |= (b & 0x1f) << shift;
+            shift += 5;
+        } while (b >= 0x20);
+        const dlat = result & 1 ? ~(result >> 1) : result >> 1;
+        lat += dlat;
 
-    progressBar.style.width = `${percentage}%`;
-    gpxCounter.textContent = `${loaded} / ${total}`;
-    gpxCounter.style.left = `${percentage}%`;
+        shift = 0;
+        result = 0;
+        do {
+            b = encoded.charCodeAt(index++) - 63;
+            result |= (b & 0x1f) << shift;
+            shift += 5;
+        } while (b >= 0x20);
+        const dlon = result & 1 ? ~(result >> 1) : result >> 1;
+        lon += dlon;
 
-    if (percentage < 10) {
-        gpxCounter.style.transform = "translateX(0%)";
-    } else if (percentage > 90) {
-        gpxCounter.style.transform = "translateX(-100%)";
-    } else {
-        gpxCounter.style.transform = "translateX(-50%)";
+        coordinates.push([lon / 1e6, lat / 1e6]);
     }
+    return coordinates;
+}
 
-    if (loaded === total) {
-        setTimeout(() => {
-            progressContainer.style.opacity = "0";
-            gpxCounter.style.opacity = "0";
-        }, 1000);
+// --- Cache API Helper Functions ---
+async function storeDataInCache(cacheName, key, data) {
+    try {
+        const cache = await caches.open(cacheName);
+        await cache.put(key, new Response(JSON.stringify(data)));
+    } catch (error) {
+        console.error("Failed to store data in cache:", error);
     }
 }
 
-// --- Map data handling ---
-function updateMapSource() {
-    const source = map.getSource("gpx-data-source");
-    if (source) {
-        const lineFeature = {
-            type: "Feature",
-            properties: {},
-            geometry: { type: "MultiLineString", coordinates: allCoordinates },
-        };
-        source.setData({
-            type: "FeatureCollection",
-            features: [lineFeature],
-        });
+async function loadDataFromCache(cacheName, key) {
+    try {
+        const cache = await caches.open(cacheName);
+        const response = await cache.match(key);
+        return response ? response.json() : null;
+    } catch (error) {
+        console.error("Failed to load data from cache:", error);
+        return null;
     }
+}
+
+// --- Map Style & Layer Updates ---
+function updatePaintProperties() {
+    const themeColors = {
+        dark: { contour: "#ffffff", gpx: "#00ff7f", peakText: "#ffffff", peakHalo: "rgba(0, 0, 0, 0.8)", water: "#001a33", gpxCerti: "#ffff00" },
+        light: { contour: "#000000", gpx: "#00b264", peakText: "#000000", peakHalo: "rgba(255, 255, 255, 0.8)", water: "#a3ccf5", gpxCerti: "#ffD700" },
+    };
+    const colors = themeColors[currentTheme];
+    const layers = ["water-mask", "contour-lines", "contour-labels", "gpx-normal-layer", "gpx-certified-layer", "peak-labels"];
+
+    layers.forEach((layerId) => {
+        if (!map.getLayer(layerId)) return;
+        switch (layerId) {
+            case "water-mask":
+                map.setPaintProperty(layerId, "fill-color", colors.water);
+                break;
+            case "contour-lines":
+                map.setPaintProperty(layerId, "line-color", colors.contour);
+                break;
+            case "contour-labels":
+                map.setPaintProperty(layerId, "text-color", colors.contour);
+                map.setPaintProperty(layerId, "text-halo-color", colors.peakHalo);
+                break;
+            case "gpx-normal-layer":
+                map.setPaintProperty(layerId, "line-color", colors.gpx);
+                break;
+            case "gpx-certified-layer":
+                map.setPaintProperty(layerId, "line-color", colors.gpxCerti);
+                break;
+            case "peak-labels":
+                map.setPaintProperty(layerId, "text-color", colors.peakText);
+                map.setPaintProperty(layerId, "text-halo-color", colors.peakHalo);
+                break;
+        }
+    });
+}
+
+function updateTerrainAndRelatedLayers() {
+    const isVisible = isTerrainEnabled ? "visible" : "none";
+    if (isTerrainEnabled && map.getSource("dem")) {
+        map.setTerrain({ source: "dem", exaggeration: 1.5 });
+    } else {
+        map.setTerrain(null);
+    }
+    ["hillshade-layer", "contour-lines", "contour-labels"].forEach((layerId) => {
+        if (map.getLayer(layerId)) map.setLayoutProperty(layerId, "visibility", isVisible);
+    });
 }
 
 function addSourcesAndLayers() {
-    map.setProjection({ type: "globe" }); // 올바른 프로젝션 설정
-
-    if (!map.getSource('mapbox-dem')) {
-        map.addSource('mapbox-dem', {
-            'type': 'raster-dem',
-            'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
-            'tileSize': 512,
-            'maxzoom': 14
+    if (!map.getSource("dem")) map.addSource("dem", { type: "raster-dem", encoding: "terrarium", tiles: [demSource.sharedDemProtocolUrl], tileSize: 256, maxzoom: 12 });
+    if (!map.getSource("contour-source"))
+        map.addSource("contour-source", {
+            type: "vector",
+            tiles: [
+                demSource.contourProtocolUrl({
+                    thresholds: { 11: [200, 1000], 12: [100, 500], 14: [50, 200], 15: [20, 100] },
+                    contourLayer: "contours",
+                    elevationKey: "ele",
+                    levelKey: "level",
+                    maxzoom: 12,
+                }),
+            ],
         });
-    }
-    map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
+    if (!map.getSource("gpx-data-source")) map.addSource("gpx-data-source", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
 
-    // Add GPX data source if it doesn't exist
-    if (!map.getSource("gpx-data-source")) {
-        map.addSource("gpx-data-source", {
-            type: "geojson",
-            data: {
-                type: "FeatureCollection",
-                features: [],
-            },
-        });
-    }
-
-    // Add GPX layer if it doesn't exist
-    if (!map.getLayer("all-gpx-layer")) {
+    if (!map.getLayer("hillshade-layer")) map.addLayer({ id: "hillshade-layer", type: "hillshade", source: "dem", paint: { "hillshade-exaggeration": 0.1 } });
+    if (!map.getLayer("contour-lines"))
         map.addLayer({
-            id: "all-gpx-layer",
+            id: "contour-lines",
+            type: "line",
+            source: "contour-source",
+            "source-layer": "contours",
+            paint: { "line-opacity": 0.33, "line-width": ["match", ["get", "level"], 1, 1, 0.5] },
+            layout: { "line-join": "round" },
+        });
+    if (!map.getLayer("contour-labels"))
+        map.addLayer({
+            id: "contour-labels",
+            type: "symbol",
+            source: "contour-source",
+            "source-layer": "contours",
+            filter: [">", ["get", "level"], 0],
+            layout: { "symbol-placement": "line", "text-size": 10, "text-field": ["concat", ["number-format", ["get", "ele"], {}], " m"], "text-font": ["Noto Sans Bold"] },
+        });
+
+    if (!map.getLayer("gpx-normal-layer"))
+        map.addLayer({
+            id: "gpx-normal-layer",
             type: "line",
             source: "gpx-data-source",
             layout: { "line-join": "round", "line-cap": "round" },
-            paint: { "line-color": currentTheme === "dark" ? "#00ff7f" : "#00b264", "line-width": 2.5, "line-opacity": 0.25 },
+            paint: {
+                "line-width": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    10,
+                    8, // 줌 레벨 10일 때 두께 8px
+                    12,
+                    2, // 줌 레벨 16일 때 두께 2px
+                ],
+                "line-opacity": 0.25,
+            },
+            filter: ["!=", ["get", "certified"], true],
         });
-    }
+    if (!map.getLayer("gpx-certified-layer"))
+        map.addLayer({
+            id: "gpx-certified-layer",
+            type: "line",
+            source: "gpx-data-source",
+            layout: { "line-join": "round", "line-cap": "round" },
+            paint: {
+                "line-width": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    10,
+                    8, // 줌 레벨 10일 때 두께 8px
+                    12,
+                    2, // 줌 레벨 16일 때 두께 2px
+                ],
+                "line-opacity": 0.3,
+            },
+            filter: ["==", ["get", "certified"], true],
+        });
+}
 
-    // If data is already loaded, update the source immediately
-    if (allCoordinates.length > 0) {
-        updateMapSource();
+// --- Data Loading & Progress UI ---
+function updateProgress(processed, total) {
+    const progressBar = document.getElementById("progress-bar");
+    const gpxCounter = document.getElementById("gpx-counter");
+    const progressContainer = document.getElementById("progress-container");
+    const percentage = total > 0 ? (processed / total) * 100 : 0;
+
+    progressBar.style.width = `${percentage}%`;
+    gpxCounter.textContent = `${Math.round(percentage)}%`;
+    gpxCounter.style.left = `calc(${percentage}% - 0px)`;
+
+    if (processed >= total && total > 0) {
+        setTimeout(() => {
+            progressContainer.style.opacity = "0";
+        }, 1500);
     }
 }
 
-// --- Main data loading logic ---
+function updateMapSource() {
+    if (map.getSource("gpx-data-source")) {
+        map.getSource("gpx-data-source").setData({ type: "FeatureCollection", features: allFeatures });
+    }
+}
+
 async function loadGpxData() {
-    if (isDataLoadingOrLoaded) {
+    const LS_KEY = "cachedGpxFeatures_v5_shortpath";
+    const recordMap = new Map(
+        hermes_records.map((r) => {
+            const shortPath = `${r.date}${r.over ? `_${r.over}` : ""}`;
+            return [shortPath.trim(), r];
+        })
+    );
+
+    // 1. 로컬 스토리지 데이터 로드
+    let cachedHybridFeatures = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+    const cachedPaths = new Set(cachedHybridFeatures.map((f) => f.properties.path.trim()));
+
+    allFeatures = cachedHybridFeatures.map((hybrid) => ({
+        type: "Feature",
+        properties: hybrid.properties,
+        geometry: { type: "LineString", coordinates: decodeCoordinates(hybrid.geometry.encoded_coordinates) },
+    }));
+    updateMapSource();
+
+    const totalRecords = hermes_records.length;
+    let processedCount = allFeatures.length;
+    updateProgress(processedCount, totalRecords);
+
+    const recordsToLoad = hermes_records.filter((r) => {
+        const shortPath = `${r.date}${r.over ? `_${r.over}` : ""}`.trim();
+        return !cachedPaths.has(shortPath);
+    });
+
+    if (recordsToLoad.length === 0) {
+        updateProgress(totalRecords, totalRecords);
         return;
     }
-    isDataLoadingOrLoaded = true;
+    document.getElementById("progress-container").style.opacity = "1";
 
-    const cachedData = localStorage.getItem("cachedGpxCoordinates");
-    if (cachedData) {
-        console.log("Loading from cache...");
-        allCoordinates = JSON.parse(cachedData);
-        updateMapSource();
-        updateProgress(1, 1);
-        return;
-    }
+    // 2. 압축 파일 로드 및 상세 로그 추가
+    const years = [...new Set(recordsToLoad.map((r) => r.date.substring(0, 4)))];
+    const compressedDataMap = new Map();
 
-    const gpxFilePaths = [];
-    hermes_records.forEach((record) => {
-        if ((record.comment && record.comment.includes("gpx 파일 누락")) || (record.comment && record.comment.includes("위치 기록 누락"))) {
-            return;
-        }
+    console.log(`[Debug] Will check for compressed files for years: ${years.join(", ")}`);
+
+    const compressedJsonPromises = years.map((year) => {
+        const url = `../records/compressed/${year}.json`;
+        console.log(`[Debug] 1. Checking for ${year}.json at ${url}`);
+        return fetch(url)
+            .then((res) => {
+                if (res.ok) return res.json();
+                if (res.status === 404) console.warn(`[Debug] '${year}.json' not found (404).`);
+                return null;
+            })
+            .then((data) => {
+                if (!data) return;
+
+                // **핵심 수정**: JSON 구조가 배열인지, 'features' 속성을 가진 객체인지 확인
+                const features = Array.isArray(data) ? data : data.features;
+
+                if (!features) {
+                    console.warn(`[Debug] '${year}.json' is empty or has an invalid format.`);
+                    return;
+                }
+
+                const yearDataMap = new Map();
+                features.forEach((feat) => {
+                    if (feat && feat.properties && feat.properties.path) {
+                        const key = feat.properties.path.trim();
+                        yearDataMap.set(key, feat);
+                    }
+                });
+                compressedDataMap.set(year, yearDataMap);
+                console.log(`[Debug] 2. Parsed '${year}.json', found ${yearDataMap.size} records.`);
+            })
+            .catch((err) => console.error(`[Debug] Failed to fetch or parse '${year}.json'.`, err));
+    });
+    await Promise.allSettled(compressedJsonPromises);
+
+    // 3. 데이터 조회 로직 수정 및 상세 로그 추가
+    const gpxRecordsToFetch = [];
+    const compressedFeatures = [];
+
+    console.log(`[Debug] Now checking ${recordsToLoad.length} records against compressed data...`);
+    recordsToLoad.forEach((record, index) => {
         const year = record.date.substring(0, 4);
-        const basePath = `../records/${year}/${record.date}`;
-        if (record.over) {
-            gpxFilePaths.push(`${basePath}_${record.over}.gpx`);
+        const shortPath = `${record.date}${record.over ? `_${record.over}` : ""}`.trim();
+        const dateOnlyPath = record.date.trim();
+        const compressedYearData = compressedDataMap.get(year);
+
+        let feat = null;
+        let matchedKey = null;
+
+        if (compressedYearData) {
+            if (compressedYearData.has(shortPath)) {
+                feat = compressedYearData.get(shortPath);
+                matchedKey = shortPath;
+            } else if (compressedYearData.has(dateOnlyPath)) {
+                feat = compressedYearData.get(dateOnlyPath);
+                matchedKey = dateOnlyPath;
+            }
+        }
+
+        if (feat) {
+            console.log(`[Debug] 3. Match found! recordsToLoad[${index}] ('${shortPath}') matched with key '${matchedKey}' in ${year}.json.`);
+            compressedFeatures.push({
+                type: "Feature",
+                properties: { path: shortPath, certified: record.certi != null },
+                geometry: { type: "LineString", coordinates: decodeCoordinates(feat.geometry.encoded_coordinates) },
+            });
         } else {
-            gpxFilePaths.push(`${basePath}.gpx`);
+            if (!record.comment?.includes("gpx 파일 누락") && !record.comment?.includes("위치 기록 누락")) {
+                gpxRecordsToFetch.push(record);
+            }
         }
     });
 
-    const totalFiles = gpxFilePaths.length;
-    let loadedFiles = 0;
-    updateProgress(loadedFiles, totalFiles);
+    // 압축 파일 데이터 일괄 표시
+    if (compressedFeatures.length > 0) {
+        allFeatures.push(...compressedFeatures);
+        updateMapSource();
+        processedCount += compressedFeatures.length;
+        updateProgress(processedCount, totalRecords);
+    }
 
-    const gpxWorker = new Worker("gpx-worker.js?v=" + new Date().getTime());
+    // 개별 GPX 순차 로드
+    if (gpxRecordsToFetch.length > 0) {
+        console.warn(`[GPX] ${gpxRecordsToFetch.length} records not found in compressed files. Fetching as individual GPX...`);
+        const gpxWorker = new Worker("gpx-worker.js");
+        const promises = new Map();
+        gpxWorker.onmessage = ({ data }) => {
+            if (promises.has(data.path)) promises.get(data.path).resolve(data.encodedCoordinates);
+        };
+        gpxWorker.onerror = (error) => promises.forEach(({ reject }) => reject(error));
 
-    for (const path of gpxFilePaths) {
-        try {
-            const response = await fetch(path);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            const gpxText = await response.text();
+        for (const record of gpxRecordsToFetch) {
+            const shortPath = `${record.date}${record.over ? `_${record.over}` : ""}`.trim();
+            const fullPath = `../records/${record.date.substring(0, 4)}/${shortPath}.gpx`;
 
-            const coordinates = await new Promise((resolve, reject) => {
-                gpxWorker.onmessage = (e) => resolve(e.data.coordinates);
-                gpxWorker.onerror = (e) => reject(new Error("Worker error: " + e.message));
-                gpxWorker.postMessage({ gpxText });
+            await new Promise((resolve) => {
+                new Promise((res, rej) => {
+                    promises.set(fullPath, { resolve: res, reject: rej });
+                    fetch(fullPath)
+                        .then((res) => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))))
+                        .then((gpxText) => gpxWorker.postMessage({ gpxText, path: fullPath }))
+                        .catch(rej);
+                })
+                    .then((encodedCoordinates) => {
+                        if (encodedCoordinates) {
+                            console.log(`[GPX] Loaded ${shortPath} -> Saving to localStorage`);
+                            allFeatures.push({
+                                type: "Feature",
+                                properties: { path: shortPath, certified: record.certi != null },
+                                geometry: { type: "LineString", coordinates: decodeCoordinates(encodedCoordinates) },
+                            });
+                            updateMapSource();
+
+                            cachedHybridFeatures.push({
+                                type: "Feature",
+                                properties: { path: shortPath, certified: record.certi != null },
+                                geometry: { encoded_coordinates: encodedCoordinates },
+                            });
+                            localStorage.setItem(LS_KEY, JSON.stringify(cachedHybridFeatures));
+                        }
+                    })
+                    .catch((err) => {})
+                    .finally(() => {
+                        processedCount++;
+                        updateProgress(processedCount, totalRecords);
+                        promises.delete(fullPath);
+                        resolve();
+                    });
             });
-
-            if (coordinates.length > 0) {
-                allCoordinates.push(coordinates);
-            }
-        } catch (error) {
-            console.error(`Failed to load or process ${path}:`, error);
-        } finally {
-            loadedFiles++;
-            updateProgress(loadedFiles, totalFiles);
-            if (allCoordinates.length > 0) {
-                updateMapSource();
-            }
         }
+        gpxWorker.terminate();
     }
 
-    if (allCoordinates.length > 0) {
-        console.log("Saving to cache...");
-        localStorage.setItem("cachedGpxCoordinates", JSON.stringify(allCoordinates));
-    }
-
-    gpxWorker.terminate();
+    updateProgress(totalRecords, totalRecords);
 }
 
-// --- Map event listeners ---
-map.on("load", () => {
-    // 3. 지도가 로드되면, 컨트롤을 실행하여 현재 위치를 요청하고 지도를 이동시킵니다.
-    // geolocate.trigger();
-
+// --- Map Event Listeners & Initial Load ---
+map.on("style.load", () => {
     addSourcesAndLayers();
-    loadGpxData();
+    updatePaintProperties();
+    updateTerrainAndRelatedLayers();
+    updateMapSource();
 });
 
-map.on("style.load", () => {
-    // This event fires when a new style is loaded, so we re-apply our layers
-    addSourcesAndLayers();
+map.on("load", () => {
+    map.setProjection({ type: "globe" });
+    loadGpxData();
 });

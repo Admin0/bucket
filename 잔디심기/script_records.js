@@ -63,8 +63,11 @@ const hermes_records = [
     },
 
     // unofficial 2026
-    { date: "2026-01-27", type: "run", distance: 5.19, elevation: 17 , record: "00:29:54", title: "장항선구철도길", comment: "@현욱" },
-    { date: "2026-01-26", type: "run", distance: 5.21, elevation: 14 , record: "00:30:18", title: "장항선구철도길", comment: "@이런저런" },
+    { date: "2026-01-31", type: "trail", distance: 14.78, elevation: 862, record: "04:10:56", title: "내연산", comment: "", over: 1 },
+    { date: "2026-01-31", type: "trail", distance: 6.59, elevation: 503, record: "01:47:10", title: "주왕산", comment: "" },
+    { date: "2026-01-29", type: "run", distance: 5.13, elevation: 28, record: "00:29:54", title: "장항선구철도길", comment: "" },
+    { date: "2026-01-27", type: "run", distance: 5.19, elevation: 17, record: "00:29:54", title: "장항선구철도길", comment: "@현욱" },
+    { date: "2026-01-26", type: "run", distance: 5.21, elevation: 14, record: "00:30:18", title: "장항선구철도길", comment: "@이런저런" },
     { date: "2026-01-25", type: "trail", distance: 5.86, elevation: 759, record: "02:35:17", title: "운악산", comment: "극도로 위험" },
     { date: "2026-01-23", type: "run", distance: 10.03, elevation: 39, record: "00:56:26", title: "장항선구철도길-신정호", comment: "신상 패딩 개시런" },
     { date: "2026-01-19", type: "run", distance: 10.05, elevation: 95, record: "01:00:42", title: "신창역-신정호", comment: "-10° 한파런" },

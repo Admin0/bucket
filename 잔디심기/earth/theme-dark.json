@@ -17149,6 +17149,27 @@
         "text-halo-blur": 1
       },
       "minzoom": 12
+    },{
+      "id": "peak-labels",
+      "type": "symbol",
+      "source": "versatiles-shortbread",
+      "source-layer": "mountain_peak",
+      "filter": ["==", ["get", "class"], "peak"],
+      "minzoom": 10,
+      "layout": {
+        "text-field": ["concat", ["coalesce", ["get", "name:en"], ["get", "name"]], "\n", ["get", "ele"], "m"],
+        "text-font": ["Noto Sans Regular"],
+        "text-size": 12,
+        "symbol-placement": "point",
+        "text-allow-overlap": true,
+        "text-ignore-placement": true
+      },
+      "paint": {
+        "text-color": "#FFFFFF",
+        "text-halo-color": "rgba(0, 0, 0, 0.8)",
+        "text-halo-width": 1.2,
+        "text-halo-blur": 0.5
+      }
     }
   ]
 }
