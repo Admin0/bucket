@@ -1,21 +1,11 @@
 const map = new maplibregl.Map({
     container: "map",
-    style: "theme-dark.json",
+    style: "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac59-ac40754b0df4/style.json?key=Bdy6sMAQwxQOz1O2ur6a",
     center: [127.5, 36],
     zoom: 8,
     maxZoom: 16,
     minZoom: 3,
 });
-
-// --- DEM & Contour Source Setup ---
-const demSource = new mlcontour.DemSource({
-    url: "https://tiles.mapterhorn.com/{z}/{x}/{y}.webp",
-    encoding: "terrarium",
-    worker: true,
-    cacheSize: 100,
-    timeoutMs: 10_000,
-});
-demSource.setupMaplibre(maplibregl);
 
 // --- Map Controls ---
 map.addControl(new maplibregl.NavigationControl({ visualizePitch: true, showZoom: true, showCompass: true }));
@@ -25,23 +15,6 @@ map.addControl(new maplibregl.GeolocateControl({ positionOptions: { enableHighAc
 let allFeatures = [];
 let isInitialLoadStarted = false;
 let currentTheme = "dark";
-let isTerrainEnabled = true;
-
-const terrainSwitcher = document.getElementById("terrain-switcher");
-const themeSwitcher = document.getElementById("theme-switcher");
-
-// --- Event Listeners for Controls ---
-themeSwitcher.addEventListener("click", () => {
-    currentTheme = currentTheme === "dark" ? "light" : "dark";
-    map.setStyle(currentTheme === "dark" ? "theme-dark.json" : "theme.json");
-});
-
-terrainSwitcher.addEventListener("click", () => {
-    if (terrainSwitcher.disabled) return;
-    isTerrainEnabled = !isTerrainEnabled;
-    updateTerrainAndRelatedLayers();
-    terrainSwitcher.classList.toggle("active", isTerrainEnabled);
-});
 
 // --- Coordinate Decoding ---
 function decodeCoordinates(encoded) {
@@ -102,87 +75,27 @@ async function loadDataFromCache(cacheName, key) {
 // --- Map Style & Layer Updates ---
 function updatePaintProperties() {
     const themeColors = {
-        dark: { contour: "#ffffff", gpx: "#00ff7f", peakText: "#ffffff", peakHalo: "rgba(0, 0, 0, 0.8)", water: "#001a33", gpxCerti: "#ffff00" },
-        light: { contour: "#000000", gpx: "#00b264", peakText: "#000000", peakHalo: "rgba(255, 255, 255, 0.8)", water: "#a3ccf5", gpxCerti: "#ffD700" },
+        dark: { contour: "#ffffff", gpx: "#00ff7f", peakText: "#ffffff", peakHalo: "rgba(0, 0, 0, 0.8)", gpxCerti: "#ffD700" },
+        light: { contour: "#000000", gpx: "#00b264", peakText: "#000000", peakHalo: "rgba(255, 255, 255, 0.8)", gpxCerti: "#f57f17" },
     };
     const colors = themeColors[currentTheme];
-    const layers = ["water-mask", "contour-lines", "contour-labels", "gpx-normal-layer", "gpx-certified-layer", "peak-labels"];
+    const layers = ["gpx-normal-layer", "gpx-certified-layer"];
 
     layers.forEach((layerId) => {
         if (!map.getLayer(layerId)) return;
         switch (layerId) {
-            case "water-mask":
-                map.setPaintProperty(layerId, "fill-color", colors.water);
-                break;
-            case "contour-lines":
-                map.setPaintProperty(layerId, "line-color", colors.contour);
-                break;
-            case "contour-labels":
-                map.setPaintProperty(layerId, "text-color", colors.contour);
-                map.setPaintProperty(layerId, "text-halo-color", colors.peakHalo);
-                break;
             case "gpx-normal-layer":
                 map.setPaintProperty(layerId, "line-color", colors.gpx);
                 break;
             case "gpx-certified-layer":
                 map.setPaintProperty(layerId, "line-color", colors.gpxCerti);
                 break;
-            case "peak-labels":
-                map.setPaintProperty(layerId, "text-color", colors.peakText);
-                map.setPaintProperty(layerId, "text-halo-color", colors.peakHalo);
-                break;
         }
     });
 }
 
-function updateTerrainAndRelatedLayers() {
-    const isVisible = isTerrainEnabled ? "visible" : "none";
-    if (isTerrainEnabled && map.getSource("dem")) {
-        map.setTerrain({ source: "dem", exaggeration: 1.5 });
-    } else {
-        map.setTerrain(null);
-    }
-    ["hillshade-layer", "contour-lines", "contour-labels"].forEach((layerId) => {
-        if (map.getLayer(layerId)) map.setLayoutProperty(layerId, "visibility", isVisible);
-    });
-}
-
 function addSourcesAndLayers() {
-    if (!map.getSource("dem")) map.addSource("dem", { type: "raster-dem", encoding: "terrarium", tiles: [demSource.sharedDemProtocolUrl], tileSize: 256, maxzoom: 12 });
-    if (!map.getSource("contour-source"))
-        map.addSource("contour-source", {
-            type: "vector",
-            tiles: [
-                demSource.contourProtocolUrl({
-                    thresholds: { 11: [200, 1000], 12: [100, 500], 14: [50, 200], 15: [20, 100] },
-                    contourLayer: "contours",
-                    elevationKey: "ele",
-                    levelKey: "level",
-                    maxzoom: 12,
-                }),
-            ],
-        });
     if (!map.getSource("gpx-data-source")) map.addSource("gpx-data-source", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
-
-    if (!map.getLayer("hillshade-layer")) map.addLayer({ id: "hillshade-layer", type: "hillshade", source: "dem", paint: { "hillshade-exaggeration": 0.1 } });
-    if (!map.getLayer("contour-lines"))
-        map.addLayer({
-            id: "contour-lines",
-            type: "line",
-            source: "contour-source",
-            "source-layer": "contours",
-            paint: { "line-opacity": 0.33, "line-width": ["match", ["get", "level"], 1, 1, 0.5] },
-            layout: { "line-join": "round" },
-        });
-    if (!map.getLayer("contour-labels"))
-        map.addLayer({
-            id: "contour-labels",
-            type: "symbol",
-            source: "contour-source",
-            "source-layer": "contours",
-            filter: [">", ["get", "level"], 0],
-            layout: { "symbol-placement": "line", "text-size": 10, "text-field": ["concat", ["number-format", ["get", "ele"], {}], " m"], "text-font": ["Noto Sans Bold"] },
-        });
 
     if (!map.getLayer("gpx-normal-layer"))
         map.addLayer({
@@ -195,12 +108,20 @@ function addSourcesAndLayers() {
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    10,
-                    8, // 줌 레벨 10일 때 두께 8px
-                    12,
-                    2, // 줌 레벨 16일 때 두께 2px
+                    6, // 줌 레벨
+                    8, // 두깨
+                    14, // 줌 레벨
+                    3, // 두깨
                 ],
-                "line-opacity": 0.25,
+                "line-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    10, // 줌 레벨
+                    0.5, // 투명도
+                    14, // 줌 레벨
+                    0.25, // 투명도
+                ],
             },
             filter: ["!=", ["get", "certified"], true],
         });
@@ -215,12 +136,22 @@ function addSourcesAndLayers() {
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    10,
-                    8, // 줌 레벨 10일 때 두께 8px
-                    12,
-                    2, // 줌 레벨 16일 때 두께 2px
+                    6, // 줌 레벨
+                    10, // 두깨
+                    10, // 줌 레벨
+                    5, // 두깨
+                    14, // 줌 레벨
+                    3, // 두깨
                 ],
-                "line-opacity": 0.3,
+                "line-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    10, // 줌 레벨
+                    0.5, // 투명도
+                    14, // 줌 레벨
+                    0.25, // 투명도
+                ],
             },
             filter: ["==", ["get", "certified"], true],
         });
@@ -350,7 +281,7 @@ async function loadGpxData() {
         }
 
         if (feat) {
-            console.log(`[Debug] 3. Match found! recordsToLoad[${index}] ('${shortPath}') matched with key '${matchedKey}' in ${year}.json.`);
+            // console.log(`[Debug] 3. Match found! recordsToLoad[${index}] ('${shortPath}') matched with key '${matchedKey}' in ${year}.json.`);
             compressedFeatures.push({
                 type: "Feature",
                 properties: { path: shortPath, certified: record.certi != null },
@@ -430,7 +361,6 @@ async function loadGpxData() {
 map.on("style.load", () => {
     addSourcesAndLayers();
     updatePaintProperties();
-    updateTerrainAndRelatedLayers();
     updateMapSource();
 });
 

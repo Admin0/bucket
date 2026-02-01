@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>#잔디심기 🌏 earth</title>
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
         <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
         <style>
             body {
@@ -83,19 +84,9 @@
     <body>
         <div id="progress-container">
             <div id="progress-bar"></div>
-            <div id="gpx-counter">0 / 0</div>
+            <div id="gpx-counter">0%</div>
         </div>
         <div id="map"></div>
-
-        <div class="custom-controls maplibregl-ctrl maplibregl-ctrl-group">
-            <button id="terrain-switcher" title="Toggle Terrain">
-                <span class="maplibregl-ctrl-icon" style="background-image: url('icon--terrain-switcher.svg')"></span>
-            </button>
-            <button id="theme-switcher" title="Switch Theme">
-                <span class="maplibregl-ctrl-icon" style="background-size: 70%; background-image: url('icon--theme-switcher.svg')"></span>
-            </button>
-        </div>
-        <div id="debug-panel"></div>
 
         <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js" defer></script>
         <script src="https://unpkg.com/maplibre-contour@0.1.0/dist/index.min.js"></script>
