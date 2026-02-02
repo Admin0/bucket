@@ -108,18 +108,20 @@ function addSourcesAndLayers() {
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    6, // 줌 레벨
-                    8, // 두깨
-                    14, // 줌 레벨
+                    4, // 줌 레벨
+                    9, // 두깨
+                    7, // 줌 레벨
+                    6, // 두깨
+                    10, // 줌 레벨
                     3, // 두깨
                 ],
                 "line-opacity": [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    10, // 줌 레벨
+                    4, // 줌 레벨
                     0.5, // 투명도
-                    14, // 줌 레벨
+                    7, // 줌 레벨
                     0.25, // 투명도
                 ],
             },
@@ -136,20 +138,20 @@ function addSourcesAndLayers() {
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    6, // 줌 레벨
-                    10, // 두깨
+                    4, // 줌 레벨
+                    9, // 두깨
+                    7, // 줌 레벨
+                    6, // 두깨
                     10, // 줌 레벨
-                    5, // 두깨
-                    14, // 줌 레벨
                     3, // 두깨
                 ],
                 "line-opacity": [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    10, // 줌 레벨
+                    4, // 줌 레벨
                     0.5, // 투명도
-                    14, // 줌 레벨
+                    7, // 줌 레벨
                     0.25, // 투명도
                 ],
             },
