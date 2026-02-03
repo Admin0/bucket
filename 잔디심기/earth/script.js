@@ -1,6 +1,7 @@
 const map = new maplibregl.Map({
     container: "map",
-    style: "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac59-ac40754b0df4/style.json?key=Bdy6sMAQwxQOz1O2ur6a",
+    // style: "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac59-ac40754b0df4/style.json?key=Bdy6sMAQwxQOz1O2ur6a",
+    style: 'theme-dark.json',
     center: [127.5, 36],
     zoom: 8,
     maxZoom: 16,
@@ -88,17 +89,11 @@ async function loadDataFromCache(cacheName, key) {
 function updatePaintProperties() {
     const themeColors = {
         dark: {
-            contour: "#ffffff",
             gpx: "#00ff7f",
-            peakText: "#ffffff",
-            peakHalo: "rgba(0, 0, 0, 0.8)",
             gpxCerti: "#ffD700",
         },
         light: {
-            contour: "#000000",
             gpx: "#00b264",
-            peakText: "#000000",
-            peakHalo: "rgba(255, 255, 255, 0.8)",
             gpxCerti: "#f57f17",
         },
     };
@@ -241,9 +236,7 @@ async function loadGpxData() {
 
     // 1. 로컬 스토리지 데이터 로드
     let cachedHybridFeatures = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
-    const cachedPaths = new Set(
-        cachedHybridFeatures.map((f) => f.properties.path.trim())
-    );
+    const cachedPaths = new Set(cachedHybridFeatures.map((f) => f.properties.path.trim()));
 
     allFeatures = cachedHybridFeatures.map((hybrid) => ({
         type: "Feature",
@@ -271,14 +264,10 @@ async function loadGpxData() {
     document.getElementById("progress-container").style.opacity = "1";
 
     // 2. 압축 파일 로드 및 상세 로그 추가
-    const years = [
-        ...new Set(recordsToLoad.map((r) => r.date.substring(0, 4))),
-    ];
+    const years = [...new Set(recordsToLoad.map((r) => r.date.substring(0, 4)))];
     const compressedDataMap = new Map();
 
-    console.log(
-        `[Debug] Will check for compressed files for years: ${years.join(", ")}`
-    );
+    console.log(`[Debug] Will check for compressed files for years: ${years.join(", ")}`);
 
     const compressedJsonPromises = years.map((year) => {
         const url = `../records/compressed/${year}.json`;
@@ -286,8 +275,7 @@ async function loadGpxData() {
         return fetch(url)
             .then((res) => {
                 if (res.ok) return res.json();
-                if (res.status === 404)
-                    console.warn(`[Debug] '${year}.json' not found (404).`);
+                if (res.status === 404) console.warn(`[Debug] '${year}.json' not found (404).`);
                 return null;
             })
             .then((data) => {
@@ -297,9 +285,7 @@ async function loadGpxData() {
                 const features = Array.isArray(data) ? data : data.features;
 
                 if (!features) {
-                    console.warn(
-                        `[Debug] '${year}.json' is empty or has an invalid format.`
-                    );
+                    console.warn(`[Debug] '${year}.json' is empty or has an invalid format.`);
                     return;
                 }
 
@@ -311,16 +297,9 @@ async function loadGpxData() {
                     }
                 });
                 compressedDataMap.set(year, yearDataMap);
-                console.log(
-                    `[Debug] 2. Parsed '${year}.json', found ${yearDataMap.size} records.`
-                );
+                console.log(`[Debug] 2. Parsed '${year}.json', found ${yearDataMap.size} records.`);
             })
-            .catch((err) =>
-                console.error(
-                    `[Debug] Failed to fetch or parse '${year}.json'.`,
-                    err
-                )
-            );
+            .catch((err) => console.error(`[Debug] Failed to fetch or parse '${year}.json'.`, err));
     });
     await Promise.allSettled(compressedJsonPromises);
 
@@ -328,14 +307,10 @@ async function loadGpxData() {
     const gpxRecordsToFetch = [];
     const compressedFeatures = [];
 
-    console.log(
-        `[Debug] Now checking ${recordsToLoad.length} records against compressed data...`
-    );
+    console.log(`[Debug] Now checking ${recordsToLoad.length} records against compressed data...`);
     recordsToLoad.forEach((record, index) => {
         const year = record.date.substring(0, 4);
-        const shortPath = `${record.date}${
-            record.over ? `_${record.over}` : ""
-        }`.trim();
+        const shortPath = `${record.date}${record.over ? `_${record.over}` : ""}`.trim();
         const dateOnlyPath = record.date.trim();
         const compressedYearData = compressedDataMap.get(year);
 
@@ -362,16 +337,11 @@ async function loadGpxData() {
                 },
                 geometry: {
                     type: "LineString",
-                    coordinates: decodeCoordinates(
-                        feat.geometry.encoded_coordinates
-                    ),
+                    coordinates: decodeCoordinates(feat.geometry.encoded_coordinates),
                 },
             });
         } else {
-            if (
-                !record.comment?.includes("gpx 파일 누락") &&
-                !record.comment?.includes("위치 기록 누락")
-            ) {
+            if (!record.comment?.includes("gpx 파일 누락") && !record.comment?.includes("위치 기록 누락")) {
                 gpxRecordsToFetch.push(record);
             }
         }
@@ -387,46 +357,29 @@ async function loadGpxData() {
 
     // 개별 GPX 순차 로드
     if (gpxRecordsToFetch.length > 0) {
-        console.warn(
-            `[GPX] ${gpxRecordsToFetch.length} records not found in compressed files. Fetching as individual GPX...`
-        );
+        console.warn(`[GPX] ${gpxRecordsToFetch.length} records not found in compressed files. Fetching as individual GPX...`);
         const gpxWorker = new Worker("gpx-worker.js");
         const promises = new Map();
         gpxWorker.onmessage = ({ data }) => {
-            if (promises.has(data.path))
-                promises.get(data.path).resolve(data.encodedCoordinates);
+            if (promises.has(data.path)) promises.get(data.path).resolve(data.encodedCoordinates);
         };
-        gpxWorker.onerror = (error) =>
-            promises.forEach(({ reject }) => reject(error));
+        gpxWorker.onerror = (error) => promises.forEach(({ reject }) => reject(error));
 
         for (const record of gpxRecordsToFetch) {
-            const shortPath = `${record.date}${
-                record.over ? `_${record.over}` : ""
-            }`.trim();
-            const fullPath = `../records/${record.date.substring(
-                0,
-                4
-            )}/${shortPath}.gpx`;
+            const shortPath = `${record.date}${record.over ? `_${record.over}` : ""}`.trim();
+            const fullPath = `../records/${record.date.substring(0, 4)}/${shortPath}.gpx`;
 
             await new Promise((resolve) => {
                 new Promise((res, rej) => {
                     promises.set(fullPath, { resolve: res, reject: rej });
                     fetch(fullPath)
-                        .then((res) =>
-                            res.ok
-                                ? res.text()
-                                : Promise.reject(new Error(res.statusText))
-                        )
-                        .then((gpxText) =>
-                            gpxWorker.postMessage({ gpxText, path: fullPath })
-                        )
+                        .then((res) => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))))
+                        .then((gpxText) => gpxWorker.postMessage({ gpxText, path: fullPath }))
                         .catch(rej);
                 })
                     .then((encodedCoordinates) => {
                         if (encodedCoordinates) {
-                            console.log(
-                                `[GPX] Loaded ${shortPath} -> Saving to localStorage`
-                            );
+                            console.log(`[GPX] Loaded ${shortPath} -> Saving to localStorage`);
                             allFeatures.push({
                                 type: "Feature",
                                 properties: {
@@ -435,8 +388,7 @@ async function loadGpxData() {
                                 },
                                 geometry: {
                                     type: "LineString",
-                                    coordinates:
-                                        decodeCoordinates(encodedCoordinates),
+                                    coordinates: decodeCoordinates(encodedCoordinates),
                                 },
                             });
                             updateMapSource();
@@ -451,10 +403,7 @@ async function loadGpxData() {
                                     encoded_coordinates: encodedCoordinates,
                                 },
                             });
-                            localStorage.setItem(
-                                LS_KEY,
-                                JSON.stringify(cachedHybridFeatures)
-                            );
+                            localStorage.setItem(LS_KEY, JSON.stringify(cachedHybridFeatures));
                         }
                     })
                     .catch((err) => {})
@@ -481,6 +430,6 @@ map.on("style.load", () => {
 
 map.on("load", () => {
     map.setProjection({ type: "globe" });
-    map.setTerrain({ source: 'terrain-rgb', exaggeration: 1.5 });
+    // map.setTerrain({ source: "terrain-rgb", exaggeration: 1.5 });
     loadGpxData();
 });
