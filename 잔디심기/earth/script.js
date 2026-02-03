@@ -8,8 +8,20 @@ const map = new maplibregl.Map({
 });
 
 // --- Map Controls ---
-map.addControl(new maplibregl.NavigationControl({ visualizePitch: true, showZoom: true, showCompass: true }));
-map.addControl(new maplibregl.GeolocateControl({ positionOptions: { enableHighAccuracy: true }, trackUserLocation: true, showUserHeading: true }));
+map.addControl(
+    new maplibregl.NavigationControl({
+        visualizePitch: true,
+        showZoom: true,
+        showCompass: true,
+    })
+);
+map.addControl(
+    new maplibregl.GeolocateControl({
+        positionOptions: { enableHighAccuracy: true },
+        trackUserLocation: true,
+        showUserHeading: true,
+    })
+);
 
 // --- Global State & UI Elements ---
 let allFeatures = [];
@@ -75,8 +87,20 @@ async function loadDataFromCache(cacheName, key) {
 // --- Map Style & Layer Updates ---
 function updatePaintProperties() {
     const themeColors = {
-        dark: { contour: "#ffffff", gpx: "#00ff7f", peakText: "#ffffff", peakHalo: "rgba(0, 0, 0, 0.8)", gpxCerti: "#ffD700" },
-        light: { contour: "#000000", gpx: "#00b264", peakText: "#000000", peakHalo: "rgba(255, 255, 255, 0.8)", gpxCerti: "#f57f17" },
+        dark: {
+            contour: "#ffffff",
+            gpx: "#00ff7f",
+            peakText: "#ffffff",
+            peakHalo: "rgba(0, 0, 0, 0.8)",
+            gpxCerti: "#ffD700",
+        },
+        light: {
+            contour: "#000000",
+            gpx: "#00b264",
+            peakText: "#000000",
+            peakHalo: "rgba(255, 255, 255, 0.8)",
+            gpxCerti: "#f57f17",
+        },
     };
     const colors = themeColors[currentTheme];
     const layers = ["gpx-normal-layer", "gpx-certified-layer"];
@@ -95,68 +119,88 @@ function updatePaintProperties() {
 }
 
 function addSourcesAndLayers() {
-    if (!map.getSource("gpx-data-source")) map.addSource("gpx-data-source", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+    if (!map.getSource("gpx-data-source"))
+        map.addSource("gpx-data-source", {
+            type: "geojson",
+            data: { type: "FeatureCollection", features: [] },
+        });
+
+    const layers = map.getStyle().layers;
+    // Find the index of the first symbol layer in the map style
+    let firstSymbolId;
+    for (let i = 0; i < layers.length; i++) {
+        if (layers[i].type === "symbol") {
+            firstSymbolId = layers[i].id;
+            break;
+        }
+    }
 
     if (!map.getLayer("gpx-normal-layer"))
-        map.addLayer({
-            id: "gpx-normal-layer",
-            type: "line",
-            source: "gpx-data-source",
-            layout: { "line-join": "round", "line-cap": "round" },
-            paint: {
-                "line-width": [
-                    "interpolate",
-                    ["linear"],
-                    ["zoom"],
-                    4, // 줌 레벨
-                    9, // 두깨
-                    7, // 줌 레벨
-                    6, // 두깨
-                    10, // 줌 레벨
-                    3, // 두깨
-                ],
-                "line-opacity": [
-                    "interpolate",
-                    ["linear"],
-                    ["zoom"],
-                    4, // 줌 레벨
-                    0.5, // 투명도
-                    7, // 줌 레벨
-                    0.25, // 투명도
-                ],
+        map.addLayer(
+            {
+                id: "gpx-normal-layer",
+                type: "line",
+                source: "gpx-data-source",
+                layout: { "line-join": "round", "line-cap": "round" },
+                paint: {
+                    "line-width": [
+                        "interpolate",
+                        ["linear"],
+                        ["zoom"],
+                        4, // 줌 레벨
+                        9, // 두깨
+                        7, // 줌 레벨
+                        6, // 두깨
+                        10, // 줌 레벨
+                        3, // 두깨
+                    ],
+                    "line-opacity": [
+                        "interpolate",
+                        ["linear"],
+                        ["zoom"],
+                        4, // 줌 레벨
+                        0.5, // 투명도
+                        7, // 줌 레벨
+                        0.25, // 투명도
+                    ],
+                },
+                filter: ["!=", ["get", "certified"], true],
             },
-            filter: ["!=", ["get", "certified"], true],
-        });
+            firstSymbolId
+        );
     if (!map.getLayer("gpx-certified-layer"))
-        map.addLayer({
-            id: "gpx-certified-layer",
-            type: "line",
-            source: "gpx-data-source",
-            layout: { "line-join": "round", "line-cap": "round" },
-            paint: {
-                "line-width": [
-                    "interpolate",
-                    ["linear"],
-                    ["zoom"],
-                    4, // 줌 레벨
-                    9, // 두깨
-                    7, // 줌 레벨
-                    6, // 두깨
-                    10, // 줌 레벨
-                    3, // 두깨
-                ],
-                "line-opacity": [
-                    "interpolate",
-                    ["linear"],
-                    ["zoom"],
-                    4, // 줌 레벨
-                    0.5, // 투명도
-                    7, // 줌 레벨
-                    0.25, // 투명도
-                ],
+        map.addLayer(
+            {
+                id: "gpx-certified-layer",
+                type: "line",
+                source: "gpx-data-source",
+                layout: { "line-join": "round", "line-cap": "round" },
+                paint: {
+                    "line-width": [
+                        "interpolate",
+                        ["linear"],
+                        ["zoom"],
+                        4, // 줌 레벨
+                        9, // 두깨
+                        7, // 줌 레벨
+                        6, // 두깨
+                        10, // 줌 레벨
+                        3, // 두깨
+                    ],
+                    "line-opacity": [
+                        "interpolate",
+                        ["linear"],
+                        ["zoom"],
+                        4, // 줌 레벨
+                        0.5, // 투명도
+                        7, // 줌 레벨
+                        0.25, // 투명도
+                    ],
+                },
+                filter: ["==", ["get", "certified"], true],
             },
-            filter: ["==", ["get", "certified"], true],
-        });
+            firstSymbolId
+        );
 }
 
 // --- Data Loading & Progress UI ---
@@ -179,7 +223,10 @@ function updateProgress(processed, total) {
 
 function updateMapSource() {
     if (map.getSource("gpx-data-source")) {
-        map.getSource("gpx-data-source").setData({ type: "FeatureCollection", features: allFeatures });
+        map.getSource("gpx-data-source").setData({
+            type: "FeatureCollection",
+            features: allFeatures,
+        });
     }
 }
 
@@ -194,12 +241,17 @@ async function loadGpxData() {
 
     // 1. 로컬 스토리지 데이터 로드
     let cachedHybridFeatures = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
-    const cachedPaths = new Set(cachedHybridFeatures.map((f) => f.properties.path.trim()));
+    const cachedPaths = new Set(
+        cachedHybridFeatures.map((f) => f.properties.path.trim())
+    );
 
     allFeatures = cachedHybridFeatures.map((hybrid) => ({
         type: "Feature",
         properties: hybrid.properties,
-        geometry: { type: "LineString", coordinates: decodeCoordinates(hybrid.geometry.encoded_coordinates) },
+        geometry: {
+            type: "LineString",
+            coordinates: decodeCoordinates(hybrid.geometry.encoded_coordinates),
+        },
     }));
     updateMapSource();
 
@@ -219,10 +271,14 @@ async function loadGpxData() {
     document.getElementById("progress-container").style.opacity = "1";
 
     // 2. 압축 파일 로드 및 상세 로그 추가
-    const years = [...new Set(recordsToLoad.map((r) => r.date.substring(0, 4)))];
+    const years = [
+        ...new Set(recordsToLoad.map((r) => r.date.substring(0, 4))),
+    ];
     const compressedDataMap = new Map();
 
-    console.log(`[Debug] Will check for compressed files for years: ${years.join(", ")}`);
+    console.log(
+        `[Debug] Will check for compressed files for years: ${years.join(", ")}`
+    );
 
     const compressedJsonPromises = years.map((year) => {
         const url = `../records/compressed/${year}.json`;
@@ -230,7 +286,8 @@ async function loadGpxData() {
         return fetch(url)
             .then((res) => {
                 if (res.ok) return res.json();
-                if (res.status === 404) console.warn(`[Debug] '${year}.json' not found (404).`);
+                if (res.status === 404)
+                    console.warn(`[Debug] '${year}.json' not found (404).`);
                 return null;
             })
             .then((data) => {
@@ -240,7 +297,9 @@ async function loadGpxData() {
                 const features = Array.isArray(data) ? data : data.features;
 
                 if (!features) {
-                    console.warn(`[Debug] '${year}.json' is empty or has an invalid format.`);
+                    console.warn(
+                        `[Debug] '${year}.json' is empty or has an invalid format.`
+                    );
                     return;
                 }
 
@@ -252,9 +311,16 @@ async function loadGpxData() {
                     }
                 });
                 compressedDataMap.set(year, yearDataMap);
-                console.log(`[Debug] 2. Parsed '${year}.json', found ${yearDataMap.size} records.`);
+                console.log(
+                    `[Debug] 2. Parsed '${year}.json', found ${yearDataMap.size} records.`
+                );
             })
-            .catch((err) => console.error(`[Debug] Failed to fetch or parse '${year}.json'.`, err));
+            .catch((err) =>
+                console.error(
+                    `[Debug] Failed to fetch or parse '${year}.json'.`,
+                    err
+                )
+            );
     });
     await Promise.allSettled(compressedJsonPromises);
 
@@ -262,10 +328,14 @@ async function loadGpxData() {
     const gpxRecordsToFetch = [];
     const compressedFeatures = [];
 
-    console.log(`[Debug] Now checking ${recordsToLoad.length} records against compressed data...`);
+    console.log(
+        `[Debug] Now checking ${recordsToLoad.length} records against compressed data...`
+    );
     recordsToLoad.forEach((record, index) => {
         const year = record.date.substring(0, 4);
-        const shortPath = `${record.date}${record.over ? `_${record.over}` : ""}`.trim();
+        const shortPath = `${record.date}${
+            record.over ? `_${record.over}` : ""
+        }`.trim();
         const dateOnlyPath = record.date.trim();
         const compressedYearData = compressedDataMap.get(year);
 
@@ -286,11 +356,22 @@ async function loadGpxData() {
             // console.log(`[Debug] 3. Match found! recordsToLoad[${index}] ('${shortPath}') matched with key '${matchedKey}' in ${year}.json.`);
             compressedFeatures.push({
                 type: "Feature",
-                properties: { path: shortPath, certified: record.certi != null },
-                geometry: { type: "LineString", coordinates: decodeCoordinates(feat.geometry.encoded_coordinates) },
+                properties: {
+                    path: shortPath,
+                    certified: record.certi != null,
+                },
+                geometry: {
+                    type: "LineString",
+                    coordinates: decodeCoordinates(
+                        feat.geometry.encoded_coordinates
+                    ),
+                },
             });
         } else {
-            if (!record.comment?.includes("gpx 파일 누락") && !record.comment?.includes("위치 기록 누락")) {
+            if (
+                !record.comment?.includes("gpx 파일 누락") &&
+                !record.comment?.includes("위치 기록 누락")
+            ) {
                 gpxRecordsToFetch.push(record);
             }
         }
@@ -306,42 +387,74 @@ async function loadGpxData() {
 
     // 개별 GPX 순차 로드
     if (gpxRecordsToFetch.length > 0) {
-        console.warn(`[GPX] ${gpxRecordsToFetch.length} records not found in compressed files. Fetching as individual GPX...`);
+        console.warn(
+            `[GPX] ${gpxRecordsToFetch.length} records not found in compressed files. Fetching as individual GPX...`
+        );
         const gpxWorker = new Worker("gpx-worker.js");
         const promises = new Map();
         gpxWorker.onmessage = ({ data }) => {
-            if (promises.has(data.path)) promises.get(data.path).resolve(data.encodedCoordinates);
+            if (promises.has(data.path))
+                promises.get(data.path).resolve(data.encodedCoordinates);
         };
-        gpxWorker.onerror = (error) => promises.forEach(({ reject }) => reject(error));
+        gpxWorker.onerror = (error) =>
+            promises.forEach(({ reject }) => reject(error));
 
         for (const record of gpxRecordsToFetch) {
-            const shortPath = `${record.date}${record.over ? `_${record.over}` : ""}`.trim();
-            const fullPath = `../records/${record.date.substring(0, 4)}/${shortPath}.gpx`;
+            const shortPath = `${record.date}${
+                record.over ? `_${record.over}` : ""
+            }`.trim();
+            const fullPath = `../records/${record.date.substring(
+                0,
+                4
+            )}/${shortPath}.gpx`;
 
             await new Promise((resolve) => {
                 new Promise((res, rej) => {
                     promises.set(fullPath, { resolve: res, reject: rej });
                     fetch(fullPath)
-                        .then((res) => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))))
-                        .then((gpxText) => gpxWorker.postMessage({ gpxText, path: fullPath }))
+                        .then((res) =>
+                            res.ok
+                                ? res.text()
+                                : Promise.reject(new Error(res.statusText))
+                        )
+                        .then((gpxText) =>
+                            gpxWorker.postMessage({ gpxText, path: fullPath })
+                        )
                         .catch(rej);
                 })
                     .then((encodedCoordinates) => {
                         if (encodedCoordinates) {
-                            console.log(`[GPX] Loaded ${shortPath} -> Saving to localStorage`);
+                            console.log(
+                                `[GPX] Loaded ${shortPath} -> Saving to localStorage`
+                            );
                             allFeatures.push({
                                 type: "Feature",
-                                properties: { path: shortPath, certified: record.certi != null },
-                                geometry: { type: "LineString", coordinates: decodeCoordinates(encodedCoordinates) },
+                                properties: {
+                                    path: shortPath,
+                                    certified: record.certi != null,
+                                },
+                                geometry: {
+                                    type: "LineString",
+                                    coordinates:
+                                        decodeCoordinates(encodedCoordinates),
+                                },
                             });
                             updateMapSource();
 
                             cachedHybridFeatures.push({
                                 type: "Feature",
-                                properties: { path: shortPath, certified: record.certi != null },
-                                geometry: { encoded_coordinates: encodedCoordinates },
+                                properties: {
+                                    path: shortPath,
+                                    certified: record.certi != null,
+                                },
+                                geometry: {
+                                    encoded_coordinates: encodedCoordinates,
+                                },
                             });
-                            localStorage.setItem(LS_KEY, JSON.stringify(cachedHybridFeatures));
+                            localStorage.setItem(
+                                LS_KEY,
+                                JSON.stringify(cachedHybridFeatures)
+                            );
                         }
                     })
                     .catch((err) => {})
@@ -368,5 +481,6 @@ map.on("style.load", () => {
 
 map.on("load", () => {
     map.setProjection({ type: "globe" });
+    map.setTerrain({ source: 'terrain-rgb', exaggeration: 1.5 });
     loadGpxData();
 });
