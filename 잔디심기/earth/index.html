@@ -58,27 +58,35 @@
                 top: 11.6em; /* NavigationControl 바로 아래에 위치 */
                 right: 10px;
                 z-index: 1001;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .custom-controls button {
+                background-color: rgba(255, 255, 255, 0.8);
+                border: 0;
+                border-radius: 4px;
+                padding: 4px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+            }
+
+            .custom-controls button:not(:last-child) {
+                margin-bottom: 8px;
+            }
+
+            .custom-controls button svg {
+                fill: #333;
             }
 
             /* 활성 상태 버튼 스타일 */
             .custom-controls button.active {
-                fill: #33b5e5;
+                background-color: #a2d9ff;
             }
-            
-            /* --- 디버그 패널 스타일 --- */
-            #debug-panel {
-                position: fixed;
-                top: 18em;
-                right: 10px;
-                background: rgba(0,0,0,0.7);
-                color: white;
-                padding: 10px;
-                border-radius: 5px;
-                font-size: 12px;
-                max-height: 200px;
-                overflow-y: auto;
-                display: none; /* 기본적으로 숨김 */
-            }
+
         </style>
     </head>
     <body>
@@ -88,9 +96,17 @@
         </div>
         <div id="map"></div>
 
+        <!-- <div class="custom-controls">
+            <button id="style-switcher" title="Toggle style">
+                <svg id="style-icon" width="20" height="20" viewBox="0 0 24 24"></svg>
+            </button>
+        </div> -->
+
         <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js" defer></script>
-        <script src="https://unpkg.com/maplibre-contour@0.1.0/dist/index.min.js"></script>
+        <script src="https://unpkg.com/maplibre-contour@0.1.0/dist/index.min.js" defer></script>
+        <script src="https://tiles.versatiles.org/assets/lib/versatiles-style/versatiles-style.js" defer></script>
         <script src="../script_records.js" defer></script>
+        <script src="script_records_4_earth.js" defer></script>
         <script src="script.js" defer></script>
     </body>
 </html>

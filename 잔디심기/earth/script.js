@@ -1,33 +1,50 @@
-const map = new maplibregl.Map({
-    container: "map",
-    // style: "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac59-ac40754b0df4/style.json?key=Bdy6sMAQwxQOz1O2ur6a",
-    style: 'theme-dark.json',
-    center: [127.5, 36],
-    zoom: 8,
-    maxZoom: 16,
-    minZoom: 3,
+const style_light = VersaTilesStyle.graybeard({
+    baseUrl: "https://tiles.versatiles.org/",
+    language: "ko",
+    recolor: {
+        blend: 0.2,
+        blendColor: "#FFF" // make all colors lighter
+    }
+});
+const style_dark = VersaTilesStyle.shadow({
+    baseUrl: "https://tiles.versatiles.org/",
+    language: "ko",
+    recolor: {
+        blend: 0.2,
+        blendColor: "#000" // make all colors lighter
+    }
 });
 
-// --- Map Controls ---
-map.addControl(
-    new maplibregl.NavigationControl({
-        visualizePitch: true,
-        showZoom: true,
-        showCompass: true,
-    })
-);
-map.addControl(
-    new maplibregl.GeolocateControl({
-        positionOptions: { enableHighAccuracy: true },
-        trackUserLocation: true,
-        showUserHeading: true,
-    })
-);
+let currentStyle = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+
+const map = new maplibregl.Map({
+    container: "map",
+    // style: "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac59-ac40754b0df4/style.json",
+    style: currentStyle === "light" ? style_light : style_dark,
+    center: [127.5, 36],
+    zoom: 8,
+    maxZoom: 20,
+    minZoom: 3
+})
+    // --- Map Controls ---
+    .addControl(
+        new maplibregl.NavigationControl({
+            visualizePitch: true,
+            showZoom: true,
+            showCompass: true
+        })
+    )
+    .addControl(
+        new maplibregl.GeolocateControl({
+            positionOptions: { enableHighAccuracy: true },
+            trackUserLocation: true,
+            showUserHeading: true
+        })
+    );
 
 // --- Global State & UI Elements ---
 let allFeatures = [];
 let isInitialLoadStarted = false;
-let currentTheme = "dark";
 
 // --- Coordinate Decoding ---
 function decodeCoordinates(encoded) {
@@ -87,17 +104,17 @@ async function loadDataFromCache(cacheName, key) {
 
 // --- Map Style & Layer Updates ---
 function updatePaintProperties() {
-    const themeColors = {
+    const styleColors = {
         dark: {
             gpx: "#00ff7f",
-            gpxCerti: "#ffD700",
+            gpxCerti: "#ffD700"
         },
         light: {
             gpx: "#00b264",
-            gpxCerti: "#f57f17",
-        },
+            gpxCerti: "#f57f17"
+        }
     };
-    const colors = themeColors[currentTheme];
+    const colors = styleColors[currentStyle];
     const layers = ["gpx-normal-layer", "gpx-certified-layer"];
 
     layers.forEach((layerId) => {
@@ -114,12 +131,6 @@ function updatePaintProperties() {
 }
 
 function addSourcesAndLayers() {
-    if (!map.getSource("gpx-data-source"))
-        map.addSource("gpx-data-source", {
-            type: "geojson",
-            data: { type: "FeatureCollection", features: [] },
-        });
-
     const layers = map.getStyle().layers;
     // Find the index of the first symbol layer in the map style
     let firstSymbolId;
@@ -129,6 +140,12 @@ function addSourcesAndLayers() {
             break;
         }
     }
+
+    if (!map.getSource("gpx-data-source"))
+        map.addSource("gpx-data-source", {
+            type: "geojson",
+            data: { type: "FeatureCollection", features: [] }
+        });
 
     if (!map.getLayer("gpx-normal-layer"))
         map.addLayer(
@@ -143,23 +160,23 @@ function addSourcesAndLayers() {
                         ["linear"],
                         ["zoom"],
                         4, // 줌 레벨
-                        9, // 두깨
-                        7, // 줌 레벨
-                        6, // 두깨
-                        10, // 줌 레벨
-                        3, // 두깨
+                        10, // 두깨
+                        11, // 줌 레벨
+                        3.5, // 두깨
+                        13, // 줌 레벨
+                        2.5 // 두깨
                     ],
                     "line-opacity": [
                         "interpolate",
                         ["linear"],
                         ["zoom"],
-                        4, // 줌 레벨
-                        0.5, // 투명도
                         7, // 줌 레벨
-                        0.25, // 투명도
-                    ],
+                        0.75, // 투명도
+                        10, // 줌 레벨
+                        0.25 // 투명도
+                    ]
                 },
-                filter: ["!=", ["get", "certified"], true],
+                filter: ["!=", ["get", "certified"], true]
             },
             firstSymbolId
         );
@@ -176,23 +193,23 @@ function addSourcesAndLayers() {
                         ["linear"],
                         ["zoom"],
                         4, // 줌 레벨
-                        9, // 두깨
-                        7, // 줌 레벨
-                        6, // 두깨
-                        10, // 줌 레벨
-                        3, // 두깨
+                        10, // 두깨
+                        11, // 줌 레벨
+                        3.5, // 두깨
+                        13, // 줌 레벨
+                        2.5 // 두깨
                     ],
                     "line-opacity": [
                         "interpolate",
                         ["linear"],
                         ["zoom"],
-                        4, // 줌 레벨
-                        0.5, // 투명도
                         7, // 줌 레벨
-                        0.25, // 투명도
-                    ],
+                        0.75, // 투명도
+                        10, // 줌 레벨
+                        0.25 // 투명도
+                    ]
                 },
-                filter: ["==", ["get", "certified"], true],
+                filter: ["==", ["get", "certified"], true]
             },
             firstSymbolId
         );
@@ -220,19 +237,14 @@ function updateMapSource() {
     if (map.getSource("gpx-data-source")) {
         map.getSource("gpx-data-source").setData({
             type: "FeatureCollection",
-            features: allFeatures,
+            features: allFeatures
         });
     }
 }
 
 async function loadGpxData() {
+    hermes_records.push(...hermes_records_4_earth);
     const LS_KEY = "cachedGpxFeatures_v5_shortpath";
-    const recordMap = new Map(
-        hermes_records.map((r) => {
-            const shortPath = `${r.date}${r.over ? `_${r.over}` : ""}`;
-            return [shortPath.trim(), r];
-        })
-    );
 
     // 1. 로컬 스토리지 데이터 로드
     let cachedHybridFeatures = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
@@ -243,8 +255,8 @@ async function loadGpxData() {
         properties: hybrid.properties,
         geometry: {
             type: "LineString",
-            coordinates: decodeCoordinates(hybrid.geometry.encoded_coordinates),
-        },
+            coordinates: decodeCoordinates(hybrid.geometry.encoded_coordinates)
+        }
     }));
     updateMapSource();
 
@@ -333,12 +345,12 @@ async function loadGpxData() {
                 type: "Feature",
                 properties: {
                     path: shortPath,
-                    certified: record.certi != null,
+                    certified: record.certi != null
                 },
                 geometry: {
                     type: "LineString",
-                    coordinates: decodeCoordinates(feat.geometry.encoded_coordinates),
-                },
+                    coordinates: decodeCoordinates(feat.geometry.encoded_coordinates)
+                }
             });
         } else {
             if (!record.comment?.includes("gpx 파일 누락") && !record.comment?.includes("위치 기록 누락")) {
@@ -384,12 +396,12 @@ async function loadGpxData() {
                                 type: "Feature",
                                 properties: {
                                     path: shortPath,
-                                    certified: record.certi != null,
+                                    certified: record.certi != null
                                 },
                                 geometry: {
                                     type: "LineString",
-                                    coordinates: decodeCoordinates(encodedCoordinates),
-                                },
+                                    coordinates: decodeCoordinates(encodedCoordinates)
+                                }
                             });
                             updateMapSource();
 
@@ -397,11 +409,11 @@ async function loadGpxData() {
                                 type: "Feature",
                                 properties: {
                                     path: shortPath,
-                                    certified: record.certi != null,
+                                    certified: record.certi != null
                                 },
                                 geometry: {
-                                    encoded_coordinates: encodedCoordinates,
-                                },
+                                    encoded_coordinates: encodedCoordinates
+                                }
                             });
                             localStorage.setItem(LS_KEY, JSON.stringify(cachedHybridFeatures));
                         }
@@ -423,6 +435,7 @@ async function loadGpxData() {
 
 // --- Map Event Listeners & Initial Load ---
 map.on("style.load", () => {
+    map.setProjection({ type: "globe" });
     addSourcesAndLayers();
     updatePaintProperties();
     updateMapSource();

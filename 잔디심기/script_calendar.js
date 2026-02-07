@@ -95,7 +95,7 @@ hermes.calendar = () => {
                 yearElevation += rec.elevation || 0;
                 if (rec.type == "trail") {
                     yearTrailElevation += rec.elevation || 0;
-                } else {
+                } else if (rec.type == "run") {
                     yearRunningDistance += rec.distance || 0;
                 }
             });
@@ -129,7 +129,7 @@ hermes.calendar = () => {
                     monthElevation += rec.elevation || 0;
                     if (rec.type == "trail") {
                         monthTrailElevation += rec.elevation || 0;
-                    } else {
+                    } else if (rec.type === "run") {
                         monthRunningDistance += rec.distance || 0;
                     }
                 });
@@ -179,7 +179,7 @@ hermes.calendar = () => {
                                 weeklyElevation += rec.elevation || 0;
                                 if (rec.type === "trail") {
                                     weeklyTrailElevation += rec.elevation || 0;
-                                } else {
+                                } else if (rec.type === "run") {
                                     weeklyRunningDistance += rec.distance || 0;
                                 }
                             });
@@ -223,26 +223,64 @@ hermes.calendar = () => {
                         weekHtml += `<td class="day-cell y${dayYear.toString().slice(2)} w${dayWeek} ${isOfficial ? "official" : ""}" data-date="${dateString}" data-certi="${certiUrl}"><span class="date-display">${day.getDate()}</span>`;
 
                         if (recordsByDate[dateString]) {
-                            let dailyDistance = 0, dailyElevation = 0;
-                            recordsByDate[dateString].forEach((rec) => {
+                            const dayRecords = recordsByDate[dateString];
+                            let dailyDistance = 0,
+                                dailyElevation = 0;
+                            dayRecords.forEach((rec) => {
                                 dailyDistance += rec.distance || 0;
                                 dailyElevation += rec.elevation || 0;
                             });
-
+                        
                             const radius = Math.sqrt(dailyDistance / maxActivity);
-                            const color = `#00b264`;
                             const distanceText = dailyDistance > 0 ? `${dailyDistance.toFixed(1)}<span class="unit"> km</span>` : "";
                             const elevationText = dailyElevation > 0 ? (dailyElevation > 1000 ? `${(dailyElevation / 1000).toFixed(1)}<span class="unit"> km</span>` : `${dailyElevation.toFixed(0)}<span class="unit"> m</span>`) : "";
-
-                            weekHtml += `<div class="activity-circle" style="--gg:${radius};"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="${color}" /></svg></div>
+                        
+                            let svgContent = '';
+                            if (dailyDistance > 0) {
+                                if (dayRecords.length === 1) {
+                                    const record = dayRecords[0];
+                                    // 1. circle에 record.type을 클래스로 부여합니다.
+                                    svgContent = `<circle class="${record.type}" cx="50" cy="50" r="45" fill="#00b264" />`;
+                                } else if (dayRecords.length > 1) {
+                                    // 2. 여러 활동이 있으면 파이 차트를 생성합니다.
+                                    let startAngle = -Math.PI / 2; // -90도, 위쪽에서 시작
+                                    dayRecords.forEach(rec => {
+                                        if (!rec.distance || rec.distance <= 0) return;
+                        
+                                        const sliceRatio = rec.distance / dailyDistance;
+                                        const sliceAngle = sliceRatio * 2 * Math.PI;
+                                        const endAngle = startAngle + sliceAngle;
+                        
+                                        const startX = 50 + 45 * Math.cos(startAngle);
+                                        const startY = 50 + 45 * Math.sin(startAngle);
+                        
+                                        const endX = 50 + 45 * Math.cos(endAngle);
+                                        const endY = 50 + 45 * Math.sin(endAngle);
+                        
+                                        // 조각이 180도보다 크면 large-arc-flag를 1로 설정
+                                        const largeArcFlag = sliceAngle > Math.PI ? 1 : 0;
+                        
+                                        const pathData = `M 50,50 L ${startX},${startY} A 45,45 0 ${largeArcFlag} 1 ${endX},${endY} Z`;
+                        
+                                        // 각 path에도 record.type을 클래스로 부여합니다.
+                                        // stroke-linejoin="round"는 파이 차트 중앙의 모서리를 부드럽게 처리합니다.
+                                        svgContent += `<path class="${rec.type}" d="${pathData}" stroke-linejoin="round"/>`;
+                        
+                                        startAngle = endAngle;
+                                    });
+                                }
+                        
+                            weekHtml += `<div class="activity-circle" style="--gg:${radius};"><svg viewBox="0 0 100 100">${svgContent}</svg></div>
                             <div class="activity-stats">
                             ${elevationText ? `<div class="elevation">${elevationText}</div>` : ""}
                             ${distanceText ? `<div class="distance">${distanceText}</div>` : ""}
                             </div>`;
+                        }
+                        
 
                             let iconsHtml = '<div class="activity-icons">';
                             recordsByDate[dateString].forEach((rec) => {
-                                const iconName = rec.isOfficial ? "emoji_events" : rec.type == "trail" ? "terrain" : "directions_run";
+                                const iconName = rec.isOfficial ? "emoji_events" : rec.type == "trail" ? "terrain" : rec.type == "walk" ? "directions_walk" : "directions_run";
                                 const iconClass = rec.isOfficial ? "material-symbols official-race-icon" : "material-symbols-outlined";
                                 iconsHtml += `<i class="${iconClass}">${iconName}</i>`;
                             });

@@ -10,7 +10,7 @@ hermes.courseCategories = {
     "track-half": { course: "half", type: "run" },
     "track-10k": { course: "10k", type: "run" },
     "track-5k": { course: "5k", type: "run" },
-    "track-trail": { type: "trail" },
+    "track-trail": { type: "trail" }
 };
 
 // 날짜를 기반으로 주차 정보(연도, 주)를 가져오는 헬퍼 함수
@@ -63,9 +63,9 @@ hermes.recordInit = function () {
             pace: time / distance,
             elevation_pace: isTrail ? elevation_pace : distance > 0 ? time / distance : Infinity,
             distance_pace,
-            course: record.course || (isTrail ? "trail" : distance >= 42.195 ? "full" : distance >= 21.0975 ? "half" : distance >= 10 ? "10k" : "5k"),
+            course: record.type == "run" ? (distance >= 42.195 ? "full" : distance >= 21.0975 ? "half" : distance >= 10 ? "10k" : "5k") : record.type,
             dateObj: dateObj,
-            weekInfo: getWeekInfo(dateObj),
+            weekInfo: getWeekInfo(dateObj)
         };
     });
 };
@@ -91,13 +91,13 @@ hermes.stats = () => {
             <div class="stat-item">
                 <span class="label">러닝 거리</span>
                 <span class="value" title="야외 러닝으로 이동한 거리입니다."><span class="material-symbols-outlined icon"> sprint </span> ${totalRunningDistance.toLocaleString("en-US", {
-                    maximumFractionDigits: 1,
+                    maximumFractionDigits: 1
                 })} <span class="unit"> km</span></span>
             </div>
             <div class="stat-item">
                 <span class="label">거리</span>
                 <span class="value" title="모든 야외 활동 중 이동한 거리입니다."><span class="material-symbols-outlined icon"> conversion_path </span> ${totalDistance.toLocaleString("en-US", {
-                    maximumFractionDigits: 1,
+                    maximumFractionDigits: 1
                 })} <span class="unit"> km</span></span>
             </div>
             <div class="stat-item">
@@ -140,7 +140,7 @@ hermes.track = function () {
         elevations: trailRecords.map((r) => r.elevation),
         elevation_paces: trailRecords.map((r) => r.elevation_pace).filter((p) => p !== Infinity),
         distances: trailRecords.map((r) => r.distance),
-        distance_paces: trailRecords.map((r) => r.distance_pace).filter((p) => p !== Infinity),
+        distance_paces: trailRecords.map((r) => r.distance_pace).filter((p) => p !== Infinity)
     };
 
     const limitElevationPace = 12 * 60; // 12분/60m
@@ -456,10 +456,10 @@ hermes.table = function () {
         const year = document.querySelector('input[name="year"]:checked').value;
         const searchTerm = searchInput.value.toLowerCase(); // 검색어
 
-        toggleCourseFilter(type === "trail");
+        toggleCourseFilter(type === "trail" || type === "walk");
 
         filteredRecords = hermes.records.filter((record) => {
-            const recordType = record.course === "trail" ? "trail" : "run";
+            const recordType = record.type;
             const matchesType = type === "all" || recordType === type;
             const matchesCourse = course === "all" || record.course === course || type === "trail";
             const matchesYear = year === "all" || record.weekInfo.year == year;
@@ -501,7 +501,6 @@ hermes.table = function () {
             row.classList.add(record.course);
             row.title = record.comment;
 
-
             const isTrail = record.course === "trail";
 
             // 페이스 및 거리 문자열 형식화
@@ -532,7 +531,7 @@ hermes.table = function () {
 
             // 행에 마우스 오버/아웃 시 트랙 마커 하이라이트
             row.addEventListener("mouseover", () => {
-                const courseType = record.course === "trail" ? "trail" : record.course;
+                const courseType = record.course;
                 const trackId = Object.keys(hermes.courseCategories).find((key) => {
                     const category = hermes.courseCategories[key];
                     return (category.type === "trail" && courseType === "trail") || category.course === courseType;
@@ -543,7 +542,7 @@ hermes.table = function () {
                 }
             });
             row.addEventListener("mouseout", () => {
-                const courseType = record.course === "trail" ? "trail" : record.course;
+                const courseType = record.course;
                 const trackId = Object.keys(hermes.courseCategories).find((key) => {
                     const category = hermes.courseCategories[key];
                     return (category.type === "trail" && courseType === "trail") || category.course === courseType;

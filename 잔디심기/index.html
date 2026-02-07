@@ -3,9 +3,11 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-        <meta name="description" content="GitHub 마냥 러닝 액티비티를 커밋해서 작고 소중한 잔디밭을 가꾸고 있어요" />
+        <meta name="description" content="Commit Today, Green Tomorrow. with Kermit the frog 🐸. 아웃도어 액티비티를 기록해서 작고 소중한 잔디밭을 가꾸어요." />
         <title>#잔디심기 🌱</title>
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="imgs/icon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="imgs/icon-256.png" type="image/x-icon" />
         <link rel="stylesheet" href="style.css" />
         <link rel="stylesheet" type="text/css" href="style_dark.css" />
         <link rel="stylesheet" href="style_calendar.css" />
@@ -19,7 +21,6 @@
     <body>
         <div id="title">
             <h1>#잔디심기 🌱</h1>
-            <div class="unit"><span title="with Kermit the frog 🐸">Commit</span> Today, Green Tomorrow</div>
         </div>
 
         <header id="stats-header">
@@ -106,9 +107,10 @@
                     <label id="reset-filters" title="초기화"><span class="material-symbols-outlined" onclick="location.href='#table-container'"> replay </span></label>
                     <span class="div"></span>
                     <span id="type-filter-container" class="filter" onclick="location.href='#table-container'">
-                            <label title="전체"><input type="radio" name="type" value="all" checked /><span class="material-symbols-outlined"> done_all </span></label>
-                            <label title="러닝"><input type="radio" name="type" value="run" /><span class="material-symbols-outlined"> directions_run </span></label>
-                            <label title="트레일"><input type="radio" name="type" value="trail" /><span class="material-symbols-outlined"> hiking </span></label>
+                        <label title="전체"><input type="radio" name="type" value="all" checked /><span class="material-symbols-outlined"> done_all </span></label>
+                        <label title="러닝"><input type="radio" name="type" value="run" /><span class="material-symbols-outlined"> directions_run </span></label>
+                        <label title="걷기"><input type="radio" name="type" value="walk" /><span class="material-symbols-outlined"> directions_walk </span></label>
+                        <label title="트레일"><input type="radio" name="type" value="trail" /><span class="material-symbols-outlined"> hiking </span></label>
                     </span>
                     <span class="div"></span>
                     <span id="course-filter-container" class="filter" onclick="location.href='#table-container'">
@@ -120,10 +122,10 @@
                     </span>
                     <span class="div"></span>
                     <span id="year-filter-container" class="filter" onclick="location.href='#table-container'">
-                        <label title="전체" ><input type="radio" name="year" value="all" checked /><span class="material-symbols-outlined"> calendar_month </span></label>
+                        <label title="전체"><input type="radio" name="year" value="all" checked /><span class="material-symbols-outlined"> calendar_month </span></label>
                     </span>
                     <span class="div"></span>
-                        <label title="검색"><span class="material-symbols-outlined"> search </span><input type="search" id="search-input" placeholder="Search..." /></label>
+                    <label title="검색"><span class="material-symbols-outlined"> search </span><input type="search" id="search-input" placeholder="Search..." /></label>
                 </fieldset>
             </div>
             <table id="records-table">

@@ -130,7 +130,7 @@
 #calendar-grid .week-summary [class^="week"].replace {
     display: none;
 }
-#calendar-grid .week-summary [class^="week"].replace{
+#calendar-grid .week-summary [class^="week"].replace {
     color: var(--color--theme);
 }
 #calendar-grid .week-stats [class^="week"]:before {
@@ -199,12 +199,28 @@ td.on {
     transform: scale(var(--gg, 0));
     fill: rgb(0, 178, 100);
 }
+#calendar-grid .activity-circle path {
+    stroke-linejoin: round;
+    stroke-width: 1.5;
+}
+
+#calendar-grid .activity-circle .run {
+    fill: #00b264;
+    stroke: #00b264;
+}
+
+#calendar-grid .activity-circle .trail,
+#calendar-grid .activity-circle .walk {
+    fill: #008755;
+    stroke: #008755;
+}
 
 #calendar-grid .day-cell.official {
     cursor: pointer;
 }
 #calendar-grid .day-cell.official .activity-circle circle {
     fill: gold;
+    stroke: gold;
 }
 
 .activity-stats {
@@ -344,7 +360,7 @@ td.on {
     color: var(--color--body-background);
 }
 #calendar-grid.compact .day-cell:has(.activity-circle) .date-display {
-    font-weight: bold;
+    /* font-weight: bold; */
 }
 #calendar-grid.compact .day-cell:has(.activity-circle).official .date-display {
     color: #212121;

@@ -8,20 +8,26 @@
             "sizes": "128x128"
         },
         {
+            "src": "imgs/icon-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "imgs/icon-192-maskable.png",
+            "type": "image/png",
+            "sizes": "192x192",
+            "purpose": "maskable"
+        },
+        {
             "src": "imgs/icon-256.png",
             "type": "image/png",
             "sizes": "256x256"
         },
         {
-            "src": "imgs/icon.svg",
-            "type": "image/svg+xml",
-            "sizes": "any"
-        },
-        {
-            "src": "imgs/icon_maskable.svg",
-            "type": "image/svg+xml",
-            "sizes": "any",
-            "purpose": "maskable any"
+            "src": "imgs/icon-256-maskable.png",
+            "type": "image/png",
+            "sizes": "256x256",
+            "purpose": "maskable"
         }
     ],
     "start_url": "/bucket/잔디심기/",
