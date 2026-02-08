@@ -2,6 +2,15 @@
     {
         "type": "Feature",
         "properties": {
+            "path": "2021-01-10"
+        },
+        "geometry": {
+            "encoded_coordinates": "osmwbAyb{suFs@xByB\\cB^qB\\qBz@sA|@yB\\{A|@kAz@kA|@sAz@cB\\{A|@iB\\iB|@{Az@{A\\{A?iB?cB^aB\\{A?cB\\{A\\qB^{A\\qB\\qB|@cB\\yA\\kA|@cB\\{A\\kA|@sAz@kA|@cBzAqBz@{A\\yB]{@yBFyBG{AkB]qB?{A?aB]cB?kAz@{A?{@yAbA{A]}@cB?aB|@eAxBs@zA_@xBs@xAcB^sAz@{A|@sAz@sA|@qB\\{A\\yA?cB^iB\\kBz@kA|@{A\\{A\\qB^iB\\kB\\aB?}@{AqB^sAxAkAzA{AzAiBz@kA|@kB\\{A\\yA|@{A|@{Az@iB\\cB^{A_@e@|@aBz@cB^kAz@qB|@kBz@iB|@qB\\{Az@qB^kB\\sA}@aB^kB\\yAz@kB|@{A\\qB\\sA|@sA|@yA?kB\\{A\\aB\\{A^qBz@{A|@sAxAkAzAkA|@{A\\cB\\aB\\iC?iB]cB?cB\\kAzAd@rFl@xBt@xB\\xBFxCVvCbAxBbAvCt@zAz@zAl@vC?xB?vCFzBVxBj@xB|@xBt@xBl@xBz@xAjA|@jA|@t@xBl@xBFxBFxBTxB\\vC?xB^xBOvCFxBTxBFxBNxCd@xBl@xBd@xBTxBNxBLxB^xBd@xBl@xBj@xBt@xBVxBTxBd@xBl@xBl@xBl@xCTvCMxB?xBTxB?xBFxBl@vCz@zAt@xBz@zArAxBt@zAt@vC\\xB?xB?xBOxB?xB]xBt@zAz@zAt@zAd@vC]xB]xBFzA??"
+        }
+    },
+    {
+        "type": "Feature",
+        "properties": {
             "path": "2021-08-04",
             "certified": false
         },

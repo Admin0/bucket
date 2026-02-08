@@ -6,88 +6,7 @@
         <title>#잔디심기 🌏 earth</title>
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
         <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
-        <style>
-            body {
-                margin: 0;
-                font-family: sans-serif;
-            }
-            #map {
-                height: 100vh;
-            }
-
-            /* --- 프로그레스 바 스타일 --- */
-            #progress-container {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 4px;
-                z-index: 1001;
-                background-color: transparent;
-                transition: opacity 0.5s ease-out;
-            }
-
-            #progress-bar {
-                width: 0%;
-                height: 100%;
-                background-color: #00ff7f;
-                box-shadow: 0 0 10px #00ff7f, 0 0 5px #00ff7f;
-                transition: width 0.2s ease-out;
-            }
-
-            /* --- 진행률 카운터 스타일 --- */
-            #gpx-counter {
-                position: fixed;
-                top: 8px;
-                z-index: 1000;
-                background: rgba(0, 0, 0, 0.7);
-                color: white;
-                padding: 4px 10px;
-                border-radius: 12px;
-                font-size: 12px;
-                font-weight: bold;
-                white-space: nowrap;
-                box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
-                transition: opacity 0.5s ease-out, left 0.2s ease-out, transform 0.2s ease-out;
-                transform: translateX(-100%);
-            }
-
-            /* --- 커스텀 컨트롤 버튼 그룹 스타일 --- */
-            .custom-controls {
-                position: fixed;
-                top: 11.6em; /* NavigationControl 바로 아래에 위치 */
-                right: 10px;
-                z-index: 1001;
-                display: flex;
-                flex-direction: column;
-            }
-
-            .custom-controls button {
-                background-color: rgba(255, 255, 255, 0.8);
-                border: 0;
-                border-radius: 4px;
-                padding: 4px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-            }
-
-            .custom-controls button:not(:last-child) {
-                margin-bottom: 8px;
-            }
-
-            .custom-controls button svg {
-                fill: #333;
-            }
-
-            /* 활성 상태 버튼 스타일 */
-            .custom-controls button.active {
-                background-color: #a2d9ff;
-            }
-
-        </style>
+        <link href="style.css" rel="stylesheet" />
     </head>
     <body>
         <div id="progress-container">
@@ -95,12 +14,14 @@
             <div id="gpx-counter">0%</div>
         </div>
         <div id="map"></div>
-
-        <!-- <div class="custom-controls">
-            <button id="style-switcher" title="Toggle style">
-                <svg id="style-icon" width="20" height="20" viewBox="0 0 24 24"></svg>
-            </button>
-        </div> -->
+        
+        <div id="gpx-list-container">
+            <ul></ul>
+            <div id="export-controls">
+                <button id="export-button">내보내기</button>
+            </div>
+            <div id="export-output"></div>
+        </div>
 
         <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js" defer></script>
         <script src="https://unpkg.com/maplibre-contour@0.1.0/dist/index.min.js" defer></script>
@@ -108,5 +29,6 @@
         <script src="../script_records.js" defer></script>
         <script src="script_records_4_earth.js" defer></script>
         <script src="script.js" defer></script>
+        <script src="script_gpx.js" defer></script>
     </body>
 </html>

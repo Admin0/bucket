@@ -107,11 +107,13 @@ function updatePaintProperties() {
     const styleColors = {
         dark: {
             gpx: "#00ff7f",
-            gpxCerti: "#ffD700"
+            gpxCerti: "#ffD700",
+            text: "#ffffff"
         },
         light: {
             gpx: "#00b264",
-            gpxCerti: "#f57f17"
+            gpxCerti: "#FAAB0C",
+            text: "#000000"
         }
     };
     const colors = styleColors[currentStyle];
@@ -125,6 +127,12 @@ function updatePaintProperties() {
                 break;
             case "gpx-certified-layer":
                 map.setPaintProperty(layerId, "line-color", colors.gpxCerti);
+                break;
+            case "contour-lines":
+                map.setPaintProperty(layerId, "line-color", colors.text);
+                break;
+            case "contour-labels":
+                map.setPaintProperty(layerId, "text-color", colors.text);
                 break;
         }
     });
@@ -206,12 +214,62 @@ function addSourcesAndLayers() {
                         7, // 줌 레벨
                         0.75, // 투명도
                         10, // 줌 레벨
-                        0.25 // 투명도
+                        0.33 // 투명도
                     ]
                 },
                 filter: ["==", ["get", "certified"], true]
             },
             firstSymbolId
+        );
+
+    // --- DEM & Contour Source Setup ---
+    const demSource = new mlcontour.DemSource({
+        url: "https://tiles.mapterhorn.com/{z}/{x}/{y}.webp",
+        encoding: "terrarium",
+        worker: true,
+        cacheSize: 100,
+        timeoutMs: 10_000
+    });
+    demSource.setupMaplibre(maplibregl);
+
+    if (!map.getSource("dem")) map.addSource("dem", { type: "raster-dem", encoding: "terrarium", tiles: [demSource.sharedDemProtocolUrl], tileSize: 256, maxzoom: 12 });
+    if (!map.getSource("contour-source"))
+        map.addSource("contour-source", {
+            type: "vector",
+            tiles: [
+                demSource.contourProtocolUrl({
+                    thresholds: { 11: [200, 1000], 12: [100, 500], 14: [50, 200], 15: [20, 100] },
+                    contourLayer: "contours",
+                    elevationKey: "ele",
+                    levelKey: "level",
+                    maxzoom: 12
+                })
+            ]
+        });
+    if (!map.getLayer("hillshade-layer")) map.addLayer({ id: "hillshade-layer", type: "hillshade", source: "dem", paint: { "hillshade-exaggeration": .1 } }, "gpx-normal-layer");
+    if (!map.getLayer("contour-lines"))
+        map.addLayer(
+            {
+                id: "contour-lines",
+                type: "line",
+                source: "contour-source",
+                "source-layer": "contours",
+                paint: { "line-opacity": 0.33, "line-width": ["match", ["get", "level"], 1, 1, 0.5] },
+                layout: { "line-join": "round" }
+            },
+            "gpx-normal-layer"
+        );
+    if (!map.getLayer("contour-labels"))
+        map.addLayer(
+            {
+                id: "contour-labels",
+                type: "symbol",
+                source: "contour-source",
+                "source-layer": "contours",
+                filter: [">", ["get", "level"], 0],
+                layout: { "symbol-placement": "line", "text-size": 10, "text-field": ["concat", ["number-format", ["get", "ele"], {}], " m"], "text-font": ["Noto Sans Bold"] }
+            },
+            "gpx-normal-layer"
         );
 }
 
@@ -443,6 +501,11 @@ map.on("style.load", () => {
 
 map.on("load", () => {
     map.setProjection({ type: "globe" });
-    // map.setTerrain({ source: "terrain-rgb", exaggeration: 1.5 });
+    map.setTerrain({ source: "dem", exaggeration: 1.5 });
     loadGpxData();
+
+    // Initialize GPX drag-and-drop functionality
+    if (hermes && typeof hermes.gpx.init === 'function') {
+        hermes.gpx.init(map);
+    }
 });

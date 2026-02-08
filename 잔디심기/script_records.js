@@ -313,7 +313,8 @@ const hermes_records = [
     { date: "2024-10-07", type: "run", distance: 5.0, elevation: 5, record: "00:29:04", title: "신정호", comment: "" },
     { date: "2024-10-05", type: "run", distance: 5.0, elevation: 5, record: "00:30:55", title: "신정호", comment: "" },
 
-    { date: "2024-09-30", type: "run", distance: 5.03, elevation: 5, record: "00:32:10", title: "신정호", comment: "" },
+    { date: "2024-09-30", type: "walk", distance: 2.73, elevation: 76, record: "00:39:52", title: "인주산단로", comment: "점심산책" },
+    { date: "2024-09-30", type: "run", distance: 5.03, elevation: 5, record: "00:32:10", title: "신정호", comment: "", over: 1 },
     { date: "2024-09-28", type: "run", distance: 5.01, elevation: 5, record: "00:31:41", title: "신정호", comment: "" },
     { date: "2024-09-24", type: "run", distance: 4.86, elevation: 5, record: "00:35:23", title: "신정호", comment: "" },
     { date: "2024-09-23", type: "run", distance: 10.01, elevation: 10, record: "01:15:07", title: "신정호", comment: "마라톤 대회 대비 / 거의 5년만에 10키로 러닝", over: 1 },
@@ -323,6 +324,7 @@ const hermes_records = [
     { date: "2024-08-23", type: "run", distance: 4.94, elevation: 5, record: "00:35:05", title: "신정호", comment: "" },
 
     { date: "2024-07-21", type: "run", distance: 5.01, elevation: 5, record: "00:36:37", title: "신정호", comment: "" },
+    { date: "2024-07-16", type: "walk", distance: 5.64, elevation: 20, record: "01:05:58", title: "장항선구철도길", comment: "" },
     { date: "2024-07-15", type: "run", distance: 5.0, elevation: 5, record: "00:33:30", title: "신정호", comment: "" },
     { date: "2024-07-05", type: "run", distance: 5.09, elevation: 5, record: "00:43:34", title: "신정호", comment: "" },
 
@@ -388,11 +390,11 @@ const hermes_records = [
     { date: "2023-09-09", type: "walk", distance: 3.19, elevation: 27, record: "00:41:56", title: "장항선구철도길", comment: "아산으로 이사" },
     { date: "2023-04-29", type: "walk", distance: 2.47, elevation: 11, record: "00:31:39", title: "삼산동", comment: "무슨이유에선지 또 싸돌아뎅기다가 집들어옴", over: 1 },
     { date: "2023-04-30", type: "trail", distance: 9.26, elevation: 412, record: "02:58:26", title: "천황산 - 재약산", comment: "" },
-    { date: "2023-04-29", type: "walk", distance: 3.10, elevation: 5, record: "00:41:16", title: "삼산동", comment: "터미널까지 걸어감" },
+    { date: "2023-04-29", type: "walk", distance: 3.1, elevation: 5, record: "00:41:16", title: "삼산동", comment: "터미널까지 걸어감" },
     { date: "2023-04-22", type: "trail", distance: 15.79, elevation: 1668, record: "09:09:00", title: "가지산 - 운문산", comment: "" },
     { date: "2023-04-16", type: "trail", distance: 6.05, elevation: 545, record: "02:14:06", title: "고헌산", comment: "" },
     { date: "2023-04-15", type: "walk", distance: 3.06, elevation: 2, record: "00:40:24", title: "삼산동", comment: "터미널까지 걸어감" },
     { date: "2023-04-10", type: "trail", distance: 19.02, elevation: 1322, record: "08:56:00", title: "영축산 - 신불산 - 간월산", comment: "죽을 뻔 했고요 ㅎ" },
     { date: "2023-04-09", type: "walk", distance: 3.13, elevation: 18, record: "00:45:45", title: "삼산", comment: "터미널에서 집으로" },
-    { date: "2023-04-01", type: "walk", distance: 6.98, elevation: 21, record: "01:44:15", title: "태화강", comment: "밤산책" },
+    { date: "2023-04-01", type: "walk", distance: 6.98, elevation: 21, record: "01:44:15", title: "태화강", comment: "밤산책" }
 ];
