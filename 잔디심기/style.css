@@ -492,7 +492,7 @@ a {
 #records-table thead th {
     text-align: left;
     cursor: pointer;
-    padding-right: 1.5em;
+    /* padding-right: 1.5em; */
 }
 
 #records-table thead th .text {
@@ -502,9 +502,10 @@ a {
 #records-table thead th:hover,
 #records-table thead th[class^="sort"] {
     background: var(--color--theme);
-    outline: 1em solid var(--color--theme);
+    border: 1em solid var(--color--theme);
     color: var(--color--body-background);
-    border-radius: 1.5em;
+    border-radius: 2em;
+    margin: -1em;
 }
 
 #records-table tbody {
@@ -515,14 +516,14 @@ a {
 }
 
 #records-table th[class^="sort"]:after {
-    color: var(--color--calendar-icon);
+    /* color: #fff; */
     content: "arrow_upward";
     position: absolute;
     font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
     font-family: "Material Symbols Outlined";
     font-weight: normal;
     font-style: normal;
-    font-size: 24px;
+    font-size: 16px;
     line-height: 1;
     letter-spacing: normal;
     text-transform: none;
@@ -532,10 +533,16 @@ a {
     direction: ltr;
     -webkit-font-feature-settings: "liga";
     -webkit-font-smoothing: antialiased;
+    margin-left:.25em;
+    padding:.25em;
+    background: #008755;
+    border: 1.5px solid var(--color--body-background);
+    border-radius: 1em;
+    transition: .25s;
 }
 
 #records-table th.sort-desc:after {
-    content: "arrow_downward";
+    transform: rotate(180deg);
 }
 
 #records-table th,

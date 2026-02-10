@@ -63,6 +63,8 @@ const hermes_records = [
     },
 
     // unofficial 2026
+    { date: "2026-02-09", type: "run", distance: 10.04, elevation: 41, record: "01:02:41", title: "신정호", comment: "@현욱" },
+    { date: "2026-02-08", type: "run", distance: 10.33, elevation: 44, record: "01:00:07", title: "장항선구철도길", comment: "" },
     { date: "2026-02-07", type: "walk", distance: 9.78, elevation: 80, record: "01:35:43", title: "신정호", comment: "걸어서 돌아오기로 함", over: 1 },
     { date: "2026-02-07", type: "run", distance: 5.01, elevation: 34, record: "00:32:28", title: "신정호", comment: "너무 힘든데..." },
     { date: "2026-02-03", type: "run", distance: 5.21, elevation: 20, record: "00:31:14", title: "장항선구철도길", comment: "@이런저런" },

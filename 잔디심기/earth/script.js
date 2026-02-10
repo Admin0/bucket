@@ -186,7 +186,8 @@ function addSourcesAndLayers() {
                 },
                 filter: ["!=", ["get", "certified"], true]
             },
-            firstSymbolId
+            // firstSymbolId
+            "label-address-housenumber"
         );
     if (!map.getLayer("gpx-certified-layer"))
         map.addLayer(
@@ -219,7 +220,8 @@ function addSourcesAndLayers() {
                 },
                 filter: ["==", ["get", "certified"], true]
             },
-            firstSymbolId
+            // firstSymbolId
+            "label-address-housenumber"
         );
 
     // --- DEM & Contour Source Setup ---
@@ -246,7 +248,7 @@ function addSourcesAndLayers() {
                 })
             ]
         });
-    if (!map.getLayer("hillshade-layer")) map.addLayer({ id: "hillshade-layer", type: "hillshade", source: "dem", paint: { "hillshade-exaggeration": .1 } }, "gpx-normal-layer");
+    if (!map.getLayer("hillshade-layer")) map.addLayer({ id: "hillshade-layer", type: "hillshade", source: "dem", paint: { "hillshade-exaggeration": .1 } }, "land-forest");
     if (!map.getLayer("contour-lines"))
         map.addLayer(
             {
@@ -257,7 +259,7 @@ function addSourcesAndLayers() {
                 paint: { "line-opacity": 0.33, "line-width": ["match", ["get", "level"], 1, 1, 0.5] },
                 layout: { "line-join": "round" }
             },
-            "gpx-normal-layer"
+            "label-place-neighbourhood"
         );
     if (!map.getLayer("contour-labels"))
         map.addLayer(
@@ -269,7 +271,7 @@ function addSourcesAndLayers() {
                 filter: [">", ["get", "level"], 0],
                 layout: { "symbol-placement": "line", "text-size": 10, "text-field": ["concat", ["number-format", ["get", "ele"], {}], " m"], "text-font": ["Noto Sans Bold"] }
             },
-            "gpx-normal-layer"
+            "label-place-neighbourhood"
         );
 }
 
@@ -508,4 +510,6 @@ map.on("load", () => {
     if (hermes && typeof hermes.gpx.init === 'function') {
         hermes.gpx.init(map);
     }
+
+    
 });

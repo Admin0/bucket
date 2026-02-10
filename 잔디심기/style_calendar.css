@@ -250,7 +250,7 @@ td.on {
 }
 
 .activity-icons i {
-    margin: 0 -0.125em;
+    /* margin: 0 -0.125em; */
 }
 
 .activity-icons:has(.rest) {

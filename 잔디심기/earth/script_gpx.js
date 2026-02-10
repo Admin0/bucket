@@ -6,15 +6,15 @@ hermes.gpx = (() => {
     const state = {
         map: null,
         droppedTracks: [],
-        selectedTrackIds: [], // 단일 ID에서 배열로 변경
-        lastSelectedTrackId: null, // Shift 선택을 위해 마지막으로 클릭된 항목 추적
+        selectedTrackIds: [],
+        lastSelectedTrackId: null,
     };
 
     const listContainer = document.getElementById('gpx-list-container');
     const listElement = listContainer ? listContainer.querySelector('ul') : null;
     let dragCounter = 0;
 
-    // --- Helper Functions (변경 없음) ---
+    // --- Helper Functions ---
     function haversineDistance(coords1, coords2) {
         const R = 6371e3; const φ1 = coords1[1] * Math.PI / 180; const φ2 = coords2[1] * Math.PI / 180; const Δφ = (coords2[1] - coords1[1]) * Math.PI / 180; const Δλ = (coords2[0] - coords1[0]) * Math.PI / 180; const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2); const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); return R * c;
     }
@@ -30,28 +30,40 @@ hermes.gpx = (() => {
     function encodeCoordinates(coordinates) {
         let plat = 0; let plon = 0; let encoded = ''; for (const point of coordinates) { const lat = Math.round(point[1] * 1e6); const lon = Math.round(point[0] * 1e6); encoded += encode(lat - plat); encoded += encode(lon - plon); plat = lat; plon = lon; } return encoded;
     }
+    async function getAddressFromCoordinates(lat, lon) {
+        if (!lat || !lon) return null;
+        const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1&accept-language=ko,en`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) return null;
+            const data = await response.json();
+            const address = data.address;
+            if (!address) return null;
+            return address.road || address.suburb || address.village || address.city || address.country || null;
+        } catch (error) {
+            console.error('Reverse geocoding failed:', error);
+            return null;
+        }
+    }
 
-    // --- File Parsing & Data Processing (변경 없음) ---
-    function parseFile(fileContent, fileType) {
-        const parser = new DOMParser(); const doc = parser.parseFromString(fileContent, "application/xml"); let points = [], times = [], elevations = []; let pointSelector, latAttr, lonAttr, timeTag, eleTag; if (fileType === 'gpx') { pointSelector = 'trkpt'; latAttr = 'lat'; lonAttr = 'lon'; timeTag = 'time'; eleTag = 'ele'; } else { pointSelector = 'Trackpoint'; latAttr = 'LatitudeDegrees'; lonAttr = 'LongitudeDegrees'; timeTag = 'Time'; eleTag = 'AltitudeMeters'; } const trackpoints = doc.querySelectorAll(pointSelector); trackpoints.forEach(pt => { let lat, lon; if (fileType === 'gpx') { lat = parseFloat(pt.getAttribute(latAttr)); lon = parseFloat(pt.getAttribute(lonAttr)); } else { const latNode = pt.querySelector(latAttr); const lonNode = pt.querySelector(lonAttr); if (!latNode || !lonNode) return; lat = parseFloat(latNode.textContent); lon = parseFloat(lonNode.textContent); } points.push([lon, lat]); const timeNode = pt.querySelector(timeTag); if (timeNode) times.push(new Date(timeNode.textContent)); const eleNode = pt.querySelector(eleTag); if (eleNode) elevations.push(parseFloat(eleNode.textContent)); }); if (points.length === 0) return null; let distance = 0; for (let i = 1; i < points.length; i++) { distance += haversineDistance(points[i - 1], points[i]); } let elevationGain = 0; if (elevations.length > 1) { for (let i = 1; i < elevations.length; i++) { const diff = elevations[i] - elevations[i - 1]; if (diff > 0) { elevationGain += diff; } } } const duration = (times.length > 1) ? (times[times.length - 1] - times[0]) / 1000 : 0; const date = (times.length > 0) ? times[0].toISOString().split('T')[0] : null; return { points, distance: distance / 1000, elevation: Math.round(elevationGain), duration, date, };
+    // --- File Parsing & Data Processing ---
+    function parseFile(fileContent, fileType, fileName) {
+        const parser = new DOMParser(); const doc = parser.parseFromString(fileContent, "application/xml"); let points = [], times = [], elevations = []; let pointSelector, latAttr, lonAttr, timeTag, eleTag; if (fileType === 'gpx') { pointSelector = 'trkpt'; latAttr = 'lat'; lonAttr = 'lon'; timeTag = 'time'; eleTag = 'ele'; } else { pointSelector = 'Trackpoint'; latAttr = 'LatitudeDegrees'; lonAttr = 'LongitudeDegrees'; timeTag = 'Time'; eleTag = 'AltitudeMeters'; } const trackpoints = doc.querySelectorAll(pointSelector); trackpoints.forEach(pt => { let lat, lon; if (fileType === 'gpx') { lat = parseFloat(pt.getAttribute(latAttr)); lon = parseFloat(pt.getAttribute(lonAttr)); } else { const latNode = pt.querySelector(latAttr); const lonNode = pt.querySelector(lonAttr); if (!latNode || !lonNode) return; lat = parseFloat(latNode.textContent); lon = parseFloat(lonNode.textContent); } points.push([lon, lat]); const timeNode = pt.querySelector(timeTag); if (timeNode) times.push(new Date(timeNode.textContent)); const eleNode = pt.querySelector(eleTag); if (eleNode) elevations.push(parseFloat(eleNode.textContent)); }); if (points.length === 0) return null; let distance = 0; for (let i = 1; i < points.length; i++) { distance += haversineDistance(points[i - 1], points[i]); } let elevationGain = 0; if (elevations.length > 1) { for (let i = 1; i < elevations.length; i++) { const diff = elevations[i] - elevations[i - 1]; if (diff > 0) { elevationGain += diff; } } } const duration = (times.length > 1) ? (times[times.length - 1] - times[0]) / 1000 : 0; const date = (times.length > 0) ? times[0].toISOString().split('T')[0] : null; return { points, distance: distance / 1000, elevation: Math.round(elevationGain), duration, date, title: null, name: fileName, };
     }
 
     // --- UI & Map Interaction ---
     function deleteSelectedTracks() {
         if (state.selectedTrackIds.length === 0) return;
-
         state.selectedTrackIds.forEach(trackId => {
             const layerId = `gpx-layer-${trackId}`;
             const sourceId = `gpx-source-${trackId}`;
             if (state.map.getLayer(layerId)) state.map.removeLayer(layerId);
             if (state.map.getSource(sourceId)) state.map.removeSource(sourceId);
         });
-
         state.droppedTracks = state.droppedTracks.filter(track => !state.selectedTrackIds.includes(track.id));
         state.selectedTrackIds = [];
         state.lastSelectedTrackId = null;
         updateList();
-        
         const outputContainer = document.getElementById('export-output');
         if (outputContainer) {
             outputContainer.innerHTML = '';
@@ -71,7 +83,21 @@ hermes.gpx = (() => {
                 li.classList.add('selected');
             }
             const pace = formatPace(track.duration, track.distance);
-            li.innerHTML = `<div class="track-name">${track.name}</div><div class="track-meta">📅 ${track.date || 'N/A'}<span class="meta-separator">|</span>📏 ${track.distance.toFixed(2)} km<span class="meta-separator">|</span>⛰️ ${track.elevation} m</div><div class="track-meta">⏱️ ${formatDuration(track.duration)}<span class="meta-separator">|</span>🏃 ${pace}/km</div>`;
+
+            let activityTitle = '걷기';
+            const paceInSecondsPerKm = track.distance > 0 ? track.duration / track.distance : 0;
+
+            if (track.elevation >= 250) {
+                activityTitle = '등산';
+            } else if (paceInSecondsPerKm > 0 && paceInSecondsPerKm <= 480) { // 8 min/km
+                activityTitle = '러닝';
+            }
+
+            const displayName = track.title 
+                ? `${track.title} ${activityTitle} (${track.name})`
+                : `${track.name} ${activityTitle}`;
+
+            li.innerHTML = `<div class="track-name">${displayName}</div><div class="track-meta">📅 ${track.date || 'N/A'}<span class="meta-separator">|</span>📏 ${track.distance.toFixed(2)} km<span class="meta-separator">|</span>⛰️ ${track.elevation} m<span class="meta-separator">|</span>⏱️ ${formatDuration(track.duration)}<span class="meta-separator">|</span>🏃 ${pace}/km</div>`;
             li.addEventListener('click', (e) => {
                 handleTrackSelection(track.id, e.shiftKey, e.metaKey || e.ctrlKey);
             });
@@ -93,7 +119,6 @@ hermes.gpx = (() => {
     }
 
     function focusOnSelectedTracks() {
-        // Reset styles for all tracks
         state.droppedTracks.forEach(track => {
             state.map.setPaintProperty(`gpx-layer-${track.id}`, 'line-color', '#f44a01');
             state.map.setPaintProperty(`gpx-layer-${track.id}`, 'line-width', 3);
@@ -108,10 +133,8 @@ hermes.gpx = (() => {
 
         const bounds = new maplibregl.LngLatBounds();
         selectedTracks.forEach(track => {
-            // Highlight selected tracks
             state.map.setPaintProperty(`gpx-layer-${track.id}`, 'line-color', '#FF1744');
             state.map.setPaintProperty(`gpx-layer-${track.id}`, 'line-width', 6);
-            // Extend bounds
             track.points.forEach(point => bounds.extend(point));
         });
 
@@ -132,21 +155,17 @@ hermes.gpx = (() => {
             const range = trackIds.slice(start, end + 1);
 
             if (isCtrl) {
-                // Add range to existing selection (unique)
                 state.selectedTrackIds = [...new Set([...currentIds, ...range])];
             } else {
-                // Replace selection with range
                 state.selectedTrackIds = range;
             }
         } else if (isCtrl) {
-            // Toggle single track
             if (currentIds.includes(trackId)) {
                 state.selectedTrackIds = currentIds.filter(id => id !== trackId);
             } else {
                 state.selectedTrackIds.push(trackId);
             }
         } else {
-            // Simple click: select only one
             state.selectedTrackIds = [trackId];
         }
 
@@ -154,104 +173,108 @@ hermes.gpx = (() => {
         focusOnSelectedTracks();
     }
     
-    // --- Export Functionality (변경 없음) ---
-  // --- Export Functionality ---
-function handleExport() {
-    // 1. 선택된 항목만 내보내기
-    if (state.selectedTrackIds.length === 0) {
-        alert('내보낼 항목을 먼저 선택해주세요.');
-        return;
+    // --- Export Functionality ---
+    function handleExport() {
+        if (state.selectedTrackIds.length === 0) {
+            alert('내보낼 항목을 먼저 선택해주세요.');
+            return;
+        }
+
+        const selectedTracks = state.droppedTracks
+            .filter(track => state.selectedTrackIds.includes(track.id))
+            .sort((a, b) => { 
+                const dateComp = a.date.localeCompare(b.date);
+                if (dateComp !== 0) return dateComp;
+                const nameA = a.name.replace(/\.(gpx|tcx)$/i, '');
+                const nameB = b.name.replace(/\.(gpx|tcx)$/i, '');
+                return nameA.localeCompare(nameB);
+            });
+
+        const tracksByDate = {};
+        selectedTracks.forEach(track => {
+            if (!track.date) return;
+            if (!tracksByDate[track.date]) tracksByDate[track.date] = [];
+            tracksByDate[track.date].push(track);
+        });
+
+        let recordsJsOutput = [];
+        let compressedJsonOutput = [];
+
+        Object.keys(tracksByDate).sort().forEach(date => {
+            const tracks = tracksByDate[date];
+            tracks.forEach((track, index) => {
+                let activityType = 'walk';
+                const paceInSecondsPerKm = track.distance > 0 ? track.duration / track.distance : 0;
+
+                if (track.elevation >= 250) {
+                    activityType = 'trail';
+                } else if (paceInSecondsPerKm > 0 && paceInSecondsPerKm <= 480) { // 8 min/km = 480 sec/km
+                    activityType = 'run';
+                }
+
+                let record = {
+                    date: track.date,
+                    type: activityType,
+                    distance: parseFloat(track.distance.toFixed(2)),
+                    elevation: track.elevation,
+                    record: formatDuration(track.duration),
+                    title: track.title || track.name.replace(/\.(gpx|tcx)$/i, ''),
+                    comment: "",
+                };
+
+                if (tracks.length > 1) record.over = index + 1;
+                
+                recordsJsOutput.push(JSON.stringify(record)); 
+
+                const path = `${track.date}${tracks.length > 1 ? '_' + (index + 1) : ''}`;
+                const compressedFeature = {
+                    type: "Feature",
+                    properties: { path },
+                    geometry: { encoded_coordinates: encodeCoordinates(track.points) }
+                };
+                compressedJsonOutput.push(JSON.stringify(compressedFeature, null, 4));
+            });
+        });
+
+        const outputContainer = document.getElementById('export-output');
+        
+        const copyToClipboard = (text, targetElement) => {
+            navigator.clipboard.writeText(text).then(() => {
+                const existingFeedback = targetElement.querySelector('.copy-feedback');
+                if (existingFeedback) existingFeedback.remove();
+
+                const feedback = document.createElement('div');
+                feedback.className = 'copy-feedback';
+                feedback.textContent = '복사 완료!';
+                targetElement.appendChild(feedback);
+                setTimeout(() => feedback.remove(), 1500);
+            }).catch(err => {
+                console.error('클립보드 복사 실패:', err);
+                alert('복사에 실패했습니다.');
+            });
+        };
+
+        const recordsHtml = `
+            <div class="code-block-container">
+                <h3>hermes_records.js 에 추가:</h3>
+                <div class="code-block" id="records-code"><code>${recordsJsOutput.join(',\n')}</code></div>
+            </div>`;
+        const compressedHtml = `
+            <div class="code-block-container">
+                <h3>records/compressed/YYYY.json 에 추가:</h3>
+                <div class="code-block" id="compressed-code"><code>${compressedJsonOutput.join(',\n')}</code></div>
+            </div>`;
+
+        outputContainer.innerHTML = recordsHtml + compressedHtml;
+        outputContainer.style.display = 'block';
+        
+        document.getElementById('records-code').addEventListener('click', function() {
+            copyToClipboard(this.textContent, this);
+        });
+        document.getElementById('compressed-code').addEventListener('click', function() {
+            copyToClipboard(this.textContent, this);
+        });
     }
-
-    const selectedTracks = state.droppedTracks
-        .filter(track => state.selectedTrackIds.includes(track.id))
-        .sort((a, b) => { // 날짜와 이름으로 정렬
-            const dateComp = a.date.localeCompare(b.date);
-            if (dateComp !== 0) return dateComp;
-            const nameA = a.name.replace(/\.(gpx|tcx)$/i, '');
-            const nameB = b.name.replace(/\.(gpx|tcx)$/i, '');
-            return nameA.localeCompare(nameB);
-        });
-
-    const tracksByDate = {};
-    selectedTracks.forEach(track => {
-        if (!track.date) return;
-        if (!tracksByDate[track.date]) tracksByDate[track.date] = [];
-        tracksByDate[track.date].push(track);
-    });
-
-    let recordsJsOutput = [];
-    let compressedJsonOutput = [];
-
-    Object.keys(tracksByDate).sort().forEach(date => {
-        const tracks = tracksByDate[date];
-        tracks.forEach((track, index) => {
-            let record = {
-                date: track.date,
-                type: "walk",
-                distance: parseFloat(track.distance.toFixed(2)),
-                elevation: track.elevation,
-                record: formatDuration(track.duration),
-                title: track.name.replace(/\.(gpx|tcx)$/i, ''),
-                comment: "",
-            };
-            if (tracks.length > 1) record.over = index + 1;
-            
-            // 2. hermes_records.js용 코드를 한 줄(inline)으로 생성
-            recordsJsOutput.push(JSON.stringify(record)); 
-
-            const path = `${track.date}${tracks.length > 1 ? '_' + (index + 1) : ''}`;
-            const compressedFeature = {
-                type: "Feature",
-                properties: { path },
-                geometry: { encoded_coordinates: encodeCoordinates(track.points) }
-            };
-            compressedJsonOutput.push(JSON.stringify(compressedFeature, null, 4));
-        });
-    });
-
-    const outputContainer = document.getElementById('export-output');
-    
-    // 3. 코드 블록 클릭 시 클립보드 복사 및 피드백 표시
-    const copyToClipboard = (text, targetElement) => {
-        navigator.clipboard.writeText(text).then(() => {
-            // 기존 피드백 제거
-            const existingFeedback = targetElement.querySelector('.copy-feedback');
-            if (existingFeedback) existingFeedback.remove();
-
-            const feedback = document.createElement('div');
-            feedback.className = 'copy-feedback';
-            feedback.textContent = '복사 완료!';
-            targetElement.appendChild(feedback);
-            setTimeout(() => feedback.remove(), 1500);
-        }).catch(err => {
-            console.error('클립보드 복사 실패:', err);
-            alert('복사에 실패했습니다.');
-        });
-    };
-
-    const recordsHtml = `
-        <div class="code-block-container">
-            <h3>hermes_records.js 에 추가:</h3>
-            <div class="code-block" id="records-code"><code>${recordsJsOutput.join(',\n')}</code></div>
-        </div>`;
-    const compressedHtml = `
-        <div class="code-block-container">
-            <h3>records/compressed/YYYY.json 에 추가:</h3>
-            <div class="code-block" id="compressed-code"><code>${compressedJsonOutput.join(',\n')}</code></div>
-        </div>`;
-
-    outputContainer.innerHTML = recordsHtml + compressedHtml;
-    outputContainer.style.display = 'block';
-    
-    document.getElementById('records-code').addEventListener('click', function() {
-        copyToClipboard(this.textContent, this);
-    });
-    document.getElementById('compressed-code').addEventListener('click', function() {
-        copyToClipboard(this.textContent, this);
-    });
-}
-
 
     // --- Initialization ---
     function initDragAndDrop() {
@@ -265,40 +288,61 @@ function handleExport() {
             e.preventDefault();
             dragCounter = 0;
             mapContainer.classList.remove('drag-over');
-
+        
             const files = Array.from(e.dataTransfer.files).filter(f => /\.(gpx|tcx)$/i.test(f.name));
             if (files.length === 0) return;
-
+        
             const readPromises = files.map(file => {
                 return new Promise((resolve, reject) => {
                     const reader = new FileReader();
                     reader.onload = (event) => {
                         const fileType = file.name.split('.').pop().toLowerCase();
-                        const trackData = parseFile(event.target.result, fileType);
+                        const trackData = parseFile(event.target.result, fileType, file.name);
                         if (trackData) {
-                            resolve({ id: `track-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, name: file.name, ...trackData });
+                            resolve({ id: `track-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, ...trackData });
                         } else {
-                            resolve(null); // Or reject
+                            resolve(null);
                         }
                     };
                     reader.onerror = reject;
                     reader.readAsText(file);
                 });
             });
-
+        
             Promise.all(readPromises).then(newTracksData => {
                 const validTracks = newTracksData.filter(Boolean);
                 if (validTracks.length === 0) return;
-
+        
                 state.droppedTracks.push(...validTracks);
                 validTracks.forEach(track => addTrackLayer(track));
-
-                // 새로 드롭된 트랙들을 선택하고 포커스
+        
                 state.selectedTrackIds = validTracks.map(t => t.id);
                 state.lastSelectedTrackId = validTracks.length > 0 ? validTracks[validTracks.length - 1].id : null;
-                focusOnSelectedTracks();
+                focusOnSelectedTracks(); // 먼저 트랙을 그리고 목록을 업데이트합니다.
+        
+                // 각 트랙의 주소 정보를 비동기적으로 가져옵니다.
+                const geocodingPromises = validTracks.map(track => {
+                    if (track.points.length > 0) {
+                        return getAddressFromCoordinates(track.points[0][1], track.points[0][0])
+                            .then(addressTitle => {
+                                if (addressTitle) {
+                                    const trackToUpdate = state.droppedTracks.find(t => t.id === track.id);
+                                    if (trackToUpdate) {
+                                        trackToUpdate.title = addressTitle;
+                                    }
+                                }
+                            });
+                    }
+                    return Promise.resolve();
+                });
+        
+                // 모든 주소 정보가 업데이트된 후 목록을 다시 렌더링합니다.
+                Promise.all(geocodingPromises).then(() => {
+                    updateList();
+                });
             });
         });
+        
     }
 
     function init(mapInstance) {

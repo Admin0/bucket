@@ -78,7 +78,7 @@ body {
 }
 
 #map.drag-over:before {
-    content: "Drag .gpx or tcx file to anywhere.";
+    content: "Drag and drop a .gpx or .tcx file to display the route.";
     position: absolute;
     width: calc(100% - 6px);
     height: calc(100% - 6px);

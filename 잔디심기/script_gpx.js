@@ -188,8 +188,8 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
         const y_start = height - ((pts[0].lat - minLat) / (maxLat - minLat)) * height;
         const x_end = ((pts[pts.length - 1].lon - minLon) / (maxLon - minLon)) * width;
         const y_end = height - ((pts[pts.length - 1].lat - minLat) / (maxLat - minLat)) * height;
-        svgInnerHtml += `<circle cx="${x_start}" cy="${y_start}" r="3.5" stroke="${interpolateColor(startColor, endColor, 0)}" stroke-width="2" fill="var(--color--body-background)" />`;
-        svgInnerHtml += `<circle cx="${x_end}" cy="${y_end}" r="3.5" stroke="${interpolateColor(startColor, endColor, 1)}" stroke-width="2" fill="var(--color--body-background)" />`;
+        svgInnerHtml += `<circle cx="${x_start}" cy="${y_start}" r="3.5" stroke="${interpolateColor(startColor, endColor, 0)}" stroke-width="2" fill="var(--color--track)" />`;
+        svgInnerHtml += `<circle cx="${x_end}" cy="${y_end}" r="3.5" stroke="${interpolateColor(startColor, endColor, 1)}" stroke-width="2" fill="var(--color--track)" />`;
         
         const viewBox = `0 0 ${width} ${height}`;
         const style = `width: ${width}px`;

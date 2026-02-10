@@ -1,12 +1,27 @@
 // 잔디심기에는 안 나오는데 earth에는 나오는 데이터입니다.
 // 2023년 이전 데이터입니다.
 const hermes_records_4_earth = [
+    { date: "2024-09-30", type: "walk", distance: 2.73, elevation: 76, record: "00:39:52", title: "인주산단로", comment: "" },
+    { date: "2023-10-07", type: "walk", distance: 0.67, elevation: 13, record: "00:07:32", title: "온천대로", comment: "", over: 1 },
+    { date: "2023-10-07", type: "walk", distance: 0.81, elevation: 6, record: "00:09:47", title: "아산시", comment: "", over: 2 },
+    { date: "2023-10-08", type: "walk", distance: 1.43, elevation: 31, record: "00:16:38", title: "온천대로", comment: "", over: 1 },
+    { date: "2023-10-08", type: "walk", distance: 1.31, elevation: 19, record: "00:18:28", title: "2023-10-08T13_33_22.242+09_00_PT18M58.874S_걷기", comment: "", over: 2 },
+    { date: "2023-10-11", type: "walk", distance: 7.91, elevation: 127, record: "01:23:20", title: "온양역길", comment: "" },
+    { date: "2023-11-04", type: "walk", distance: 1.03, elevation: 18, record: "00:10:58", title: "온천대로", comment: "", over: 1 },
+    { date: "2023-11-04", type: "walk", distance: 1.21, elevation: 42, record: "00:17:28", title: "2023-11-04T16_11_21.194+09_00_PT20M4.975S_걷기", comment: "", over: 2 },
+    { date: "2023-12-09", type: "walk", distance: 1.28, elevation: 40, record: "00:15:20", title: "2023-12-09T13_22_55.611+09_00_PT17M38.522S_걷기", comment: "", over: 1 },
+    { date: "2023-12-09", type: "walk", distance: 1.37, elevation: 44, record: "00:17:16", title: "번영로", comment: "", over: 2 },
+    { date: "2023-06-14", type: "walk", distance: 2.21, elevation: 41, record: "00:24:47", title: "삼산로45번길", comment: "", over: 1 },
+    { date: "2023-06-14", type: "walk", distance: 1.83, elevation: 35, record: "00:27:56", title: "중앙로17번길", comment: "", over: 2 },
+    { date: "2023-06-17", type: "walk", distance: 1.17, elevation: 11, record: "00:13:08", title: "삼산로", comment: "", over: 1 },
+    { date: "2023-06-17", type: "walk", distance: 2.52, elevation: 32, record: "00:29:45", title: "왕생로128번길", comment: "", over: 2 },
+
     { date: "2022-07-03", type: "walk", distance: 5.61, elevation: 28, record: "00:39:42", title: "태화강변", comment: "", over: 1 },
     { date: "2022-07-03", type: "walk", distance: 3.12, elevation: 12, record: "00:15:21", title: "태화강변", comment: "" },
     { date: "2022-06-19", type: "walk", distance: 4.85, elevation: 15, record: "00:32:51", title: "태화강변", comment: "" },
     { date: "2022-04-16", type: "walk", distance: 7.24, elevation: 19, record: "00:51:54", title: "태화강변", comment: "" },
     { date: "2022-04-16", type: "walk", distance: 4.56, elevation: 14, record: "01:05:41", title: "태화강변", comment: "", over: 1 },
-    
+
     { date: "2021-08-04", type: "walk", distance: 4.02, elevation: 18, record: "01:35:49", title: "태화강변", comment: "" },
     { date: "2021-08-01", type: "walk", distance: 5.12, elevation: 22, record: "01:43:10", title: "태화강변", comment: "" },
     { date: "2021-07-26", type: "walk", distance: 3.84, elevation: 14, record: "00:43:40", title: "태화강변", comment: "" },
