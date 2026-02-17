@@ -48,7 +48,8 @@ hermes.gpx = (() => {
 
     // --- File Parsing & Data Processing ---
     function parseFile(fileContent, fileType, fileName) {
-        const parser = new DOMParser(); const doc = parser.parseFromString(fileContent, "application/xml"); let points = [], times = [], elevations = []; let pointSelector, latAttr, lonAttr, timeTag, eleTag; if (fileType === 'gpx') { pointSelector = 'trkpt'; latAttr = 'lat'; lonAttr = 'lon'; timeTag = 'time'; eleTag = 'ele'; } else { pointSelector = 'Trackpoint'; latAttr = 'LatitudeDegrees'; lonAttr = 'LongitudeDegrees'; timeTag = 'Time'; eleTag = 'AltitudeMeters'; } const trackpoints = doc.querySelectorAll(pointSelector); trackpoints.forEach(pt => { let lat, lon; if (fileType === 'gpx') { lat = parseFloat(pt.getAttribute(latAttr)); lon = parseFloat(pt.getAttribute(lonAttr)); } else { const latNode = pt.querySelector(latAttr); const lonNode = pt.querySelector(lonAttr); if (!latNode || !lonNode) return; lat = parseFloat(latNode.textContent); lon = parseFloat(lonNode.textContent); } points.push([lon, lat]); const timeNode = pt.querySelector(timeTag); if (timeNode) times.push(new Date(timeNode.textContent)); const eleNode = pt.querySelector(eleTag); if (eleNode) elevations.push(parseFloat(eleNode.textContent)); }); if (points.length === 0) return null; let distance = 0; for (let i = 1; i < points.length; i++) { distance += haversineDistance(points[i - 1], points[i]); } let elevationGain = 0; if (elevations.length > 1) { for (let i = 1; i < elevations.length; i++) { const diff = elevations[i] - elevations[i - 1]; if (diff > 0) { elevationGain += diff; } } } const duration = (times.length > 1) ? (times[times.length - 1] - times[0]) / 1000 : 0; const date = (times.length > 0) ? times[0].toISOString().split('T')[0] : null; return { points, distance: distance / 1000, elevation: Math.round(elevationGain), duration, date, title: null, name: fileName, };
+        const parser = new DOMParser(); const doc = parser.parseFromString(fileContent, "application/xml"); let points = [], times = [], elevations = []; let pointSelector, latAttr, lonAttr, timeTag, eleTag; if (fileType === 'gpx') { pointSelector = 'trkpt'; latAttr = 'lat'; lonAttr = 'lon'; timeTag = 'time'; eleTag = 'ele'; } else { pointSelector = 'Trackpoint'; latAttr = 'LatitudeDegrees'; lonAttr = 'LongitudeDegrees'; timeTag = 'Time'; eleTag = 'AltitudeMeters'; } const trackpoints = doc.querySelectorAll(pointSelector); trackpoints.forEach(pt => { let lat, lon; if (fileType === 'gpx') { lat = parseFloat(pt.getAttribute(latAttr)); lon = parseFloat(pt.getAttribute(lonAttr)); } else { const latNode = pt.querySelector(latAttr); const lonNode = pt.querySelector(lonAttr); if (!latNode || !lonNode) return; lat = parseFloat(latNode.textContent); lon = parseFloat(lonNode.textContent); } points.push([lon, lat]); const timeNode = pt.querySelector(timeTag); if (timeNode) times.push(new Date(timeNode.textContent)); const eleNode = pt.querySelector(eleTag); if (eleNode) elevations.push(parseFloat(eleNode.textContent)); }); if (points.length === 0) return null; let distance = 0; for (let i = 1; i < points.length; i++) { distance += haversineDistance(points[i - 1], points[i]); } let elevationGain = 0; if (elevations.length > 1) { for (let i = 1; i < elevations.length; i++) { const diff = elevations[i] - elevations[i - 1]; if (diff > 0) { elevationGain += diff; } } } const duration = (times.length > 1) ? (times[times.length - 1] - times[0]) / 1000 : 0;
+        const date = (times.length > 0) ? new Date(times[0].getTime() - (times[0].getTimezoneOffset() * 60000)).toISOString().split('T')[0] : null; return { points, distance: distance / 1000, elevation: Math.round(elevationGain), duration, date, title: null, name: fileName, };
     }
 
     // --- UI & Map Interaction ---
@@ -222,11 +223,15 @@ hermes.gpx = (() => {
                     comment: "",
                 };
 
-                if (tracks.length > 1) record.over = index + 1;
+                let pathSuffix = '';
+                if (tracks.length > 1 && index > 0) {
+                    record.over = index;
+                    pathSuffix = `_${index}`;
+                }
                 
                 recordsJsOutput.push(JSON.stringify(record)); 
 
-                const path = `${track.date}${tracks.length > 1 ? '_' + (index + 1) : ''}`;
+                const path = track.date + pathSuffix;
                 const compressedFeature = {
                     type: "Feature",
                     properties: { path },

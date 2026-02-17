@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Material+Symbols:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+@import url("../style_tooltip.css");
+
 ::selection {
     background-color: transparent;
 }
@@ -5,7 +8,21 @@
 body {
     margin: 0;
     font-family: sans-serif;
+
+    --color--track: #fff;
+    --color--track-dark: #eee;
+    --color--body-text: #212121;
+    --color--track-shadow: rgba(0 0 0 / 0.25);
 }
+
+@media (prefers-color-scheme: dark) {
+    body {
+        --color--track: #292929;
+        --color--track-dark: #333;
+        --color--body-text: #f0f0f0;
+    }
+}
+
 #map {
     height: 100vh;
 }

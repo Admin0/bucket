@@ -54,8 +54,8 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
     const svg = document.querySelector(svgElementId);
     if (!svg) return;
 
-    const svgLoading = '<image href="imgs/icon_loading.svg" width="20" height="20" x="250" y="65"/>';
-    const svgNotFound = '<image href="imgs/icon_notfound.svg" width="20" height="20" x="250" y="65"/>';
+    const svgLoading = '<image href="imgs/icon_loading.svg" class="svg-info" />';
+    const svgNotFound = '<image href="imgs/icon_notfound.svg" class="svg-info" />';
 
     svg.innerHTML = svgLoading;
 
@@ -156,22 +156,51 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
             return `#${r}${g}${b}`;
         }
 
+        // --- SVG 렌더링 로직 수정 ---
+
         let pathSegments = "";
         const numPathElements = 64, totalSegments = pts.length - 1;
         if (totalSegments > 0) {
             const segmentsPerPath = Math.ceil(totalSegments / numPathElements);
+            
+            // 테두리 경로와 메인 경로를 담을 그룹 생성
+            let borderPaths = '<g class="gpx-border">';
+            let mainPaths = '<g class="gpx-main">';
+
             for (let i = 0; i < numPathElements; i++) {
                 const startSegment = i * segmentsPerPath;
                 if (startSegment >= totalSegments) break;
+
                 const endSegment = Math.min((i + 1) * segmentsPerPath, totalSegments);
                 const firstPoint = pts[startSegment];
+                
                 let pathData = `M ${((firstPoint.lon - minLon) / (maxLon - minLon)) * width} ${height - ((firstPoint.lat - minLat) / (maxLat - minLat)) * height}`;
                 for (let j = startSegment; j < endSegment; j++) {
                     const nextPoint = pts[j + 1];
                     pathData += ` L ${((nextPoint.lon - minLon) / (maxLon - minLon)) * width} ${height - ((nextPoint.lat - minLat) / (maxLat - minLat)) * height}`;
                 }
-                pathSegments += `<path d="${pathData}" fill="none" stroke="${interpolateColor(startColor, endColor, startSegment / totalSegments)}" stroke-width="2.5" />`;
+
+                // 테두리 경로 (더 두껍고 반투명한 검정색)
+                borderPaths += `<path d="${pathData}" fill="none" stroke="var(--color--track)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />`;
+                
+                // 메인 경로 (기존 색상)
+                mainPaths += `<path d="${pathData}" fill="none" stroke="${interpolateColor(startColor, endColor, startSegment / totalSegments)}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />`;
             }
+
+            borderPaths += '</g>';
+            mainPaths += '</g>';
+
+            const x_start = ((pts[0].lon - minLon) / (maxLon - minLon)) * width;
+            const y_start = height - ((pts[0].lat - minLat) / (maxLat - minLat)) * height;
+            const x_end = ((pts[pts.length - 1].lon - minLon) / (maxLon - minLon)) * width;
+            const y_end = height - ((pts[pts.length - 1].lat - minLat) / (maxLat - minLat)) * height;
+            borderPaths += `<circle cx="${x_start}" cy="${y_start}" r="6" fill="var(--color--track)" />`;
+            borderPaths += `<circle cx="${x_end}" cy="${y_end}" r="6" fill="var(--color--track)" />`;
+            mainPaths += `<circle cx="${x_start}" cy="${y_start}" r="3.5" stroke="${interpolateColor(startColor, endColor, 0)}" stroke-width="2" fill="var(--color--track)" />`;
+            mainPaths += `<circle cx="${x_end}" cy="${y_end}" r="3.5" stroke="${interpolateColor(startColor, endColor, 1)}" stroke-width="2" fill="var(--color--track)" />`;
+      
+            // 테두리 그룹을 먼저 추가하고 그 위에 메인 그룹을 추가
+            pathSegments = borderPaths + mainPaths;
         }
 
         let svgInnerHtml = pathSegments;
@@ -180,17 +209,13 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
             if (highestPoint) {
                 const peakX = ((highestPoint.lon - minLon) / (maxLon - minLon)) * width;
                 const peakY = height - ((highestPoint.lat - minLat) / (maxLat - minLat)) * height;
-                svgInnerHtml += `<path d="M ${peakX} ${peakY - 6} L ${peakX - 4} ${peakY + 2} L ${peakX + 4} ${peakY + 2} Z" fill="gold" stroke="#00b264" stroke-width="2"/>`;
+                // 최고 고도 마커에도 테두리와 일관된 모서리 스타일 적용
+                svgInnerHtml += `<path d="M ${peakX} ${peakY - 6} L ${peakX - 4} ${peakY + 2} L ${peakX + 4} ${peakY + 2} Z" fill="gold" stroke="#00b264" stroke-width="2" stroke-linejoin="round"/>`;
             }
         }
 
-        const x_start = ((pts[0].lon - minLon) / (maxLon - minLon)) * width;
-        const y_start = height - ((pts[0].lat - minLat) / (maxLat - minLat)) * height;
-        const x_end = ((pts[pts.length - 1].lon - minLon) / (maxLon - minLon)) * width;
-        const y_end = height - ((pts[pts.length - 1].lat - minLat) / (maxLat - minLat)) * height;
-        svgInnerHtml += `<circle cx="${x_start}" cy="${y_start}" r="3.5" stroke="${interpolateColor(startColor, endColor, 0)}" stroke-width="2" fill="var(--color--track)" />`;
-        svgInnerHtml += `<circle cx="${x_end}" cy="${y_end}" r="3.5" stroke="${interpolateColor(startColor, endColor, 1)}" stroke-width="2" fill="var(--color--track)" />`;
-        
+
+      
         const viewBox = `0 0 ${width} ${height}`;
         const style = `width: ${width}px`;
 

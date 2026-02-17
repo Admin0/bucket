@@ -499,7 +499,7 @@ hermes.table = function () {
             const row = document.createElement("tr");
             row.dataset.recordId = record.id;
             row.classList.add(record.course);
-            row.title = record.comment;
+            // row.title = record.comment + `<svg>`;
 
             const isTrail = record.course === "trail";
 
@@ -530,28 +530,42 @@ hermes.table = function () {
             `;
 
             // 행에 마우스 오버/아웃 시 트랙 마커 하이라이트
-            row.addEventListener("mouseover", () => {
-                const courseType = record.course;
-                const trackId = Object.keys(hermes.courseCategories).find((key) => {
-                    const category = hermes.courseCategories[key];
-                    return (category.type === "trail" && courseType === "trail") || category.course === courseType;
-                });
-                if (trackId) {
-                    const marker = document.querySelector(`#${trackId} .marker[data-year="${record.weekInfo.year}"][data-week="${record.weekInfo.week}"]`);
-                    marker?.classList.add("highlight");
-                }
+            // row.addEventListener("mouseenter", () => {
+            //     const courseType = record.course;
+            //     const trackId = Object.keys(hermes.courseCategories).find((key) => {
+            //         const category = hermes.courseCategories[key];
+            //         return (category.type === "trail" && courseType === "trail") || category.course === courseType;
+            //     });
+            //     if (trackId) {
+            //         const marker = document.querySelector(`#${trackId} .marker[data-year="${record.weekInfo.year}"][data-week="${record.weekInfo.week}"]`);
+            //         marker?.classList.add("highlight");
+            //     }
+            //     // hermes.gpx2svg(`records/${new Date(record.date).getFullYear()}/${record.date + (record.over !== undefined ? "_" + record.over : "")}.gpx`, `#tooltip svg`);
+            // });
+            // row.addEventListener("mouseleave", () => {
+            //     const courseType = record.course;
+            //     const trackId = Object.keys(hermes.courseCategories).find((key) => {
+            //         const category = hermes.courseCategories[key];
+            //         return (category.type === "trail" && courseType === "trail") || category.course === courseType;
+            //     });
+            //     if (trackId) {
+            //         const marker = document.querySelector(`#${trackId} .marker[data-year="${record.weekInfo.year}"][data-week="${record.weekInfo.week}"]`);
+            //         marker?.classList.remove("highlight");
+            //     }
+            // });
+
+            // 마커에 대한 툴팁 및 하이라이트 이벤트 리스너
+            row.addEventListener("mouseenter", (e) => {
+                let tooltip = document.getElementById("tooltip");
+                tooltip.innerHTML = `${record.comment !== "" ? `<span class="tooltip-comment">${record.comment}</span>` : `<span class="tooltip-null">`} <svg class="svg-records">`;
+                hermes.gpx2svg(`records/${new Date(record.date).getFullYear()}/${record.date + (record.over !== undefined ? "_" + record.over : "")}.gpx`, `#tooltip svg`);
+                tooltip.classList.add("on");
             });
-            row.addEventListener("mouseout", () => {
-                const courseType = record.course;
-                const trackId = Object.keys(hermes.courseCategories).find((key) => {
-                    const category = hermes.courseCategories[key];
-                    return (category.type === "trail" && courseType === "trail") || category.course === courseType;
-                });
-                if (trackId) {
-                    const marker = document.querySelector(`#${trackId} .marker[data-year="${record.weekInfo.year}"][data-week="${record.weekInfo.week}"]`);
-                    marker?.classList.remove("highlight");
-                }
+
+            row.addEventListener("mouseleave", () => {
+                tooltip.classList.remove("on");
             });
+
             tableBody.appendChild(row);
         });
     }

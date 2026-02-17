@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Material+Symbols:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Oswald:wght@200..700&display=swap");
+@import url("style_calendar.css");
+@import url("style_tooltip.css");
 
 ::selection {
     background-color: rgba(0, 0, 0, 0);
@@ -533,12 +535,12 @@ a {
     direction: ltr;
     -webkit-font-feature-settings: "liga";
     -webkit-font-smoothing: antialiased;
-    margin-left:.25em;
-    padding:.25em;
+    margin-left: 0.25em;
+    padding: 0.25em;
     background: #008755;
     border: 1.5px solid var(--color--body-background);
     border-radius: 1em;
-    transition: .25s;
+    transition: 0.25s;
 }
 
 #records-table th.sort-desc:after {
@@ -648,143 +650,6 @@ a {
     background-color: var(--color--track-hover);
     box-shadow: 0 5px 12px var(--color--track-shadow);
     transform: scale(1.05);
-}
-
-/* ----------------------------------------
- * tooltip
- * ---------------------------------------- */
-
-#tooltip {
-    --width--tooltip: 400px;
-    --width--tooltip-padding: 1.5em;
-    --width--tooltip-svg: 0;
-
-    display: flex;
-    flex-direction: column-reverse;
-
-    width: var(--width--tooltip);
-    max-width: calc(100% - var(--width--tooltip-padding) * 2);
-    position: absolute;
-    opacity: 0;
-    /* background: rgba(0, 0, 0, 0.8); */
-    background: var(--color--track-dark);
-    box-shadow: 0 5px 11px var(--color--track-shadow);
-    padding: var(--width--tooltip-padding);
-    border-radius: var(--width--tooltip-padding);
-    pointer-events: none;
-    z-index: 1000;
-    color: var(--color--body-text);
-    transform: translate(-50%, calc(-100% - 2em));
-    transition: opacity 0.25s;
-}
-
-#tooltip.on {
-    opacity: 1;
-}
-
-#tooltip .tooltip-item {
-    position: relative;
-}
-
-#tooltip .tooltip-item:not(:last-of-type) {
-    border-top: 1px solid var(--color--track-border);
-    padding-top: 1.5em;
-    margin-top: 1em;
-}
-
-#tooltip .title-container {
-    padding: 0 0 0.5em 0.5em;
-}
-
-#tooltip .type {
-    font-size: 0.85em;
-}
-
-#tooltip .title {
-    width: calc(var(--width--tooltip) - var(--width--tooltip-svg));
-    font-size: 1.25em;
-    font-weight: bold;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-#tooltip .title .comment {
-    font-size: 0.7em;
-    opacity: 0.7;
-    font-style: italic;
-    font-weight: normal;
-}
-
-#tooltip .title .official {
-    background-color: var(--color--gold);
-    color: var(--color--gold-dark);
-    border-radius: 50%;
-    font-size: 0.9em;
-    padding: 0.25em;
-    font-variation-settings: "FILL" 1;
-}
-
-#tooltip .date {
-    position: absolute;
-    /* right: calc(var(--width--tooltip-svg) + var(--width--tooltip-padding) * 2); */
-    right: 0.5em;
-    color: #777;
-    font-size: 0.85em;
-    line-height: 2;
-}
-
-#tooltip .data {
-    width: calc(var(--width--tooltip) - var(--width--tooltip-svg) - var(--width--tooltip-padding) * 2);
-    display: flex;
-    justify-content: space-around;
-    white-space: nowrap;
-    background-color: var(--color--track);
-    padding: 1em;
-    border-radius: 2em;
-}
-
-#tooltip svg {
-    position: absolute;
-    top: 50%;
-    transform: translate(0, -50%);
-    right: calc(100% + 3em);
-    stroke-linejoin: round;
-}
-
-#tooltip .official svg {
-    filter: brightness(1.1) contrast(1.5) hue-rotate(-90deg);
-}
-
-.icon.distance {
-    color: #f44336;
-}
-
-.icon.record {
-    color: #009688;
-}
-
-.icon.pace {
-    color: #3f51b5;
-}
-
-.material-symbols,
-.material-symbols-outlined {
-    vertical-align: text-bottom;
-}
-
-.material-symbols {
-    font-variation-settings: "FILL" 1;
-}
-
-#tooltip:has(.tooltip-comment) {
-    width: fit-content;
-    background: var(--color--track);
-}
-
-#tooltip .tooltip-comment {
-    line-height: 0;
-    white-space: nowrap;
 }
 
 /* ----------------------------------------
@@ -981,23 +846,6 @@ footer a:not(.o) {
     }
 
     /* ----------------------------------------
-     * tooltip
-     * ---------------------------------------- */
-    #tooltip:not(:has(.tooltip-comment)) {
-        left: 50% !important;
-        top: inherit !important;
-        bottom: 0;
-        position: fixed;
-        border-radius: 1.5em 1.5em 0 0;
-        /* box-shadow: 0 -5px 12px var(--color--track-shadow); */
-        transform: translate(-50%, 0%);
-    }
-
-    #tooltip svg {
-        right: 0;
-    }
-
-    /* ----------------------------------------
      * footer
      * ---------------------------------------- */
 
@@ -1026,22 +874,5 @@ footer a:not(.o) {
     .track-lane {
         --width--track-lane-padding: 0.5em;
         padding: 0.5em;
-    }
-
-    #tooltip:not(:has(.tooltip-comment)) {
-        --width--tooltip-padding: 1em;
-        padding: 1em;
-        border-radius: 0;
-        box-shadow: 0 -5px 12px var(--color--track-shadow);
-    }
-
-    #tooltip .date {
-        right: 0;
-    }
-
-    #tooltip .data {
-        width: calc(100% - 2em);
-        display: flex;
-        justify-content: space-evenly;
     }
 }

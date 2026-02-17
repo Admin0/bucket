@@ -1,5 +1,32 @@
 const hermes_records = [
-    // official data
+    // 2026
+    { date: "2026-02-17", type: "trail", distance: 10.99, elevation: 707, record: "02:54:18", title: "지리산 바래봉", comment: "" },
+    { date: "2026-02-16", type: "trail", distance: 8.03, elevation: 817, record: "03:23:41", title: "백운산", comment: "", over: 2 },
+    { date: "2026-02-16", type: "trail", distance: 8.98, elevation: 729, record: "02:51:42", title: "조계산", comment: "", over: 1 },
+    { date: "2026-02-16", type: "run", distance: 10.6, elevation: 24, record: "00:58:46", title: "순천 동천", comment: "" },
+    { date: "2026-02-15", type: "trail", distance: 7.07, elevation: 633, record: "02:34:06", title: "동악산", comment: "" },
+    { date: "2026-02-09", type: "run", distance: 10.04, elevation: 41, record: "01:02:41", title: "신정호", comment: "@현욱" },
+    { date: "2026-02-08", type: "run", distance: 10.33, elevation: 44, record: "01:00:07", title: "장항선구철도길", comment: "" },
+    { date: "2026-02-07", type: "walk", distance: 9.78, elevation: 80, record: "01:35:43", title: "신정호", comment: "걸어서 돌아오기로 함", over: 1 },
+    { date: "2026-02-07", type: "run", distance: 5.01, elevation: 34, record: "00:32:28", title: "신정호", comment: "너무 힘든데..." },
+    { date: "2026-02-03", type: "run", distance: 5.21, elevation: 20, record: "00:31:14", title: "장항선구철도길", comment: "@이런저런" },
+    { date: "2026-01-31", type: "trail", distance: 14.78, elevation: 862, record: "04:10:56", title: "내연산", comment: "", over: 1 },
+    { date: "2026-01-31", type: "trail", distance: 6.59, elevation: 503, record: "01:47:10", title: "주왕산", comment: "" },
+    { date: "2026-01-29", type: "run", distance: 5.13, elevation: 28, record: "00:29:54", title: "장항선구철도길", comment: "" },
+    { date: "2026-01-27", type: "run", distance: 5.19, elevation: 17, record: "00:29:54", title: "장항선구철도길", comment: "@현욱" },
+    { date: "2026-01-26", type: "run", distance: 5.21, elevation: 14, record: "00:30:18", title: "장항선구철도길", comment: "@이런저런" },
+    { date: "2026-01-25", type: "trail", distance: 5.86, elevation: 759, record: "02:35:17", title: "운악산", comment: "극도로 위험" },
+    { date: "2026-01-23", type: "run", distance: 10.03, elevation: 39, record: "00:56:26", title: "장항선구철도길-신정호", comment: "신상 패딩 개시런" },
+    { date: "2026-01-19", type: "run", distance: 10.05, elevation: 95, record: "01:00:42", title: "신창역-신정호", comment: "-10° 한파런" },
+    { date: "2026-01-17", type: "trail", distance: 5.16, elevation: 590, record: "03:13:33", title: "광덕산", comment: "@당근" },
+    { date: "2026-01-14", type: "run", distance: 5.16, elevation: 23, record: "00:29:50", title: "장항선구철도길", comment: "@이런저런" },
+    { date: "2026-01-12", type: "run", distance: 5.21, elevation: 17, record: "00:31:57", title: "장항선구철도길", comment: "@이런저런" },
+    { date: "2026-01-11", type: "run", distance: 5.04, elevation: 11, record: "00:27:52", title: "삼천", comment: "" },
+    { date: "2026-01-06", type: "run", distance: 6.21, elevation: 17, record: "00:33:38", title: "신정호", comment: "@이런저런" },
+    { date: "2026-01-03", type: "run", distance: 21.28, elevation: 109, record: "02:00:00", title: "장항선구철도길", comment: "2026 새해 맞이 20.26 km 달리기 (2128년까지 재사용 가능)" },
+    { date: "2026-01-01", type: "trail", distance: 8.68, elevation: 292, record: "02:19:02", title: "영인산", comment: "새해 맞이 일출 산행 @당근" },
+
+    // 2025
     {
         date: "2025-11-09",
         type: "run",
@@ -50,41 +77,6 @@ const hermes_records = [
         certi: "https://time.spct.kr/m2.php?EVENT_NO=20250420009&TargetYear=2025&currentPage=1&BIB_NO=003596",
         comment: ""
     },
-
-    {
-        date: "2024-11-10",
-        type: "run",
-        course: "10k",
-        elevation: 0,
-        record: "00:58:43",
-        title: "아산은행나무길마라톤",
-        certi: "https://time.spct.kr/m2.php?E=2024111004&B=001956",
-        comment: ""
-    },
-
-    // unofficial 2026
-    { date: "2026-02-09", type: "run", distance: 10.04, elevation: 41, record: "01:02:41", title: "신정호", comment: "@현욱" },
-    { date: "2026-02-08", type: "run", distance: 10.33, elevation: 44, record: "01:00:07", title: "장항선구철도길", comment: "" },
-    { date: "2026-02-07", type: "walk", distance: 9.78, elevation: 80, record: "01:35:43", title: "신정호", comment: "걸어서 돌아오기로 함", over: 1 },
-    { date: "2026-02-07", type: "run", distance: 5.01, elevation: 34, record: "00:32:28", title: "신정호", comment: "너무 힘든데..." },
-    { date: "2026-02-03", type: "run", distance: 5.21, elevation: 20, record: "00:31:14", title: "장항선구철도길", comment: "@이런저런" },
-    { date: "2026-01-31", type: "trail", distance: 14.78, elevation: 862, record: "04:10:56", title: "내연산", comment: "", over: 1 },
-    { date: "2026-01-31", type: "trail", distance: 6.59, elevation: 503, record: "01:47:10", title: "주왕산", comment: "" },
-    { date: "2026-01-29", type: "run", distance: 5.13, elevation: 28, record: "00:29:54", title: "장항선구철도길", comment: "" },
-    { date: "2026-01-27", type: "run", distance: 5.19, elevation: 17, record: "00:29:54", title: "장항선구철도길", comment: "@현욱" },
-    { date: "2026-01-26", type: "run", distance: 5.21, elevation: 14, record: "00:30:18", title: "장항선구철도길", comment: "@이런저런" },
-    { date: "2026-01-25", type: "trail", distance: 5.86, elevation: 759, record: "02:35:17", title: "운악산", comment: "극도로 위험" },
-    { date: "2026-01-23", type: "run", distance: 10.03, elevation: 39, record: "00:56:26", title: "장항선구철도길-신정호", comment: "신상 패딩 개시런" },
-    { date: "2026-01-19", type: "run", distance: 10.05, elevation: 95, record: "01:00:42", title: "신창역-신정호", comment: "-10° 한파런" },
-    { date: "2026-01-17", type: "trail", distance: 5.16, elevation: 590, record: "03:13:33", title: "광덕산", comment: "@당근" },
-    { date: "2026-01-14", type: "run", distance: 5.16, elevation: 23, record: "00:29:50", title: "장항선구철도길", comment: "@이런저런" },
-    { date: "2026-01-12", type: "run", distance: 5.21, elevation: 17, record: "00:31:57", title: "장항선구철도길", comment: "@이런저런" },
-    { date: "2026-01-11", type: "run", distance: 5.04, elevation: 11, record: "00:27:52", title: "삼천", comment: "" },
-    { date: "2026-01-06", type: "run", distance: 6.21, elevation: 17, record: "00:33:38", title: "신정호", comment: "@이런저런" },
-    { date: "2026-01-03", type: "run", distance: 21.28, elevation: 109, record: "02:00:00", title: "장항선구철도길", comment: "2026 새해 맞이 20.26 km 달리기 (2128년까지 재사용 가능)" },
-    { date: "2026-01-01", type: "trail", distance: 8.68, elevation: 292, record: "02:19:02", title: "영인산", comment: "새해 맞이 일출 산행 @당근" },
-
-    // unofficial 2025
     { date: "2025-12-31", type: "run", distance: 6.16, elevation: 33, record: "00:36:38", title: "장항선구철도길", comment: "" },
     { date: "2025-12-21", type: "run", distance: 5.01, elevation: 30, record: "00:27:40", title: "장항선구철도길", comment: "" },
     { date: "2025-12-18", type: "run", distance: 10.01, elevation: 47, record: "00:56:56", title: "장항선구철도길", comment: "@이런저런" },
@@ -294,7 +286,18 @@ const hermes_records = [
     { date: "2025-01-19", type: "trail", distance: 2.45, elevation: 396, record: "01:45:22", title: "용봉산", comment: "@오르락생존자모임" },
     { date: "2025-01-12", type: "trail", distance: 7.22, elevation: 1193, record: "05:55:49", title: "월악산", comment: "@오르락생존자모임" },
 
-    // unofficial 2024 run
+    // 2024
+    {
+        date: "2024-11-10",
+        type: "run",
+        course: "10k",
+        elevation: 0,
+        record: "00:58:43",
+        title: "아산은행나무길마라톤",
+        certi: "https://time.spct.kr/m2.php?E=2024111004&B=001956",
+        comment: ""
+    },
+
     { date: "2024-12-12", type: "run", distance: 5.07, elevation: 5, record: "00:28:25", title: "신정호", comment: "" },
     { date: "2024-12-07", type: "run", distance: 5.01, elevation: 5, record: "00:28:48", title: "신정호", comment: "" },
     { date: "2024-12-01", type: "run", distance: 5.02, elevation: 5, record: "00:36:45", title: "신정호", comment: "", over: 1 },
