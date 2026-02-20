@@ -65,6 +65,12 @@ async function play(no, done = true) {
     setTimeout(() => {
         tooltip.classList.add("on", "블랙야크");
     }, 100);
+
+    tooltip.style.setProperty("--tooltip-rotate", `${-3 + Math.random() * 6}deg`);
+    
+    document.querySelectorAll("#블랙야크_table tr").forEach(tr => {
+        tr.classList.remove("on");
+    });
 }
 
 // scroll to canvas

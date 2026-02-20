@@ -258,8 +258,8 @@ hermes.tooltip = (records) => {
                 <div class="title">${rec.title} ${rec.isOfficial ? '<span class="material-symbols official"> crown </span>' : ""} ${comment}</div>
             </div>
             <div class="data">
-                <span class="material-symbols-outlined icon distance">${icon_distance}</span> <span class="distance">${tooltipDistance}</span> |
-                <span class="material-symbols-outlined icon record">timer</span> <span class="rec">${rec.record}</span> |
+                <span class="material-symbols-outlined icon distance">${icon_distance}</span> <span class="distance">${tooltipDistance}</span> <span class="div"></span>
+                <span class="material-symbols-outlined icon record">timer</span> <span class="rec">${rec.record}</span> <span class="div"></span>
                 <span class="material-symbols-outlined icon pace">speed</span> <span class="pace">${tooltipPace}</span>
             </div>
         </div>`;

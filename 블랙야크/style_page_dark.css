@@ -68,7 +68,8 @@
     color: var(--color-primary);
   }
 
-  #블랙야크_table tr:hover {
+  #블랙야크_table tr:hover,
+  #블랙야크_table tr.on {
     background-color: var(--color-a400);
     color: var(--color-50);
   }

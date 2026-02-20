@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Material+Symbols:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 @import url("../style_tooltip.css");
+@import url("../style_color.css");
 
 ::selection {
     background-color: transparent;
@@ -8,19 +9,7 @@
 body {
     margin: 0;
     font-family: sans-serif;
-
-    --color--track: #fff;
-    --color--track-dark: #eee;
-    --color--body-text: #212121;
-    --color--track-shadow: rgba(0 0 0 / 0.25);
-}
-
-@media (prefers-color-scheme: dark) {
-    body {
-        --color--track: #292929;
-        --color--track-dark: #333;
-        --color--body-text: #f0f0f0;
-    }
+    overflow: hidden;
 }
 
 #map {
@@ -62,6 +51,11 @@ body {
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
     transition: opacity 0.5s ease-out, left 0.2s ease-out, transform 0.2s ease-out;
     transform: translateX(-100%);
+}
+
+.unit {
+    font-size: 0.75em;
+    opacity: 0.75;
 }
 
 /* --- 커스텀 컨트롤 버튼 그룹 스타일 --- */

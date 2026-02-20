@@ -75,6 +75,8 @@ h1 span.sub {
     z-index: 6;
     color: #212121;
     position: relative;
+
+    --tooltip-rotate: -1deg
 }
 #tooltip .info {
     font-weight: bold;
@@ -179,7 +181,8 @@ h1 span.sub {
     font-weight: bold;
     color: #424242;
 }
-#블랙야크_table tr:hover {
+#블랙야크_table tr:hover,
+#블랙야크_table tr.on {
     color: var(--color-a400);
     background-color: var(--color-50);
 }
@@ -268,9 +271,9 @@ footer a:not(.o) {
         margin: 0;
         top: calc(50% - 300px - 5em);
         left: calc(50% - 600px - 30vh);
-        box-shadow: 2px 5px 11px rgba(0, 0, 0, 0.75);
+        box-shadow: 2px 5px 11px rgba(0, 0, 0, 0.5);
         background-color: #fcfbf7;
-        transform: rotate(-1deg);
+        transform: rotate(var(--tooltip-rotate));
         line-height: 1;
         align-items: flex-end;
 

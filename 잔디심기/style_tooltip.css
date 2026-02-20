@@ -1,9 +1,8 @@
-
 /* ----------------------------------------
  * tooltip
  * ---------------------------------------- */
 
- #tooltip {
+#tooltip {
     --width--tooltip: 400px;
     --width--tooltip-padding: 1.5em;
     --width--tooltip-svg: 0;
@@ -92,6 +91,9 @@
     padding: 1em;
     border-radius: 2em;
 }
+#tooltip .data span.div {
+    border-right: 1px solid var(--color--track-border);
+}
 
 #tooltip svg {
     position: absolute;
@@ -164,9 +166,8 @@
  * tablet
  * ======================================== */
 
- @media screen and (max-width: 768px) {
-    
-   /* ----------------------------------------
+@media screen and (max-width: 768px) {
+    /* ----------------------------------------
     * tooltip
     * ---------------------------------------- */
     #tooltip:not(:has(.tooltip-comment)) {
@@ -188,8 +189,7 @@
  * mobile
  * ======================================== */
 
- @media screen and (max-width: 425px) {
-
+@media screen and (max-width: 425px) {
     #tooltip:not(:has(.tooltip-comment)) {
         --width--tooltip-padding: 1em;
         padding: 1em;

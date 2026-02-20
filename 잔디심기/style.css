@@ -2,42 +2,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Oswald:wght@200..700&display=swap");
 @import url("style_calendar.css");
 @import url("style_tooltip.css");
+@import url("style_color.css");
 
 ::selection {
     background-color: rgba(0, 0, 0, 0);
 }
 
 body {
-    /* --color--track: #af483f; */
-    /* --color--track-dark: #8a3a32; */
-    --color--body-background: #eee;
-    --color--body-text: #212121;
-
-    --color--track: #fff;
-    --color--track-hover: var(--color--track);
-    --color--track-dark: #eee;
-    --color--track-border: #ddd;
-    --color--track-border2: #aaa;
-    --color--track-text: #212121;
-    --color--track-shadow: rgba(0 0 0 / 0.25);
-
-    --color--calendar-hover: #f7f7f7;
-    --color--calendar-icon: #1b5e20;
-
-    --color--theme: #00b264;
-    --color--theme-light: #69f0ae;
-    --color--gpx-start: #00ff80;
-    --color--gpx-middle: #00b264;
-    --color--gpx-end: #005c45;
-    --color--red: #f44336;
-    --color--teal: #009688;
-    --color--indigo: #3f51b5;
-    --color--gold: #ffd700;
-    --color--gold-dark: #f57f17;
-
-    --color--scoreboard-bg: transparent;
-    --color--scoreboard-text: #212121;
-    --color--scoreboard-header: #212121;
 
     --width--track: 1280px;
     /* --width--track: 1440px; */
@@ -735,12 +706,6 @@ footer a:not(.o) {
         font-size: 1.2em;
     }
 
-    #stats-header .icon,
-    .stat-item:nth-of-type(1),
-    .stat-item:nth-of-type(3) {
-        display: none;
-    }
-
     /* ----------------------------------------
      * tracks
      * ---------------------------------------- */
@@ -869,6 +834,12 @@ footer a:not(.o) {
 @media screen and (max-width: 425px) {
     body {
         --margin--body-lr: 1em;
+    }
+
+    #stats-header .icon,
+    .stat-item:nth-of-type(1),
+    .stat-item:nth-of-type(3) {
+        display: none;
     }
 
     .track-lane {

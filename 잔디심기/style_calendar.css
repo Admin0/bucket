@@ -452,7 +452,7 @@ td.on {
         color: var(--color--body-background);
     }
     #calendar-grid .day-cell:has(.activity-circle) .date-display {
-        font-weight: bold;
+        /* font-weight: bold; */
     }
     #calendar-grid .day-cell:has(.activity-circle).official .date-display {
         color: #212121;

@@ -1,72 +1,33 @@
 const style_light = VersaTilesStyle.graybeard({
     baseUrl: "https://tiles.versatiles.org/",
     language: "ko",
-    recolor: {
-        blend: 0.2,
-        blendColor: "#FFF" // make all colors lighter
-    }
+    recolor: { blend: 0.2, blendColor: "#FFF" }
 });
 const style_dark = VersaTilesStyle.shadow({
     baseUrl: "https://tiles.versatiles.org/",
     language: "ko",
-    recolor: {
-        blend: 0.2,
-        blendColor: "#000" // make all colors lighter
-    }
+    recolor: { blend: 0.2, blendColor: "#000" }
 });
 
-// 1. 다크 모드 미디어 쿼리 객체 생성
-const darkModeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-let currentStyle;
-
-// 2. 테마 변경 처리 함수 정의
-const handleThemeChange = (e) => {
-    if (e.matches) {
-        currentStyle = "dark";
-    } else {
-        currentStyle = "light";
-    }
-};
-
-// 3. 초기 테마 설정 (페이지 로드 시)
-handleThemeChange(darkModeMediaQuery);
-
-// 4. 이벤트 리스너 등록 (시스템 테마 변경 시 동작)
-darkModeMediaQuery.addEventListener("change", handleThemeChange);
-
-// (참고) 리스너 제거가 필요할 경우
-// darkModeMediaQuery.removeEventListener('change', handleThemeChange);
+let currentStyle = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 
 const map = new maplibregl.Map({
     container: "map",
-    // style: "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac59-ac40754b0df4/style.json",
     style: currentStyle === "light" ? style_light : style_dark,
     center: [127.5, 36],
     zoom: 8,
     maxZoom: 20,
     minZoom: 3
 })
-    // --- Map Controls ---
-    .addControl(
-        new maplibregl.NavigationControl({
-            visualizePitch: true,
-            showZoom: true,
-            showCompass: true
-        })
-    )
-    .addControl(
-        new maplibregl.GeolocateControl({
-            positionOptions: { enableHighAccuracy: true },
-            trackUserLocation: true,
-            showUserHeading: true
-        })
-    );
+    .addControl(new maplibregl.NavigationControl({ visualizePitch: true, showZoom: true, showCompass: true }))
+    .addControl(new maplibregl.GeolocateControl({ positionOptions: { enableHighAccuracy: true }, trackUserLocation: true, showUserHeading: true }));
 
-// --- Global State & UI Elements ---
-let allFeatures = [];
-let isInitialLoadStarted = false;
+// --- Global State ---
+let allLineFeatures = [],
+    allPointFeatures = [];
+let featureIdCounter = 0;
 
-// --- Coordinate Decoding ---
+// --- Utility Functions ---
 function decodeCoordinates(encoded) {
     if (!encoded) return [];
     let coordinates = [],
@@ -85,7 +46,6 @@ function decodeCoordinates(encoded) {
         } while (b >= 0x20);
         const dlat = result & 1 ? ~(result >> 1) : result >> 1;
         lat += dlat;
-
         shift = 0;
         result = 0;
         do {
@@ -95,165 +55,87 @@ function decodeCoordinates(encoded) {
         } while (b >= 0x20);
         const dlon = result & 1 ? ~(result >> 1) : result >> 1;
         lon += dlon;
-
         coordinates.push([lon / 1e6, lat / 1e6]);
     }
     return coordinates;
 }
 
-// --- Cache API Helper Functions ---
-async function storeDataInCache(cacheName, key, data) {
-    try {
-        const cache = await caches.open(cacheName);
-        await cache.put(key, new Response(JSON.stringify(data)));
-    } catch (error) {
-        console.error("Failed to store data in cache:", error);
-    }
-}
-
-async function loadDataFromCache(cacheName, key) {
-    try {
-        const cache = await caches.open(cacheName);
-        const response = await cache.match(key);
-        return response ? response.json() : null;
-    } catch (error) {
-        console.error("Failed to load data from cache:", error);
-        return null;
-    }
-}
-
-// --- Map Style & Layer Updates ---
-function updatePaintProperties() {
-    const styleColors = {
-        dark: {
-            gpx: "#00ff7f",
-            gpxCerti: "#ffD700",
-            text: "#ffffff"
-        },
-        light: {
-            gpx: "#00b264",
-            gpxCerti: "#FAAB0C",
-            text: "#000000"
-        }
+function createFeature(record, coordinates, path) {
+    const newFeature = {
+        type: "Feature",
+        properties: { ...record, id: featureIdCounter, path: path, certified: record.certi != null },
+        geometry: { type: "LineString", coordinates }
     };
-    const colors = styleColors[currentStyle];
-    const layers = ["gpx-normal-layer", "gpx-certified-layer"];
-
-    layers.forEach((layerId) => {
-        if (!map.getLayer(layerId)) return;
-        switch (layerId) {
-            case "gpx-normal-layer":
-                map.setPaintProperty(layerId, "line-color", colors.gpx);
-                break;
-            case "gpx-certified-layer":
-                map.setPaintProperty(layerId, "line-color", colors.gpxCerti);
-                break;
-            case "contour-lines":
-                map.setPaintProperty(layerId, "line-color", colors.text);
-                break;
-            case "contour-labels":
-                map.setPaintProperty(layerId, "text-color", colors.text);
-                break;
-        }
-    });
+    featureIdCounter++;
+    return newFeature;
 }
 
-function addSourcesAndLayers() {
-    const layers = map.getStyle().layers;
-    // Find the index of the first symbol layer in the map style
-    let firstSymbolId;
-    for (let i = 0; i < layers.length; i++) {
-        if (layers[i].type === "symbol") {
-            firstSymbolId = layers[i].id;
-            break;
-        }
+// --- Tooltip Functions ---
+function generateTooltipHtml(properties) {
+    const isTrail = properties.type === "trail";
+    const isOfficial = properties.certified;
+
+    const parts = properties.record.split(":").map(Number);
+    let time;
+    if (parts.length === 3) {
+        time = parts[0] * 3600 + parts[1] * 60 + parts[2];
+    } else if (parts.length === 2) {
+        time = parts[0] * 60 + parts[1];
     }
 
-    if (!map.getSource("gpx-data-source"))
-        map.addSource("gpx-data-source", {
-            type: "geojson",
-            data: { type: "FeatureCollection", features: [] }
-        });
+    const distance = properties.distance || (properties.course == "full" ? 42.195 : properties.course == "half" ? 21.0975 : properties.course == "10k" ? 10 : properties.course == "5k" ? 5 : 0);
 
-    if (!map.getLayer("gpx-normal-layer"))
-        map.addLayer(
-            {
-                id: "gpx-normal-layer",
-                type: "line",
-                source: "gpx-data-source",
-                layout: { "line-join": "round", "line-cap": "round" },
-                paint: {
-                    "line-width": [
-                        "interpolate",
-                        ["linear"],
-                        ["zoom"],
-                        4, // 줌 레벨
-                        10, // 두깨
-                        11, // 줌 레벨
-                        3.5, // 두깨
-                        13, // 줌 레벨
-                        2.5 // 두깨
-                    ],
-                    "line-opacity": [
-                        "interpolate",
-                        ["linear"],
-                        ["zoom"],
-                        7, // 줌 레벨
-                        0.75, // 투명도
-                        10, // 줌 레벨
-                        0.25 // 투명도
-                    ]
-                },
-                filter: ["!=", ["get", "certified"], true]
-            },
-            // firstSymbolId
-            "label-address-housenumber"
-        );
-    if (!map.getLayer("gpx-certified-layer"))
-        map.addLayer(
-            {
-                id: "gpx-certified-layer",
-                type: "line",
-                source: "gpx-data-source",
-                layout: { "line-join": "round", "line-cap": "round" },
-                paint: {
-                    "line-width": [
-                        "interpolate",
-                        ["linear"],
-                        ["zoom"],
-                        4, // 줌 레벨
-                        10, // 두깨
-                        11, // 줌 레벨
-                        3.5, // 두깨
-                        13, // 줌 레벨
-                        2.5 // 두깨
-                    ],
-                    "line-opacity": [
-                        "interpolate",
-                        ["linear"],
-                        ["zoom"],
-                        7, // 줌 레벨
-                        0.75, // 투명도
-                        10, // 줌 레벨
-                        0.33 // 투명도
-                    ]
-                },
-                filter: ["==", ["get", "certified"], true]
-            },
-            // firstSymbolId
-            "label-address-housenumber"
-        );
+    const elevation_pace = (time / properties.elevation / 2) * 60; // 60m당 페이스
+    const pace = time / distance;
+    const paceValue = isTrail ? elevation_pace : pace;
+    const paceUnit = isTrail ? "/60m↑" : "/km";
+    const tooltipPace = paceValue
+        ? `${Math.floor(paceValue / 60)}′${Math.floor(paceValue % 60)
+              .toString()
+              .padStart(2, "0")}″<span class="unit">${paceUnit}</span>`
+        : "N/A";
 
-    // --- DEM & Contour Source Setup ---
-    const demSource = new mlcontour.DemSource({
-        url: "https://tiles.mapterhorn.com/{z}/{x}/{y}.webp",
-        encoding: "terrarium",
-        worker: true,
-        cacheSize: 100,
-        timeoutMs: 10_000
-    });
+    const distanceValue = isTrail ? `${properties.elevation} m` : `${parseFloat(distance).toFixed(2)} km`;
+    const distanceIcon = isTrail ? "altitude" : "conversion_path";
+
+    const comment = properties.comment ? `<span class="comment">${properties.comment}</span>` : "";
+    const typeText = isOfficial ? "공식 대회" : isTrail ? "하이킹 / 트레일러닝" : properties.type === "walk" ? "걷기" : properties.type === "ride" ? "자전거 타기" : "러닝";
+
+    return `
+        <div class="tooltip-item ${isOfficial ? "official" : ""}">
+             <div class="title-container">
+                <span class="type">${typeText}</span>
+                <span class="date">${properties.date}</span>
+                <div class="title">${properties.title} ${isOfficial ? '<span class="material-symbols official"> crown </span>' : ""}${comment}</div>
+            </div>
+            <div class="data">
+                <span class="material-symbols-outlined icon distance">${distanceIcon}</span> <span class="distance">${distanceValue}</span> <span class="div"></span>
+                <span class="material-symbols-outlined icon record">timer</span> <span class="rec">${properties.record || "N/A"}</span> <span class="div"></span>
+                <span class="material-symbols-outlined icon pace">speed</span> <span class="pace">${tooltipPace}</span>
+            </div>
+        </div>`;
+}
+
+function handleMapTooltip(e, features, tooltipElement) {
+    if (features.length > 0) {
+        map.getCanvas().style.cursor = "pointer";
+        tooltipElement.classList.add("on");
+        tooltipElement.innerHTML = generateTooltipHtml(features[0].properties);
+        tooltipElement.style.left = `${e.point.x + 15}px`;
+        tooltipElement.style.top = `${e.point.y - 40}px`;
+    } else {
+        tooltipElement.style.left = `${e.point.x + 15}px`;
+        tooltipElement.style.top = `${e.point.y - 40}px`;
+    }
+}
+
+// --- Map & Data Setup ---
+function addSourcesAndLayers() {
+    if (!map.getSource("gpx-lines-source")) map.addSource("gpx-lines-source", { type: "geojson", data: { type: "FeatureCollection", features: [] }, lineMetrics: true });
+    if (!map.getSource("gpx-points-source")) map.addSource("gpx-points-source", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+
+    const demSource = new mlcontour.DemSource({ url: "https://tiles.mapterhorn.com/{z}/{x}/{y}.webp", encoding: "terrarium", worker: true, cacheSize: 100, timeoutMs: 10_000 });
     demSource.setupMaplibre(maplibregl);
-
     if (!map.getSource("dem")) map.addSource("dem", { type: "raster-dem", encoding: "terrarium", tiles: [demSource.sharedDemProtocolUrl], tileSize: 256, maxzoom: 12 });
     if (!map.getSource("contour-source"))
         map.addSource("contour-source", {
@@ -268,161 +150,197 @@ function addSourcesAndLayers() {
                 })
             ]
         });
-    if (!map.getLayer("hillshade-layer")) map.addLayer({ id: "hillshade-layer", type: "hillshade", source: "dem", paint: { "hillshade-exaggeration": 0.1 } }, "land-forest");
-    if (!map.getLayer("contour-lines"))
-        map.addLayer(
-            {
-                id: "contour-lines",
-                type: "line",
-                source: "contour-source",
-                "source-layer": "contours",
-                paint: { "line-opacity": 0.33, "line-width": ["match", ["get", "level"], 1, 1, 0.5] },
-                layout: { "line-join": "round" }
-            },
-            "label-place-neighbourhood"
-        );
-    if (!map.getLayer("contour-labels"))
-        map.addLayer(
-            {
-                id: "contour-labels",
-                type: "symbol",
-                source: "contour-source",
-                "source-layer": "contours",
-                filter: [">", ["get", "level"], 0],
-                layout: { "symbol-placement": "line", "text-size": 10, "text-field": ["concat", ["number-format", ["get", "ele"], {}], " m"], "text-font": ["Noto Sans Bold"] }
-            },
-            "label-place-neighbourhood"
-        );
+
+    const layerinsertBefore = "label-address-housenumber";
+    const lineLayout = { "line-join": "round", "line-cap": "round" };
+    const normalColors = { start: "#00ff80", end: "#005c45", border: "rgba(255, 255, 255, 1)", base: "#00b264" };
+    const certiColors = { start: "#ffd700", end: "#f57f17", border: "rgba(255, 255, 255, 1)", base: "#FAAB0C" };
+    const highlightFilter = ["==", ["get", "id"], -1];
+
+    const layers = [
+        { id: "hillshade-layer", type: "hillshade", source: "dem", paint: { "hillshade-exaggeration": 0.1 } },
+        {
+            id: "contour-lines",
+            type: "line",
+            source: "contour-source",
+            "source-layer": "contours",
+            layout: { "line-join": "round" },
+            paint: { "line-opacity": 0.33, "line-width": ["match", ["get", "level"], 1, 1, 0.5], "line-color": currentStyle === "dark" ? "#fff" : "#000" }
+        },
+        {
+            id: "contour-labels",
+            type: "symbol",
+            source: "contour-source",
+            "source-layer": "contours",
+            filter: [">", ["get", "level"], 0],
+            layout: { "symbol-placement": "line", "text-size": 10, "text-field": ["concat", ["number-format", ["get", "ele"], {}], " m"], "text-font": ["Noto Sans Bold"] },
+            paint: { "text-color": currentStyle === "dark" ? "#aaa" : "#333" }
+        },
+        {
+            id: "gpx-line-base",
+            type: "line",
+            source: "gpx-lines-source",
+            layout: lineLayout,
+            filter: ["!", ["==", ["get", "certified"], true]],
+            paint: {
+                "line-color": normalColors.base,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 3.5, 13, 2.5],
+                "line-opacity": ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.25]
+            }
+        },
+        {
+            id: "gpx-line-base-certi",
+            type: "line",
+            source: "gpx-lines-source",
+            layout: lineLayout,
+            filter: ["==", ["get", "certified"], true],
+            paint: {
+                "line-color": certiColors.base,
+                "line-width": ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 3.5, 13, 2.5],
+                "line-opacity": ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.33]
+            }
+        },
+        {
+            id: "gpx-highlight-border",
+            type: "line",
+            source: "gpx-lines-source",
+            layout: lineLayout,
+            filter: highlightFilter,
+            paint: { "line-color": ["case", ["==", ["get", "certified"], true], certiColors.border, normalColors.border], "line-width": ["interpolate", ["linear"], ["zoom"], 5, 6, 12, 8] }
+        },
+        {
+            id: "gpx-highlight-points-border",
+            type: "circle",
+            source: "gpx-points-source",
+            filter: highlightFilter,
+            paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 6, 16, 10], "circle-color": "#fff" }
+        },
+        {
+            id: "gpx-highlight-main",
+            type: "line",
+            source: "gpx-lines-source",
+            layout: lineLayout,
+            filter: highlightFilter,
+            paint: { "line-width": ["interpolate", ["linear"], ["zoom"], 9, 3, 16, 5], "line-gradient": ["interpolate", ["linear"], ["line-progress"], 0, normalColors.start, 1, normalColors.end] }
+        },
+        {
+            id: "gpx-highlight-points",
+            type: "circle",
+            source: "gpx-points-source",
+            filter: highlightFilter,
+            paint: {
+                "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 2, 16, 3],
+                "circle-color": "#fff",
+                "circle-stroke-color": [
+                    "case",
+                    ["==", ["get", "certified"], true],
+                    ["case", ["==", ["get", "point_type"], "start"], certiColors.start, certiColors.end],
+                    ["case", ["==", ["get", "point_type"], "start"], normalColors.start, normalColors.end]
+                ],
+                "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 9, 2, 16, 5]
+            }
+        }
+    ];
+
+    layers.forEach((layer) => {
+        if (!map.getLayer(layer.id)) map.addLayer(layer, layerinsertBefore);
+    });
 }
 
-// --- Data Loading & Progress UI ---
-function updateProgress(processed, total) {
-    const progressBar = document.getElementById("progress-bar");
-    const gpxCounter = document.getElementById("gpx-counter");
-    const progressContainer = document.getElementById("progress-container");
-    const percentage = total > 0 ? (processed / total) * 100 : 0;
-
-    progressBar.style.width = `${percentage}%`;
-    gpxCounter.textContent = `${Math.round(percentage)}%`;
-    gpxCounter.style.left = `calc(${percentage}% - 0px)`;
-
-    if (processed >= total && total > 0) {
-        setTimeout(() => {
-            progressContainer.style.opacity = "0";
-        }, 1500);
-    }
+function updateProgress(p, t) {
+    const bar = document.getElementById("progress-bar"),
+        counter = document.getElementById("gpx-counter"),
+        cont = document.getElementById("progress-container"),
+        pct = t > 0 ? (p / t) * 100 : 0;
+    bar.style.width = `${pct}%`;
+    counter.textContent = `${Math.round(pct)}%`;
+    if (p >= t && t > 0) setTimeout(() => (cont.style.opacity = "0"), 1500);
 }
 
-function updateMapSource() {
-    if (map.getSource("gpx-data-source")) {
-        map.getSource("gpx-data-source").setData({
-            type: "FeatureCollection",
-            features: allFeatures
-        });
-    }
+function updateMapSources() {
+    if (map.getSource("gpx-lines-source")) map.getSource("gpx-lines-source").setData({ type: "FeatureCollection", features: allLineFeatures });
+    if (map.getSource("gpx-points-source")) map.getSource("gpx-points-source").setData({ type: "FeatureCollection", features: allPointFeatures });
+}
+
+function processNewFeatures(features) {
+    features.forEach((lineFeature) => {
+        allLineFeatures.push(lineFeature);
+        const coords = lineFeature.geometry.coordinates;
+        if (coords.length > 0) {
+            const startPoint = { type: "Feature", properties: { ...lineFeature.properties, point_type: "start" }, geometry: { type: "Point", coordinates: coords[0] } };
+            const endPoint = { type: "Feature", properties: { ...lineFeature.properties, point_type: "end" }, geometry: { type: "Point", coordinates: coords[coords.length - 1] } };
+            allPointFeatures.push(startPoint, endPoint);
+        }
+    });
 }
 
 async function loadGpxData() {
     hermes_records.push(...hermes_records_4_earth);
     const recordsMap = new Map(hermes_records.map((r) => [`${r.date}${r.over ? `_${r.over}` : ""}`.trim(), r]));
     const LS_KEY = "cachedGpxFeatures_v5_shortpath";
-
-    // 1. 로컬 스토리지 데이터 로드 및 전체 레코드 정보 재결합
     let cachedHybridFeatures = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
 
-    allFeatures = cachedHybridFeatures
-        .map((hybrid) => {
-            const record = recordsMap.get(hybrid.properties.path.trim());
-            if (!record) return null; // hermes_records.js에서 기록이 제거된 경우
-            return {
-                type: "Feature",
-                properties: { ...record, ...hybrid.properties }, // 전체 속성 병합
-                geometry: {
-                    type: "LineString",
-                    coordinates: decodeCoordinates(hybrid.geometry.encoded_coordinates)
-                }
-            };
-        })
-        .filter(Boolean); // null 값 제거
-
-    updateMapSource();
+    const cachedFeatures = [];
+    cachedHybridFeatures.forEach((hybrid) => {
+        const record = recordsMap.get(hybrid.properties.path.trim());
+        if (!record) return;
+        const coordinates = decodeCoordinates(hybrid.geometry.encoded_coordinates);
+        if (coordinates.length > 0) cachedFeatures.push(createFeature(record, coordinates, hybrid.properties.path));
+    });
+    if (cachedFeatures.length > 0) processNewFeatures(cachedFeatures);
+    updateMapSources();
 
     const cachedPaths = new Set(cachedHybridFeatures.map((f) => f.properties.path.trim()));
     const totalRecords = hermes_records.length;
-    let processedCount = allFeatures.length;
+    let processedCount = cachedFeatures.length;
     updateProgress(processedCount, totalRecords);
 
-    const recordsToLoad = hermes_records.filter((r) => {
-        const shortPath = `${r.date}${r.over ? `_${r.over}` : ""}`.trim();
-        return !cachedPaths.has(shortPath);
-    });
-
+    const recordsToLoad = hermes_records.filter((r) => !cachedPaths.has(`${r.date}${r.over ? `_${r.over}` : ""}`.trim()));
     if (recordsToLoad.length === 0) {
         updateProgress(totalRecords, totalRecords);
         return;
     }
     document.getElementById("progress-container").style.opacity = "1";
 
-    // 2. 압축 파일 로드
     const years = [...new Set(recordsToLoad.map((r) => r.date.substring(0, 4)))];
     const compressedDataMap = new Map();
-
-    const compressedJsonPromises = years.map((year) => {
-        const url = `../records/compressed/${year}.json`;
-        return fetch(url)
+    const compressedJsonPromises = years.map((year) =>
+        fetch(`../records/compressed/${year}.json`)
             .then((res) => (res.ok ? res.json() : null))
             .then((data) => {
                 if (!data) return;
                 const features = Array.isArray(data) ? data : data.features;
                 if (!features) return;
-
                 const yearDataMap = new Map();
                 features.forEach((feat) => {
-                    if (feat?.properties?.path) {
-                        yearDataMap.set(feat.properties.path.trim(), feat);
-                    }
+                    if (feat?.properties?.path) yearDataMap.set(feat.properties.path.trim(), feat);
                 });
                 compressedDataMap.set(year, yearDataMap);
             })
-            .catch((err) => console.error(`Failed to fetch/parse '${year}.json'.`, err));
-    });
+            .catch((err) => console.error(`Failed to parse '${year}.json'.`, err))
+    );
     await Promise.allSettled(compressedJsonPromises);
 
-    // 3. 데이터 소스 분류
     const gpxRecordsToFetch = [];
     const compressedFeatures = [];
-
     recordsToLoad.forEach((record) => {
-        const year = record.date.substring(0, 4);
         const shortPath = `${record.date}${record.over ? `_${record.over}` : ""}`.trim();
-        const dateOnlyPath = record.date.trim();
-        const compressedYearData = compressedDataMap.get(year);
-
-        let feat = compressedYearData?.get(shortPath) || compressedYearData?.get(dateOnlyPath);
-
+        const feat = compressedDataMap.get(record.date.substring(0, 4))?.get(shortPath);
         if (feat) {
-            compressedFeatures.push({
-                type: "Feature",
-                properties: { ...record, path: shortPath, certified: record.certi != null },
-                geometry: {
-                    type: "LineString",
-                    coordinates: decodeCoordinates(feat.geometry.encoded_coordinates)
-                }
-            });
+            const coordinates = decodeCoordinates(feat.geometry.encoded_coordinates);
+            if (coordinates.length > 0) compressedFeatures.push(createFeature(record, coordinates, shortPath));
         } else if (!record.comment?.includes("gpx 파일 누락") && !record.comment?.includes("위치 기록 누락")) {
             gpxRecordsToFetch.push(record);
         }
     });
 
-    // 압축 데이터 일괄 추가
     if (compressedFeatures.length > 0) {
-        allFeatures.push(...compressedFeatures);
-        updateMapSource();
+        processNewFeatures(compressedFeatures);
+        updateMapSources();
         processedCount += compressedFeatures.length;
         updateProgress(processedCount, totalRecords);
     }
 
-    // 개별 GPX 로드
     if (gpxRecordsToFetch.length > 0) {
         const gpxWorker = new Worker("gpx-worker.js");
         const promises = new Map();
@@ -434,34 +352,24 @@ async function loadGpxData() {
         for (const record of gpxRecordsToFetch) {
             const shortPath = `${record.date}${record.over ? `_${record.over}` : ""}`.trim();
             const fullPath = `../records/${record.date.substring(0, 4)}/${shortPath}.gpx`;
-
             await new Promise((resolve) => {
                 new Promise((res, rej) => {
                     promises.set(fullPath, { resolve: res, reject: rej });
                     fetch(fullPath)
-                        .then((res) => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))))
+                        .then((r) => (r.ok ? r.text() : Promise.reject(new Error(r.statusText))))
                         .then((gpxText) => gpxWorker.postMessage({ gpxText, path: fullPath }))
                         .catch(rej);
                 })
-                    .then((encodedCoordinates) => {
-                        if (encodedCoordinates) {
-                            allFeatures.push({
-                                type: "Feature",
-                                properties: { ...record, path: shortPath, certified: record.certi != null },
-                                geometry: {
-                                    type: "LineString",
-                                    coordinates: decodeCoordinates(encodedCoordinates)
-                                }
-                            });
-                            updateMapSource();
-
-                            // 로컬스토리지에는 최소 정보만 저장
-                            cachedHybridFeatures.push({
-                                type: "Feature",
-                                properties: { path: shortPath, certified: record.certi != null },
-                                geometry: { encoded_coordinates: encodedCoordinates }
-                            });
-                            localStorage.setItem(LS_KEY, JSON.stringify(cachedHybridFeatures));
+                    .then((encoded) => {
+                        if (encoded) {
+                            const coordinates = decodeCoordinates(encoded);
+                            if (coordinates.length > 0) {
+                                const newFeature = createFeature(record, coordinates, shortPath);
+                                processNewFeatures([newFeature]);
+                                updateMapSources();
+                                cachedHybridFeatures.push({ type: "Feature", properties: { path: shortPath, certified: record.certi != null }, geometry: { encoded_coordinates: encoded } });
+                                localStorage.setItem(LS_KEY, JSON.stringify(cachedHybridFeatures));
+                            }
                         }
                     })
                     .catch(() => {})
@@ -475,106 +383,79 @@ async function loadGpxData() {
         }
         gpxWorker.terminate();
     }
-
     updateProgress(totalRecords, totalRecords);
 }
 
-// --- 경로 호버 팝업 기능 ---
-function trackPopup() {
-    const layersToHover = ["gpx-normal-layer", "gpx-certified-layer"];
-
-    layersToHover.forEach((layerId) => {
-        map.on("mouseenter", layerId, (e) => {
-            map.getCanvas().style.cursor = "pointer";
-
-            const rec = e.features[0].properties;
-            if (!rec) return;
-
-            // 기록 시간을 초로 변환
-            const parts = rec.record.split(":").map(Number);
-            let time;
-            if (parts.length === 3) {
-                time = parts[0] * 3600 + parts[1] * 60 + parts[2];
-            } else if (parts.length === 2) {
-                time = parts[0] * 60 + parts[1];
-            }
-
-            // 거리, 고도, 트레일 여부 설정
-            const distance = rec.distance || (rec.course == "full" ? 42.195 : rec.course == "half" ? 21.0975 : rec.course == "10k" ? 10 : rec.course == "5k" ? 5 : 0);
-            const elevation = rec.elevation || 0;
-            const isTrail = rec.type == "trail";
-
-            // 페이스 계산
-            let elevation_pace = Infinity;
-            let distance_pace = Infinity;
-
-            if (isTrail) {
-                if (elevation > 0) elevation_pace = (time / elevation / 2) * 60; // 60m당 페이스
-                if (distance > 0) distance_pace = time / distance;
-            }
-
-            rec.isOfficial = rec.course !== undefined;
-            rec.pace = time / distance;
-            rec.elevation_pace = isTrail ? elevation_pace : distance > 0 ? time / distance : Infinity;
-
-            const paceValue = rec.type === "trail" ? rec.elevation_pace : rec.pace;
-            const tooltipPace = `${Math.floor(paceValue / 60)}′${Math.floor(paceValue % 60)
-                .toString()
-                .padStart(2, "0")}″${rec.type === "trail" ? '<span class="unit">/60 m↑</span>' : '<span class="unit">/km</span>'}`;
-            const tooltipDistance = rec.type === "trail" ? `${rec.elevation} <span class="unit"> m</span>` : `${distance.toFixed(2)} <span class="unit"> km</span>`;
-            const tooltip_type = rec.isOfficial ? "공식 대회" : rec.type === "trail" ? "하이킹 / 트레일러닝" : rec.type === "walk" ? "걷기" : "러닝";
-            const icon_distance = rec.type === "trail" ? "altitude" : "conversion_path";
-            const comment = rec.comment ? `<span class="comment">${rec.comment}</span>` : "";
-            const gpxFileName = rec.date + (rec.over !== undefined ? "_" + rec.over : "");
-
-            let tooltipContent = `
-            <div class="tooltip-item ${rec.isOfficial ? "official" : ""}">
-                <div class="gpx d-${gpxFileName}"><svg></svg></div>
-                <div class="title-container">
-                    <span class="type">${tooltip_type}</span>
-                    <span class="date">${rec.date}</span>
-                    <div class="title">${rec.title} ${rec.isOfficial ? '<span class="material-symbols official"> crown </span>' : ""} ${comment}</div>
-                </div>
-                <div class="data">
-                    <span class="material-symbols-outlined icon distance">${icon_distance}</span> <span class="distance">${tooltipDistance}</span> |
-                    <span class="material-symbols-outlined icon record">timer</span> <span class="rec">${rec.record}</span> |
-                    <span class="material-symbols-outlined icon pace">speed</span> <span class="pace">${tooltipPace}</span>
-                </div>
-            </div>`;
-
-            let tooltip = document.getElementById("tooltip");
-            tooltip.innerHTML = tooltipContent;
-            tooltip.classList.add("on");
-            tooltip.style.left = e.point.x + "px";
-            tooltip.style.top = e.point.y + "px";
-            // console.log(e);
-            // console.log(properties);
-        });
-
-        map.on("mouseleave", layerId, () => {
-            map.getCanvas().style.cursor = "";
-            tooltip.classList.remove("on");
-            // trackPopup.remove();
-        });
-    });
-}
-
-// --- Map Event Listeners & Initial Load ---
+// --- Map Event Handlers ---
 map.on("style.load", () => {
-    map.setProjection({ type: "globe" });
     addSourcesAndLayers();
-    updatePaintProperties();
-    updateMapSource();
+    updateMapSources();
 });
 
 map.on("load", () => {
     map.setProjection({ type: "globe" });
     map.setTerrain({ source: "dem", exaggeration: 1.5 });
     loadGpxData();
-    trackPopup();
+    if (hermes && typeof hermes.gpx.init === "function") hermes.gpx.init(map);
 
-    // Initialize GPX drag-and-drop functionality
-    if (hermes && typeof hermes.gpx.init === "function") {
-        hermes.gpx.init(map);
+    const trackTooltip = document.getElementById("tooltip");
+    //     const trackTooltip = document.createElement("div");
+    // trackTooltip.id = "tooltip";
+    // map.getContainer().appendChild(trackTooltip);
+
+    let hoveredFeatureId = null;
+    const highlightLayers = ["gpx-highlight-border", "gpx-highlight-main", "gpx-highlight-points-border", "gpx-highlight-points"];
+    const layersToQuery = ["gpx-line-base", "gpx-line-base-certi"];
+    const normalColors = { start: "#00ff80", end: "#005c45" };
+    const certiColors = { start: "#ffd700", end: "#f57f17" };
+
+    // --- 하이라이트 및 툴팁 관리를 위한 통합 함수 ---
+
+    // 하이라이트와 툴팁을 모두 제거하는 함수
+    function clearHighlightAndTooltip() {
+        if (hoveredFeatureId !== null) {
+            hoveredFeatureId = null; // 현재 하이라이트된 ID 상태를 초기화
+            highlightLayers.forEach((layerId) => {
+                if (map.getLayer(layerId)) {
+                    map.setFilter(layerId, ["==", "id", ""]); // 레이어 필터를 제거하여 하이라이트 숨김
+                }
+            });
+            trackTooltip.classList.remove("on"); // 툴팁 숨김
+        }
     }
+
+    // --- 이벤트 핸들러 ---
+
+    // 마우스 움직임에 따라 경로를 하이라이트하거나 해제
+    map.on("mousemove", (e) => {
+        const features = map.queryRenderedFeatures(e.point, { layers: layersToQuery });
+
+        if (features.length > 0) {
+            // 마우스가 경로 위에 있을 경우
+            const newHoveredId = features[0].properties.id;
+            if (hoveredFeatureId !== newHoveredId) {
+                hoveredFeatureId = newHoveredId; // 새로운 경로 ID로 상태 업데이트
+                const isCertified = features[0].properties.certified;
+
+                const filter = ["==", ["get", "id"], hoveredFeatureId];
+                highlightLayers.forEach((layerId) => map.setFilter(layerId, filter));
+
+                const gradient = isCertified
+                    ? ["interpolate", ["linear"], ["line-progress"], 0, certiColors.start, 1, certiColors.end]
+                    : ["interpolate", ["linear"], ["line-progress"], 0, normalColors.start, 1, normalColors.end];
+                map.setPaintProperty("gpx-highlight-main", "line-gradient", gradient);
+            }
+        } else {
+            // 마우스가 경로 위에 없을 경우, 하이라이트 제거
+            // clearHighlightAndTooltip();
+        }
+
+        // 툴팁 위치와 내용을 실시간으로 업데이트
+        handleMapTooltip(e, features, trackTooltip);
+    });
+
+    // 지도의 아무 곳이나 클릭하면 하이라이트와 툴팁을 제거
+    map.on("click", () => {
+        clearHighlightAndTooltip();
+    });
 });
