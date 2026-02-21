@@ -13,13 +13,14 @@ body {
     --color--track-shadow: rgba(0 0 0 / 0.25);
 
     --color--calendar-hover: #f7f7f7;
-    --color--calendar-icon: #1b5e20;
+    /* --color--calendar-icon: #b2dfdb; */
+    --color--calendar-icon: color-mix(in hsl, var(--color--gpx-middle), var(--color--track) 75%);
 
     --color--theme: #00b264;
     --color--theme-light: #69f0ae;
     --color--gpx-start: #00ff80;
     --color--gpx-middle: #00b264;
-    --color--gpx-end: #005c45;
+    --color--gpx-end: #004D40;
     --color--red: #f44336;
     --color--teal: #009688;
     --color--indigo: #3f51b5;
@@ -45,7 +46,7 @@ body {
         --color--track-shadow: rgba(0 0 0 / 0.75);
 
         --color--calendar-hover: var(--color--track-hover);
-        /* --color--calendar-icon: #B2DFDB; */
+        /* --color--calendar-icon: #1b5e20; */
 
         --color--red: #ef5350;
         --color--teal: #26a69a;

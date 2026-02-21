@@ -20,7 +20,7 @@ body {
     color: var(--color--scoreboard-text);
     background-color: var(--color--body-background);
     margin: 0;
-    /* overflow-x: hidden; */
+    overflow-x: hidden;
     cursor: default;
 }
 
@@ -273,8 +273,9 @@ a {
 }
 
 .track-lane:hover .marker.official {
-    filter: brightness(1.1) contrast(1.5) hue-rotate(-90deg);
-    z-index: 1;
+    --color--gpx-start: var(--color--gold);
+    --color--gpx-end:  var(--color--gold-dark);
+    /* z-index: 1; */
 }
 
 .marker-grid {

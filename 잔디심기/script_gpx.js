@@ -148,13 +148,13 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
         const width = (maxLon - minLon) * 5000;
         const height = (maxLat - minLat) * 5000;
 
-        const startColor = { r: 0, g: 255, b: 127 }, endColor = { r: 0, g: 92, b: 69 };
-        function interpolateColor(c1, c2, factor) {
-            const r = Math.round(c1.r + factor * (c2.r - c1.r)).toString(16).padStart(2, "0");
-            const g = Math.round(c1.g + factor * (c2.g - c1.g)).toString(16).padStart(2, "0");
-            const b = Math.round(c1.b + factor * (c2.b - c1.b)).toString(16).padStart(2, "0");
-            return `#${r}${g}${b}`;
-        }
+        // const startColor = { r: 0, g: 255, b: 127 }, endColor = { r: 0, g: 92, b: 69 };
+        // function interpolateColor(c1, c2, factor) {
+        //     const r = Math.round(c1.r + factor * (c2.r - c1.r)).toString(16).padStart(2, "0");
+        //     const g = Math.round(c1.g + factor * (c2.g - c1.g)).toString(16).padStart(2, "0");
+        //     const b = Math.round(c1.b + factor * (c2.b - c1.b)).toString(16).padStart(2, "0");
+        //     return `#${r}${g}${b}`;
+        // }
 
         // --- SVG 렌더링 로직 수정 ---
 
@@ -184,7 +184,7 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
                 borderPaths += `<path d="${pathData}" fill="none" stroke="var(--color--track)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />`;
                 
                 // 메인 경로 (기존 색상)
-                mainPaths += `<path d="${pathData}" fill="none" stroke="${interpolateColor(startColor, endColor, startSegment / totalSegments)}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />`;
+                mainPaths += `<path d="${pathData}" fill="none" stroke="color-mix(in oklab, var(--color--gpx-start), var(--color--gpx-end) ${startSegment / totalSegments * 100}%)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />`;
             }
 
             borderPaths += '</g>';
@@ -196,8 +196,8 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
             const y_end = height - ((pts[pts.length - 1].lat - minLat) / (maxLat - minLat)) * height;
             borderPaths += `<circle cx="${x_start}" cy="${y_start}" r="6" fill="var(--color--track)" />`;
             borderPaths += `<circle cx="${x_end}" cy="${y_end}" r="6" fill="var(--color--track)" />`;
-            mainPaths += `<circle cx="${x_start}" cy="${y_start}" r="3.5" stroke="${interpolateColor(startColor, endColor, 0)}" stroke-width="2" fill="var(--color--track)" />`;
-            mainPaths += `<circle cx="${x_end}" cy="${y_end}" r="3.5" stroke="${interpolateColor(startColor, endColor, 1)}" stroke-width="2" fill="var(--color--track)" />`;
+            mainPaths += `<circle cx="${x_start}" cy="${y_start}" r="3.5" stroke="var(--color--gpx-start)" stroke-width="2" fill="var(--color--track)" />`;
+            mainPaths += `<circle cx="${x_end}" cy="${y_end}" r="3.5" stroke="var(--color--gpx-end)" stroke-width="2" fill="var(--color--track)" />`;
       
             // 테두리 그룹을 먼저 추가하고 그 위에 메인 그룹을 추가
             pathSegments = borderPaths + mainPaths;

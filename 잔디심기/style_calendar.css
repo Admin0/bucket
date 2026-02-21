@@ -251,6 +251,7 @@ td.on {
 
 .activity-icons i {
     /* margin: 0 -0.125em; */
+    font-size: 20px;
 }
 
 .activity-icons:has(.rest) {

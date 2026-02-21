@@ -155,10 +155,6 @@ hermes.track = function () {
     hermes.trailStats.maxDistancePace = Math.min(Math.max(0, ...hermes.trailStats.distance_paces), limitTrailDistancePace);
     hermes.trailStats.minDistancePace = Math.min(...hermes.trailStats.distance_paces);
 
-    // 마커 색상 그라데이션 설정
-    const startColor = [0, 255, 127]; // SpringGreen (좋은 기록)
-    const endColor = [0, 77, 64]; // Teal900 (나쁜 기록)
-
     // 기록의 시작 및 종료 연도 설정
     const years = [...new Set(hermes.records.map((r) => r.weekInfo.year))];
     const startYear = years.length > 0 ? Math.min(...years) : new Date().getFullYear();
@@ -314,7 +310,7 @@ hermes.track = function () {
                         });
 
                         // 기록 값에 따라 마커 색상 계산
-                        let colorValue = 0.5;
+                        let colorValue = 50;
                         const record = representativeRecord;
 
                         if (record.course === "trail") {
@@ -351,18 +347,13 @@ hermes.track = function () {
                             }
                             if (limit) value = Math.min(value, limit);
                             if (max > min) {
-                                colorValue = (value - min) / (max - min);
-                                if (!higherIsBetter) colorValue = 1 - colorValue;
+                                colorValue = ((value - min) / (max - min)) * 100;
+                                if (higherIsBetter) colorValue = 100 - colorValue;
                             }
                         } else if (record.pace !== Infinity && maxPace > minPace) {
-                            colorValue = (Math.min(record.pace, limitPace) - minPace) / (maxPace - minPace);
-                            colorValue = 1 - colorValue;
+                            colorValue = ((Math.min(record.pace, limitPace) - minPace) / (maxPace - minPace)) * 100;
                         }
-
-                        const r = Math.round(startColor[0] * colorValue + endColor[0] * (1 - colorValue));
-                        const g = Math.round(startColor[1] * colorValue + endColor[1] * (1 - colorValue));
-                        const b = Math.round(startColor[2] * colorValue + endColor[2] * (1 - colorValue));
-                        marker.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+                        marker.style.backgroundColor = `color-mix(in oklab, var(--color--gpx-start), var(--color--gpx-end) ${colorValue}%)`;
                     }
                     marker.textContent = `${weekNumber}`;
                     markerGrid.appendChild(marker);

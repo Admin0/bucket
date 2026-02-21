@@ -104,7 +104,8 @@
 }
 
 #tooltip .official svg {
-    filter: brightness(1.1) contrast(1.5) hue-rotate(-90deg);
+    --color--gpx-start: var(--color--gold);
+    --color--gpx-end:  var(--color--gold-dark);
 }
 
 .icon.distance {

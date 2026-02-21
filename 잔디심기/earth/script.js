@@ -153,7 +153,7 @@ function addSourcesAndLayers() {
 
     const layerinsertBefore = "label-address-housenumber";
     const lineLayout = { "line-join": "round", "line-cap": "round" };
-    const normalColors = { start: "#00ff80", end: "#005c45", border: "rgba(255, 255, 255, 1)", base: "#00b264" };
+    const normalColors = { start: "#00ff80", end: "#004D40", border: "rgba(255, 255, 255, 1)", base: "#00b264" };
     const certiColors = { start: "#ffd700", end: "#f57f17", border: "rgba(255, 255, 255, 1)", base: "#FAAB0C" };
     const highlightFilter = ["==", ["get", "id"], -1];
 

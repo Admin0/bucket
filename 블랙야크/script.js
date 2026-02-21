@@ -126,7 +126,7 @@ const points = [
     { no: 97, id: "화왕산", done: { step: false, date: "" }, pos_0: { y: 35.547141, x: 128.531682 }, info: { peak: "정상", height: 757 } },
     { no: 98, id: "황매산", done: { step: false, date: "" }, pos_0: { y: 35.495206, x: 127.974455 }, info: { peak: "정상", height: 1108 } },
     { no: 99, id: "황석산", done: { step: 60, date: "2025.12.27." }, pos_0: { y: 35.730696, x: 127.761191 }, info: { peak: "정상", height: 1190 } },
-    { no: 100, id: "황악산", done: { step: false, date: "" }, pos_0: { y: 36.117593, x: 127.966881 }, info: { peak: "정상", height: 1111 } },
+    { no: 100, id: "황악산", done: { step: false, date: "" }, pos_0: { y: 36.117593, x: 127.966881 }, info: { peak: "정상", height: 1111 } }
 ];
 
 const MAP_MARGIN = 0;
@@ -183,13 +183,13 @@ async function updateTitle(p, point) {
                 element.classList.remove("on");
             });
             p.classList.add("on");
-            
-            document.querySelectorAll("#블랙야크_table tr").forEach(tr => {
+
+            document.querySelectorAll("#블랙야크_table tr").forEach((tr) => {
                 tr.classList.remove("on");
             });
-            const table_item_target = document.querySelector("#블랙야크_table tr:nth-of-type(" + point.no + ")")
+            const table_item_target = document.querySelector("#블랙야크_table tr:nth-of-type(" + point.no + ")");
             table_item_target.classList.add("on");
-            table_item_target.scrollIntoView({behavior: 'smooth'});
+            if (!isMobile() && !window.matchMedia("only screen and (max-width: 1440px)").matches) table_item_target.scrollIntoView({ behavior: "smooth" });
             tooltip.style.setProperty("--tooltip-rotate", `${-3 + Math.random() * 6}deg`);
         }
         tooltip.classList.add("on", "블랙야크");
@@ -241,7 +241,7 @@ function draw() {
             //처음 1회만 실행
             point.pos = {
                 x: ((point.pos_0.x - LONGITUDE_MIN) / (LONGITUDE_MAX - LONGITUDE_MIN)) * 100,
-                y: ((LATITUDE_MAX - point.pos_0.y) / (LATITUDE_MAX - LATITUDE_MIN)) * 100,
+                y: ((LATITUDE_MAX - point.pos_0.y) / (LATITUDE_MAX - LATITUDE_MIN)) * 100
             };
         }
 

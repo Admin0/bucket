@@ -1,5 +1,6 @@
 const hermes_records = [
     // 2026
+    { date: "2026-02-21", type: "run", distance: 10.40, elevation: 57, record: "00:59:02", title: "신정호", comment: "종아리 마사지기(￦20만) 구매 기념" },
     { date: "2026-02-19", type: "run", distance: 5.04, elevation: 9, record: "00:27:12", title: "신정호", comment: "@이런저런" },
     { date: "2026-02-17", type: "trail", distance: 10.99, elevation: 707, record: "02:54:18", title: "지리산 바래봉", comment: "" },
     { date: "2026-02-16", type: "trail", distance: 8.03, elevation: 817, record: "03:23:41", title: "백운산", comment: "", over: 2 },
@@ -265,7 +266,7 @@ const hermes_records = [
 
     { date: "2025-03-31", type: "run", distance: 5.01, elevation: 5, record: "00:31:58", title: "신정호", comment: "" },
     { date: "2025-03-15", type: "run", distance: 3.18, elevation: 0, record: "00:24:56", title: "천안종합운동장", comment: "@다니" },
-    { date: "2025-03-09", type: "walk", distance: 4.79, elevation: 5, record: "01:04:36", title: "신정호", comment: "신정호에서 수달 발견 @다니" },
+    { date: "2025-03-09", type: "walk", distance: 4.79, elevation: 5, record: "01:04:36", title: "신정호", comment: "" },
     { date: "2025-03-06", type: "run", distance: 5.09, elevation: 5, record: "00:35:27", title: "신정호", comment: "" },
     { date: "2025-03-05", type: "run", distance: 5.05, elevation: 5, record: "00:32:36", title: "신정호", comment: "" },
     { date: "2025-03-30", type: "trail", distance: 3.54, elevation: 361, record: "01:11:46", title: "갑하산", comment: "", over: 1 },
@@ -279,13 +280,15 @@ const hermes_records = [
     { date: "2025-02-23", type: "trail", distance: 7.66, elevation: 697, record: "03:11:28", title: "칠갑산", comment: "@오르락생존자모임" },
     { date: "2025-02-02", type: "trail", distance: 9.16, elevation: 849, record: "06:35:27", title: "가야산(충남)", comment: "@오르락생존자모임" },
 
+    { date: "2025-01-30", type: "walk", distance: 5.85, elevation: 26, record: "01:13:49", title: "삼천", comment: "" },
     { date: "2025-01-26", type: "run", distance: 5.01, elevation: 5, record: "00:29:46", title: "신정호", comment: "" },
-    { date: "2025-01-23", type: "run", distance: 4.94, elevation: 7, record: "00:31:50", title: "신정호", comment: "" },
-    { date: "2025-01-15", type: "run", distance: 4.88, elevation: 5, record: "00:32:25", title: "신정호", comment: "" },
-    { date: "2025-01-03", type: "run", distance: 4.86, elevation: 5, record: "00:38:46", title: "신정호", comment: "" },
     { date: "2025-01-25", type: "trail", distance: 6.79, elevation: 846, record: "04:47:30", title: "내장산", comment: "@오르락생존자모임" },
+    { date: "2025-01-23", type: "run", distance: 4.94, elevation: 7, record: "00:31:50", title: "신정호", comment: "" },
     { date: "2025-01-19", type: "trail", distance: 2.45, elevation: 396, record: "01:45:22", title: "용봉산", comment: "@오르락생존자모임" },
+    { date: "2025-01-16", type: "walk", distance: 4.71, elevation: 65, record: "01:03:58", title: "신정호", comment: "신정호에서 수달 발견 @다니" },
+    { date: "2025-01-15", type: "run", distance: 4.88, elevation: 5, record: "00:32:25", title: "신정호", comment: "@이런저런" },
     { date: "2025-01-12", type: "trail", distance: 7.22, elevation: 1193, record: "05:55:49", title: "월악산", comment: "@오르락생존자모임" },
+    { date: "2025-01-03", type: "run", distance: 4.86, elevation: 5, record: "00:38:46", title: "신정호", comment: "" },
 
     // 2024
     {
@@ -299,43 +302,58 @@ const hermes_records = [
         comment: ""
     },
 
+    { date: "2024-12-29", type: "trail", distance: 19.0, elevation: 1460, record: "07:14:58", title: "한라산", comment: "@오르락 종료" },
+    { date: "2024-12-22", type: "trail", distance: 12.98, elevation: 1189, record: "04:27:13", title: "치악산", comment: "" },
     { date: "2024-12-12", type: "run", distance: 5.07, elevation: 5, record: "00:28:25", title: "신정호", comment: "" },
+    { date: "2024-12-08", type: "trail", distance: 3.48, elevation: 391, record: "01:58:29", title: "덕숭산", comment: "@오르락" },
     { date: "2024-12-07", type: "run", distance: 5.01, elevation: 5, record: "00:28:48", title: "신정호", comment: "" },
     { date: "2024-12-01", type: "run", distance: 5.02, elevation: 5, record: "00:36:45", title: "신정호", comment: "", over: 1 },
+    { date: "2024-12-01", type: "trail", distance: 3.12, elevation: 319, record: "01:37:59", title: "배방산", comment: "@오르락" },
 
     { date: "2024-11-19", type: "run", distance: 5.01, elevation: 5, record: "00:29:46", title: "신정호", comment: "" },
+    { date: "2024-11-17", type: "trail", distance: 11.57, elevation: 853, record: "04:41:17", title: "광교산", comment: "@오르락" },
     { date: "2024-11-07", type: "run", distance: 5.01, elevation: 5, record: "00:27:43", title: "신정호", comment: "" },
     { date: "2024-11-06", type: "run", distance: 5.03, elevation: 5, record: "00:36:50", title: "신정호", comment: "" },
     { date: "2024-11-04", type: "run", distance: 5.04, elevation: 5, record: "00:29:21", title: "신정호", comment: "" },
+    { date: "2024-11-02", type: "trail", distance: 9.17, elevation: 797, record: "04:39:07", title: "오서산", comment: "@오르락" },
 
     { date: "2024-10-31", type: "run", distance: 5.03, elevation: 5, record: "00:27:41", title: "신정호", comment: "" },
     { date: "2024-10-29", type: "run", distance: 5.02, elevation: 5, record: "00:31:53", title: "신정호", comment: "" },
+    { date: "2024-10-27", type: "trail", distance: 4.59, elevation: 507, record: "01:50:34", title: "광덕산", comment: "@오르락" },
     { date: "2024-10-23", type: "run", distance: 5.01, elevation: 5, record: "00:31:57", title: "신정호", comment: "" },
     { date: "2024-10-15", type: "run", distance: 5.01, elevation: 5, record: "00:28:58", title: "신정호", comment: "" },
     { date: "2024-10-13", type: "run", distance: 5.01, elevation: 5, record: "00:29:00", title: "신정호", comment: "" },
     { date: "2024-10-12", type: "run", distance: 5.01, elevation: 5, record: "00:28:43", title: "신정호", comment: "" },
     { date: "2024-10-11", type: "run", distance: 5.02, elevation: 5, record: "00:30:08", title: "신정호", comment: "" },
     { date: "2024-10-09", type: "run", distance: 5.02, elevation: 5, record: "00:30:21", title: "신정호", comment: "", over: 1 },
+    { date: "2024-10-09", type: "trail", distance: 3.97, elevation: 410, record: "03:04:38", title: "설화산", comment: "@오르락" },
     { date: "2024-10-07", type: "run", distance: 5.0, elevation: 5, record: "00:29:04", title: "신정호", comment: "" },
+    { date: "2024-10-06", type: "trail", distance: 4.37, elevation: 279, record: "01:48:07", title: "아미산", comment: "@오르락" },
     { date: "2024-10-05", type: "run", distance: 5.0, elevation: 5, record: "00:30:55", title: "신정호", comment: "" },
+    { date: "2024-10-03", type: "trail", distance: 6.22, elevation: 406, record: "02:42:04", title: "봉수산", comment: "@오르락" },
+    { date: "2024-10-01", type: "trail", distance: 8.72, elevation: 562, record: "03:35:02", title: "영인산", comment: "@오르락" },
 
-    { date: "2024-09-30", type: "walk", distance: 2.73, elevation: 76, record: "00:39:52", title: "인주산단로", comment: "점심산책" },
     { date: "2024-09-30", type: "run", distance: 5.03, elevation: 5, record: "00:32:10", title: "신정호", comment: "", over: 1 },
+    { date: "2024-09-30", type: "walk", distance: 2.73, elevation: 76, record: "00:39:52", title: "인주산단로", comment: "점심산책" },
     { date: "2024-09-28", type: "run", distance: 5.01, elevation: 5, record: "00:31:41", title: "신정호", comment: "" },
     { date: "2024-09-24", type: "run", distance: 4.86, elevation: 5, record: "00:35:23", title: "신정호", comment: "" },
-    { date: "2024-09-23", type: "run", distance: 10.01, elevation: 10, record: "01:15:07", title: "신정호", comment: "마라톤 대회 대비 / 거의 5년만에 10키로 러닝", over: 1 },
+    { date: "2024-09-23", type: "run", distance: 10.01, elevation: 10, record: "01:15:07", title: "신정호", comment: "마라톤 대회 대비, 거의 5년만에 10키로 러닝", over: 1 },
+    { date: "2024-09-14", type: "trail", distance: 4.38, elevation: 346, record: "02:07:31", title: "설화산", comment: "@오르락" },
+    { date: "2024-09-08", type: "trail", distance: 3.82, elevation: 321, record: "01:41:19", title: "배방산", comment: "@오르락" },
 
     { date: "2024-08-27", type: "run", distance: 5.01, elevation: 5, record: "00:31:05", title: "신정호", comment: "" },
     { date: "2024-08-26", type: "run", distance: 5.03, elevation: 5, record: "00:32:21", title: "신정호", comment: "" },
     { date: "2024-08-23", type: "run", distance: 4.94, elevation: 5, record: "00:35:05", title: "신정호", comment: "" },
 
     { date: "2024-07-21", type: "run", distance: 5.01, elevation: 5, record: "00:36:37", title: "신정호", comment: "" },
+    { date: "2024-07-20", type: "trail", distance: 3.16, elevation: 122, record: "01:27:44", title: "고용산", comment: "@오르락" },
     { date: "2024-07-16", type: "walk", distance: 5.64, elevation: 20, record: "01:05:58", title: "장항선구철도길", comment: "" },
     { date: "2024-07-15", type: "run", distance: 5.0, elevation: 5, record: "00:33:30", title: "신정호", comment: "" },
+    { date: "2024-07-13", type: "trail", distance: 8.01, elevation: 645, record: "02:52:37", title: "광덕산", comment: "@오르락" },
     { date: "2024-07-05", type: "run", distance: 5.09, elevation: 5, record: "00:43:34", title: "신정호", comment: "" },
 
     { date: "2024-06-23", type: "run", distance: 5.01, elevation: 5, record: "00:37:21", title: "신정호", comment: "" },
-    { date: "2024-06-22", type: "trail", distance: 8.0, elevation: 487, record: "02:10:13", title: "태조산", comment: "비맞고 중간에 하산했고 만두전골 먹음 @오르락" },
+    { date: "2024-06-22", type: "trail", distance: 8.0, elevation: 487, record: "02:10:13", title: "태조산", comment: "비맞고 중간에 하산, 만두전골 먹음 @오르락" },
     { date: "2024-06-15", type: "trail", distance: 8.88, elevation: 444, record: "02:10:13", title: "영인산", comment: "집라인 체험 @오르락" },
     { date: "2024-06-10", type: "run", distance: 5.02, elevation: 5, record: "00:32:49", title: "신정호", comment: "" },
     { date: "2024-06-09", type: "trail", distance: 8.45, elevation: 594, record: "02:48:51", title: "광덕산", comment: "@오르락 시작" },
@@ -344,7 +362,7 @@ const hermes_records = [
     { date: "2024-06-01", type: "run", distance: 5.07, elevation: 5, record: "00:36:31", title: "신정호", comment: "" },
 
     { date: "2024-05-31", type: "run", distance: 5.08, elevation: 15, record: "00:31:04", title: "신정호", comment: "" },
-    { date: "2024-05-19", type: "run", distance: 5.01, elevation: 19, record: "00:28:59", title: "장항선구철도길", comment: "" },
+    { date: "2024-05-19", type: "run", distance: 5.01, elevation: 19, record: "00:28:59", title: "장항선구철도길", comment: "장항선 최초 진심 런, 쪄죽음 @주석" },
     { date: "2024-05-16", type: "run", distance: 5.12, elevation: 5, record: "00:30:23", title: "신정호", comment: "" },
     { date: "2024-05-09", type: "run", distance: 5.02, elevation: 5, record: "00:31:54", title: "신정호", comment: "" },
     { date: "2024-05-01", type: "run", distance: 5.02, elevation: 12, record: "00:33:45", title: "신정호", comment: "" },
@@ -366,27 +384,6 @@ const hermes_records = [
     { date: "2024-03-09", type: "run", distance: 5.17, elevation: 5, record: "00:43:40", title: "신정호", comment: "" },
     { date: "2024-03-06", type: "run", distance: 5.25, elevation: 5, record: "00:43:45", title: "신정호", comment: "위치 기록 누락 @이런저런 시작 즈음" },
 
-    // unofficial 2024 trail
-    { date: "2024-12-29", type: "trail", distance: 19.0, elevation: 1460, record: "07:14:58", title: "한라산", comment: "@오르락 종료" },
-    { date: "2024-12-22", type: "trail", distance: 12.98, elevation: 1189, record: "04:27:13", title: "치악산", comment: "" },
-    { date: "2024-12-08", type: "trail", distance: 3.48, elevation: 391, record: "01:58:29", title: "덕숭산", comment: "@오르락" },
-    { date: "2024-12-01", type: "trail", distance: 3.12, elevation: 319, record: "01:37:59", title: "배방산", comment: "@오르락" },
-
-    { date: "2024-11-17", type: "trail", distance: 11.57, elevation: 853, record: "04:41:17", title: "광교산", comment: "@오르락" },
-    { date: "2024-11-02", type: "trail", distance: 9.17, elevation: 797, record: "04:39:07", title: "오서산", comment: "@오르락" },
-
-    { date: "2024-10-27", type: "trail", distance: 4.59, elevation: 507, record: "01:50:34", title: "광덕산", comment: "@오르락" },
-    { date: "2024-10-09", type: "trail", distance: 3.97, elevation: 410, record: "03:04:38", title: "설화산", comment: "@오르락" },
-    { date: "2024-10-06", type: "trail", distance: 4.37, elevation: 279, record: "01:48:07", title: "아미산", comment: "@오르락" },
-    { date: "2024-10-03", type: "trail", distance: 6.22, elevation: 406, record: "02:42:04", title: "봉수산", comment: "@오르락" },
-    { date: "2024-10-01", type: "trail", distance: 8.72, elevation: 562, record: "03:35:02", title: "영인산", comment: "@오르락" },
-
-    { date: "2024-09-14", type: "trail", distance: 4.38, elevation: 346, record: "02:07:31", title: "설화산", comment: "@오르락" },
-    { date: "2024-09-08", type: "trail", distance: 3.82, elevation: 321, record: "01:41:19", title: "배방산", comment: "@오르락" },
-
-    { date: "2024-07-20", type: "trail", distance: 3.16, elevation: 122, record: "01:27:44", title: "고용산", comment: "@오르락" },
-    { date: "2024-07-13", type: "trail", distance: 8.01, elevation: 645, record: "02:52:37", title: "광덕산", comment: "@오르락" },
-
     // unofficial 2023 trail
     { date: "2023-09-25", type: "walk", distance: 4.44, elevation: 23, record: "00:57:54", title: "온천동", comment: "" },
     { date: "2023-09-19", type: "walk", distance: 4.14, elevation: 47, record: "00:54:03", title: "용화동", comment: "" },
@@ -395,7 +392,7 @@ const hermes_records = [
     { date: "2023-09-09", type: "walk", distance: 3.88, elevation: 17, record: "00:50:24", title: "장항선구철도길", comment: "밥 먹고 귀가했던 거 같은데", over: 1 },
     { date: "2023-09-09", type: "walk", distance: 3.19, elevation: 27, record: "00:41:56", title: "장항선구철도길", comment: "아산으로 이사" },
     { date: "2023-04-29", type: "walk", distance: 2.47, elevation: 11, record: "00:31:39", title: "삼산동", comment: "무슨이유에선지 또 싸돌아뎅기다가 집들어옴", over: 1 },
-    { date: "2023-04-30", type: "trail", distance: 9.26, elevation: 412, record: "02:58:26", title: "천황산 - 재약산", comment: "" },
+    { date: "2023-04-30", type: "trail", distance: 9.26, elevation: 412, record: "02:58:26", title: "천황산 - 재약산", comment: "영남알프스 완, 기념주화 겟!" },
     { date: "2023-04-29", type: "walk", distance: 3.1, elevation: 5, record: "00:41:16", title: "삼산동", comment: "터미널까지 걸어감" },
     { date: "2023-04-22", type: "trail", distance: 15.79, elevation: 1668, record: "09:09:00", title: "가지산 - 운문산", comment: "" },
     { date: "2023-04-16", type: "trail", distance: 6.05, elevation: 545, record: "02:14:06", title: "고헌산", comment: "" },

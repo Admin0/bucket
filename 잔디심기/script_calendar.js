@@ -249,7 +249,7 @@ hermes.calendar = () => {
                         
                                         const sliceRatio = rec.distance / dailyDistance;
                                         const sliceAngle = sliceRatio * 2 * Math.PI;
-                                        const endAngle = startAngle + sliceAngle;
+                                        const endAngle = startAngle - sliceAngle;
                         
                                         const startX = 50 + 45 * Math.cos(startAngle);
                                         const startY = 50 + 45 * Math.sin(startAngle);
@@ -260,7 +260,7 @@ hermes.calendar = () => {
                                         // 조각이 180도보다 크면 large-arc-flag를 1로 설정
                                         const largeArcFlag = sliceAngle > Math.PI ? 1 : 0;
                         
-                                        const pathData = `M 50,50 L ${startX},${startY} A 45,45 0 ${largeArcFlag} 1 ${endX},${endY} Z`;
+                                        const pathData = `M 50,50 L ${startX},${startY} A 45,45 0 ${largeArcFlag} 0 ${endX},${endY} Z`;
                         
                                         // 각 path에도 record.type을 클래스로 부여합니다.
                                         // stroke-linejoin="round"는 파이 차트 중앙의 모서리를 부드럽게 처리합니다.
