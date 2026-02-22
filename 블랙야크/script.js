@@ -187,7 +187,7 @@ async function updateTitle(p, point) {
             document.querySelectorAll("#블랙야크_table tr").forEach((tr) => {
                 tr.classList.remove("on");
             });
-            const table_item_target = document.querySelector("#블랙야크_table tr:nth-of-type(" + point.no + ")");
+            const table_item_target = document.querySelector(`#블랙야크_table tr.no-${point.no}`);
             table_item_target.classList.add("on");
             if (!isMobile() && !window.matchMedia("only screen and (max-width: 1440px)").matches) table_item_target.scrollIntoView({ behavior: "smooth" });
             tooltip.style.setProperty("--tooltip-rotate", `${-3 + Math.random() * 6}deg`);

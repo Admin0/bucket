@@ -77,7 +77,7 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
         const urlParts = gpxUrl.split('/');
         const year = urlParts[1];
         const shortPath = urlParts[2].replace('.gpx', '');
-        const compressedUrl = `records/compressed/${year}.json`;
+        const compressedUrl = `records/${year}.json`;
 
         // 2. 압축 데이터 확인 (메모리 캐시 우선)
         let yearDataMap = hermes.compressedCache[year];

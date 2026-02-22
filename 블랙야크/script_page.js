@@ -27,6 +27,7 @@ function createTableFromJSON(jsonData, tableId) {
             if (item.done.step != false) row.classList.add("done");
             row.setAttribute("onmouseover", item.done.step ? `play(${item.done.step})` : `play(${item.no}, false)`);
             row.setAttribute("onclick", `scrollToCanvas()`);
+            row.classList.add(`no-${item.no}`);
             // updateTitle(row, item);
         });
 
@@ -67,8 +68,8 @@ async function play(no, done = true) {
     }, 100);
 
     tooltip.style.setProperty("--tooltip-rotate", `${-3 + Math.random() * 6}deg`);
-    
-    document.querySelectorAll("#블랙야크_table tr").forEach(tr => {
+
+    document.querySelectorAll("#블랙야크_table tr").forEach((tr) => {
         tr.classList.remove("on");
     });
 }

@@ -71,7 +71,7 @@ async function loadGpxFiles() {
     const compressedDataMap = new Map();
 
     const compressedJsonPromises = years.map(year => {
-        return fetch(`../../records/compressed/${year}.json`)
+        return fetch(`../../records/${year}.json`)
             .then(res => res.ok ? res.json() : null)
             .then(data => {
                 if (data) {

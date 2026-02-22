@@ -1,6 +1,7 @@
 const hermes_records = [
     // 2026
-    { date: "2026-02-21", type: "run", distance: 10.40, elevation: 57, record: "00:59:02", title: "신정호", comment: "종아리 마사지기(￦20만) 구매 기념" },
+    { date: "2026-02-22", type: "trail", distance: 7.76, elevation: 689, record: "02:37:33", title: "광덕산", comment: "@웨일" },
+    { date: "2026-02-21", type: "run", distance: 10.4, elevation: 57, record: "00:59:02", title: "신정호", comment: "종아리 마사지기(￦20만) 구매 기념" },
     { date: "2026-02-19", type: "run", distance: 5.04, elevation: 9, record: "00:27:12", title: "신정호", comment: "@이런저런" },
     { date: "2026-02-17", type: "trail", distance: 10.99, elevation: 707, record: "02:54:18", title: "지리산 바래봉", comment: "" },
     { date: "2026-02-16", type: "trail", distance: 8.03, elevation: 817, record: "03:23:41", title: "백운산", comment: "", over: 2 },
