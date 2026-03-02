@@ -396,6 +396,7 @@ hermes.table = function () {
     const courseFilterContainer = document.getElementById("course-filter-container");
     const courseRadios = document.querySelectorAll('input[name="course"]');
     const yearRadiosContainer = document.getElementById("year-filter-container");
+    const yearRadios = document.querySelectorAll('input[name="year"]');
     const resetButton = document.getElementById("reset-filters");
     const searchInput = document.getElementById("search-input"); // 검색 입력 필드
 
@@ -455,7 +456,7 @@ hermes.table = function () {
             const matchesCourse = course === "all" || record.course === course || type === "trail";
             const matchesYear = year === "all" || record.weekInfo.year == year;
             const matchesSearch =
-                searchTerm === "" || record.title.toLowerCase().includes(searchTerm) || record.course.toLowerCase().includes(searchTerm) || record.comment.toLowerCase().includes(searchTerm);
+                searchTerm === "" || record.title.toLowerCase().includes(searchTerm) || record.course.toLowerCase().includes(searchTerm) || record.comment.toLowerCase().includes(searchTerm) || record.date.toLowerCase().includes(searchTerm) || record.record.toLowerCase().includes(searchTerm);
 
             return matchesType && matchesCourse && matchesYear && matchesSearch;
         });
@@ -550,11 +551,11 @@ hermes.table = function () {
                 let tooltip = document.getElementById("tooltip");
                 tooltip.innerHTML = `${record.comment !== "" ? `<span class="tooltip-comment">${record.comment}</span>` : `<span class="tooltip-null">`} <svg class="svg-records">`;
                 hermes.gpx2svg(`records/${new Date(record.date).getFullYear()}/${record.date + (record.over !== undefined ? "_" + record.over : "")}.gpx`, `#tooltip svg`);
-                tooltip.classList.add("on");
+                tooltip.classList.add("on", record.isOfficial ? "official" : "on");
             });
 
             row.addEventListener("mouseleave", () => {
-                tooltip.classList.remove("on");
+                tooltip.classList.remove("on", "official");
             });
 
             tableBody.appendChild(row);
@@ -562,9 +563,21 @@ hermes.table = function () {
     }
 
     // 필터 변경 이벤트 리스너
-    typeRadios.forEach((radio) => radio.addEventListener("change", filterAndRender));
-    courseRadios.forEach((radio) => radio.addEventListener("change", filterAndRender));
-    searchInput.addEventListener("input", filterAndRender); // 검색 입력 시 필터링
+    const eventSettings = [
+        { el: [...typeRadios, ...courseRadios, ...yearRadios], type: 'change' },
+        { el: [searchInput], type: 'input' }
+      ];
+      
+      eventSettings.forEach(({ el, type }) => {
+        el?.forEach?.((item) => {
+          if (!item) return;
+      
+          item.addEventListener(type, () => {
+            filterAndRender();
+            document.getElementById('table-container').scrollIntoView({ behavior: 'smooth' });
+          });
+        });
+      });
 
     // 테이블 헤더 클릭 시 정렬
     tableHeaders.forEach((header) => {

@@ -69,10 +69,10 @@
                 <div class="track-lane">
                     <h2>TRAIL</h2>
                     <div id="trail-filter-container">
-                        <label><input type="radio" name="trail-filter" value="elevation" checked /> m ↑</label>
-                        <label><input type="radio" name="trail-filter" value="elevation_pace" /> /m ↑</label>
-                        <label><input type="radio" name="trail-filter" value="distance" /> km</label>
-                        <label><input type="radio" name="trail-filter" value="distance_pace" /> /km</label>
+                        <label title="상승 고도 (기본)"><input type="radio" name="trail-filter" value="elevation" checked /> m ↑</label>
+                        <label title="상승 고도 페이스"><input type="radio" name="trail-filter" value="elevation_pace" /> /m ↑</label>
+                        <label title="거리"><input type="radio" name="trail-filter" value="distance" /> km</label>
+                        <label title="거리 페이스"><input type="radio" name="trail-filter" value="distance_pace" /> /km</label>
                     </div>
                     <div class="best-record-container"></div>
                     <div class="track" id="track-trail"></div>
@@ -104,16 +104,16 @@
             <div class="filters">
                 <fieldset>
                     <legend>필터</legend>
-                    <label id="reset-filters" title="초기화"><span class="material-symbols-outlined" onclick="location.href='#table-container'"> replay </span></label>
+                    <label id="reset-filters" title="초기화"><span class="material-symbols-outlined"> replay </span></label>
                     <span class="div"></span>
-                    <span id="type-filter-container" class="filter" onclick="location.href='#table-container'">
+                    <span id="type-filter-container" class="filter">
                         <label title="전체"><input type="radio" name="type" value="all" checked /><span class="material-symbols-outlined"> done_all </span></label>
                         <label title="러닝"><input type="radio" name="type" value="run" /><span class="material-symbols-outlined"> directions_run </span></label>
                         <label title="걷기"><input type="radio" name="type" value="walk" /><span class="material-symbols-outlined"> directions_walk </span></label>
                         <label title="트레일"><input type="radio" name="type" value="trail" /><span class="material-symbols-outlined"> hiking </span></label>
                     </span>
                     <span class="div"></span>
-                    <span id="course-filter-container" class="filter" onclick="location.href='#table-container'">
+                    <span id="course-filter-container" class="filter">
                         <label title="전체"><input type="radio" name="course" value="all" checked /><span class="material-symbols-outlined"> straighten </span></label>
                         <label title="5K"><input type="radio" name="course" value="5k" /><span class="material-symbols-outlined"> timer_5_shutter </span></label>
                         <label title="10K"><input type="radio" name="course" value="10k" /><span class="material-symbols-outlined"> timer_10 </span></label>
@@ -121,7 +121,7 @@
                         <label title="full"><input type="radio" name="course" value="full" /><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1"> circle </span></label>
                     </span>
                     <span class="div"></span>
-                    <span id="year-filter-container" class="filter" onclick="location.href='#table-container'">
+                    <span id="year-filter-container" class="filter">
                         <label title="전체"><input type="radio" name="year" value="all" checked /><span class="material-symbols-outlined"> calendar_month </span></label>
                     </span>
                     <span class="div"></span>

@@ -239,14 +239,16 @@ td.on {
 }
 
 .activity-icons {
-    left: 50%;
-    top: 50%;
+    /* left: 50%; */
+    /* top: 50%; */
     color: var(--color--calendar-icon);
-    transform: translate(-50%, -50%);
+    line-height: 1;
+    /* transform: translate(-50%, -50%); */
     /* opacity: 0.7; */
-    position: absolute;
-    display: flex;
-    flex-direction: row-reverse;
+    /* position: absolute; */
+    /* display: flex; */
+    /* flex-direction: row-reverse; */
+    /* overflow: visible; */
 }
 
 .activity-icons i {
@@ -261,6 +263,13 @@ td.on {
     transform: translate(-50%, -50%);
     background-color: var(--color--track-dark);
     color: var(--color--track-border);
+}
+.activity-icons .activity-count {
+    width: fit-content;
+    font-size: .75em;
+    /* position: absolute;
+    top: 0;
+    left: 20px; */
 }
 
 .official-race-icon {

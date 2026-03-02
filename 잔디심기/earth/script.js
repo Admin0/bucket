@@ -85,10 +85,10 @@ function generateTooltipHtml(properties) {
 
     const distance = properties.distance || (properties.course == "full" ? 42.195 : properties.course == "half" ? 21.0975 : properties.course == "10k" ? 10 : properties.course == "5k" ? 5 : 0);
 
-    const elevation_pace = (time / properties.elevation / 2) * 60; // 60m당 페이스
+    const elevation_pace = (time / properties.elevation / 2) * 60; // 60 m 당 페이스
     const pace = time / distance;
     const paceValue = isTrail ? elevation_pace : pace;
-    const paceUnit = isTrail ? "/60m↑" : "/km";
+    const paceUnit = isTrail ? "/60 m↑" : "/km";
     const tooltipPace = paceValue
         ? `${Math.floor(paceValue / 60)}′${Math.floor(paceValue % 60)
               .toString()

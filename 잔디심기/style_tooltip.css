@@ -103,7 +103,8 @@
     stroke-linejoin: round;
 }
 
-#tooltip .official svg {
+#tooltip .official svg,
+#tooltip.official svg {
     --color--gpx-start: var(--color--gold);
     --color--gpx-end:  var(--color--gold-dark);
 }

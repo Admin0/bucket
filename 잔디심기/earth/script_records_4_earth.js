@@ -1,12 +1,14 @@
 // 잔디심기에는 안 나오는데 earth에는 나오는 데이터입니다.
 // 2023년 이전 데이터입니다.
 const hermes_records_4_earth = [
-    { date: "2024-09-30", type: "walk", distance: 2.73, elevation: 76, record: "00:39:52", title: "인주산단로", comment: "" },
+    { date: "2026-02-25", type: "walk", distance: 1.31, elevation: 12, record: "00:16:47", title: "서부북로", comment: "퇴근길", over: 2 },
+    { date: "2026-02-25", type: "walk", distance: 1.32, elevation: 22, record: "00:15:12", title: "서부북로", comment: "출근길", over: 1 },
+    { date: "2026-02-24", type: "walk", distance: 1.29, elevation: 22, record: "00:14:15", title: "서부북로", comment: "출근길", over: 1 },
+
     { date: "2023-10-07", type: "walk", distance: 0.67, elevation: 13, record: "00:07:32", title: "온천대로", comment: "", over: 1 },
     { date: "2023-10-07", type: "walk", distance: 0.81, elevation: 6, record: "00:09:47", title: "아산시", comment: "", over: 2 },
     { date: "2023-10-08", type: "walk", distance: 1.43, elevation: 31, record: "00:16:38", title: "온천대로", comment: "", over: 1 },
     { date: "2023-10-08", type: "walk", distance: 1.31, elevation: 19, record: "00:18:28", title: "번영로", comment: "", over: 2 },
-    { date: "2023-10-11", type: "walk", distance: 7.91, elevation: 127, record: "01:23:20", title: "온양역길", comment: "" },
     { date: "2023-11-04", type: "walk", distance: 1.03, elevation: 18, record: "00:10:58", title: "온천대로", comment: "", over: 1 },
     { date: "2023-11-04", type: "walk", distance: 1.21, elevation: 42, record: "00:17:28", title: "번영로", comment: "", over: 2 },
     { date: "2023-12-09", type: "walk", distance: 1.28, elevation: 40, record: "00:15:20", title: "번영로", comment: "", over: 1 },
@@ -138,48 +140,18 @@ const hermes_records_4_earth = [
     { date: "2015-04-09", type: "ride", distance: 3.6, elevation: 53, record: "00:16:40", title: "2015-04-09T17_43_28.359+09_00_PT16M29.762S_자전거", comment: "" },
     { date: "2015-12-29", type: "walk", distance: 2.49, elevation: 409, record: "00:32:01", title: "2015-12-29T14_54_50+09_00_PT30M43.312S_걷기", comment: "" },
 
-    { date: "2014-12-29", type: "ride", distance: 23.87, elevation: 236, record: "03:11:24", title: "광주 - 담양", comment: "" },
+    { date: "2014-12-29", type: "ride", distance: 23.87, elevation: 236, record: "03:11:24", title: "담양-광주", comment: "" },
 
-    // 일단 나머지도 여기에다가 넣어둠
+    // 일단 나머지도 여기에다가 넣어둠 (삼성헬스 추출)
+    { date: "2024-09-24", type: "walk", distance: 1.57, elevation: 14, record: "00:21:37", title: "20240924_210428", comment: "", over: 1 },
+
     { date: "2023-12-07", type: "walk", distance: 4.53, elevation: 19, record: "00:57:0460", title: "장항선구철도길", comment: "기숙사에서 집까지" },
-    { date: "2023-11-22", type: "walk", distance: 4.91, elevation: 19, record: "01:02:38", title: "장항선구철도길", comment: "기숙사에서 집까지" },
-    { date: "2023-10-09", type: "walk", distance: 11.72, elevation: 49, record: "02:22:46", title: "신정호", comment: "10K에 2시간 걸리던 시절" },
-    { date: "2023-05-28", type: "walk", distance: 3.0, elevation: 34, record: "00:39:48", title: "삼산동", comment: "" },
-    { date: "2023-05-08", type: "walk", distance: 5.13, elevation: 27, record: "01:03:09", title: "신정동", comment: "동네 한 바퀴" },
+    { date: "2023-11-22", type: "walk", distance: 4.95, elevation: 87, record: "00:58:11", title: "장항선구철도길", comment: "사택-집" },
+    { date: "2023-11-21", type: "walk", distance: 4.68, elevation: 5, record: "00:57:06", title: "장항선구철도길", comment: "집-사택" },
+    { date: "2023-05-28", type: "walk", distance: 2.88, elevation: 34, record: "00:39:48", title: "삼산동", comment: "" },
+    { date: "2023-05-08", type: "walk", distance: 5.27, elevation: 10, record: "01:03:17", title: "신정동", comment: "동네 한 바퀴" },
     { date: "2023-03-25", type: "walk", distance: 3.44, elevation: 10, record: "00:50:41", title: "여천천", comment: "도서관 갔다가 귀가", over: 1 },
     { date: "2023-03-25", type: "walk", distance: 4.26, elevation: 15, record: "00:42:44", title: "여천천", comment: "도서관까지 고" },
-
-    { date: "2024-03-05", type: "walk", distance: 4.65, elevation: 19, record: "00:48:04", title: "장항선구철도길", comment: "" },
-    { date: "2024-03-23", type: "walk", distance: 7.03, elevation: 92, record: "02:20:07", title: "신정호", comment: "" },
-    { date: "2024-04-07", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-05-21", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-06-03", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-06-04", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    // { date: "2024-06-06", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-06-07", type: "walk", distance: 6.77, elevation: 51, record: "01:20:43", title: "온천천", comment: "퇴근 후 집까지" },
-    // { date: "2024-06-10", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-06-17", type: "walk", distance: 5.41, elevation: 72, record: "01:01:26", title: "장항선구철도길", comment: "" },
-    { date: "2024-06-19", type: "walk", distance: 10.53, elevation: 88, record: "02:10:04", title: "신정호", comment: "" },
-    { date: "2024-06-20", type: "walk", distance: 5.32, elevation: 120, record: "01:00:58", title: "둔포 중앙공원", comment: "@오르락" },
-    { date: "2024-06-24", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-06-25", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-06-26", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-06-26", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "", over: 1 },
-    { date: "2024-06-27", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-06-30", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-07-01", type: "walk", distance: 12.06, elevation: 98, record: "02:21:35", title: "온양", comment: "밤에 걸으면 무서워" },
-    { date: "2024-07-02", type: "walk", distance: 4.99, elevation: 46, record: "00:59:27", title: "장항선구털도길", comment: "" },
-    { date: "2024-07-03", type: "walk", distance: 13.74, elevation: 127, record: "02:43:15", title: "온양", comment: "어두워서 무섭다" },
-    { date: "2024-07-09", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-07-10", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-07-18", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-07-22", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-07-23", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-09-04", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-09-08", type: "walk", distance: 4.63, elevation: 10, record: "01:08:20", title: "신정호", comment: "", over: 1 },
-    { date: "2024-09-10", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-09-23", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-09-27", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-    { date: "2024-10-25", type: "walk", distance: 0, elevation: 0, record: "01:00:00", title: "", comment: "" },
-
+    { date: "2023-04-16", type: "walk", distance: 1.67, elevation: 5, record: "00:20:13", title: "삼산", comment: "", over: 1 },
+    { date: "2023-04-12", type: "walk", distance: 1.3, elevation: 5, record: "00:17:56", title: "삼산", comment: "" }
 ];

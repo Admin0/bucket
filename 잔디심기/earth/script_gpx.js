@@ -169,7 +169,9 @@ hermes.gpx = (() => {
         state.selectedTrackIds.forEach((trackId) => {
             const layerId = `gpx-layer-${trackId}`;
             const sourceId = `gpx-source-${trackId}`;
-            if (state.map.getLayer(layerId)) state.map.removeLayer(layerId);
+            if (state.map.getLayer(layerId)) {
+                state.map.removeLayer(layerId).removeLayer(`${layerId}-border`);
+            }
             if (state.map.getSource(sourceId)) state.map.removeSource(sourceId);
         });
         state.droppedTracks = state.droppedTracks.filter((track) => !state.selectedTrackIds.includes(track.id));
