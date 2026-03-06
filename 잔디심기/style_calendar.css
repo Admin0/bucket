@@ -5,6 +5,7 @@
 
     /* width: calc(100% - 4em); */
     /* margin: 10em auto; */
+    position: relative;
     width: calc(var(--width--table) - 1em);
     margin-left: calc((100vw - var(--width--table)) / 2);
     margin-right: calc((100vw - var(--width--table)) / 2);
@@ -205,14 +206,16 @@ td.on {
 }
 
 #calendar-grid .activity-circle .run {
-    fill: #00b264;
-    stroke: #00b264;
+    fill: var(--color--workout-run);
+    stroke: var(--color--workout-run);
 }
-
-#calendar-grid .activity-circle .trail,
+#calendar-grid .activity-circle .trail {
+    fill: var(--color--workout-trail);
+    stroke: var(--color--workout-trail);
+}
 #calendar-grid .activity-circle .walk {
-    fill: #008755;
-    stroke: #008755;
+    fill: var(--color--workout-walk);
+    stroke: var(--color--workout-walk);
 }
 
 #calendar-grid .day-cell.official {
@@ -266,7 +269,7 @@ td.on {
 }
 .activity-icons .activity-count {
     width: fit-content;
-    font-size: .75em;
+    font-size: 0.75em;
     /* position: absolute;
     top: 0;
     left: 20px; */
@@ -342,6 +345,29 @@ td.on {
     font-weight: bold;
 }
 
+.nav-month {
+    position: absolute;
+    top: 3em;
+    padding: 8px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    right: 2.5em;
+    background-color: var(--color--calendar-hover);
+    color: var(--color--body-text);
+    transition: transform 0.25s;
+}
+.nav-month#prev-month {
+    right: 0.5em;
+}
+.nav-month:hover {
+    background-color: var(--color--theme);
+}
+.nav-month.disabled {
+    pointer-events: none;
+    display: none;
+}
+
 /* ----------------------------------------
  * calendar - compact filtered
  * ---------------------------------------- */
@@ -394,6 +420,17 @@ td.on {
 
 @media screen and (min-width: 1280px) {
     /* Adjustments for larger screens if needed */
+    .nav-month {
+        top: 24.2em;
+        padding: 1em;
+        left: calc((100% - var(--width--track)) / 2 - 5em);
+        right: inherit;
+        transform: rotate(-90deg);
+    }
+    .nav-month#prev-month {
+        left: inherit;
+        right: calc((100% - var(--width--track)) / 2 - 5em);
+    }
 }
 
 /* ========================================
@@ -427,10 +464,11 @@ td.on {
     #calendar-container {
         margin-top: 5em;
         height: inherit;
-        position: inherit;
+        /* position: inherit; */
     }
 
-    #calendar-view-filter-container label {
+    #calendar-view-filter-container,
+    #calendar-view-filter-container label:has(input:checked) {
         color: var(--color--track-border);
         background-color: var(--color--track-dark);
         pointer-events: none;
@@ -512,6 +550,10 @@ td.on {
 
     #calendar-grid .months-grid {
         gap: 3em 2em;
+    }
+
+    .nav-month {
+        display: none;
     }
 }
 

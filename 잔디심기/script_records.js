@@ -1,5 +1,7 @@
 const hermes_records = [
     // 2026
+    { date: "2026-03-04", type: "run", distance: 5.10, elevation: 2, record: "00:26:49", title: "순천향대", comment: "@준석" },
+    { date: "2026-03-03", type: "walk", distance: 5.08, elevation: 17, record: "01:04:36", title: "인주산단로", comment: "#서해랑길 @재훈" },
     { date: "2026-03-01", type: "walk", distance: 4.04, elevation: 11, record: "00:52:20", title: "여주 남한강", comment: "@진선" },
     { date: "2026-02-28", type: "trail", distance: 10.49, elevation: 781, record: "03:27:35", title: "대야산", comment: "#명산100 (70)", over: 1 },
     { date: "2026-02-28", type: "run", distance: 10.6, elevation: 21, record: "01:00:14", title: "증평 보강천", comment: "" },
@@ -392,7 +394,7 @@ const hermes_records = [
     { date: "2024-06-25", type: "walk", distance: 9.75, elevation: 0, record: "02:03:36", title: "신정호", comment: "" },
     { date: "2024-06-24", type: "walk", distance: 10.11, elevation: 0, record: "01:59:29", title: "신정호", comment: "" },
     { date: "2024-06-23", type: "run", distance: 5.01, elevation: 5, record: "00:37:21", title: "신정호", comment: "" },
-    { date: "2024-06-22", type: "trail", distance: 8.0, elevation: 487, record: "02:10:13", title: "태조산", comment: "비맞고 중간에 하산, 만두전골 먹음 @오르락" },
+    { date: "2024-06-22", type: "trail", distance: 8.0, elevation: 487, record: "02:10:13", title: "태조산", comment: "비맞고 중간에 하산, 만두전골 먹음 #금북정맥 @오르락" },
     { date: "2024-06-20", type: "walk", distance: 5.32, elevation: 120, record: "01:00:58", title: "둔포 중앙공원", comment: "@오르락" },
     { date: "2024-06-19", type: "walk", distance: 10.53, elevation: 88, record: "02:10:04", title: "신정호", comment: "" },
     { date: "2024-06-18", type: "walk", distance: 8.35, elevation: 69, record: "01:50:34", title: "신정호", comment: "" },

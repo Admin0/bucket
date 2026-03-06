@@ -27,9 +27,14 @@ body {
     --color--gold: #ffd700;
     --color--gold-dark: #f57f17;
 
+    --color--workout-run: hsl(154, 100%, 35%);
+    --color--workout-trail: hsl(154, 100%, 25%);
+    --color--workout-walk: hsl(154, 100%, 20%);
+
     --color--scoreboard-bg: transparent;
     --color--scoreboard-text: #212121;
     --color--scoreboard-header: #212121;
+
 }
 
 @media (prefers-color-scheme: dark) {
@@ -51,6 +56,10 @@ body {
         --color--red: #ef5350;
         --color--teal: #26a69a;
         --color--indigo: #5c6bc0;
+
+        --color--workout-run: hsl(154, 100%, 45%);
+        --color--workout-trail: hsl(154 100% 35%);
+        --color--workout-walk: hsl(154, 100%, 30%);
 
         --color--scoreboard-bg: transparent;
         --color--scoreboard-text: #e1dfdf;

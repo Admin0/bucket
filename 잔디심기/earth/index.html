@@ -9,6 +9,24 @@
         <link rel="preload" href="https://fonts.gstatic.com/s/materialsymbolsoutlined/v315/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsI.woff2" as="font" type="font/woff2" crossorigin> <!-- 'Material Symbols Outlined -->
         <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
         <link href="style.css" rel="stylesheet" />
+        <style>
+            #controls {
+                position: absolute;
+                top: 145px;
+                right: 10px; /* Adjusted to not overlap with maplibre controls */
+                z-index: 1;
+            }
+            #terrarium-btn {
+                /* background-color: white; */
+                padding: 5px;
+                cursor: pointer;
+                font-size: 20px;
+                font-variation-settings: 'wght' 600;
+            }
+            #terrarium-btn.active {
+                color: #33b5e5;
+            }
+        </style>
     </head>
     <body>
         <div id="progress-container">
@@ -16,6 +34,9 @@
             <div id="gpx-counter">0%</div>
         </div>
         <div id="map"></div>
+        <div id="controls" class="maplibregl-ctrl maplibregl-ctrl-group">
+            <button id="terrarium-btn" class="material-symbols-outlined">landscape</button>
+        </div>
         
         <div id="gpx-list-container">
             <ul></ul>

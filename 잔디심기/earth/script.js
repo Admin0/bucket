@@ -121,11 +121,15 @@ function handleMapTooltip(e, features, tooltipElement) {
         map.getCanvas().style.cursor = "pointer";
         tooltipElement.classList.add("on");
         tooltipElement.innerHTML = generateTooltipHtml(features[0].properties);
-        tooltipElement.style.left = `${e.point.x + 15}px`;
-        tooltipElement.style.top = `${e.point.y - 40}px`;
+        if (window.matchMedia("only screen and (min-width: 1920px)").matches) {
+            tooltipElement.style.left = `${e.point.x + 15}px`;
+            tooltipElement.style.top = `${e.point.y - 40}px`;
+        }
     } else {
-        tooltipElement.style.left = `${e.point.x + 15}px`;
-        tooltipElement.style.top = `${e.point.y - 40}px`;
+        if (window.matchMedia("only screen and (min-width: 1920px)").matches) {
+            tooltipElement.style.left = `${e.point.x + 15}px`;
+            tooltipElement.style.top = `${e.point.y - 40}px`;
+        }
     }
 }
 
@@ -158,13 +162,13 @@ function addSourcesAndLayers() {
     const highlightFilter = ["==", ["get", "id"], -1];
 
     const layers = [
-        { id: "hillshade-layer", type: "hillshade", source: "dem", paint: { "hillshade-exaggeration": 0.1 } },
+        { id: "hillshade-layer", type: "hillshade", source: "dem", layout: { visibility: "none" }, paint: { "hillshade-exaggeration": 0.1 } },
         {
             id: "contour-lines",
             type: "line",
             source: "contour-source",
             "source-layer": "contours",
-            layout: { "line-join": "round" },
+            layout: { "line-join": "round", visibility: "none" },
             paint: { "line-opacity": 0.33, "line-width": ["match", ["get", "level"], 1, 1, 0.5], "line-color": currentStyle === "dark" ? "#fff" : "#000" }
         },
         {
@@ -173,7 +177,7 @@ function addSourcesAndLayers() {
             source: "contour-source",
             "source-layer": "contours",
             filter: [">", ["get", "level"], 0],
-            layout: { "symbol-placement": "line", "text-size": 10, "text-field": ["concat", ["number-format", ["get", "ele"], {}], " m"], "text-font": ["Noto Sans Bold"] },
+            layout: { "symbol-placement": "line", "text-size": 10, "text-field": ["concat", ["number-format", ["get", "ele"], {}], " m"], "text-font": ["Noto Sans Bold"], visibility: "none" },
             paint: { "text-color": currentStyle === "dark" ? "#aaa" : "#333" }
         },
         {
@@ -394,9 +398,26 @@ map.on("style.load", () => {
 
 map.on("load", () => {
     map.setProjection({ type: "globe" });
-    map.setTerrain({ source: "dem", exaggeration: 1.5 });
     loadGpxData();
     if (hermes && typeof hermes.gpx.init === "function") hermes.gpx.init(map);
+
+    const terrariumBtn = document.getElementById("terrarium-btn");
+    let isTerrariumOn = false;
+    terrariumBtn.addEventListener("click", () => {
+        isTerrariumOn = !isTerrariumOn;
+        terrariumBtn.classList.toggle("active", isTerrariumOn);
+        if (isTerrariumOn) {
+            map.setTerrain({ source: "dem", exaggeration: 1.5 });
+            map.setLayoutProperty("hillshade-layer", "visibility", "visible");
+            map.setLayoutProperty("contour-lines", "visibility", "visible");
+            map.setLayoutProperty("contour-labels", "visibility", "visible");
+        } else {
+            map.setTerrain(null);
+            map.setLayoutProperty("hillshade-layer", "visibility", "none");
+            map.setLayoutProperty("contour-lines", "visibility", "none");
+            map.setLayoutProperty("contour-labels", "visibility", "none");
+        }
+    });
 
     const trackTooltip = document.getElementById("tooltip");
     //     const trackTooltip = document.createElement("div");

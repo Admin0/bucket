@@ -572,9 +572,9 @@ hermes.table = function () {
         el?.forEach?.((item) => {
           if (!item) return;
       
-          item.addEventListener(type, () => {
+          item.addEventListener(type, (e) => {
             filterAndRender();
-            document.getElementById('table-container').scrollIntoView({ behavior: 'smooth' });
+            if (e.isTrusted) document.getElementById('table-container').scrollIntoView({ behavior: 'smooth' });
           });
         });
       });

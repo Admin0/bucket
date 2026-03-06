@@ -7,6 +7,8 @@ hermes.calendar = () => {
     const recordYearFilterContainer = document.getElementById("year-filter-container");
     const calendarViewFilterContainer = document.getElementById("calendar-view-filter-container");
 
+    let currentDate = new Date(); // 'recent' 뷰의 현재 날짜
+
     // 기록 데이터를 날짜 역순으로 정렬합니다.
     const records = hermes.records.sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -65,12 +67,11 @@ hermes.calendar = () => {
 
         let yearsToRender;
         let monthsToRender;
-        const today = new Date();
 
         // 필터에 따라 렌더링할 연도와 월을 결정합니다.
         if (selectedValue === "recent") {
-            yearsToRender = [today.getFullYear()];
-            monthsToRender = [today.getMonth()];
+            yearsToRender = [currentDate.getFullYear()];
+            monthsToRender = [currentDate.getMonth()];
         } else if (selectedValue === "all") {
             yearsToRender = allYears;
             monthsToRender = Array.from({ length: 12 }, (_, i) => i);
@@ -220,7 +221,15 @@ hermes.calendar = () => {
                         }`;
 
                         let weekHtml = `<tr>`;
-                        weekHtml += `<td class="week-summary y${weekYear.toString().slice(2)} w${weekNo}">\n                        <div class="week-info">w${weekNo}</div>\n                        <div class="week-stats">\n                            <div class="week-distance main">${weeklyDistanceHTML} </div>\n                            <div class="week-distance-total replace">${weeklyTotalDistanceHTML}</div>\n                            <div class="week-elevation main">${weeklyElevationHTML} </div>\n                            <div class="week-elevation-total replace"> ${weeklyTotalElevationHTML}</div>\n                        </div>\n                    </td>`;
+                        weekHtml += `<td class="week-summary y${weekYear.toString().slice(2)} w${weekNo}">
+                        <div class="week-info">w${weekNo}</div>
+                        <div class="week-stats">
+                            <div class="week-distance main">${weeklyDistanceHTML} </div>
+                            <div class="week-distance-total replace">${weeklyTotalDistanceHTML}</div>
+                            <div class="week-elevation main">${weeklyElevationHTML} </div>
+                            <div class="week-elevation-total replace"> ${weeklyTotalElevationHTML}</div>
+                        </div>
+                    </td>`;
                         // --- 주간 통계 HTML 출력 끝 --- //
 
                         for (let i = 0; i < 7; i++) {
@@ -440,6 +449,33 @@ hermes.calendar = () => {
         }
     });
 
+    // 'recent' 뷰를 위한 네비게이션 버튼 생성
+    const nextButton = document.createElement("button");
+    nextButton.textContent = "keyboard_arrow_up";
+    nextButton.id = "next-month";
+    nextButton.title = "다음 달 보기";
+    nextButton.classList.add("nav-month", "material-symbols", "disabled");
+    document.getElementById("calendar-container").appendChild(nextButton);
+
+    const prevButton = document.createElement("button");
+    prevButton.textContent = "keyboard_arrow_down";
+    prevButton.id = "prev-month";
+    prevButton.title = "이전 달 보기";
+    prevButton.classList.add("nav-month", "material-symbols");
+    document.getElementById("calendar-container").appendChild(prevButton);
+
+    nextButton.addEventListener("click", () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        if (currentDate.getFullYear()*100 + currentDate.getMonth() >= new Date().getFullYear()*100 + new Date().getMonth()) { nextButton.classList.add("disabled") }
+        renderCalendar();
+    });
+
+    prevButton.addEventListener("click", () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        nextButton.classList.remove("disabled")
+        renderCalendar();
+    });
+
     // 연도 필터 옵션을 동적으로 생성합니다.
     allYears.forEach((year) => {
         const calendarLabel = document.createElement("label");
@@ -471,6 +507,7 @@ hermes.calendar = () => {
         const selectedValue = e.target.value;
         const sourceName = e.target.name;
 
+
         if (sourceName !== "calendar-year") {
             document.querySelectorAll('input[name="calendar-year"]').forEach((radio) => {
                 radio.checked = radio.value === selectedValue;
@@ -488,8 +525,15 @@ hermes.calendar = () => {
 
         if (selectedValue === "recent") {
             document.querySelector('input[name="calendar-view"][value="normal"]').checked = true;
+
+            // 내비게이션 버튼 표시/숨김
+            prevButton.classList.remove("disabled");
         } else {
             document.querySelector('input[name="calendar-view"][value="compact"]').checked = true;
+
+            // 내비게이션 버튼 표시/숨김
+            prevButton.classList.add("disabled");
+            nextButton.classList.add("disabled");
         }
 
         renderCalendar(); // 변경된 필터로 캘린더를 다시 렌더링합니다.

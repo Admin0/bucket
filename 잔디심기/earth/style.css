@@ -228,6 +228,19 @@ body {
     animation: feedback-animation 1.5s ease-out forwards;
 }
 
+/* ========================================
+ * tooltip custom
+ * ======================================== */
+
+@media screen and (max-width: 1920px) {
+    #tooltip {
+        top: 10px!important;
+        right: 50px;
+        left: inherit!important;
+        transform: none;
+    }
+}
+
 @keyframes feedback-animation {
     0% {
         opacity: 0;
