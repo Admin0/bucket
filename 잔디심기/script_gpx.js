@@ -238,7 +238,7 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
 hermes.tooltip = (records) => {
     let tooltipContent = "";
     if (!Array.isArray(records)) records = [records];
-    records.sort((a, b) => new Date(a.date) - new Date(b.date));
+    records.sort((a, b) =>  new Date(b.date) - new Date(a.date));
 
     records.forEach((rec) => {
         const paceValue = rec.course === "trail" ? rec.elevation_pace : rec.pace;
