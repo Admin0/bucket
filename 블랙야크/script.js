@@ -106,7 +106,7 @@ const points = [
 
     { no: 81, id: "천태산", done: { step: 23, date: "2025.05.24." }, pos_0: { y: 36.159122, x: 127.600005 }, info: { peak: "정상", height: 715 } },
     { no: 82, id: "청계산", done: { step: 18, date: "2025.05.11." }, pos_0: { y: 37.433333, x: 127.05 }, info: { peak: "매봉", height: 582 } },
-    { no: 83, id: "청량산", done: { step: false, date: "" }, pos_0: { y: 36.794122, x: 128.907994 }, info: { peak: "장인봉", height: 870 } },
+    { no: 83, id: "청량산", done: { step: 71, date: "2026.03.13." }, pos_0: { y: 36.794122, x: 128.907994 }, info: { peak: "장인봉", height: 870 } },
     { no: 84, id: "청화산", done: { step: false, date: "" }, pos_0: { y: 36.625029, x: 127.919377 }, info: { peak: "정상", height: 970 } },
     { no: 85, id: "축령산(장성)", done: { step: 38, date: "2025.10.10." }, pos_0: { y: 35.386134, x: 126.740903 }, info: { peak: "정상", height: 879 } },
 

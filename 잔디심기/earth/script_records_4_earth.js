@@ -1,6 +1,10 @@
 // 잔디심기에는 안 나오는데 earth에는 나오는 데이터입니다.
 // 2023년 이전 데이터입니다.
 const hermes_records_4_earth = [
+    { date: "2026-03-21", type: "walk", distance: 1.53, elevation: 14, record: "00:18:19", title: "홍성 내포신도시", comment: "", over: 1 },
+    { date: "2026-03-21", type: "walk", distance: 1.52, elevation: 5, record: "00:20:21", title: "홍성 내포신도시", comment: "", over: 2 },
+    { date: "2026-03-18", type: "walk", distance: 1.28, elevation: 22, record: "00:15:57", title: "서부북로", comment: "퇴근길" },
+    { date: "2026-03-11", type: "walk", distance: 1.55, elevation: 13, record: "00:21:10", title: "아산 문화공원", comment: "" },
     { date: "2026-02-25", type: "walk", distance: 1.31, elevation: 12, record: "00:16:47", title: "서부북로", comment: "퇴근길", over: 2 },
     { date: "2026-02-25", type: "walk", distance: 1.32, elevation: 22, record: "00:15:12", title: "서부북로", comment: "출근길", over: 1 },
     { date: "2026-02-24", type: "walk", distance: 1.29, elevation: 22, record: "00:14:15", title: "서부북로", comment: "출근길", over: 1 },

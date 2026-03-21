@@ -1,4 +1,3 @@
-
 // GPX-SVG 변환 및 툴팁 관련 기능을 담당하는 스크립트
 
 // 전역 캐시 객체 초기화
@@ -74,9 +73,9 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
 
     try {
         let pts = null;
-        const urlParts = gpxUrl.split('/');
+        const urlParts = gpxUrl.split("/");
         const year = urlParts[1];
-        const shortPath = urlParts[2].replace('.gpx', '');
+        const shortPath = urlParts[2].replace(".gpx", "");
         const compressedUrl = `records/${year}.json`;
 
         // 2. 압축 데이터 확인 (메모리 캐시 우선)
@@ -142,8 +141,10 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
         const lats = pts.map((p) => p.lat);
         const lons = pts.map((p) => p.lon);
         const tolerance = 0.0025;
-        const minLat = Math.min(...lats) - tolerance, maxLat = Math.max(...lats) + tolerance;
-        const minLon = Math.min(...lons) - tolerance, maxLon = Math.max(...lons) + tolerance;
+        const minLat = Math.min(...lats) - tolerance,
+            maxLat = Math.max(...lats) + tolerance;
+        const minLon = Math.min(...lons) - tolerance,
+            maxLon = Math.max(...lons) + tolerance;
 
         const width = (maxLon - minLon) * 5000;
         const height = (maxLat - minLat) * 5000;
@@ -159,10 +160,11 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
         // --- SVG 렌더링 로직 수정 ---
 
         let pathSegments = "";
-        const numPathElements = 64, totalSegments = pts.length - 1;
+        const numPathElements = 64,
+            totalSegments = pts.length - 1;
         if (totalSegments > 0) {
             const segmentsPerPath = Math.ceil(totalSegments / numPathElements);
-            
+
             // 테두리 경로와 메인 경로를 담을 그룹 생성
             let borderPaths = '<g class="gpx-border">';
             let mainPaths = '<g class="gpx-main">';
@@ -173,7 +175,7 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
 
                 const endSegment = Math.min((i + 1) * segmentsPerPath, totalSegments);
                 const firstPoint = pts[startSegment];
-                
+
                 let pathData = `M ${((firstPoint.lon - minLon) / (maxLon - minLon)) * width} ${height - ((firstPoint.lat - minLat) / (maxLat - minLat)) * height}`;
                 for (let j = startSegment; j < endSegment; j++) {
                     const nextPoint = pts[j + 1];
@@ -182,13 +184,15 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
 
                 // 테두리 경로 (더 두껍고 반투명한 검정색)
                 borderPaths += `<path d="${pathData}" fill="none" stroke="var(--color--track)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />`;
-                
+
                 // 메인 경로 (기존 색상)
-                mainPaths += `<path d="${pathData}" fill="none" stroke="color-mix(in oklab, var(--color--gpx-start), var(--color--gpx-end) ${startSegment / totalSegments * 100}%)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />`;
+                mainPaths += `<path d="${pathData}" fill="none" stroke="color-mix(in oklab, var(--color--gpx-start), var(--color--gpx-end) ${
+                    (startSegment / totalSegments) * 100
+                }%)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />`;
             }
 
-            borderPaths += '</g>';
-            mainPaths += '</g>';
+            borderPaths += "</g>";
+            mainPaths += "</g>";
 
             const x_start = ((pts[0].lon - minLon) / (maxLon - minLon)) * width;
             const y_start = height - ((pts[0].lat - minLat) / (maxLat - minLat)) * height;
@@ -198,7 +202,7 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
             borderPaths += `<circle cx="${x_end}" cy="${y_end}" r="6" fill="var(--color--track)" />`;
             mainPaths += `<circle cx="${x_start}" cy="${y_start}" r="3.5" stroke="var(--color--gpx-start)" stroke-width="2" fill="var(--color--track)" />`;
             mainPaths += `<circle cx="${x_end}" cy="${y_end}" r="3.5" stroke="var(--color--gpx-end)" stroke-width="2" fill="var(--color--track)" />`;
-      
+
             // 테두리 그룹을 먼저 추가하고 그 위에 메인 그룹을 추가
             pathSegments = borderPaths + mainPaths;
         }
@@ -214,8 +218,6 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
             }
         }
 
-
-      
         const viewBox = `0 0 ${width} ${height}`;
         const style = `width: ${width}px`;
 
@@ -225,7 +227,6 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
 
         // 4. 렌더링된 SVG 결과를 캐시에 저장
         hermes.svgCache[gpxUrl] = { viewBox, style, innerHTML: svgInnerHtml };
-
     } catch (error) {
         hermes.svgCache[gpxUrl] = "not-found";
         svg.innerHTML = svgNotFound;
@@ -238,11 +239,13 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
 hermes.tooltip = (records) => {
     let tooltipContent = "";
     if (!Array.isArray(records)) records = [records];
-    records.sort((a, b) =>  new Date(b.date) - new Date(a.date));
+    records.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     records.forEach((rec) => {
         const paceValue = rec.course === "trail" ? rec.elevation_pace : rec.pace;
-        const tooltipPace = `${Math.floor(paceValue / 60)}′${Math.floor(paceValue % 60).toString().padStart(2, "0")}″${rec.course === "trail" ? '<span class="unit">/60 m↑</span>' : '<span class="unit">/km</span>'}`;
+        const tooltipPace = `${Math.floor(paceValue / 60)}′${Math.floor(paceValue % 60)
+            .toString()
+            .padStart(2, "0")}″${rec.course === "trail" ? '<span class="unit">/60 m↑</span>' : '<span class="unit">/km</span>'}`;
         const tooltipDistance = rec.course === "trail" ? `${rec.elevation} <span class="unit"> m</span>` : `${rec.distance.toFixed(2)} <span class="unit"> km</span>`;
         const tooltip_type = rec.isOfficial ? "공식 대회" : rec.type === "trail" ? "하이킹 / 트레일러닝" : rec.type === "walk" ? "걷기" : "러닝";
         const icon_distance = rec.course === "trail" ? "altitude" : "conversion_path";
@@ -268,7 +271,23 @@ hermes.tooltip = (records) => {
         hermes.gpx2svg(`records/${new Date(rec.date).getFullYear()}/${gpxFileName}.gpx`, `#tooltip .gpx.d-${gpxFileName} svg`);
     });
 
-    return tooltipContent;
+    const tooltip = document.getElementById("tooltip");
+
+    return {
+        show: () => {
+            tooltip.innerHTML = tooltipContent;
+            tooltip.classList.add("on");
+            return this;
+        },
+        hide: () => {
+            tooltip.classList.remove("on");
+        },
+        position: (e) => {
+            // tooltip.style.left = e.pageX + "px";
+            // tooltip.style.top = e.pageY + "px";
+            // return this;
+        }
+    };
 };
 
 // 일반 'title' 속성을 위한 툴팁 기능 초기화

@@ -70,59 +70,6 @@ hermes.recordInit = function () {
     });
 };
 
-// 전체 통계 계산 및 표시
-hermes.stats = () => {
-    let totalDistance = 0;
-    let totalRunningDistance = 0;
-    let totalElevation = 0;
-    let totalTrailElevation = 0;
-    hermes.records.forEach((record) => {
-        totalDistance += record.distance || 0;
-        totalElevation += record.elevation || 0;
-        if (record.type == "trail") {
-            totalTrailElevation += record.elevation || 0;
-        } else {
-            totalRunningDistance += record.distance || 0;
-        }
-    });
-
-    const statsHeader = document.getElementById("stats-header");
-    statsHeader.innerHTML = `
-            <div class="stat-item">
-                <span class="label">러닝 거리</span>
-                <span class="value" title="야외 러닝으로 이동한 거리입니다."><span class="material-symbols-outlined icon"> sprint </span> ${totalRunningDistance.toLocaleString("en-US", {
-                    maximumFractionDigits: 1
-                })} <span class="unit"> km</span></span>
-            </div>
-            <div class="stat-item">
-                <span class="label">거리</span>
-                <span class="value" title="모든 야외 활동 중 이동한 거리입니다."><span class="material-symbols-outlined icon"> conversion_path </span> ${totalDistance.toLocaleString("en-US", {
-                    maximumFractionDigits: 1
-                })} <span class="unit"> km</span></span>
-            </div>
-            <div class="stat-item">
-                <span class="label">트레일 상승고도</span>
-                <span class="value" title="트레일 러닝 혹은 등산으로 상승한 높이입니다."><span class="material-symbols-outlined icon"> hiking </span> ${
-                    totalTrailElevation > 1000
-                        ? (totalTrailElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> km</span>`
-                        : totalTrailElevation.toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> m</span>`
-                } </span>
-            </div>
-            <div class="stat-item">
-                <span class="label">상승고도</span>
-                <span class="value" title="모든 야외 활동 중 상승한 높이입니다."><span class="material-symbols-outlined icon"> altitude </span> ${
-                    totalElevation > 1000
-                        ? (totalElevation / 1000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> km</span>`
-                        : totalElevation.toLocaleString("en-US", { maximumFractionDigits: 1 }) + ` <span class="unit"> m</span>`
-                } </span>
-            </div>
-            <div class="stat-item">
-                <span class="label">활동</span>
-                <span class="value" title="야외 활동을 했던 횟수입니다."><span class="material-symbols-outlined icon"> accessibility_new </span> ${hermes.records.length}</span>
-            </div>
-        `;
-};
-
 // 트랙 시각화 생성
 hermes.track = function () {
     if (!hermes.records || hermes.records.length === 0) return;
@@ -291,10 +238,11 @@ hermes.track = function () {
                         // 마커에 대한 툴팁 및 하이라이트 이벤트 리스너
                         marker.addEventListener("mouseenter", (e) => {
                             let tooltip = document.getElementById("tooltip");
-                            tooltip.innerHTML = hermes.tooltip(recordsForWeek);
-                            tooltip.classList.add("on");
-                            tooltip.style.left = marker.getBoundingClientRect().left + marker.getBoundingClientRect().width / 2 + "px";
-                            tooltip.style.top = marker.getBoundingClientRect().top + window.scrollY + "px";
+                            // tooltip.innerHTML = hermes.tooltip(recordsForWeek);
+                            // tooltip.classList.add("on");
+                            hermes.tooltip(recordsForWeek).show();
+                            // tooltip.style.left = marker.getBoundingClientRect().left + marker.getBoundingClientRect().width / 2 + "px";
+                            // tooltip.style.top = marker.getBoundingClientRect().top + window.scrollY + "px";
                             const recordIds = JSON.parse(marker.dataset.recordIds);
                             recordIds.forEach((id) => {
                                 document.querySelector(`#records-table tr[data-record-id="${id}"]`)?.classList.add("highlight");

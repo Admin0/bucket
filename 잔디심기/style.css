@@ -9,7 +9,6 @@
 }
 
 body {
-
     --width--track: 1280px;
     /* --width--track: 1440px; */
     --width--table: 85vw;
@@ -17,7 +16,7 @@ body {
     --margin--body-lr: 2em;
 
     font-family: "Oswald", "Noto Sans KR", sans-serif;
-    color: var(--color--scoreboard-text);
+    color: var(--color--body-text);
     background-color: var(--color--body-background);
     margin: 0;
     overflow-x: hidden;
@@ -44,44 +43,6 @@ h1 {
 
 a {
     color: inherit;
-}
-
-#stats-header {
-    display: flex;
-    justify-content: center;
-    gap: 2em;
-    padding: 1em;
-    margin: 5em 0 6em 0;
-}
-
-#stats-header:hover .stat-item:nth-of-type(1),
-#stats-header:hover .stat-item:nth-of-type(2) {
-    color: var(--color--red);
-}
-
-#stats-header:hover .stat-item:nth-of-type(3),
-#stats-header:hover .stat-item:nth-of-type(4) {
-    color: var(--color--teal);
-}
-
-#stats-header:hover .stat-item:nth-of-type(5) {
-    color: var(--color--indigo);
-}
-
-.stat-item .label {
-    font-size: 0.8em;
-    color: var(--color--track-text);
-    opacity: 0.7;
-}
-
-.stat-item .value {
-    display: block;
-    font-size: 1.5em;
-}
-
-.stat-item .value .icon {
-    line-height: inherit;
-    opacity: 0.5;
 }
 
 #main-container {
@@ -175,7 +136,6 @@ a {
     flex-direction: column; */
     transform: rotate(90deg);
     position: absolute;
-    left: 0;
     font-size: 0.85em;
     top: 11.75em;
     left: 3em;
@@ -219,15 +179,12 @@ a {
     white-space: nowrap;
     margin: 0;
 }
-
-.best-record.official:before {
-    content: "★ ";
-    color: gold;
-}
-
-.best-record.unofficial:before {
+.best-record:before {
     content: "★ ";
     color: silver;
+}
+.best-record.official:before {
+    color: gold;
 }
 
 .track {
@@ -274,7 +231,7 @@ a {
 
 .track-lane:hover .marker.official {
     --color--gpx-start: var(--color--gold);
-    --color--gpx-end:  var(--color--gold-dark);
+    --color--gpx-end: var(--color--gold-dark);
     /* z-index: 1; */
 }
 
@@ -328,8 +285,94 @@ a {
     cursor: pointer;
 }
 
+
 /* ----------------------------------------
- * table
+ * statstics
+ * ---------------------------------------- */
+
+ /* stats header */
+
+#stats-header {
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+    padding: 1em;
+    margin: 5em 0 6em 0;
+}
+
+#stats-header:hover .stat-item:nth-of-type(1),
+#stats-header:hover .stat-item:nth-of-type(2) {
+    color: var(--color--red);
+}
+
+#stats-header:hover .stat-item:nth-of-type(3),
+#stats-header:hover .stat-item:nth-of-type(4) {
+    color: var(--color--teal);
+}
+
+#stats-header:hover .stat-item:nth-of-type(5) {
+    color: var(--color--indigo);
+}
+
+.stat-item .label {
+    font-size: 0.8em;
+    color: var(--color--track-text);
+    opacity: 0.7;
+}
+
+.stat-item .value {
+    display: block;
+    font-size: 1.5em;
+}
+
+.stat-item .value .icon {
+    line-height: inherit;
+    opacity: 0.5;
+}
+
+ /* stats container */
+
+ #stats-container {
+    max-width: var(--width--track);
+    /* width: calc(100% - 4em); */
+    margin: 10em auto;
+}
+#stats-container .stats-section {
+    margin-bottom: 1.5em;
+}
+#stats-container .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, auto));
+    row-gap: 1.5em;
+    column-gap: 1.5em;
+    /* background: var(--color--track); */
+    border-radius: 1em;
+}
+#stats-container .stat-item {
+    padding: 1.5em;
+    border-radius: 1em;
+    background: var(--color--track);
+    transition: 0.25s, transform 0.05s;
+}
+
+#stats-container .stat-item:hover{
+    background-color: var(--color--track-hover);
+    box-shadow: 0 5px 12px var(--color--track-shadow);
+    transform: scale(1.05);
+}
+
+#stats-container .stat-item .icon  {
+    /* display:block; */
+    font-size: 1.125em;
+    /* text-align: center; */
+}
+
+#stats-container .stat-item .value  {
+    font-size: 1.5rem;
+}
+
+/* ----------------------------------------
+ * records table
  * ---------------------------------------- */
 
 #table-container {
@@ -674,6 +717,7 @@ footer a:not(.o) {
  * ======================================== */
 
 @media screen and (max-width: calc((1280px + 4em)*1.2)) {
+    #stats-container,
     #table-container {
         width: calc(100% - 4em);
         margin-left: auto;
@@ -794,7 +838,9 @@ footer a:not(.o) {
     }
 
     #trail-filter-container {
-        display: none;
+        /* display: none; */
+        top: 8.75em;
+        left: 2em;
     }
 
     #table-container {

@@ -155,9 +155,7 @@ hermes.calendar = () => {
                                 <div class="stat-item"><span class="label">러닝 거리</span><span class="value">${monthRunningDistance.toFixed(1)} <span class="unit"> km</span></span></div>
                                 <div class="stat-item"><span class="label">거리</span><span class="value">${monthTotalDistance.toFixed(1)} <span class="unit"> km</span></span></div>
                                 <div class="stat-item"><span class="label">트레일 상승고도</span><span class="value">${
-                                    monthTrailElevation > 1000
-                                        ? (monthTrailElevation / 1000).toFixed(1) + ` <span class="unit"> km</span>`
-                                        : monthTrailElevation.toFixed(0) + ` <span class="unit">m</span>`
+                                    monthTrailElevation > 1000 ? (monthTrailElevation / 1000).toFixed(1) + ` <span class="unit"> km</span>` : monthTrailElevation.toFixed(0) + ` <span class="unit">m</span>`
                                 }</span></div>
                                 <div class="stat-item"><span class="label">상승고도</span><span class="value">${
                                     monthElevation > 1000 ? (monthElevation / 1000).toFixed(1) + ` <span class="unit"> km</span>` : monthElevation.toFixed(0) + ` <span class="unit">m</span>`
@@ -213,12 +211,8 @@ hermes.calendar = () => {
                         const weeklyDistanceHTML = `${weeklyRunningDistance.toFixed(1)} <span class="unit">km</span>`;
                         const weeklyTotalDistanceHTML = `${weeklyDistance.toFixed(1)} <span class="unit">km</span>`;
 
-                        const weeklyElevationHTML = `${
-                            weeklyTrailElevation > 1000 ? (weeklyTrailElevation / 1000).toFixed(1) + `<span class="unit">km</span>` : weeklyTrailElevation.toFixed(0) + `<span class="unit">m</span>`
-                        }`;
-                        const weeklyTotalElevationHTML = `${
-                            weeklyElevation > 1000 ? (weeklyElevation / 1000).toFixed(1) + `<span class="unit">km</span>` : weeklyElevation.toFixed(0) + `<span class="unit">m</span>`
-                        }`;
+                        const weeklyElevationHTML = `${weeklyTrailElevation > 1000 ? (weeklyTrailElevation / 1000).toFixed(1) + `<span class="unit">km</span>` : weeklyTrailElevation.toFixed(0) + `<span class="unit">m</span>`}`;
+                        const weeklyTotalElevationHTML = `${weeklyElevation > 1000 ? (weeklyElevation / 1000).toFixed(1) + `<span class="unit">km</span>` : weeklyElevation.toFixed(0) + `<span class="unit">m</span>`}`;
 
                         let weekHtml = `<tr>`;
                         weekHtml += `<td class="week-summary y${weekYear.toString().slice(2)} w${weekNo}">
@@ -246,9 +240,7 @@ hermes.calendar = () => {
                             const isOfficial = recordsByDate[dateString] && recordsByDate[dateString].length > 0 ? recordsByDate[dateString][0].isOfficial : null;
                             const certiUrl = isOfficial ? recordsByDate[dateString][0].certi : null;
 
-                            weekHtml += `<td class="day-cell y${dayYear.toString().slice(2)} w${dayWeek} ${
-                                isOfficial ? "official" : ""
-                            }" data-date="${dateString}" data-certi="${certiUrl}"><span class="date-display">${day.getDate()}</span>`;
+                            weekHtml += `<td class="day-cell y${dayYear.toString().slice(2)} w${dayWeek} ${isOfficial ? "official" : ""}" data-date="${dateString}" data-certi="${certiUrl}"><span class="date-display">${day.getDate()}</span>`;
 
                             if (recordsByDate[dateString]) {
                                 const dayRecords = recordsByDate[dateString];
@@ -261,12 +253,7 @@ hermes.calendar = () => {
 
                                 const radius = Math.sqrt(dailyDistance / maxActivity);
                                 const distanceText = dailyDistance > 0 ? `${dailyDistance.toFixed(1)}<span class="unit"> km</span>` : "";
-                                const elevationText =
-                                    dailyElevation > 0
-                                        ? dailyElevation > 1000
-                                            ? `${(dailyElevation / 1000).toFixed(1)}<span class="unit"> km</span>`
-                                            : `${dailyElevation.toFixed(0)}<span class="unit"> m</span>`
-                                        : "";
+                                const elevationText = dailyElevation > 0 ? (dailyElevation > 1000 ? `${(dailyElevation / 1000).toFixed(1)}<span class="unit"> km</span>` : `${dailyElevation.toFixed(0)}<span class="unit"> m</span>`) : "";
 
                                 let svgContent = "";
                                 let iconsContent = "";
@@ -284,48 +271,49 @@ hermes.calendar = () => {
                                         iconsContent += `<foreignObject class="activity-icons" 
                                         x="${w - w_icon / 2}" y="${w - w_icon / 2}" width="${w_icon}" height="${w_icon}"><i class="${iconClass}">${iconName}</i></foreignObject>`;
                                     } else if (dayRecords.length > 1) {
-                                        const allSameType = dayRecords.every(rec => rec.type === dayRecords[0].type);
+                                        const allSameType = dayRecords.every((rec) => rec.type === dayRecords[0].type);
 
                                         if (allSameType) {
                                             const record = dayRecords[0];
-                                            const isAnyOfficial = dayRecords.some(rec => rec.isOfficial);
+                                            const isAnyOfficial = dayRecords.some((rec) => rec.isOfficial);
 
                                             svgContent = `<circle class="${record.type}" cx="${w}" cy="${w}" r="${r}" />`;
-                                            
+
                                             const iconName = isAnyOfficial ? "emoji_events" : record.type === "trail" ? "terrain" : record.type === "walk" ? "directions_walk" : "directions_run";
                                             const iconClass = isAnyOfficial ? "material-symbols official-race-icon" : "material-symbols-outlined";
                                             const count = dayRecords.length;
                                             const foWidth = w_icon + 15;
-                                            
-                                            let iconHtml = `<i class="${iconClass}">${iconName}</i> <span class="activity-count">×${count}</span>`;
-                                            
-                                            iconsContent += `<foreignObject class="activity-icons" x="${w - foWidth / 2}" y="${w - w_icon / 2}" width="${foWidth}" height="${w_icon}">${iconHtml}</foreignObject>`;
 
+                                            let iconHtml = `<i class="${iconClass}">${iconName}</i> <span class="activity-count">×${count}</span>`;
+
+                                            iconsContent += `<foreignObject class="activity-icons" x="${w - foWidth / 2}" y="${w - w_icon / 2}" width="${foWidth}" height="${w_icon}">${iconHtml}</foreignObject>`;
                                         } else {
                                             // 1. Enrich records with angle data and generate pie slices
                                             let currentStartAngle = -Math.PI / 2;
-                                            const enrichedRecords = dayRecords.map(rec => {
-                                                if (!rec.distance || rec.distance <= 0) return null;
-                                                
-                                                const sliceRatio = rec.distance / dailyDistance;
-                                                const sliceAngle = sliceRatio * 2 * Math.PI;
-                                                const endAngle = currentStartAngle - sliceAngle;
-                                                
-                                                const startX = w + r * Math.cos(currentStartAngle);
-                                                const startY = w + r * Math.sin(currentStartAngle);
-                                                const endX = w + r * Math.cos(endAngle);
-                                                const endY = w + r * Math.sin(endAngle);
-                                                const largeArcFlag = sliceAngle > Math.PI ? 1 : 0;
-                                                const pathData = `M ${w},${w} L ${startX},${startY} A ${r},${r} 0 ${largeArcFlag} 0 ${endX},${endY} Z`;
-                                                svgContent += `<path class="${rec.type}" d="${pathData}" stroke-linejoin="round"/>`;
-                                                
-                                                const midAngle = currentStartAngle - sliceAngle / 2;
-                                                
-                                                const newRec = { ...rec, midAngle };
-                                                currentStartAngle = endAngle;
-                                                return newRec;
-                                            }).filter(Boolean);
-                                    
+                                            const enrichedRecords = dayRecords
+                                                .map((rec) => {
+                                                    if (!rec.distance || rec.distance <= 0) return null;
+
+                                                    const sliceRatio = rec.distance / dailyDistance;
+                                                    const sliceAngle = sliceRatio * 2 * Math.PI;
+                                                    const endAngle = currentStartAngle - sliceAngle;
+
+                                                    const startX = w + r * Math.cos(currentStartAngle);
+                                                    const startY = w + r * Math.sin(currentStartAngle);
+                                                    const endX = w + r * Math.cos(endAngle);
+                                                    const endY = w + r * Math.sin(endAngle);
+                                                    const largeArcFlag = sliceAngle > Math.PI ? 1 : 0;
+                                                    const pathData = `M ${w},${w} L ${startX},${startY} A ${r},${r} 0 ${largeArcFlag} 0 ${endX},${endY} Z`;
+                                                    svgContent += `<path class="${rec.type}" d="${pathData}" stroke-linejoin="round"/>`;
+
+                                                    const midAngle = currentStartAngle - sliceAngle / 2;
+
+                                                    const newRec = { ...rec, midAngle };
+                                                    currentStartAngle = endAngle;
+                                                    return newRec;
+                                                })
+                                                .filter(Boolean);
+
                                             // 2. Group enriched records
                                             const groupedRecords = enrichedRecords.reduce((acc, record) => {
                                                 const key = record.type;
@@ -337,33 +325,34 @@ hermes.calendar = () => {
                                                 if (record.isOfficial) acc[key].isOfficial = true;
                                                 return acc;
                                             }, {});
-                                    
+
                                             // 3. Generate Icons
                                             for (const type in groupedRecords) {
                                                 const group = groupedRecords[type];
-                                                
+
                                                 // Calculate average angle for the icon
-                                                let sumX = 0, sumY = 0;
-                                                group.midAngles.forEach(angle => {
+                                                let sumX = 0,
+                                                    sumY = 0;
+                                                group.midAngles.forEach((angle) => {
                                                     sumX += Math.cos(angle);
                                                     sumY += Math.sin(angle);
                                                 });
                                                 const iconAngle = Math.atan2(sumY, sumX);
-                                        
+
                                                 const iconX = w + r_icon * Math.cos(iconAngle);
                                                 const iconY = w + r_icon * Math.sin(iconAngle);
-                                                
+
                                                 const iconName = group.isOfficial ? "emoji_events" : type === "trail" ? "terrain" : type === "walk" ? "directions_walk" : "directions_run";
                                                 const iconClass = group.isOfficial ? "material-symbols official-race-icon" : "material-symbols-outlined";
                                                 const count = group.records.length;
-                                        
+
                                                 const foWidth = count > 1 ? w_icon + 15 : w_icon;
-                                                
+
                                                 let iconHtml = `<i class="${iconClass}">${iconName}</i>`;
                                                 if (count > 1) {
                                                     iconHtml += ` <span class="activity-count">×${count}</span>`;
                                                 }
-                                        
+
                                                 iconsContent += `<foreignObject class="activity-icons" 
                                                     x="${iconX - foWidth / 2}" y="${iconY - w_icon / 2}" width="${foWidth}" height="${w_icon}">${iconHtml}</foreignObject>`;
                                             }
@@ -411,8 +400,9 @@ hermes.calendar = () => {
                     const dayRecords = recordsByDate[date];
 
                     if (dayRecords) {
-                        tooltip.innerHTML = hermes.tooltip(dayRecords);
-                        tooltip.classList.add("on");
+                        // tooltip.innerHTML = hermes.tooltip(dayRecords);
+                        // tooltip.classList.add("on");
+                        hermes.tooltip(dayRecords).show();
                     }
                 }
             });
@@ -444,8 +434,9 @@ hermes.calendar = () => {
     // 툴팁 위치를 마우스 커서에 따라 업데이트합니다.
     document.addEventListener("mousemove", (e) => {
         if (tooltip.classList.contains("on")) {
-            tooltip.style.left = e.pageX + "px";
-            tooltip.style.top = e.pageY + "px";
+            // hermes.tooltip().show(e);
+            // tooltip.style.left = e.pageX + "px";
+            // tooltip.style.top = e.pageY + "px";
         }
     });
 
@@ -466,13 +457,15 @@ hermes.calendar = () => {
 
     nextButton.addEventListener("click", () => {
         currentDate.setMonth(currentDate.getMonth() + 1);
-        if (currentDate.getFullYear()*100 + currentDate.getMonth() >= new Date().getFullYear()*100 + new Date().getMonth()) { nextButton.classList.add("disabled") }
+        if (currentDate.getFullYear() * 100 + currentDate.getMonth() >= new Date().getFullYear() * 100 + new Date().getMonth()) {
+            nextButton.classList.add("disabled");
+        }
         renderCalendar();
     });
 
     prevButton.addEventListener("click", () => {
         currentDate.setMonth(currentDate.getMonth() - 1);
-        nextButton.classList.remove("disabled")
+        nextButton.classList.remove("disabled");
         renderCalendar();
     });
 
@@ -506,7 +499,6 @@ hermes.calendar = () => {
         isSyncingFilters = true;
         const selectedValue = e.target.value;
         const sourceName = e.target.name;
-
 
         if (sourceName !== "calendar-year") {
             document.querySelectorAll('input[name="calendar-year"]').forEach((radio) => {

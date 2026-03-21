@@ -31,10 +31,6 @@ body {
     --color--workout-trail: hsl(154, 100%, 25%);
     --color--workout-walk: hsl(154, 100%, 20%);
 
-    --color--scoreboard-bg: transparent;
-    --color--scoreboard-text: #212121;
-    --color--scoreboard-header: #212121;
-
 }
 
 @media (prefers-color-scheme: dark) {
