@@ -14,6 +14,7 @@ body {
     --width--table: 85vw;
     --margin--table-top: 25em;
     --margin--body-lr: 2em;
+    --width--normal-margin: 1.5em;
 
     font-family: "Oswald", "Noto Sans KR", sans-serif;
     color: var(--color--body-text);
@@ -38,7 +39,7 @@ body {
 h1 {
     text-align: center;
     color: var(--color--scoreboard-text);
-    margin: 5em 0 0;
+    margin: 5em 0;
 }
 
 a {
@@ -285,12 +286,11 @@ a {
     cursor: pointer;
 }
 
-
 /* ----------------------------------------
  * statstics
  * ---------------------------------------- */
 
- /* stats header */
+/* stats header */
 
 #stats-header {
     display: flex;
@@ -327,48 +327,71 @@ a {
 
 .stat-item .value .icon {
     line-height: inherit;
+}
+
+#stats-header .stat-item .value .icon {
     opacity: 0.5;
 }
 
- /* stats container */
+/* stats container */
 
- #stats-container {
+#stats-container {
     max-width: var(--width--track);
     /* width: calc(100% - 4em); */
     margin: 10em auto;
 }
 #stats-container .stats-section {
-    margin-bottom: 1.5em;
+    margin-bottom: var(--width--normal-margin);
 }
 #stats-container .stat-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, auto));
-    row-gap: 1.5em;
-    column-gap: 1.5em;
+    row-gap: var(--width--normal-margin);
+    column-gap: var(--width--normal-margin);
     /* background: var(--color--track); */
     border-radius: 1em;
 }
 #stats-container .stat-item {
-    padding: 1.5em;
+    padding: var(--width--normal-margin);
     border-radius: 1em;
     background: var(--color--track);
     transition: 0.25s, transform 0.05s;
 }
 
-#stats-container .stat-item:hover{
+#stats-container .stat-item:hover {
     background-color: var(--color--track-hover);
     box-shadow: 0 5px 12px var(--color--track-shadow);
     transform: scale(1.05);
 }
 
-#stats-container .stat-item .icon  {
+#stats-container .stat-item .icon {
     /* display:block; */
     font-size: 1.125em;
     /* text-align: center; */
 }
 
-#stats-container .stat-item .value  {
-    font-size: 1.5rem;
+#stats-container .stat-item[data-type="overall"] .label,
+#stats-container .stat-item[data-type="overall"] .icon,
+#stats-container .stat-item[data-type="overall"] .unit {
+    color: #d3af37;
+}
+#stats-container .stat-item[data-type*="run"] .icon  {
+    color: var(--color--workout-run);
+}
+#stats-container .stat-item[data-type*="trail"] .icon  {
+    color: var(--color--workout-trail);
+}
+#stats-container .stat-item[data-type="walk"] .icon  {
+    color: var(--color--workout-walk);
+}
+#stats-container .stat-item [data-type*="official"] .icon,
+#stats-container .stat-item [data-type*="official"] .unit {
+    color: gold;
+    font-variation-settings: "FILL" 1;
+}
+
+#stats-container .stat-item .sub-stats {
+    margin-top: 0.5em;
 }
 
 /* ----------------------------------------
@@ -717,10 +740,17 @@ footer a:not(.o) {
  * ======================================== */
 
 @media screen and (max-width: calc((1280px + 4em)*1.2)) {
+    .hide_f {
+        display: none;
+    }
+
     #stats-container,
     #table-container {
-        width: calc(100% - 4em);
+        width: calc(100% - var(--margin--body-lr) * 2);
         margin-left: auto;
+    }
+
+    #table-container {
         padding: 0 2em;
     }
 }
@@ -729,8 +759,14 @@ footer a:not(.o) {
  * tablet
  * ======================================== */
 @media screen and (max-width: 768px) {
+    .hide_t {
+        display: none;
+    }
+
     body {
         --margin--body-lr: 2em;
+        --width--track-lane-padding: 1em;
+        --width--normal-margin: 1em;
     }
 
     h1 {
@@ -756,7 +792,6 @@ footer a:not(.o) {
      * ---------------------------------------- */
 
     #main-container {
-        --width--track-lane-padding: 1em;
         gap: 0;
         margin: auto;
         transform: none;
@@ -879,14 +914,12 @@ footer a:not(.o) {
  * ======================================== */
 
 @media screen and (max-width: 425px) {
-    body {
-        --margin--body-lr: 1em;
+    .hide_m {
+        display: none;
     }
 
-    #stats-header .icon,
-    .stat-item:nth-of-type(1),
-    .stat-item:nth-of-type(3) {
-        display: none;
+    body {
+        --margin--body-lr: 1em;
     }
 
     .track-lane {

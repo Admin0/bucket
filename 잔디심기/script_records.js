@@ -20,6 +20,9 @@ const hermes_records = [
         certi: "https://time.spct.kr/m2.php?E=2026030801&B=007635",
         comment: "벚꽃없는 벚꽃 마라톤 @현욱"
     },
+    { date: "2026-03-25", type: "run", distance: 5.13, elevation: 2, record: "00:27:22", title: "순천향대 대운동장", comment: "알콜런(죽을뻔함) @준석" },
+    { date: "2026-03-24", type: "run", distance: 5.76, elevation: 12, record: "00:32:04", title: "신정호", comment: "@이런저런" },
+    { date: "2026-03-22", type: "run", distance: 6.78, elevation: 57, record: "00:39:49", title: "여주 남한강", comment: "#남한강자전거길" },
     { date: "2026-03-19", type: "run", distance: 5.07, elevation: 13, record: "00:27:36", title: "신정호", comment: "@이런저런" },
     { date: "2026-03-15", type: "run", distance: 5.49, elevation: 27, record: "00:30:42", title: "여주 이포보", comment: "#남한강자전거길" },
     { date: "2026-03-14", type: "run", distance: 11.16, elevation: 54, record: "01:00:52", title: "여주 강촌보", comment: "#남한강자전거길" },
@@ -28,7 +31,7 @@ const hermes_records = [
     { date: "2026-03-07", type: "run", distance: 5.25, elevation: 32, record: "00:29:11", title: "신창-환경공원-장항선", comment: "" },
     { date: "2026-03-04", type: "run", distance: 5.1, elevation: 2, record: "00:26:49", title: "순천향대 대운동장", comment: "@준석" },
     { date: "2026-03-03", type: "walk", distance: 5.08, elevation: 17, record: "01:04:36", title: "인주산단로", comment: "#서해랑길 @재훈" },
-    { date: "2026-03-01", type: "walk", distance: 4.04, elevation: 11, record: "00:52:20", title: "여주 남한강", comment: "@진선" },
+    { date: "2026-03-01", type: "walk", distance: 4.04, elevation: 11, record: "00:52:20", title: "여주 남한강", comment: "#남한강자전거길 @진선" },
     { date: "2026-02-28", type: "trail", distance: 10.49, elevation: 781, record: "03:27:35", title: "대야산", comment: "#명산100 (70)", over: 1 },
     { date: "2026-02-28", type: "run", distance: 10.6, elevation: 21, record: "01:00:14", title: "증평 보강천", comment: "#오천자전거길" },
     { date: "2026-02-27", type: "trail", distance: 13.28, elevation: 1151, record: "04:40:07", title: "백덕산", comment: "#명산100 (69)", over: 1 },
