@@ -8,12 +8,14 @@ const style_dark = VersaTilesStyle.shadow({
     language: "ko",
     recolor: { blend: 0.2, blendColor: "#000" }
 });
+const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac59-ac40754b0df4/style.json?key=Bdy6sMAQwxQOz1O2ur6a";
 
 let currentStyle = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+let useFreeService = false;
 
 const map = new maplibregl.Map({
     container: "map",
-    style: currentStyle === "light" ? style_light : style_dark,
+    style: useFreeService ? (currentStyle === "light" ? style_light : style_dark) : style_maptilerdark,
     center: [127.5, 36],
     zoom: 8,
     maxZoom: 20,
@@ -140,8 +142,8 @@ function addSourcesAndLayers() {
 
     const demSource = new mlcontour.DemSource({ url: "https://tiles.mapterhorn.com/{z}/{x}/{y}.webp", encoding: "terrarium", worker: true, cacheSize: 100, timeoutMs: 10_000 });
     demSource.setupMaplibre(maplibregl);
-    if (!map.getSource("dem")) map.addSource("dem", { type: "raster-dem", encoding: "terrarium", tiles: [demSource.sharedDemProtocolUrl], tileSize: 256, maxzoom: 12 });
-    if (!map.getSource("contour-source"))
+    if (!map.getSource("dem") && useFreeService) map.addSource("dem", { type: "raster-dem", encoding: "terrarium", tiles: [demSource.sharedDemProtocolUrl], tileSize: 256, maxzoom: 12 });
+    if (!map.getSource("contour-source") && useFreeService)
         map.addSource("contour-source", {
             type: "vector",
             tiles: [
@@ -155,7 +157,7 @@ function addSourcesAndLayers() {
             ]
         });
 
-    const layerinsertBefore = "label-address-housenumber";
+    const layerinsertBefore = useFreeService ? "label-address-housenumber" : "Country border";
     const lineLayout = { "line-join": "round", "line-cap": "round" };
     const normalColors = { start: "#00ff80", end: "#004D40", border: "rgba(255, 255, 255, 1)", base: "#00b264" };
     const certiColors = { start: "#ffd700", end: "#f57f17", border: "rgba(255, 255, 255, 1)", base: "#FAAB0C" };
@@ -402,22 +404,25 @@ map.on("load", () => {
     if (hermes && typeof hermes.gpx.init === "function") hermes.gpx.init(map);
 
     const terrariumBtn = document.getElementById("terrarium-btn");
-    let isTerrariumOn = false;
-    terrariumBtn.addEventListener("click", () => {
-        isTerrariumOn = !isTerrariumOn;
-        terrariumBtn.classList.toggle("active", isTerrariumOn);
-        if (isTerrariumOn) {
-            map.setTerrain({ source: "dem", exaggeration: 1.5 });
-            map.setLayoutProperty("hillshade-layer", "visibility", "visible");
-            map.setLayoutProperty("contour-lines", "visibility", "visible");
-            map.setLayoutProperty("contour-labels", "visibility", "visible");
-        } else {
-            map.setTerrain(null);
-            map.setLayoutProperty("hillshade-layer", "visibility", "none");
-            map.setLayoutProperty("contour-lines", "visibility", "none");
-            map.setLayoutProperty("contour-labels", "visibility", "none");
-        }
-    });
+    if (useFreeService) {
+        let isTerrariumOn = false;
+        terrariumBtn.addEventListener("click", () => {
+            isTerrariumOn = !isTerrariumOn;
+            terrariumBtn.classList.toggle("active", isTerrariumOn);
+            if (isTerrariumOn) {
+                map.setTerrain({ source: "dem", exaggeration: 1.5 });
+                map.setLayoutProperty("hillshade-layer", "visibility", "visible");
+                map.setLayoutProperty("contour-lines", "visibility", "visible");
+                map.setLayoutProperty("contour-labels", "visibility", "visible");
+            } else {
+                map.setTerrain(null);
+                map.setLayoutProperty("hillshade-layer", "visibility", "none");
+                map.setLayoutProperty("contour-lines", "visibility", "none");
+                map.setLayoutProperty("contour-labels", "visibility", "none");
+            }
+        });
+    } else {
+    }
 
     const trackTooltip = document.getElementById("tooltip");
     //     const trackTooltip = document.createElement("div");
@@ -461,9 +466,7 @@ map.on("load", () => {
                 const filter = ["==", ["get", "id"], hoveredFeatureId];
                 highlightLayers.forEach((layerId) => map.setFilter(layerId, filter));
 
-                const gradient = isCertified
-                    ? ["interpolate", ["linear"], ["line-progress"], 0, certiColors.start, 1, certiColors.end]
-                    : ["interpolate", ["linear"], ["line-progress"], 0, normalColors.start, 1, normalColors.end];
+                const gradient = isCertified ? ["interpolate", ["linear"], ["line-progress"], 0, certiColors.start, 1, certiColors.end] : ["interpolate", ["linear"], ["line-progress"], 0, normalColors.start, 1, normalColors.end];
                 map.setPaintProperty("gpx-highlight-main", "line-gradient", gradient);
             }
         } else {

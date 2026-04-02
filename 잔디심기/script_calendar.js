@@ -284,7 +284,7 @@ hermes.calendar = () => {
                                             const count = dayRecords.length;
                                             const foWidth = w_icon + 15;
 
-                                            let iconHtml = `<i class="${iconClass}">${iconName}</i> <span class="activity-count">×${count}</span>`;
+                                            let iconHtml = `<i class="${iconClass}">${iconName}</i><span class="activity-count">×${count}</span>`;
 
                                             iconsContent += `<foreignObject class="activity-icons" x="${w - foWidth / 2}" y="${w - w_icon / 2}" width="${foWidth}" height="${w_icon}">${iconHtml}</foreignObject>`;
                                         } else {

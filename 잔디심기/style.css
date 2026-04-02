@@ -384,6 +384,7 @@ a {
 #stats-container .stat-item[data-type="walk"] .icon  {
     color: var(--color--workout-walk);
 }
+#stats-container .stat-item [data-type*="official"] .label,
 #stats-container .stat-item [data-type*="official"] .icon,
 #stats-container .stat-item [data-type*="official"] .unit {
     color: gold;
