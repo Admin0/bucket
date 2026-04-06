@@ -20,7 +20,9 @@ hermes.stats = () => {
         longestDistance: { value: 0, record: null },
         fastestPace: { value: Infinity, record: null },
         highestElevation: { value: 0, record: null },
-        fastestElevationPace: { value: Infinity, record: null }
+        fastestElevationPace: { value: Infinity, record: null },
+        paces: [],
+        elevationPaces: []
     });
 
     const createPBObject = () => ({
@@ -68,11 +70,11 @@ hermes.stats = () => {
         run_pb_overall: createPBObject(), // PBs from all runs
         run_pb_official: createPBObject(), // PBs from official runs
         run_dist_stats: {
-            "5k": { distance: 0, time: 0, count: 0 },
-            "10k": { distance: 0, time: 0, count: 0 },
-            "half": { distance: 0, time: 0, count: 0 },
-            "30k": { distance: 0, time: 0, count: 0 },
-            "full": { distance: 0, time: 0, count: 0 }
+            "5k": { distance: 0, time: 0, count: 0, paces: [] },
+            "10k": { distance: 0, time: 0, count: 0, paces: [] },
+            "half": { distance: 0, time: 0, count: 0, paces: [] },
+            "30k": { distance: 0, time: 0, count: 0, paces: [] },
+            "full": { distance: 0, time: 0, count: 0, paces: [] }
         },
         annual: {}
     };
@@ -107,7 +109,16 @@ hermes.stats = () => {
         updateMin(category.fastestPace, pace, record);
         updateMax(category.highestElevation, record.elevation, record);
         updateMin(category.fastestElevationPace, elevationPace, record);
+        if (isFinite(pace)) {
+            category.paces.push(pace);
+        }
+        if (isFinite(elevationPace)) {
+            category.elevationPaces.push(elevationPace);
+        }
     };
+
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
     hermes.records.forEach((record) => {
         const time = record.time || 0;
@@ -147,11 +158,23 @@ hermes.stats = () => {
 
         if (type === "run") {
             const updatePBs = (pbCategory) => {
-                if (record.distance >= 5) updateMinPB(pbCategory["5k"], (time / distance) * 5, pace, record);
-                if (record.distance >= 10) updateMinPB(pbCategory["10k"], (time / distance) * 10, pace, record);
-                if (record.distance >= 21.0975) updateMinPB(pbCategory.half, (time / distance) * 21.0975, pace, record);
-                if (record.distance >= 30) updateMinPB(pbCategory["30k"], (time / distance) * 30, pace, record);
-                if (record.distance >= 42.195) updateMinPB(pbCategory.full, (time / distance) * 42.195, pace, record);
+                const pbDistances = {
+                    "5k": 5,
+                    "10k": 10,
+                    "half": 21.0975,
+                    "30k": 30,
+                    "full": 42.195
+                };
+
+                for (const key in pbDistances) {
+                    const targetDistance = pbDistances[key];
+                    if (distance >= targetDistance) {
+                        // Estimate time for the target distance based on the run's average pace.
+                        const estimatedTime = (time / distance) * targetDistance;
+                        // The pace is the same for the estimation and the whole run.
+                        updateMinPB(pbCategory[key], estimatedTime, pace, record);
+                    }
+                }
             };
 
             updatePBs(stats.run_pb_overall);
@@ -160,9 +183,14 @@ hermes.stats = () => {
             }
 
             const updateDistStats = (dist_cat, record) => {
-                stats.run_dist_stats[dist_cat].distance += record.distance;
-                stats.run_dist_stats[dist_cat].time += record.time;
-                stats.run_dist_stats[dist_cat].count++;
+                const stats_obj = stats.run_dist_stats[dist_cat];
+                stats_obj.distance += record.distance;
+                stats_obj.time += record.time;
+                stats_obj.count++;
+                const pace = (record.time / 60) / record.distance;
+                if (isFinite(pace)) {
+                    stats_obj.paces.push(pace);
+                }
             };
             if (record.distance >= 5) updateDistStats("5k", record);
             if (record.distance >= 10) updateDistStats("10k", record);
@@ -173,10 +201,32 @@ hermes.stats = () => {
 
         const year = new Date(record.date).getFullYear();
         if (!stats.annual[year]) {
-            stats.annual[year] = { distance: 0 };
+            stats.annual[year] = { distance: 0, count: 0 };
         }
         stats.annual[year].distance += record.distance;
+        stats.annual[year].count++;
+
+        if (new Date(record.date) >= oneYearAgo) {
+            stats.overall.recentCount = (stats.overall.recentCount || 0) + 1;
+            stats[type].recentCount = (stats[type].recentCount || 0) + 1;
+        }
     });
+    
+    const calculateMedianPace = (paces) => {
+        if (paces.length === 0) return Infinity;
+        const sortedPaces = [...paces].sort((a, b) => a - b);
+        const mid = Math.floor(sortedPaces.length / 2);
+        return sortedPaces.length % 2 !== 0 ? sortedPaces[mid] : (sortedPaces[mid - 1] + sortedPaces[mid]) / 2;
+    };
+
+    stats.run.medianPace = calculateMedianPace(stats.run.paces);
+    stats.trail.medianPace = calculateMedianPace(stats.trail.paces);
+    stats.walk.medianPace = calculateMedianPace(stats.walk.paces);
+    
+    stats.run.medianElevationPace = calculateMedianPace(stats.run.elevationPaces);
+    stats.trail.medianElevationPace = calculateMedianPace(stats.trail.elevationPaces);
+    stats.walk.medianElevationPace = calculateMedianPace(stats.walk.elevationPaces);
+
 
     const totalDurationInMinutes = totalTime / 60;
     const totalRunningDurationInMinutes = totalRunningTime / 60;
@@ -242,10 +292,8 @@ hermes.stats = () => {
                     if (!stats[category] || stats[category].count === 0) return "";
                     const stat = stats[category]?.[statType.key];
                     if (!stat || !isFinite(stat.value) || stat.value === 0) return "";
-                    const isPrimary = category === primaryCategory;
-                    const innerDataAttributes = !isPrimary && stat.record ? `data-type="${category}" data-tooltip="${statType.key}"` : "";
                     const icon = category.includes("_official") ? "emoji_events" : statType.icon;
-                    return `<div ${innerDataAttributes}><span class="material-symbols-outlined icon">${icon}</span> <span>${statType.format(stat.value)}</span></div>`;
+                    return `<span class="material-symbols-outlined icon">${icon}</span> <span>${statType.format(stat.value)}</span>`;
                 })
                 .join("");
 
@@ -288,7 +336,10 @@ hermes.stats = () => {
                         totalDistance: stats.overall.totalRunningDistance,
                         averagePace: stats.overall.averageRunningPace,
                         totalElevation: stats.overall.totalRunningElevation,
-                        averageElevationPace: stats.overall.averageRunningElevationPace
+                        averageElevationPace: stats.overall.averageRunningElevationPace,
+                        medianPace: stats.run.medianPace,
+                        medianElevationPace: stats.run.medianElevationPace,
+                        count: stats.run.count
                     },
                     trail: {
                         officialCat: "trail_official",
@@ -296,14 +347,20 @@ hermes.stats = () => {
                         totalDistance: stats.overall.totalTrailDistance,
                         averagePace: stats.overall.averageTrailPace,
                         totalElevation: stats.overall.totalTrailElevation,
-                        averageElevationPace: stats.overall.averageTrailElevationPace
+                        averageElevationPace: stats.overall.averageTrailElevationPace,
+                        medianPace: stats.trail.medianPace,
+                        medianElevationPace: stats.trail.medianElevationPace,
+                        count: stats.trail.count
                     },
                     walk: {
                         totalTime: stats.overall.totalWalkTime,
                         totalDistance: stats.overall.totalWalkDistance,
                         averagePace: stats.overall.averageWalkPace,
                         totalElevation: stats.overall.totalWalkElevation,
-                        averageElevationPace: stats.overall.averageWalkElevationPace
+                        averageElevationPace: stats.overall.averageWalkElevationPace,
+                        medianPace: stats.walk.medianPace,
+                        medianElevationPace: stats.walk.medianElevationPace,
+                        count: stats.walk.count
                     }
                 }[primaryCategory];
 
@@ -320,20 +377,35 @@ hermes.stats = () => {
                     }
                 }
 
-                const formatDurationHours = (s) => `${Math.floor(s / 3600).toLocaleString()} <span class="unit">시간</span>`;
-                const formatDistanceInt = (d) => `${Math.floor(d).toLocaleString()} <span class="unit">km</span>`;
-                const formatElevationInt = (e) => `${Math.floor(e / 1000).toLocaleString()} <span class="unit">km</span>`;
+                const formatDurationHours = (s) => `${(s / 3600).toFixed(0)} <span class="unit">시간</span>`;
+                const formatDistanceInt = (d) => d>1000?`${d.toFixed(0)} <span class="unit">km</span>`:`${d.toFixed(2)} <span class="unit">km</span>`;
+                const formatElevationInt = (e) => e>1000?`${Math.round(e/1000).toLocaleString()} <span class="unit">km</span>`:`${Math.round(e).toLocaleString()} <span class="unit">m</span>`;
 
                 if (statType.key === "longestTime") {
-                    if (mapping.totalTime > 0) subItems.push(`<div style="${subStatStyle}"><span class="label">전체 합계</span><span>${formatDurationHours(mapping.totalTime)}</span></div>`);
+                    if (mapping.totalTime > 0) {subItems.push(`
+                        <div style="${subStatStyle}"><span class="label">전체 시간</span><span>${formatDurationHours(mapping.totalTime)}</span></div>
+                        <div style="${subStatStyle}"><span class="label">평균 시간</span><span>${formatDuration(mapping.totalTime / mapping.count)}</span></div>
+                        `);}
                 } else if (statType.key === "longestDistance") {
-                    if (mapping.totalDistance > 0) subItems.push(`<div style="${subStatStyle}"><span class="label">전체 합계</span><span>${formatDistanceInt(mapping.totalDistance)}</span></div>`);
+                    if (mapping.totalDistance > 0) subItems.push(`
+                        <div style="${subStatStyle}"><span class="label">전체 거리</span><span>${formatDistanceInt(mapping.totalDistance)}</span></div>
+                        <div style="${subStatStyle}"><span class="label">평균 거리</span><span>${formatDistanceInt(mapping.totalDistance / mapping.count)}</span></div>
+                    `);
                 } else if (statType.key === "fastestPace") {
-                    if (isFinite(mapping.averagePace)) subItems.push(`<div style="${subStatStyle}"><span class="label">평균 페이스</span><span>${formatPace(mapping.averagePace)} <span class="unit">/km</span></span></div>`);
+                    if (isFinite(mapping.averagePace)) subItems.push(`
+                        <div style="${subStatStyle}"><span class="label">중앙 페이스</span><span>${formatPace(mapping.medianPace)} <span class="unit">/km</span></span></div>
+                        <div style="${subStatStyle}"><span class="label">평균 페이스</span><span>${formatPace(mapping.averagePace)} <span class="unit">/km</span></span></div>
+                        `);
                 } else if (statType.key === "highestElevation") {
-                    if (mapping.totalElevation > 0) subItems.push(`<div style="${subStatStyle}"><span class="label">전체 합계</span><span>${formatElevationInt(mapping.totalElevation)}</span></div>`);
+                    if (mapping.totalElevation > 0) subItems.push(`
+                        <div style="${subStatStyle}"><span class="label">전체 상승 고도</span><span>${formatElevationInt(mapping.totalElevation)}</span></div>
+                        <div style="${subStatStyle}"><span class="label">평균 상승 고도</span><span>${formatElevationInt(mapping.totalElevation/mapping.count)}</span></div>
+                        `);
                 } else if (statType.key === "fastestElevationPace") {
-                    if (isFinite(mapping.averageElevationPace)) subItems.push(`<div style="${subStatStyle}"><span class="label">평균 페이스</span><span>${formatPace(mapping.averageElevationPace)} <span class="unit">/60 m↑</span></span></div>`);
+                    if (isFinite(mapping.averageElevationPace)) subItems.push(`
+                        <div style="${subStatStyle}"><span class="label">중앙 상승 페이스</span><span>${formatPace(mapping.medianElevationPace)} <span class="unit">/60 m↑</span></span></div>
+                        <div style="${subStatStyle}"><span class="label">평균 상승 페이스</span><span>${formatPace(mapping.averageElevationPace)} <span class="unit">/60 m↑</span></span></div>
+                        `);
                 }
 
                 if (subItems.length > 0) {
@@ -346,21 +418,24 @@ hermes.stats = () => {
 
         let gridContent = statTypes.map(generateStatItemHTML).join("");
         const primaryCategory = categories[0];
+        
+        const numYears = Object.keys(stats.annual).length;
+        const annualAverage = numYears > 0 ? (stats.overall.count / numYears).toFixed(0) : 0;
 
         if (primaryCategory === "overall") {
             const subStatStyle = "display: flex; justify-content: space-between; align-items: center;";
             const subItems = [
-                `<div style="${subStatStyle}"><span class="label">—</span><span></span></div>`,
+                `<div style="${subStatStyle}"><span class="label">연간 평균</span><span>${annualAverage}</span></div>`,
                 `<div style="${subStatStyle}"><span class="label">러닝</span><span>${stats.overall.runCount}</span></div>`,
                 `<div style="${subStatStyle}"><span class="label">트레일</span><span>${stats.overall.trailCount}</span></div>`
             ];
             const subStatHTML = `<div class="sub-stats">${subItems.join("")}</div>`;
-            gridContent += `<div class="stat-item" data-type="overall"><span class="label">활동</span><div class="value"><div style="justify-content: end;"><span class="material-symbols-outlined icon">tag</span> <span>${stats.overall.count}</span></div></div>${subStatHTML}</div>`;
+            gridContent += `<div class="stat-item" data-type="overall"><span class="label">활동</span><div class="value"><span class="material-symbols-outlined icon">tag</span> <span>${stats.overall.count}</span></div>${subStatHTML}</div>`;
         } else if (primaryCategory === "run" || primaryCategory === "trail" || primaryCategory === "walk") {
             const totalCount = stats[primaryCategory]?.count || 0;
             if (totalCount > 0) {
                 const icon = { run: "directions_run", trail: "hiking", walk: "directions_walk" }[primaryCategory] || "tag";
-                const valueHTML = `<div style="justify-content: end;"><span class="material-symbols-outlined icon">${icon}</span> <span>${totalCount}</span></div>`;
+                const valueHTML = `<span class="material-symbols-outlined icon">${icon}</span> <span>${totalCount}</span>`;
 
                 const subStatStyle = "display: flex; justify-content: space-between; align-items: center;";
                 const subItems = [];
@@ -371,7 +446,14 @@ hermes.stats = () => {
                         subItems.push(`<div style="${subStatStyle}" data-type="official"><span class="label">공식 기록</span><span>${officialCount}</span></div>`);
                     }
                 }
-                subItems.push(`<div style="${subStatStyle}"><span class="label">—</span><span></span></div>`);
+                
+                const recentCount = stats[primaryCategory]?.recentCount || 0;
+                const categoryAnnualAverage = numYears > 0 ? (totalCount / numYears).toFixed(0) : 0;
+                
+                subItems.push(`
+                    <div style="${subStatStyle}"><span class="label">최근 1년</span><span>${recentCount}</span></div>
+                    <div style="${subStatStyle}"><span class="label">연간 평균</span><span>${categoryAnnualAverage}</span></div>
+                    `);
                 
                 const subStatHTML = subItems.length > 0 ? `<div class="sub-stats">${subItems.join("")}</div>` : "";
                 gridContent += `<div class="stat-item" data-type="${primaryCategory}"><span class="label">활동</span><div class="value">${valueHTML}</div>${subStatHTML}</div>`;
@@ -395,15 +477,23 @@ hermes.stats = () => {
             { key: "full", label: "마라톤 최단 시간", icon: "circle" }
         ];
 
+        const pbDistances = {
+            "5k": 5,
+            "10k": 10,
+            "half": 21.0975,
+            "30k": 30,
+            "full": 42.195
+        };
+
         const gridContent = pbTypes
             .map((pbType) => {
                 const overallStat = overallPBs[pbType.key];
 
                 const formatPB = (stat) => `${formatDuration(stat.value)} <span class="unit">(${formatPace(stat.pace)})</span>`;
                 
-                const valueHTML = `<div>
-                    <span class="material-symbols-outlined icon" ${pbType.key == "full" ? `style="font-variation-settings: 'FILL' 1"` : ""}>${pbType.icon}</span> 
-                    <span>${formatPB(overallStat)}</span></div>`;
+                const valueHTML = 
+                    `<span class="material-symbols-outlined icon" ${pbType.key == "full" ? `style="font-variation-settings: 'FILL' 1"` : ""}>${pbType.icon}</span> 
+                    <span>${formatPB(overallStat)}</span>`;
 
                 const subStatStyle = "display: flex; justify-content: space-between; align-items: center;";
                 const subItems = [];
@@ -418,13 +508,13 @@ hermes.stats = () => {
                 if (distStats ) {
                     const formatDurationHours = (s) => `${Math.floor(s / 3600).toLocaleString()} <span class="unit">시간</span>`;
                     const formatDistanceInt = (d) => `${Math.floor(d).toLocaleString()} <span class="unit">km</span>`;
-                    const avgPace = distStats.time > 0 && distStats.distance > 0 ? distStats.time / 60 / distStats.distance : Infinity;
-                    
+                    const avgPace = distStats.paces.length > 0 ? distStats.paces.reduce((a, b) => a + b, 0) / distStats.paces.length : Infinity;
+                    const targetDistance = pbDistances[pbType.key];
+                    const averageEstimatedTime = isFinite(avgPace) ? (avgPace * 60) * targetDistance : Infinity;
+                    subItems.push(`<div style="${subStatStyle}"><span class="label">평균 시간</span><span>${formatDuration(averageEstimatedTime)} <span class="unit">(${formatPace(avgPace)})</span></span></div>`);
                     subItems.push(`<div style="${subStatStyle}"><span class="label">전체 시간</span><span>${formatDurationHours(distStats.time)}</span></div>`);
                     subItems.push(`<div style="${subStatStyle}"><span class="label">전체 거리</span><span>${formatDistanceInt(distStats.distance)}</span></div>`);
-                    subItems.push(`<div style="${subStatStyle}"><span class="label">평균 페이스</span><span>${formatPace(avgPace)} <span class="unit">/km</span></span></div>`);
-                    subItems.push(`<div style="${subStatStyle}"><span class="label">활동 수</span><span>${distStats.count}</span></div>`);
-                }
+                    subItems.push(`<div style="${subStatStyle}"><span class="label">활동</span><span>${distStats.count}</span></div>`);              }
                 
                 const subStatHTML = subItems.length > 0 ? `<div class="sub-stats">${subItems.join("")}</div>` : "";
 
@@ -461,18 +551,24 @@ hermes.stats = () => {
         ${renderAnnualStats(stats.annual)}
     `;
 
+    let lastShownRecord = null;
     statsGrid.querySelectorAll("[data-tooltip]").forEach((item) => {
-        item.addEventListener("mouseenter", (e) => {
+        item.addEventListener("mouseover", (e) => {
             e.stopPropagation();
             const currentTarget = e.currentTarget;
             const type = currentTarget.dataset.type;
-            const tooltip = currentTarget.dataset.tooltip;
-            const recordHolder = stats[type]?.[tooltip];
+            const tooltipKey = currentTarget.dataset.tooltip;
+            const recordHolder = stats[type]?.[tooltipKey];
             if (recordHolder && recordHolder.record) {
-                hermes.tooltip(recordHolder.record).show();
+                if(lastShownRecord !== recordHolder.record) {
+                    hermes.tooltip(recordHolder.record).show();
+                    lastShownRecord = recordHolder.record;
+                } else {
+                    document.getElementById("tooltip").classList.add("on");
+                }
             }
         });
-        item.addEventListener("mouseleave", (e) => {
+        item.addEventListener("mouseout", (e) => {
             e.stopPropagation();
             document.getElementById("tooltip").classList.remove("on");
         });

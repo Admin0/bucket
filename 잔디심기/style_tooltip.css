@@ -106,7 +106,11 @@
 #tooltip .official svg,
 #tooltip.official svg {
     --color--gpx-start: var(--color--gold);
-    --color--gpx-end:  var(--color--gold-dark);
+    --color--gpx-end: var(--color--gold-dark);
+}
+
+#tooltip .official .type {
+    color: var(--color--gold-metalic);
 }
 
 .icon.distance {
@@ -119,6 +123,10 @@
 
 .icon.pace {
     color: #3f51b5;
+}
+
+#tooltip .official .icon {
+    color: var(--color--gold-metalic);
 }
 
 .material-symbols,

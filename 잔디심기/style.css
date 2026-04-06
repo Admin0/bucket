@@ -320,15 +320,6 @@ a {
     opacity: 0.7;
 }
 
-.stat-item .value {
-    display: block;
-    font-size: 1.5em;
-}
-
-.stat-item .value .icon {
-    line-height: inherit;
-}
-
 #stats-header .stat-item .value .icon {
     opacity: 0.5;
 }
@@ -351,11 +342,22 @@ a {
     /* background: var(--color--track); */
     border-radius: 1em;
 }
+
+#stats-container .stat-item .value {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.5em;
+}
+
+#stats-container .stat-item .value .icon {
+    line-height: inherit;
+}
+
 #stats-container .stat-item {
     padding: var(--width--normal-margin);
     border-radius: 1em;
     background: var(--color--track);
-    transition: 0.25s, transform 0.05s;
+    transition: 0.05s;
 }
 
 #stats-container .stat-item:hover {
@@ -370,10 +372,14 @@ a {
     /* text-align: center; */
 }
 
+#stats-container .stat-item [data-type*="official"] {
+    transition: .05s;
+}
+
 #stats-container .stat-item[data-type="overall"] .label,
 #stats-container .stat-item[data-type="overall"] .icon,
 #stats-container .stat-item[data-type="overall"] .unit {
-    color: #d3af37;
+    color: var(--color--gold-metalic);
 }
 #stats-container .stat-item[data-type*="run"] .icon  {
     color: var(--color--workout-run);
@@ -387,8 +393,18 @@ a {
 #stats-container .stat-item [data-type*="official"] .label,
 #stats-container .stat-item [data-type*="official"] .icon,
 #stats-container .stat-item [data-type*="official"] .unit {
-    color: gold;
+    color: var(--color--gold-normal);
     font-variation-settings: "FILL" 1;
+    opacity:1;
+}
+
+#stats-container .stat-item [data-type*="official"]:hover {
+    background-color: var(--color--track-dark);
+    /* box-shadow: 0 5px 12px var(--color--track-shadow); */
+    /* transform: scale(1.1); */
+    padding: .5em 1em;
+    margin:-.5em -1em;
+    border-radius: 2em;
 }
 
 #stats-container .stat-item .sub-stats {

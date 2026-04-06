@@ -318,7 +318,9 @@ td.on {
     padding: 0 0 1em;
     z-index: 2;
 }
-
+#calendar-grid .stat-item .value {
+    display: block;
+}
 #calendar-grid .year-stats .stat-item,
 #calendar-grid .month-stats .stat-item {
     flex-grow: 1;

@@ -20,6 +20,10 @@ const hermes_records = [
         certi: "https://time.spct.kr/m2.php?E=2026030801&B=007635",
         comment: "벚꽃없는 벚꽃 마라톤 @현욱"
     },
+    { date: "2026-04-05", type: "walk", distance: 3.11, elevation: 10, record: "00:49:48", title: "은행나무길", comment: "@진선" },
+    { date: "2026-04-04", type: "walk", distance: 5.28, elevation: 27, record: "01:12:17", title: "신정호", comment: "@진선", over: 1 },
+    { date: "2026-04-04", type: "run", distance: 10.57, elevation: 55 , record: "01:01:26", title: "장항선-환경공원-온천천-신창", comment: "" },
+    { date: "2026-04-03", type: "walk", distance: 8.27, elevation: 9, record: "01:30:16", title: "인주산단로", comment: "#서해랑길 @재훈" },
     { date: "2026-04-02", type: "run", distance: 6.08, elevation: 18, record: "00:34:10", title: "신정호", comment: "@현욱" },
     { date: "2026-04-01", type: "walk", distance: 4.37, elevation: 11, record: "00:55:07", title: "인주산단로", comment: "@홍준" },
     { date: "2026-03-31", type: "walk", distance: 3.2, elevation: 38, record: "00:43:10", title: "신창", comment: "밤산책", over: 2 },

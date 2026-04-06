@@ -8,6 +8,7 @@ const style_dark = VersaTilesStyle.shadow({
     language: "ko",
     recolor: { blend: 0.2, blendColor: "#000" }
 });
+const style_maptilerlight = "https://api.maptiler.com/maps/019d5607-c62e-736d-adde-04f8f879a22b/style.json?key=Bdy6sMAQwxQOz1O2ur6a";
 const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac59-ac40754b0df4/style.json?key=Bdy6sMAQwxQOz1O2ur6a";
 
 let currentStyle = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
@@ -15,7 +16,7 @@ let useFreeService = false;
 
 const map = new maplibregl.Map({
     container: "map",
-    style: useFreeService ? (currentStyle === "light" ? style_light : style_dark) : style_maptilerdark,
+    style: useFreeService ? (currentStyle === "light" ? style_light : style_dark) : currentStyle === "light" ? style_maptilerlight : style_maptilerdark,
     center: [127.5, 36],
     zoom: 8,
     maxZoom: 20,
@@ -404,11 +405,11 @@ map.on("load", () => {
     if (hermes && typeof hermes.gpx.init === "function") hermes.gpx.init(map);
 
     const terrariumBtn = document.getElementById("terrarium-btn");
-    if (useFreeService) {
-        let isTerrariumOn = false;
-        terrariumBtn.addEventListener("click", () => {
-            isTerrariumOn = !isTerrariumOn;
-            terrariumBtn.classList.toggle("active", isTerrariumOn);
+    let isTerrariumOn = false;
+    terrariumBtn.addEventListener("click", () => {
+        isTerrariumOn = !isTerrariumOn;
+        terrariumBtn.classList.toggle("active", isTerrariumOn);
+        if (useFreeService) {
             if (isTerrariumOn) {
                 map.setTerrain({ source: "dem", exaggeration: 1.5 });
                 map.setLayoutProperty("hillshade-layer", "visibility", "visible");
@@ -420,9 +421,22 @@ map.on("load", () => {
                 map.setLayoutProperty("contour-lines", "visibility", "none");
                 map.setLayoutProperty("contour-labels", "visibility", "none");
             }
-        });
-    } else {
-    }
+        } else {
+            if (isTerrariumOn) {
+                map.setTerrain({ source: (currentStyle === "light" ? "terrain-rgb-v2" : "terrain-rgb"), exaggeration: 1.5 });
+                map.setLayoutProperty("Hillshading", "visibility", "visible");
+                // map.setLayoutProperty("Contour label", "visibility", "visible");
+                // map.setLayoutProperty("Contour", "visibility", "visible");
+                // map.setLayoutProperty("Contour bold", "visibility", "visible");
+            } else {
+                map.setTerrain(null);
+                map.setLayoutProperty("Hillshading", "visibility", "none");
+                // map.setLayoutProperty("Contour label", "visibility", "none");
+                // map.setLayoutProperty("Contour", "visibility", "none");
+                // map.setLayoutProperty("Contour bold", "visibility", "none");
+            }
+        }
+    });
 
     const trackTooltip = document.getElementById("tooltip");
     //     const trackTooltip = document.createElement("div");
