@@ -240,6 +240,7 @@ hermes.track = function () {
                             let tooltip = document.getElementById("tooltip");
                             // tooltip.innerHTML = hermes.tooltip(recordsForWeek);
                             // tooltip.classList.add("on");
+                            recordsForWeek.sort((a, b) => new Date(a.date) - new Date(b.date));
                             hermes.tooltip(recordsForWeek).show();
                             // tooltip.style.left = marker.getBoundingClientRect().left + marker.getBoundingClientRect().width / 2 + "px";
                             // tooltip.style.top = marker.getBoundingClientRect().top + window.scrollY + "px";

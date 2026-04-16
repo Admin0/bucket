@@ -16,21 +16,21 @@ hermes.stats = () => {
 
     const createStatObject = () => ({
         count: 0,
-        longestTime: { value: 0, record: null },
-        longestDistance: { value: 0, record: null },
-        fastestPace: { value: Infinity, record: null },
-        highestElevation: { value: 0, record: null },
-        fastestElevationPace: { value: Infinity, record: null },
+        longestTime: { value: 0, records: [] },
+        longestDistance: { value: 0, records: [] },
+        fastestPace: { value: Infinity, records: [] },
+        highestElevation: { value: 0, records: [] },
+        fastestElevationPace: { value: Infinity, records: [] },
         paces: [],
         elevationPaces: []
     });
 
     const createPBObject = () => ({
-        "5k": { value: Infinity, record: null, pace: Infinity },
-        "10k": { value: Infinity, record: null, pace: Infinity },
-        "half": { value: Infinity, record: null, pace: Infinity },
-        "30k": { value: Infinity, record: null, pace: Infinity },
-        "full": { value: Infinity, record: null, pace: Infinity }
+        "5k": { value: Infinity, records: [], pace: Infinity },
+        "10k": { value: Infinity, records: [], pace: Infinity },
+        "half": { value: Infinity, records: [], pace: Infinity },
+        "30k": { value: Infinity, records: [], pace: Infinity },
+        "full": { value: Infinity, records: [], pace: Infinity }
     });
 
     const stats = {
@@ -80,24 +80,45 @@ hermes.stats = () => {
     };
 
     const updateMax = (statObject, value, record) => {
-        if (value > statObject.value) {
-            statObject.value = value;
-            statObject.record = record;
+        statObject.records.push({ value, record });
+        statObject.records.sort((a, b) => b.value - a.value);
+        if (statObject.records.length > 3) {
+            statObject.records.length = 3;
+        }
+        if (statObject.records.length > 0) {
+            statObject.value = statObject.records[0].value;
+        } else {
+            statObject.value = 0;
         }
     };
 
     const updateMin = (statObject, value, record) => {
-        if (value < statObject.value) {
-            statObject.value = value;
-            statObject.record = record;
+        if (!isFinite(value)) return;
+        statObject.records.push({ value, record });
+        statObject.records.sort((a, b) => a.value - b.value);
+        if (statObject.records.length > 3) {
+            statObject.records.length = 3;
+        }
+        if (statObject.records.length > 0) {
+            statObject.value = statObject.records[0].value;
+        } else {
+            statObject.value = Infinity;
         }
     };
 
     const updateMinPB = (statObject, value, pace, record) => {
-        if (value < statObject.value) {
-            statObject.value = value;
-            statObject.record = record;
-            statObject.pace = pace;
+        if (!isFinite(value)) return;
+        statObject.records.push({ value, record, pace });
+        statObject.records.sort((a, b) => a.value - b.value);
+        if (statObject.records.length > 3) {
+            statObject.records.length = 3;
+        }
+        if (statObject.records.length > 0) {
+            statObject.value = statObject.records[0].value;
+            statObject.pace = statObject.records[0].pace;
+        } else {
+            statObject.value = Infinity;
+            statObject.pace = Infinity;
         }
     };
 
@@ -284,7 +305,7 @@ hermes.stats = () => {
         const generateStatItemHTML = (statType) => {
             const primaryCategory = categories[0];
             const primaryStat = stats[primaryCategory]?.[statType.key];
-            const dataAttributes = primaryStat?.record ? `data-type="${primaryCategory}" data-tooltip="${statType.key}"` : "";
+            const dataAttributes = (primaryStat?.records && primaryStat.records.length > 0) ? `data-type="${primaryCategory}" data-tooltip="${statType.key}"` : "";
 
             const values = categories
                 .map((category) => {
@@ -371,8 +392,8 @@ hermes.stats = () => {
                     const officialStat = stats[mapping.officialCat]?.[statType.key];
 
                     if (officialStat && isFinite(officialStat.value) && officialStat.value !== 0) {
-                        const record = officialStat.record;
-                        const tooltipData = record ? `data-type="${mapping.officialCat}" data-tooltip="${statType.key}"` : "";
+                        const hasRecord = officialStat.records && officialStat.records.length > 0;
+                        const tooltipData = hasRecord ? `data-type="${mapping.officialCat}" data-tooltip="${statType.key}"` : "";
                         subItems.push(`<div style="${subStatStyle}" ${tooltipData}><span class="label">공식 기록</span><span>${statType.format(officialStat.value)}</span></div>`);
                     }
                 }
@@ -501,7 +522,7 @@ hermes.stats = () => {
                 if (isFinite(officialStat.value)) {
                     subItems.push(`<div style="${subStatStyle}" data-type="${officialPBsKey}" data-tooltip="${pbType.key}"><span class="label">공식 기록</span><span>${formatPB(officialStat)}</span></div>`);
                 }else{
-                    subItems.push(`<div style="${subStatStyle}" data-type="${officialPBsKey}" data-tooltip="${pbType.key}"><span class="label">공식 기록</span><span>—</span></div>`);
+                    subItems.push(`<div style="${subStatStyle}"><span class="label">공식 기록</span><span>—</span></div>`);
                 }
 
                 const distStats = stats.run_dist_stats[pbType.key];
@@ -518,7 +539,8 @@ hermes.stats = () => {
                 
                 const subStatHTML = subItems.length > 0 ? `<div class="sub-stats">${subItems.join("")}</div>` : "";
 
-                return `<div class="stat-item" data-type="${overallPBsKey}" data-tooltip="${pbType.key}"><span class="label">${pbType.label}</span><div class="value">${valueHTML}</div>${subStatHTML}</div>`;
+                const dataAttributes = isFinite(overallStat.value) ? `data-type="${overallPBsKey}" data-tooltip="${pbType.key}"` : "";
+                return `<div class="stat-item" ${dataAttributes}><span class="label">${pbType.label}</span><div class="value">${valueHTML}</div>${subStatHTML}</div>`;
             })
             .join("");
 
@@ -551,26 +573,51 @@ hermes.stats = () => {
         ${renderAnnualStats(stats.annual)}
     `;
 
-    let lastShownRecord = null;
+    let lastRecordsKey = null;
+    let tooltipHideTimeout;
     statsGrid.querySelectorAll("[data-tooltip]").forEach((item) => {
         item.addEventListener("mouseover", (e) => {
+            clearTimeout(tooltipHideTimeout);
             e.stopPropagation();
             const currentTarget = e.currentTarget;
             const type = currentTarget.dataset.type;
             const tooltipKey = currentTarget.dataset.tooltip;
+            const newRecordsKey = `${type}-${tooltipKey}`;
+
+            if (lastRecordsKey === newRecordsKey) {
+                const tooltipEl = document.getElementById("tooltip");
+                if (tooltipEl) tooltipEl.classList.add("on");
+                return;
+            }
+            lastRecordsKey = newRecordsKey;
+            
             const recordHolder = stats[type]?.[tooltipKey];
-            if (recordHolder && recordHolder.record) {
-                if(lastShownRecord !== recordHolder.record) {
-                    hermes.tooltip(recordHolder.record).show();
-                    lastShownRecord = recordHolder.record;
-                } else {
-                    document.getElementById("tooltip").classList.add("on");
-                }
+            if (recordHolder && recordHolder.records && recordHolder.records.length > 0) {
+                const records = recordHolder.records.map(r => r.record);
+                hermes.tooltip(records).show().addClass("stats");
             }
         });
         item.addEventListener("mouseout", (e) => {
             e.stopPropagation();
-            document.getElementById("tooltip").classList.remove("on");
+            tooltipHideTimeout = setTimeout(() => {
+                const tooltipEl = document.getElementById("tooltip");
+                if (tooltipEl) tooltipEl.classList.remove("on");
+                lastRecordsKey = null;
+            }, 50);
         });
     });
+
+    const tooltip = document.getElementById("tooltip");
+    if (tooltip) {
+        tooltip.addEventListener("mouseover", () => {
+            clearTimeout(tooltipHideTimeout);
+        });
+        tooltip.addEventListener("mouseout", () => {
+            tooltipHideTimeout = setTimeout(() => {
+                const tooltipEl = document.getElementById("tooltip");
+                if (tooltipEl) tooltipEl.classList.remove("on");
+                lastRecordsKey = null;
+            }, 50);
+        });
+    }
 };

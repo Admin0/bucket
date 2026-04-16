@@ -196,8 +196,6 @@ td.on {
 }
 
 #calendar-grid .activity-circle circle {
-    transform-origin: 50% 50%;
-    transform: scale(var(--gg, 0));
     fill: rgb(0, 178, 100);
 }
 #calendar-grid .activity-circle path {

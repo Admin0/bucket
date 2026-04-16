@@ -236,10 +236,9 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
 /**
  * 활동 기록 배열을 받아 GPX 경로를 포함한 상세 툴팁 HTML을 생성합니다.
  */
-hermes.tooltip = (records) => {
+hermes.tooltip = function(records) {
     let tooltipContent = "";
     if (!Array.isArray(records)) records = [records];
-    records.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     records.forEach((rec) => {
         const paceValue = rec.course === "trail" ? rec.elevation_pace : rec.pace;
@@ -274,15 +273,20 @@ hermes.tooltip = (records) => {
     const tooltip = document.getElementById("tooltip");
 
     return {
-        show: () => {
+        show: function() {
             tooltip.innerHTML = tooltipContent;
             tooltip.classList.add("on");
             return this;
         },
-        hide: () => {
-            tooltip.classList.remove("on");
+        addClass: function(className) {
+            tooltip.classList.add(className);
+            return this;
         },
-        position: (e) => {
+        hide: function() {
+            tooltip.className = '';
+            return this;
+        },
+        position: function(e) {
             // tooltip.style.left = e.pageX + "px";
             // tooltip.style.top = e.pageY + "px";
             // return this;

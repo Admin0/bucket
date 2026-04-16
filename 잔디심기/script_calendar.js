@@ -34,6 +34,8 @@ hermes.calendar = () => {
     let maxActivity = 0;
     Object.values(recordsByDate).forEach((dayRecords) => {
         const dailyDistance = dayRecords.reduce((sum, rec) => sum + (rec.distance || 0), 0);
+        // console.log([dayRecords[0].date,  dailyDistance, dayRecords]);
+
         if (dailyDistance > maxActivity) {
             maxActivity = dailyDistance;
         }
@@ -250,8 +252,9 @@ hermes.calendar = () => {
                                     dailyDistance += rec.distance || 0;
                                     dailyElevation += rec.elevation || 0;
                                 });
+                                // console.log([dateString, dayRecords, dailyDistance, dailyElevation]);
 
-                                const radius = Math.sqrt(dailyDistance / maxActivity);
+                                const radius = (dailyDistance / maxActivity) ** (1 / 2);
                                 const distanceText = dailyDistance > 0 ? `${dailyDistance.toFixed(1)}<span class="unit"> km</span>` : "";
                                 const elevationText = dailyElevation > 0 ? (dailyElevation > 1000 ? `${(dailyElevation / 1000).toFixed(1)}<span class="unit"> km</span>` : `${dailyElevation.toFixed(0)}<span class="unit"> m</span>`) : "";
 
@@ -260,7 +263,7 @@ hermes.calendar = () => {
 
                                 if (dailyDistance > 0) {
                                     const w = 50,
-                                        r = 45,
+                                        r = 50 * radius,
                                         w_icon = 20,
                                         r_icon = 18;
                                     if (dayRecords.length === 1) {
@@ -290,6 +293,7 @@ hermes.calendar = () => {
                                         } else {
                                             // 1. Enrich records with angle data and generate pie slices
                                             let currentStartAngle = -Math.PI / 2;
+                                            dayRecords.sort((a, b) => b.over || 0 - a.over || 0);
                                             const enrichedRecords = dayRecords
                                                 .map((rec) => {
                                                     if (!rec.distance || rec.distance <= 0) return null;
@@ -339,8 +343,8 @@ hermes.calendar = () => {
                                                 });
                                                 const iconAngle = Math.atan2(sumY, sumX);
 
-                                                const iconX = w + r_icon * Math.cos(iconAngle);
-                                                const iconY = w + r_icon * Math.sin(iconAngle);
+                                                const iconX = w + r_icon * Math.cos(iconAngle) * radius;
+                                                const iconY = w + r_icon * Math.sin(iconAngle) * radius;
 
                                                 const iconName = group.isOfficial ? "emoji_events" : type === "trail" ? "terrain" : type === "walk" ? "directions_walk" : "directions_run";
                                                 const iconClass = group.isOfficial ? "material-symbols official-race-icon" : "material-symbols-outlined";
@@ -358,7 +362,7 @@ hermes.calendar = () => {
                                             }
                                         }
                                     }
-                                    weekHtml += `<div class="activity-circle" style="--gg:${radius};"><svg viewBox="0 0 ${w * 2} ${w * 2}">${svgContent}${iconsContent}</svg></div>
+                                    weekHtml += `<svg class="activity-circle" viewBox="0 0 ${w * 2} ${w * 2}">${svgContent}${iconsContent}</svg>
                                         <div class="activity-stats">
                                         ${elevationText ? `<div class="elevation">${elevationText}</div>` : ""}
                                         ${distanceText ? `<div class="distance">${distanceText}</div>` : ""}
@@ -397,12 +401,12 @@ hermes.calendar = () => {
 
                 const date = targetCell.dataset.date;
                 if (date) {
-                    const dayRecords = recordsByDate[date];
+                    const dayRecords = recordsByDate[date].sort((a, b) => a.over || 0 - b.over || 0);
 
                     if (dayRecords) {
                         // tooltip.innerHTML = hermes.tooltip(dayRecords);
                         // tooltip.classList.add("on");
-                        hermes.tooltip(dayRecords).show();
+                        hermes.tooltip(dayRecords, false).show();
                     }
                 }
             });
@@ -517,6 +521,9 @@ hermes.calendar = () => {
 
         if (selectedValue === "recent") {
             document.querySelector('input[name="calendar-view"][value="normal"]').checked = true;
+            currentDate.setYear(new Date().getFullYear());
+            currentDate.setMonth(new Date().getMonth());
+            renderCalendar();
 
             // 내비게이션 버튼 표시/숨김
             prevButton.classList.remove("disabled");
