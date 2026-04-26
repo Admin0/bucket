@@ -601,7 +601,7 @@ hermes.stats = () => {
             e.stopPropagation();
             tooltipHideTimeout = setTimeout(() => {
                 const tooltipEl = document.getElementById("tooltip");
-                if (tooltipEl) tooltipEl.classList.remove("on");
+                if (tooltipEl) tooltipEl.classList.remove("on", "stats");
                 lastRecordsKey = null;
             }, 50);
         });

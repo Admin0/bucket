@@ -186,13 +186,13 @@ td.on {
     line-height: 1;
 }
 
-#calendar-grid .activity-circle svg {
+#calendar-grid svg.activity-circle  {
     width: 100%;
     height: 100%;
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    /* left: 50%; */
+    /* top: 50%; */
+    transform: translate(0%, -50%);
 }
 
 #calendar-grid .activity-circle circle {

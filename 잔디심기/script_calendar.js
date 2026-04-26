@@ -401,7 +401,7 @@ hermes.calendar = () => {
 
                 const date = targetCell.dataset.date;
                 if (date) {
-                    const dayRecords = recordsByDate[date].sort((a, b) => a.over || 0 - b.over || 0);
+                    const dayRecords = recordsByDate[date].sort((a, b) => (a.over || 0) - (b.over || 0));
 
                     if (dayRecords) {
                         // tooltip.innerHTML = hermes.tooltip(dayRecords);

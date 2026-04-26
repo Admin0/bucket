@@ -230,7 +230,7 @@ a {
     border-color: var(--color--track-hover);
 }
 
-.track-lane:hover .marker.official {
+.track-lane .marker.official {
     --color--gpx-start: var(--color--gold);
     --color--gpx-end: var(--color--gold-dark);
     /* z-index: 1; */

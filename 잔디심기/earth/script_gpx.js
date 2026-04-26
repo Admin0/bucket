@@ -398,12 +398,12 @@ hermes.gpx = (() => {
         const recordsHtml = `
             <div class="code-block-container">
                 <h3>hermes_records.js 에 추가:</h3>
-                <div class="code-block" id="records-code"><code>${recordsJsOutput.join(",\n")},</code></div>
+                <div class="code-block" id="records-code"><code>\n${recordsJsOutput.join(",\n")},</code></div>
             </div>`;
         const compressedHtml = `
             <div class="code-block-container">
                 <h3>records/YYYY.json 에 추가:</h3>
-                <div class="code-block" id="compressed-code"><code>${compressedJsonOutput.join(",\n")},</code></div>
+                <div class="code-block" id="compressed-code"><code>\n${compressedJsonOutput.join(",\n")},</code></div>
             </div>`;
 
         outputContainer.innerHTML = recordsHtml + compressedHtml;

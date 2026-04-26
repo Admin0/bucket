@@ -1,6 +1,6 @@
 // 잔디심기에는 안 나오는데 earth에는 나오는 데이터입니다.
-// 2023년 이전 데이터입니다.
 const hermes_records_4_earth = [
+    {"date":"2026-04-25","type":"walk","distance":2.42,"elevation":27,"record":"00:35:27","title":"세종로214번길","comment":"@진선"},
     { date: "2026-04-10", type: "walk", distance: 1.01, elevation: 67, record: "00:17:24", title: "단양신라적성비", comment: "", over: 2 },
     { date: "2026-03-30", type: "walk", distance: 1.71, elevation: 18, record: "00:21:26", title: "신창", comment: "우중밤산책" },
     { date: "2026-03-27", type: "walk", distance: 1.09, elevation: 2, record: "00:18:26", title: "평화2동", comment: "양복 사러 감" },
