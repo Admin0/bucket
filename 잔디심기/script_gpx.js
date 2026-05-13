@@ -2,9 +2,8 @@
 
 // 전역 캐시 객체 초기화
 hermes.svgCache = {}; // 렌더링된 SVG 경로 캐시
-hermes.compressedCache = {}; // 불러온 압축 데이터 연도별 캐시
 
-// 좌표 디코딩 함수 (earth 페이지와 동일)
+// 좌표 디코딩 함수
 function decodeCoordinates(encoded) {
     if (!encoded) return [];
     let coordinates = [],
@@ -34,20 +33,18 @@ function decodeCoordinates(encoded) {
         const dlon = result & 1 ? ~(result >> 1) : result >> 1;
         lon += dlon;
 
-        // GPX 파서와 동일한 {lon, lat, ele} 구조를 맞추기 위해 Z(고도) 값도 추가 (압축 데이터에는 고도 정보 없음)
         coordinates.push([lon / 1e6, lat / 1e6, 0]);
     }
     return coordinates;
 }
 
 /**
- * GPX 데이터를 기반으로 SVG 경로를 생성하고 렌더링하는 함수.
- * 압축된 데이터를 우선적으로 확인하고, 없을 경우 원본 GPX 파일을 불러옵니다.
+ * geometry 데이터를 기반으로 SVG 경로를 생성하고 렌더링하는 함수.
  *
- * @param {string} gpxUrl - 원본 GPX 파일의 경로.
+ * @param {string} geometry - 인코딩된 폴리라인 문자열.
  * @param {string} svgElementId - SVG를 렌더링할 요소의 CSS 셀렉터.
  */
-hermes.gpx2svg = async (gpxUrl, svgElementId) => {
+hermes.gpx2svg = async (geometry, svgElementId) => {
     await new Promise((resolve) => setTimeout(resolve, 0)); // DOM 업데이트 대기
 
     const svg = document.querySelector(svgElementId);
@@ -58,8 +55,9 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
 
     svg.innerHTML = svgLoading;
 
-    // 1. 렌더링된 SVG 캐시 확인
-    const cachedSvg = hermes.svgCache[gpxUrl];
+    // 1. 렌더링된 SVG 캐시 확인 (geometry를 키로 사용)
+    const cacheKey = geometry;
+    const cachedSvg = hermes.svgCache[cacheKey];
     if (cachedSvg) {
         if (cachedSvg === "not-found") {
             svg.innerHTML = svgNotFound;
@@ -73,65 +71,19 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
 
     try {
         let pts = null;
-        const urlParts = gpxUrl.split("/");
-        const year = urlParts[1];
-        const shortPath = urlParts[2].replace(".gpx", "");
-        const compressedUrl = `records/${year}.json`;
 
-        // 2. 압축 데이터 확인 (메모리 캐시 우선)
-        let yearDataMap = hermes.compressedCache[year];
-        if (!yearDataMap) {
-            try {
-                const res = await fetch(compressedUrl);
-                if (res.ok) {
-                    const data = await res.json();
-                    const features = Array.isArray(data) ? data : data.features;
-                    const newMap = new Map();
-                    features.forEach((feat) => {
-                        if (feat && feat.properties && feat.properties.path) {
-                            newMap.set(feat.properties.path.trim(), feat);
-                        }
-                    });
-                    hermes.compressedCache[year] = newMap;
-                    yearDataMap = newMap;
-                } else {
-                    hermes.compressedCache[year] = "not-found";
-                }
-            } catch (e) {
-                hermes.compressedCache[year] = "not-found";
-            }
+        if (geometry) {
+            const decodedCoords = decodeCoordinates(geometry);
+            pts = decodedCoords.map((c) => ({ lon: c[0], lat: c[1], ele: c[2] || 0 }));
         }
 
-        // 압축 데이터에서 경로 추출
-        if (yearDataMap && yearDataMap !== "not-found") {
-            const feat = yearDataMap.get(shortPath);
-            if (feat && feat.geometry && feat.geometry.encoded_coordinates) {
-                const decodedCoords = decodeCoordinates(feat.geometry.encoded_coordinates);
-                pts = decodedCoords.map((c) => ({ lon: c[0], lat: c[1], ele: c[2] || 0 }));
-            }
-        }
-
-        // 3. 압축 데이터에 없으면 원본 GPX 파일 Fetch
-        if (!pts) {
-            const response = await fetch(gpxUrl);
-            if (!response.ok) throw new Error("GPX file not found");
-            const gpxText = await response.text();
-            const parser = new DOMParser();
-            const gpxDoc = parser.parseFromString(gpxText, "text/xml");
-            pts = Array.from(gpxDoc.querySelectorAll("trkpt")).map((pt) => ({
-                lat: parseFloat(pt.getAttribute("lat")),
-                lon: parseFloat(pt.getAttribute("lon")),
-                ele: parseFloat(pt.querySelector("ele")?.textContent || 0)
-            }));
-        }
-
-        if (pts.length < 2) {
-            svg.innerHTML = ""; // 그릴 포인트가 없음
+        if (!pts || pts.length < 2) {
+            svg.innerHTML = svgNotFound; // Fallback for no points
+            hermes.svgCache[cacheKey] = "not-found"; // 캐시에 'not-found' 저장
             return;
         }
 
-        // --- 여기서부터 SVG 렌더링 로직 (기존과 동일) ---
-
+        // --- SVG 렌더링 로직 ---
         let totalElevationGain = 0;
         for (let i = 1; i < pts.length; i++) {
             const eleDiff = pts[i].ele - pts[i - 1].ele;
@@ -148,24 +100,13 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
 
         const width = (maxLon - minLon) * 5000;
         const height = (maxLat - minLat) * 5000;
-
-        // const startColor = { r: 0, g: 255, b: 127 }, endColor = { r: 0, g: 92, b: 69 };
-        // function interpolateColor(c1, c2, factor) {
-        //     const r = Math.round(c1.r + factor * (c2.r - c1.r)).toString(16).padStart(2, "0");
-        //     const g = Math.round(c1.g + factor * (c2.g - c1.g)).toString(16).padStart(2, "0");
-        //     const b = Math.round(c1.b + factor * (c2.b - c1.b)).toString(16).padStart(2, "0");
-        //     return `#${r}${g}${b}`;
-        // }
-
-        // --- SVG 렌더링 로직 수정 ---
-
+        
         let pathSegments = "";
         const numPathElements = 64,
             totalSegments = pts.length - 1;
         if (totalSegments > 0) {
             const segmentsPerPath = Math.ceil(totalSegments / numPathElements);
 
-            // 테두리 경로와 메인 경로를 담을 그룹 생성
             let borderPaths = '<g class="gpx-border">';
             let mainPaths = '<g class="gpx-main">';
 
@@ -182,13 +123,8 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
                     pathData += ` L ${((nextPoint.lon - minLon) / (maxLon - minLon)) * width} ${height - ((nextPoint.lat - minLat) / (maxLat - minLat)) * height}`;
                 }
 
-                // 테두리 경로 (더 두껍고 반투명한 검정색)
                 borderPaths += `<path d="${pathData}" fill="none" stroke="var(--color--track)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />`;
-
-                // 메인 경로 (기존 색상)
-                mainPaths += `<path d="${pathData}" fill="none" stroke="color-mix(in oklab, var(--color--gpx-start), var(--color--gpx-end) ${
-                    (startSegment / totalSegments) * 100
-                }%)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />`;
+                mainPaths += `<path d="${pathData}" fill="none" stroke="color-mix(in oklab, var(--color--gpx-start), var(--color--gpx-end) ${(startSegment / totalSegments) * 100}%)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />`;
             }
 
             borderPaths += "</g>";
@@ -203,7 +139,6 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
             mainPaths += `<circle cx="${x_start}" cy="${y_start}" r="3.5" stroke="var(--color--gpx-start)" stroke-width="2" fill="var(--color--track)" />`;
             mainPaths += `<circle cx="${x_end}" cy="${y_end}" r="3.5" stroke="var(--color--gpx-end)" stroke-width="2" fill="var(--color--track)" />`;
 
-            // 테두리 그룹을 먼저 추가하고 그 위에 메인 그룹을 추가
             pathSegments = borderPaths + mainPaths;
         }
 
@@ -213,7 +148,6 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
             if (highestPoint) {
                 const peakX = ((highestPoint.lon - minLon) / (maxLon - minLon)) * width;
                 const peakY = height - ((highestPoint.lat - minLat) / (maxLat - minLat)) * height;
-                // 최고 고도 마커에도 테두리와 일관된 모서리 스타일 적용
                 svgInnerHtml += `<path d="M ${peakX} ${peakY - 6} L ${peakX - 4} ${peakY + 2} L ${peakX + 4} ${peakY + 2} Z" fill="gold" stroke="#00b264" stroke-width="2" stroke-linejoin="round"/>`;
             }
         }
@@ -225,10 +159,11 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
         svg.setAttribute("style", style);
         svg.innerHTML = svgInnerHtml;
 
-        // 4. 렌더링된 SVG 결과를 캐시에 저장
-        hermes.svgCache[gpxUrl] = { viewBox, style, innerHTML: svgInnerHtml };
+        hermes.svgCache[cacheKey] = { viewBox, style, innerHTML: svgInnerHtml };
+
     } catch (error) {
-        hermes.svgCache[gpxUrl] = "not-found";
+        console.error("Error rendering SVG:", error);
+        hermes.svgCache[cacheKey] = "not-found";
         svg.innerHTML = svgNotFound;
     }
 };
@@ -238,9 +173,9 @@ hermes.gpx2svg = async (gpxUrl, svgElementId) => {
  */
 hermes.tooltip = function(records) {
     let tooltipContent = "";
-    if (!Array.isArray(records)) records = [records]
+    if (!Array.isArray(records)) records = [records];
 
-    records.forEach((rec) => {
+    records.forEach((rec, i) => {
         const paceValue = rec.course === "trail" ? rec.elevation_pace : rec.pace;
         const tooltipPace = `${Math.floor(paceValue / 60)}′${Math.floor(paceValue % 60)
             .toString()
@@ -249,11 +184,11 @@ hermes.tooltip = function(records) {
         const tooltip_type = rec.isOfficial ? "공식 기록" : rec.type === "trail" ? "하이킹 / 트레일러닝" : rec.type === "walk" ? "걷기" : "러닝";
         const icon_distance = rec.course === "trail" ? "altitude" : "conversion_path";
         const comment = rec.comment ? `<span class="comment">${rec.comment}</span>` : "";
-        const gpxFileName = rec.date + (rec.over !== undefined ? "_" + rec.over : "");
+        const uniqueId = `${rec.date}-${rec.over || i}`;
 
         tooltipContent += `
         <div class="tooltip-item ${rec.isOfficial ? "official" : ""}">
-            <div class="gpx d-${gpxFileName}"><svg></svg></div>
+            <div class="gpx" id="gpx-${uniqueId}"><svg></svg></div>
             <div class="title-container">
                 <span class="type">${tooltip_type}</span>
                 <span class="date">${rec.date}</span>
@@ -265,9 +200,12 @@ hermes.tooltip = function(records) {
                 <span class="material-symbols-outlined icon pace">speed</span> <span class="pace">${tooltipPace}</span>
             </div>
         </div>`;
-
-        // 툴팁 생성 후, 해당 GPX/SVG를 그리는 함수 호출
-        hermes.gpx2svg(`records/${new Date(rec.date).getFullYear()}/${gpxFileName}.gpx`, `#tooltip .gpx.d-${gpxFileName} svg`);
+        
+        setTimeout(() => {
+            if (rec.geometry) {
+                hermes.gpx2svg(rec.geometry, `#gpx-${uniqueId} svg`);
+            }
+        }, 0);
     });
 
     const tooltip = document.getElementById("tooltip");
@@ -286,11 +224,7 @@ hermes.tooltip = function(records) {
             tooltip.className = '';
             return this;
         },
-        position: function(e) {
-            // tooltip.style.left = e.pageX + "px";
-            // tooltip.style.top = e.pageY + "px";
-            // return this;
-        }
+        position: function(e) {}
     };
 };
 
@@ -301,7 +235,7 @@ function initializeGenericTooltips() {
 
     document.body.addEventListener("mouseover", (e) => {
         const target = e.target.closest("[title]");
-        if (target && target.title && !target.closest(".day-cell, .marker")) {
+        if (target && target.title && !target.closest(".day-cell, .marker, [data-record-id]")) {
             target.dataset.genericTooltip = target.title;
             target.title = "";
             tooltip.innerHTML = `<div class="tooltip-comment">${target.dataset.genericTooltip}</div>`;

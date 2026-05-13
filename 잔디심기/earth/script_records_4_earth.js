@@ -1,6 +1,11 @@
 // 잔디심기에는 안 나오는데 earth에는 나오는 데이터입니다.
 const hermes_records_4_earth = [
-    {"date":"2026-04-25","type":"walk","distance":2.42,"elevation":27,"record":"00:35:27","title":"세종로214번길","comment":"@진선"},
+    { date: "2026-05-03", type: "walk", distance: 1.84, elevation: 13, record: "00:35:12", title: "무창포", comment: "아침 산책" },
+    { date: "2026-04-29", type: "walk", distance: 1.5, elevation: 8, record: "00:21:34", title: "공항제1터미널고가도로", comment: "귀국 완" },
+    { date: "2026-04-28", type: "walk", distance: 0.27, elevation: 0, record: "00:03:37", title: "人民中路", comment: "", over: 3 },
+    { date: "2026-04-28", type: "walk", distance: 2.65, elevation: 19, record: "01:10:46", title: "江山路", comment: "", over: 2 },
+    { date: "2026-04-28", type: "walk", distance: 1.97, elevation: 59, record: "01:10:16", title: "江山路", comment: "", over: 1 },
+    { date: "2026-04-25", type: "walk", distance: 2.42, elevation: 27, record: "00:35:27", title: "세종로214번길", comment: "@진선" },
     { date: "2026-04-10", type: "walk", distance: 1.01, elevation: 67, record: "00:17:24", title: "단양신라적성비", comment: "", over: 2 },
     { date: "2026-03-30", type: "walk", distance: 1.71, elevation: 18, record: "00:21:26", title: "신창", comment: "우중밤산책" },
     { date: "2026-03-27", type: "walk", distance: 1.09, elevation: 2, record: "00:18:26", title: "평화2동", comment: "양복 사러 감" },
@@ -11,6 +16,8 @@ const hermes_records_4_earth = [
     { date: "2026-02-25", type: "walk", distance: 1.31, elevation: 12, record: "00:16:47", title: "서부북로", comment: "퇴근길", over: 2 },
     { date: "2026-02-25", type: "walk", distance: 1.32, elevation: 22, record: "00:15:12", title: "서부북로", comment: "출근길", over: 1 },
     { date: "2026-02-24", type: "walk", distance: 1.29, elevation: 22, record: "00:14:15", title: "서부북로", comment: "출근길", over: 1 },
+
+    { date: "2024-02-04", type: "walk", distance: 2.12, elevation: 14, record: "01:31:31", title: "충무로", comment: "" },
 
     { date: "2023-10-07", type: "walk", distance: 0.67, elevation: 13, record: "00:07:32", title: "온천대로", comment: "", over: 1 },
     { date: "2023-10-07", type: "walk", distance: 0.81, elevation: 6, record: "00:09:47", title: "아산시", comment: "", over: 2 },

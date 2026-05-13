@@ -1,8 +1,41 @@
 // 전역 'hermes' 객체 초기화
 const hermes = {};
 
-// 외부 'hermes_records' 데이터로 'hermes' 객체의 'records' 속성 설정
-hermes.records = hermes_records;
+// Google Sheet에서 데이터를 비동기적으로 로드하는 함수
+async function loadSheetData() {
+    const googleSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT90q_lKriPriF0lBgggvlbnHwJgbtLz-SrkUd8YsU-IBiFkmhzlDcHaLZ7BUvWZSZept-iBvMKVVAs/pub?gid=0&single=true&output=csv";
+    try {
+        const response = await fetch(googleSheetUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const csvText = await response.text();
+
+        const rows = csvText.trim().split('\n');
+        const headers = rows.shift().trim().split(',').map(h => h.trim());
+
+        hermes.records = rows.map(row => {
+            if (!row || !row.trim()) return null;
+
+            const values = row.split(',');
+
+            const obj = {};
+            headers.forEach((header, i) => {
+                let value = (values[i] || '').trim();
+                if (value.startsWith('"') && value.endsWith('"')) {
+                    value = value.slice(1, -1).replace(/""/g, '"');
+                }
+                obj[header] = value || undefined;
+            });
+            return obj;
+        }).filter(r => r && r.date); // 유효한 날짜가 있는 레코드만 필터링
+
+    } catch (error) {
+        console.error("Google Sheet에서 기록을 불러오지 못했습니다:", error);
+        hermes.records = []; // 오류 발생 시 빈 배열로 초기화
+    }
+}
+
 
 // 코스 카테고리 정의: 트랙 ID를 코스 및 유형 정보에 매핑
 hermes.courseCategories = {
@@ -36,8 +69,8 @@ hermes.recordInit = function () {
         }
 
         // 거리, 고도, 트레일 여부 설정
-        const distance = record.distance || (record.course == "full" ? 42.195 : record.course == "half" ? 21.0975 : record.course == "10k" ? 10 : record.course == "5k" ? 5 : 0);
-        const elevation = record.elevation || 0;
+        const distance = parseFloat(record.distance) || (record.course == "full" ? 42.195 : record.course == "half" ? 21.0975 : record.course == "10k" ? 10 : record.course == "5k" ? 5 : 0);
+        const elevation = parseFloat(record.elevation) || 0;
         const isTrail = record.type == "trail";
 
         // 페이스 계산
@@ -498,8 +531,8 @@ hermes.table = function () {
             // 마커에 대한 툴팁 및 하이라이트 이벤트 리스너
             row.addEventListener("mouseenter", (e) => {
                 let tooltip = document.getElementById("tooltip");
-                tooltip.innerHTML = `${record.comment !== "" ? `<span class="tooltip-comment">${record.comment}</span>` : `<span class="tooltip-null">`} <svg class="svg-records">`;
-                hermes.gpx2svg(`records/${new Date(record.date).getFullYear()}/${record.date + (record.over !== undefined ? "_" + record.over : "")}.gpx`, `#tooltip svg`);
+                tooltip.innerHTML = `${record.comment !== undefined ? `<span class="tooltip-comment">${record.comment}</span>` : `<span class="tooltip-null">`} <svg class="svg-records">`;
+                hermes.gpx2svg(record.geometry, `#tooltip svg`);
                 tooltip.classList.add("on", record.isOfficial ? "official" : "on");
             });
 
@@ -569,7 +602,8 @@ hermes.table = function () {
 };
 
 // 애플리케이션 초기화 함수
-hermes.initiate = function () {
+hermes.initiate = async function () {
+    await loadSheetData(); // 데이터를 먼저 로드
     hermes.recordInit();
     hermes.track();
     hermes.calendar();

@@ -12,7 +12,7 @@ const style_maptilerlight = "https://api.maptiler.com/maps/019d5607-c62e-736d-ad
 const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac59-ac40754b0df4/style.json?key=Bdy6sMAQwxQOz1O2ur6a";
 
 let currentStyle = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-let useFreeService = false;
+let useFreeService = true;
 
 const map = new maplibregl.Map({
     container: "map",
@@ -66,7 +66,7 @@ function decodeCoordinates(encoded) {
 function createFeature(record, coordinates, path) {
     const newFeature = {
         type: "Feature",
-        properties: { ...record, id: featureIdCounter, path: path, certified: record.certi != null },
+        properties: { ...record, id: featureIdCounter, path: path, certified: record.certi != null && record.certi.length > 0 },
         geometry: { type: "LineString", coordinates }
     };
     featureIdCounter++;
@@ -117,23 +117,6 @@ function generateTooltipHtml(properties) {
                 <span class="material-symbols-outlined icon pace">speed</span> <span class="pace">${tooltipPace}</span>
             </div>
         </div>`;
-}
-
-function handleMapTooltip(e, features, tooltipElement) {
-    if (features.length > 0) {
-        map.getCanvas().style.cursor = "pointer";
-        tooltipElement.classList.add("on");
-        tooltipElement.innerHTML = generateTooltipHtml(features[0].properties);
-        if (window.matchMedia("only screen and (min-width: 1920px)").matches) {
-            tooltipElement.style.left = `${e.point.x + 15}px`;
-            tooltipElement.style.top = `${e.point.y - 40}px`;
-        }
-    } else {
-        if (window.matchMedia("only screen and (min-width: 1920px)").matches) {
-            tooltipElement.style.left = `${e.point.x + 15}px`;
-            tooltipElement.style.top = `${e.point.y - 40}px`;
-        }
-    }
 }
 
 // --- Map & Data Setup ---
@@ -191,7 +174,7 @@ function addSourcesAndLayers() {
             filter: ["!", ["==", ["get", "certified"], true]],
             paint: {
                 "line-color": normalColors.base,
-                "line-width": ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 3.5, 13, 2.5],
+                "line-width": ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 4, 13, 2],
                 "line-opacity": ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.25]
             }
         },
@@ -203,7 +186,7 @@ function addSourcesAndLayers() {
             filter: ["==", ["get", "certified"], true],
             paint: {
                 "line-color": certiColors.base,
-                "line-width": ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 3.5, 13, 2.5],
+                "line-width": ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 4, 13, 2],
                 "line-opacity": ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.33]
             }
         },
@@ -282,82 +265,90 @@ function processNewFeatures(features) {
 }
 
 async function loadGpxData() {
-    hermes_records.push(...hermes_records_4_earth);
-    const recordsMap = new Map(hermes_records.map((r) => [`${r.date}${r.over ? `_${r.over}` : ""}`.trim(), r]));
-    const LS_KEY = "cachedGpxFeatures_v5_shortpath";
-    let cachedHybridFeatures = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+    const googleSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT90q_lKriPriF0lBgggvlbnHwJgbtLz-SrkUd8YsU-IBiFkmhzlDcHaLZ7BUvWZSZept-iBvMKVVAs/pub?gid=0&single=true&output=csv";
+    const googleSheetUrl_4_earth = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT90q_lKriPriF0lBgggvlbnHwJgbtLz-SrkUd8YsU-IBiFkmhzlDcHaLZ7BUvWZSZept-iBvMKVVAs/pub?gid=363853972&single=true&output=csv";
+    let hermes_records = [];
 
-    const cachedFeatures = [];
-    cachedHybridFeatures.forEach((hybrid) => {
-        const record = recordsMap.get(hybrid.properties.path.trim());
-        if (!record) return;
-        const coordinates = decodeCoordinates(hybrid.geometry.encoded_coordinates);
-        if (coordinates.length > 0) cachedFeatures.push(createFeature(record, coordinates, hybrid.properties.path));
-    });
-    if (cachedFeatures.length > 0) processNewFeatures(cachedFeatures);
-    updateMapSources();
+    document.getElementById("progress-container").style.opacity = "1";
+    updateProgress(0, 1); // Start progress
 
-    const cachedPaths = new Set(cachedHybridFeatures.map((f) => f.properties.path.trim()));
-    const totalRecords = hermes_records.length;
-    let processedCount = cachedFeatures.length;
-    updateProgress(processedCount, totalRecords);
+    try {
+        const responses = await Promise.all([
+            fetch(googleSheetUrl),
+            fetch(googleSheetUrl_4_earth)
+        ]);
 
-    const recordsToLoad = hermes_records.filter((r) => !cachedPaths.has(`${r.date}${r.over ? `_${r.over}` : ""}`.trim()));
-    if (recordsToLoad.length === 0) {
-        updateProgress(totalRecords, totalRecords);
+        const csvTexts = await Promise.all(responses.map(res => {
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            return res.text();
+        }));
+
+        csvTexts.forEach(csvText => {
+            const rows = csvText.trim().split('\n');
+            const headers = rows.shift().trim().split(',').map(h => h.trim());
+            
+            const records = rows.map(row => {
+                if (!row || !row.trim()) return null;
+
+                const values = row.split(',');
+
+                const obj = {};
+                headers.forEach((header, i) => {
+                    let value = (values[i] || '').trim();
+                    if (value.startsWith('"') && value.endsWith('"')) {
+                        value = value.slice(1, -1).replace(/""/g, '"');
+                    }
+                    obj[header] = value || undefined;
+                });
+                return obj;
+            }).filter(r => r && r.date);
+            
+            hermes_records.push(...records);
+        });
+        
+    } catch (error) {
+        console.error("Google Sheet에서 기록을 불러오지 못했습니다:", error);
+        const progressContainer = document.getElementById("progress-container");
+        progressContainer.textContent = "Google Sheet에서 기록을 불러오는 데 실패했습니다.";
         return;
     }
-    document.getElementById("progress-container").style.opacity = "1";
 
-    const years = [...new Set(recordsToLoad.map((r) => r.date.substring(0, 4)))];
-    const compressedDataMap = new Map();
-    const compressedJsonPromises = years.map((year) =>
-        fetch(`../records/${year}.json`)
-            .then((res) => (res.ok ? res.json() : null))
-            .then((data) => {
-                if (!data) return;
-                const features = Array.isArray(data) ? data : data.features;
-                if (!features) return;
-                const yearDataMap = new Map();
-                features.forEach((feat) => {
-                    if (feat?.properties?.path) yearDataMap.set(feat.properties.path.trim(), feat);
-                });
-                compressedDataMap.set(year, yearDataMap);
-            })
-            .catch((err) => console.error(`Failed to parse '${year}.json'.`, err))
-    );
-    await Promise.allSettled(compressedJsonPromises);
-
+    const totalRecords = hermes_records.length;
+    let processedCount = 0;
     const gpxRecordsToFetch = [];
-    const compressedFeatures = [];
-    recordsToLoad.forEach((record) => {
-        const shortPath = `${record.date}${record.over ? `_${record.over}` : ""}`.trim();
-        const feat = compressedDataMap.get(record.date.substring(0, 4))?.get(shortPath);
-        if (feat) {
-            const coordinates = decodeCoordinates(feat.geometry.encoded_coordinates);
-            if (coordinates.length > 0) compressedFeatures.push(createFeature(record, coordinates, shortPath));
-        } else if (!record.comment?.includes("gpx 파일 누락") && !record.comment?.includes("위치 기록 누락")) {
-            gpxRecordsToFetch.push(record);
-        }
-    });
+    
+    const featuresFromSheet = [];
 
-    if (compressedFeatures.length > 0) {
-        processNewFeatures(compressedFeatures);
-        updateMapSources();
-        processedCount += compressedFeatures.length;
-        updateProgress(processedCount, totalRecords);
+    for (const record of hermes_records) {
+        const suffix = record.over || record.type;
+        const shortPath = `${record.date}${suffix ? `_${suffix}` : ""}`.trim();
+        
+        if (record.geometry && record.geometry.length > 10) {
+            const coordinates = decodeCoordinates(record.geometry);
+            if (coordinates.length > 0) {
+                featuresFromSheet.push(createFeature(record, coordinates, shortPath));
+            }
+        } else if (!record.comment?.includes("gpx 파일 누락") && !record.comment?.includes("위치 기록 누락")) {
+            gpxRecordsToFetch.push({ record, shortPath });
+        }
     }
 
+    if (featuresFromSheet.length > 0) {
+        processNewFeatures(featuresFromSheet);
+        updateMapSources();
+        processedCount += featuresFromSheet.length;
+        updateProgress(processedCount, totalRecords);
+    }
+    
     if (gpxRecordsToFetch.length > 0) {
-        const gpxWorker = new Worker("gpx-worker.js");
+        const gpxWorker = new Worker("/잔디심기/earth/gpx-worker.js");
         const promises = new Map();
         gpxWorker.onmessage = ({ data }) => {
             if (promises.has(data.path)) promises.get(data.path).resolve(data.encodedCoordinates);
         };
         gpxWorker.onerror = (error) => promises.forEach(({ reject }) => reject(error));
 
-        for (const record of gpxRecordsToFetch) {
-            const shortPath = `${record.date}${record.over ? `_${record.over}` : ""}`.trim();
+        for (const { record, shortPath } of gpxRecordsToFetch) {
             const fullPath = `../records/${record.date.substring(0, 4)}/${shortPath}.gpx`;
             await new Promise((resolve) => {
                 new Promise((res, rej) => {
@@ -374,8 +365,6 @@ async function loadGpxData() {
                                 const newFeature = createFeature(record, coordinates, shortPath);
                                 processNewFeatures([newFeature]);
                                 updateMapSources();
-                                cachedHybridFeatures.push({ type: "Feature", properties: { path: shortPath, certified: record.certi != null }, geometry: { encoded_coordinates: encoded } });
-                                localStorage.setItem(LS_KEY, JSON.stringify(cachedHybridFeatures));
                             }
                         }
                     })
@@ -390,8 +379,10 @@ async function loadGpxData() {
         }
         gpxWorker.terminate();
     }
+    
     updateProgress(totalRecords, totalRecords);
 }
+
 
 // --- Map Event Handlers ---
 map.on("style.load", () => {
@@ -425,75 +416,84 @@ map.on("load", () => {
             if (isTerrariumOn) {
                 map.setTerrain({ source: (currentStyle === "light" ? "terrain-rgb-v2" : "terrain-rgb"), exaggeration: 1.5 });
                 map.setLayoutProperty("Hillshading", "visibility", "visible");
-                // map.setLayoutProperty("Contour label", "visibility", "visible");
-                // map.setLayoutProperty("Contour", "visibility", "visible");
-                // map.setLayoutProperty("Contour bold", "visibility", "visible");
             } else {
                 map.setTerrain(null);
                 map.setLayoutProperty("Hillshading", "visibility", "none");
-                // map.setLayoutProperty("Contour label", "visibility", "none");
-                // map.setLayoutProperty("Contour", "visibility", "none");
-                // map.setLayoutProperty("Contour bold", "visibility", "none");
             }
         }
     });
 
     const trackTooltip = document.getElementById("tooltip");
-    //     const trackTooltip = document.createElement("div");
-    // trackTooltip.id = "tooltip";
-    // map.getContainer().appendChild(trackTooltip);
-
     let hoveredFeatureId = null;
     const highlightLayers = ["gpx-highlight-border", "gpx-highlight-main", "gpx-highlight-points-border", "gpx-highlight-points"];
     const layersToQuery = ["gpx-line-base", "gpx-line-base-certi"];
     const normalColors = { start: "#00ff80", end: "#005c45" };
     const certiColors = { start: "#ffd700", end: "#f57f17" };
 
-    // --- 하이라이트 및 툴팁 관리를 위한 통합 함수 ---
-
-    // 하이라이트와 툴팁을 모두 제거하는 함수
     function clearHighlightAndTooltip() {
         if (hoveredFeatureId !== null) {
-            hoveredFeatureId = null; // 현재 하이라이트된 ID 상태를 초기화
+            hoveredFeatureId = null;
             highlightLayers.forEach((layerId) => {
                 if (map.getLayer(layerId)) {
-                    map.setFilter(layerId, ["==", "id", ""]); // 레이어 필터를 제거하여 하이라이트 숨김
+                    map.setFilter(layerId, ["==", "id", ""]);
                 }
             });
-            trackTooltip.classList.remove("on"); // 툴팁 숨김
+        }
+        trackTooltip.classList.remove("on");
+        map.getCanvas().style.cursor = "";
+    }
+
+    function showFeatureTooltip(feature, e) {
+        const newHoveredId = feature.properties.id;
+        if (hoveredFeatureId !== newHoveredId) {
+            hoveredFeatureId = newHoveredId;
+            const isCertified = feature.properties.certified;
+            const filter = ["==", ["get", "id"], hoveredFeatureId];
+            highlightLayers.forEach((layerId) => map.setFilter(layerId, filter));
+            const gradient = isCertified
+                ? ["interpolate", ["linear"], ["line-progress"], 0, certiColors.start, 1, certiColors.end]
+                : ["interpolate", ["linear"], ["line-progress"], 0, normalColors.start, 1, normalColors.end];
+            map.setPaintProperty("gpx-highlight-main", "line-gradient", gradient);
+        }
+
+        map.getCanvas().style.cursor = "pointer";
+        trackTooltip.classList.add("on");
+        trackTooltip.innerHTML = generateTooltipHtml(feature.properties);
+        if (window.matchMedia("only screen and (min-width: 1920px)").matches) {
+            trackTooltip.style.left = `${e.point.x + 15}px`;
+            trackTooltip.style.top = `${e.point.y - 40}px`;
         }
     }
 
-    // --- 이벤트 핸들러 ---
-
-    // 마우스 움직임에 따라 경로를 하이라이트하거나 해제
     map.on("mousemove", (e) => {
         const features = map.queryRenderedFeatures(e.point, { layers: layersToQuery });
 
         if (features.length > 0) {
-            // 마우스가 경로 위에 있을 경우
-            const newHoveredId = features[0].properties.id;
-            if (hoveredFeatureId !== newHoveredId) {
-                hoveredFeatureId = newHoveredId; // 새로운 경로 ID로 상태 업데이트
-                const isCertified = features[0].properties.certified;
-
-                const filter = ["==", ["get", "id"], hoveredFeatureId];
-                highlightLayers.forEach((layerId) => map.setFilter(layerId, filter));
-
-                const gradient = isCertified ? ["interpolate", ["linear"], ["line-progress"], 0, certiColors.start, 1, certiColors.end] : ["interpolate", ["linear"], ["line-progress"], 0, normalColors.start, 1, normalColors.end];
-                map.setPaintProperty("gpx-highlight-main", "line-gradient", gradient);
-            }
+            showFeatureTooltip(features[0], e);
         } else {
-            // 마우스가 경로 위에 없을 경우, 하이라이트 제거
-            // clearHighlightAndTooltip();
+            map.getCanvas().style.cursor = "";
         }
 
-        // 툴팁 위치와 내용을 실시간으로 업데이트
-        handleMapTooltip(e, features, trackTooltip);
+        if (trackTooltip.classList.contains("on")) {
+            if (window.matchMedia("only screen and (min-width: 1920px)").matches) {
+                trackTooltip.style.left = `${e.point.x + 15}px`;
+                trackTooltip.style.top = `${e.point.y - 40}px`;
+            }
+        }
     });
 
-    // 지도의 아무 곳이나 클릭하면 하이라이트와 툴팁을 제거
-    map.on("click", () => {
-        clearHighlightAndTooltip();
+    map.on("touchstart", (e) => {
+        const features = map.queryRenderedFeatures(e.point, { layers: layersToQuery });
+        if (features.length > 0) {
+            e.preventDefault();
+            showFeatureTooltip(features[0], e);
+        }
+    });
+
+    map.on("click", (e) => {
+        const features = map.queryRenderedFeatures(e.point, { layers: layersToQuery });
+        if (features.length === 0) {
+            clearHighlightAndTooltip();
+        }
     });
 });
