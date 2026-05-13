@@ -328,12 +328,6 @@ const LATITUDE_MIN = 33.5;
 const LONGITUDE_MAX = 131.3;
 const LONGITUDE_MIN = 124.35;
 
-// 이미지 경로 생성 함수
-function getImagePath(point) {
-    let path = isNotePage() ? "/" : "/note/블랙야크/";
-    return `.${path}img/${point.no}_${point.id}.jpg`;
-}
-
 // am i in note page?
 function isNotePage() {
     return document.querySelector("body#블랙야크") != null;
@@ -353,7 +347,7 @@ async function isImageExists(path) {
 async function updateTitle(p, point) {
     let title = `<div class="info">${point.id} | ${point.info.peak} | ${point.info.height.toLocaleString()} m</div>`;
     if (point.done.step) {
-        const imagePath = getImagePath(point);
+        const imagePath = `../img/${point.no}_${point.id}.jpg`;
         if (await isImageExists(imagePath)) {
             title = `<img class="블랙야크_img" src='${imagePath}'> ${title} <div class="done">${point.done.date} (${point.done.step}/100)</div>`;
         } else {

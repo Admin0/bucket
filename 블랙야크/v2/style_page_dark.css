@@ -1,0 +1,133 @@
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-track {
+    /* background-color: #212121; */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    /* background-color: var(--color-a100); */
+    /* -webkit-box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); */
+  }
+
+  body {
+    --background-color: #151515;
+
+    --color-primary: #e1dfdf;
+    --color-secondary: #999;
+    --color-primary-variant: #292929;
+    --color-secondary-variant: #6a6a6a;
+
+    background: var(--background-color);
+  }
+
+  header,
+  #블랙야크_p {
+    color: var(--color-primary);
+  }
+
+  #블랙야크_p .prog {
+    color: var(--color-a400);
+  }
+
+  h1 span.sub {
+    color: #BDBDBD;
+  }
+
+  #블랙야크_canvas {
+    background: #000000;
+    background: linear-gradient(0deg, var(--background-color) 0%, rgba(16, 16, 16, 1) 100%);
+  }
+
+  #블랙야크_canvas:before {
+    filter: invert(.85);
+  }
+
+  #tooltip {
+    color: var(--color-primary);
+  }
+
+  #tooltip::before {
+    background: #000000;
+    background: linear-gradient(0deg, var(--background-color) 0%, rgba(16, 16, 16, 1) 100%);
+  }
+  #tooltip:not(:has(.done))::after {
+    filter: invert(.75);
+  }
+
+  #tooltip .done,
+  #tooltip .undone {
+    color: var(--color-secondary);
+  }
+#tooltip::after
+  #블랙야크_table {
+    color: var(--color-secondary);
+    background: var(--background-color);
+  }
+
+  #블랙야크_table thead,
+  #블랙야크_table tr.done {
+    color: var(--color-primary);
+  }
+
+  #블랙야크_table tr:hover,
+  #블랙야크_table tr.on {
+    background-color: var(--color-a400);
+    color: var(--color-50);
+  }
+  
+  footer {
+    color: #BDBDBD;
+    background: transparent;
+  }
+
+  footer a:not(.o) {
+    color: #E0E0E0;
+  }
+
+  footer img {
+    opacity: inherit;
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7150%) hue-rotate(2deg) brightness(119%) contrast(96%);
+  }
+
+}
+
+@media (prefers-color-scheme: dark) and (min-width: 1440px) {
+
+  body {
+    background: #000000;
+    background: linear-gradient(0deg, var(--background-color) 0%, rgba(16, 16, 16, 1) 100%);
+  }
+
+  #tooltip {
+    /* background: #212121; */
+  }
+
+  #tooltip {
+    background: var(--color-primary-variant);
+  }
+
+  #tooltip .done,
+  #tooltip .undone {
+    /* color: var(--color-secondary-variant); */
+  }
+
+  #블랙야크_canvas {
+    background: transparent;
+  }
+  
+  #블랙야크_table {
+    /* color: var(--color-secondary-variant);
+    background: #ffffffee; */
+    background: var(--color-primary-variant);
+  }
+
+  #블랙야크_table thead,
+  #블랙야크_table tr.done {
+    /* color: var(--color-primary-variant); */
+  }
+
+  #블랙야크_table tr:hover {
+    /* color: var(--color-a400);
+    background-color: var(--color-50); */
+  }
+
+}
