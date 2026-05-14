@@ -356,8 +356,20 @@ hermes.gpx = (() => {
         }
 
         const selectedTracks = state.droppedTracks.filter((track) => state.selectedTrackIds.includes(track.id));
+        
+        // Helper for CSV formatting to handle commas and quotes
+        const toCsvField = (value) => {
+            if (value === null || value === undefined || value === '') return '';
+            const str = String(value);
+            // If the string contains a comma, a quote, or a newline, enclose it in quotes.
+            if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
+                // Escape quotes by doubling them
+                return `"${str.replace(/"/g, '""')}"`;
+            }
+            return str;
+        };
+
         const columns = ['date', 'over', 'type', 'course', 'distance', 'elevation', 'record', 'title', 'comment', 'certi', 'geometry'];
-        const csvRows = [];
         let isGeometryTooLong = false;
 
         const tracksByDate = {};
@@ -371,9 +383,11 @@ hermes.gpx = (() => {
             tracksByDate[date].push(track);
         });
         orderedDates.sort();
-
+        
+        const csvRows = [];
         orderedDates.forEach(date => {
             const tracksOnDate = tracksByDate[date];
+            // Sort by file name to have a consistent order
             tracksOnDate.sort((a, b) => a.name.localeCompare(b.name));
 
             tracksOnDate.forEach((track, index) => {
@@ -382,7 +396,7 @@ hermes.gpx = (() => {
 
                 if (track.elevation >= 250) {
                     activityType = "trail";
-                } else if (paceInSecondsPerKm > 0 && paceInSecondsPerKm <= 480) { // 8 min/km
+                } else if (paceInSecondsPerKm > 0 && paceInSecondsPerKm <= 480) { // 8 min/km pace
                     activityType = "run";
                 }
 
@@ -406,50 +420,39 @@ hermes.gpx = (() => {
                 };
 
                 const rowValues = columns.map(col => record[col] ?? '');
-                csvRows.push(rowValues.join(','));
+                csvRows.push(rowValues.map(toCsvField).join(','));
             });
         });
 
         if (isGeometryTooLong) {
-            alert('경고: 하나 이상의 레코드에서 geometry 데이터가 5만자를 초과합니다.');
+            alert('경고: 하나 이상의 레코드에서 geometry 데이터가 5만자를 초과합니다. 구글 시트 셀 제한을 초과할 수 있습니다.');
         }
 
-        const csvOutput = csvRows.join('\n');
-        const outputContainer = document.getElementById("export-output");
+        const csvHeader = columns.join(',');
+        const csvOutput = csvHeader + '\n' + csvRows.join('\n');
 
-        const copyToClipboard = (text, targetElement) => {
-            navigator.clipboard.writeText(text).then(() => {
-                const existingFeedback = targetElement.querySelector(".copy-feedback");
-                if (existingFeedback) existingFeedback.remove();
-
-                const feedback = document.createElement("div");
-                feedback.className = "copy-feedback";
-                feedback.textContent = "복사 완료!";
-                targetElement.appendChild(feedback);
-                setTimeout(() => feedback.remove(), 1500);
-            }).catch(err => {
-                console.error("클립보드 복사 실패:", err);
-                alert("복사에 실패했습니다.");
-            });
-        };
-
-        const csvHtml = `
-            <div class="code-block-container">
-                <h3>CSV 형식 출력:</h3>
-                <textarea class="code-block" id="csv-code" readonly>${csvOutput}</textarea>
-            </div>`;
-
-        outputContainer.innerHTML = csvHtml;
-        outputContainer.style.display = "block";
-        
-        const container = outputContainer.querySelector('.code-block-container');
-        const copyButton = document.createElement('button');
-        copyButton.textContent = 'CSV 복사';
-        copyButton.addEventListener('click', () => copyToClipboard(csvOutput, container));
-        container.appendChild(copyButton);
-
-        outputContainer.querySelector("#csv-code").addEventListener("click", function() {
-            copyToClipboard(this.value, container);
+        // Directly copy to clipboard
+        navigator.clipboard.writeText(csvOutput).then(() => {
+            const exportButton = document.getElementById("export-button");
+            if (!exportButton) return;
+            const originalText = exportButton.textContent;
+            exportButton.textContent = "복사 완료!";
+            exportButton.disabled = true;
+            setTimeout(() => {
+                exportButton.textContent = originalText;
+                exportButton.disabled = false;
+            }, 2000);
+        }).catch(err => {
+            console.error("클립보드 복사 실패:", err);
+            // Fallback to showing a textarea for manual copy
+            const outputContainer = document.getElementById("export-output");
+            if (outputContainer) {
+                outputContainer.innerHTML = `<p>자동 복사에 실패했습니다. 아래 텍스트를 직접 복사해주세요.</p><textarea readonly style="width: 100%; height: 150px;">${csvOutput}</textarea>`;
+                outputContainer.style.display = "block";
+                outputContainer.querySelector("textarea").select();
+            } else {
+                alert("자동 복사에 실패했습니다. 개발자 콘솔을 확인해주세요.");
+            }
         });
     }
 

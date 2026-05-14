@@ -1,4 +1,4 @@
-body {
+html {
     /* --color--track: #af483f; */
     /* --color--track-dark: #8a3a32; */
     --color--body-background: #eee;
@@ -40,7 +40,7 @@ body {
 }
 
 @media (prefers-color-scheme: dark) {
-    body {
+    html {
         --color--body-background: #151515;
         --color--body-text: #e1dfdf;
 

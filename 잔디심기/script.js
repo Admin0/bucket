@@ -1,3 +1,25 @@
+
+// --- Splash Screen Logic ---
+// Create and inject the splash screen and its styles as soon as the script is loaded.
+const splash = document.createElement('div');
+splash.id = 'loading-splash';
+splash.innerHTML = '<img src="/잔디심기/imgs/icon_loading.svg" alt="Loading..." style="width: 3em; height: 3em;">';
+
+// Append the splash screen to the html element to ensure it's on top.
+document.documentElement.appendChild(splash);
+
+// This function handles the fade-out and removal of the splash screen.
+function hideSplashScreen() {
+    const splash = document.getElementById('loading-splash');
+    if (splash) {
+        splash.style.opacity = '0';
+        splash.addEventListener('transitionend', () => {
+            splash.remove();
+        });
+    }
+}
+// --- End Splash Screen Logic ---
+
 // 전역 'hermes' 객체 초기화
 const hermes = {};
 
@@ -196,7 +218,7 @@ hermes.track = function () {
 
                         const p = document.createElement("p");
                         p.className = `best-record ${bestRecord.isOfficial ? "official" : "unofficial"}`;
-                        p.innerHTML = `<strong>${value}</strong> (${paceMinutes}'${paceSeconds}''<span class="unit">${unit}</span>)`;
+                        p.innerHTML = `<strong>${value}</strong> (${paceMinutes}\'${paceSeconds}\'\'<span class="unit">${unit}</span>)`;
                         bestRecordContainer.appendChild(p);
                     }
                 }
@@ -209,13 +231,13 @@ hermes.track = function () {
                 if (bestOfficial) {
                     const p = document.createElement("p");
                     p.className = "best-record official";
-                    p.innerHTML = `<strong>${bestOfficial.record}</strong> (${Math.floor(bestOfficial.pace / 60)}'${Math.floor(bestOfficial.pace % 60)}''<span class="unit">/km</span>)`;
+                    p.innerHTML = `<strong>${bestOfficial.record}</strong> (${Math.floor(bestOfficial.pace / 60)}\'${Math.floor(bestOfficial.pace % 60)}\'\'<span class="unit">/km</span>)`;
                     bestRecordContainer.appendChild(p);
                 }
                 if (bestUnofficial && (!bestOfficial || bestUnofficial.time < bestOfficial.time)) {
                     const p = document.createElement("p");
                     p.className = "best-record unofficial";
-                    p.innerHTML = `<strong>${bestUnofficial.record}</strong> (${Math.floor(bestUnofficial.pace / 60)}'${Math.floor(bestUnofficial.pace % 60)}''<span class="unit">/km</span>)`;
+                    p.innerHTML = `<strong>${bestUnofficial.record}</strong> (${Math.floor(bestUnofficial.pace / 60)}\'${Math.floor(bestUnofficial.pace % 60)}\'\'<span class="unit">/km</span>)`;
                     bestRecordContainer.appendChild(p);
                 }
             }
@@ -611,7 +633,8 @@ hermes.initiate = async function () {
     hermes.stats();
 };
 
-// DOM 콘텐츠 로드 완료 시 애플리케이션 초기화
-document.addEventListener("DOMContentLoaded", (event) => {
-    hermes.initiate();
+// DOM 콘텐츠 로드 완료 시 애플리케이션 초기화 및 스플래시 화면 숨기기
+document.addEventListener("DOMContentLoaded", async (event) => {
+    await hermes.initiate();
+    hideSplashScreen();
 });
