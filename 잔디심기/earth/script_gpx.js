@@ -429,7 +429,7 @@ hermes.gpx = (() => {
         }
 
         const csvHeader = columns.join(',');
-        const csvOutput = csvHeader + '\n' + csvRows.join('\n');
+        const csvOutput = csvRows.join('\n'); //csvHeader + '\n' + csvRows.join('\n');
 
         // Directly copy to clipboard
         navigator.clipboard.writeText(csvOutput).then(() => {

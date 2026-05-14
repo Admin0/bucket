@@ -373,7 +373,7 @@ a {
 }
 
 #stats-container .stat-item [data-type*="official"] {
-    transition: .05s;
+    transition: 0.05s;
 }
 
 #stats-container .stat-item[data-type="overall"] .label,
@@ -381,13 +381,13 @@ a {
 #stats-container .stat-item[data-type="overall"] .unit {
     color: var(--color--gold-metalic);
 }
-#stats-container .stat-item[data-type*="run"] .icon  {
+#stats-container .stat-item[data-type*="run"] .icon {
     color: var(--color--workout-run);
 }
-#stats-container .stat-item[data-type*="trail"] .icon  {
+#stats-container .stat-item[data-type*="trail"] .icon {
     color: var(--color--workout-trail);
 }
-#stats-container .stat-item[data-type="walk"] .icon  {
+#stats-container .stat-item[data-type="walk"] .icon {
     color: var(--color--workout-walk);
 }
 #stats-container .stat-item [data-type*="official"] .label,
@@ -395,15 +395,15 @@ a {
 #stats-container .stat-item [data-type*="official"] .unit {
     color: var(--color--gold-normal);
     font-variation-settings: "FILL" 1;
-    opacity:1;
+    opacity: 1;
 }
 
 #stats-container .stat-item [data-type*="official"]:hover {
     background-color: var(--color--track-dark);
     /* box-shadow: 0 5px 12px var(--color--track-shadow); */
     /* transform: scale(1.1); */
-    padding: .5em 1em;
-    margin:-.5em -1em;
+    padding: 0.5em 1em;
+    margin: -0.5em -1em;
     border-radius: 2em;
 }
 
@@ -745,6 +745,11 @@ footer a:not(.o) {
     color: var(--color--track-text);
 }
 
+
+/* ----------------------------------------
+ * splash
+ * ---------------------------------------- */
+
 #loading-splash {
     position: fixed;
     top: 0;
@@ -757,6 +762,9 @@ footer a:not(.o) {
     align-items: center;
     z-index: 9999;
     transition: opacity 0.5s ease-out;
+}
+#loading-splash img {
+    width: 2.5em;
 }
 
 /* ========================================

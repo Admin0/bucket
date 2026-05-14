@@ -3,7 +3,7 @@
 // Create and inject the splash screen and its styles as soon as the script is loaded.
 const splash = document.createElement('div');
 splash.id = 'loading-splash';
-splash.innerHTML = '<img src="/잔디심기/imgs/icon_loading.svg" alt="Loading..." style="width: 3em; height: 3em;">';
+splash.innerHTML = '<img src="./imgs/icon_loading.svg" alt="Loading...">';
 
 // Append the splash screen to the html element to ensure it's on top.
 document.documentElement.appendChild(splash);
