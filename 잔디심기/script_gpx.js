@@ -184,7 +184,7 @@ hermes.tooltip = function(records) {
         const tooltip_type = rec.isOfficial ? "공식 기록" : rec.type === "trail" ? "하이킹 / 트레일러닝" : rec.type === "walk" ? "걷기" : "러닝";
         const icon_distance = rec.course === "trail" ? "altitude" : "conversion_path";
         const comment = rec.comment ? `<span class="comment">${rec.comment}</span>` : "";
-        const uniqueId = `${rec.date}-${rec.over || i}`;
+        const uniqueId = `${rec.date}-${rec.over || 0}`;
 
         tooltipContent += `
         <div class="tooltip-item ${rec.isOfficial ? "official" : ""}">

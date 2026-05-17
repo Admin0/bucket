@@ -16,13 +16,19 @@ hermes.stats = () => {
 
     const createStatObject = () => ({
         count: 0,
+        recentCount: 0,
+        streaks: {
+            current: 0,
+            longest: 0,
+            lastDate: null,
+        },
         longestTime: { value: 0, records: [] },
         longestDistance: { value: 0, records: [] },
         fastestPace: { value: Infinity, records: [] },
         highestElevation: { value: 0, records: [] },
         fastestElevationPace: { value: Infinity, records: [] },
         paces: [],
-        elevationPaces: []
+        elevationPaces: [],
     });
 
     const createPBObject = () => ({
@@ -228,8 +234,10 @@ hermes.stats = () => {
         stats.annual[year].count++;
 
         if (new Date(record.date) >= oneYearAgo) {
-            stats.overall.recentCount = (stats.overall.recentCount || 0) + 1;
-            stats[type].recentCount = (stats[type].recentCount || 0) + 1;
+            stats.overall.recentCount++;
+            if (stats[type]) {
+                stats[type].recentCount++;
+            }
         }
     });
     
