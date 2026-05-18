@@ -38,7 +38,7 @@ document.addEventListener("pointsLoaded", function (e) {
                 <td class="no">${item.no}</td>
                 <td class="name">${item.id}</td>
                 <td class="peak">${item.info.peak}</td>
-                <td class="height">${Math.floor(item.info.height).toLocaleString()}</td>
+                <td class="height" data-sort="${item.info.height}">${Math.floor(item.info.height).toLocaleString()}</td>
                 <td class="done">${item.done.date ? item.done.date : "(미완료)"}</td>
                 <td class="step">${item.done.step ? item.done.step : "(미완료)"}</td>
             `;

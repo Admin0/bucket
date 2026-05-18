@@ -156,7 +156,7 @@ function draw() {
 function calculateAndDisplayProgress() {
     if (!p) return;
     const prog = points.filter(el => el.done.step).length;
-    p.innerHTML = `달성률: <span class="prog">${prog}</span>/100`;
+    p.innerHTML = `완료: <span class="prog">${prog}</span>/100`;
 }
 
 // Helper function that might be missing
