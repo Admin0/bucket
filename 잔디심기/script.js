@@ -277,7 +277,28 @@ hermes.track = function () {
 
                     const recordsForWeek = weeklyRecords[weekNumber - 1];
                     if (recordsForWeek && recordsForWeek.length > 0) {
-                        const representativeRecord = recordsForWeek.find((r) => r.isOfficial) || recordsForWeek[0];
+
+                        // 해당 주간의 기록들(recordsForWeek) 중에서 색상 계산의 기준이 될 '최고의 기록'을 담기 위한 변수입니다.
+                        let bestRecordForColor;
+
+                        if (category.type === "trail") {
+                            const higherIsBetter = ["elevation", "distance"].includes(trailFilterValue);
+                            bestRecordForColor = recordsForWeek.reduce((best, current) => {
+                                const bestValue = best[trailFilterValue];
+                                const currentValue = current[trailFilterValue];
+                                if (higherIsBetter) {
+                                    return currentValue > bestValue ? current : best;
+                                } else {
+                                    return currentValue < bestValue ? current : best;
+                                }
+                            });
+                        } else { // 일반 러닝: pace가 가장 낮은 기록 선택
+                            bestRecordForColor = recordsForWeek.reduce((best, current) => {
+                                return current.pace < best.pace ? current : best;
+                            });
+                        }
+                        const representativeRecord = bestRecordForColor;
+
 
                         marker.dataset.recordIds = JSON.stringify(recordsForWeek.map((r) => r.id));
                         marker.classList.add("has-record");
@@ -295,7 +316,12 @@ hermes.track = function () {
                             let tooltip = document.getElementById("tooltip");
                             // tooltip.innerHTML = hermes.tooltip(recordsForWeek);
                             // tooltip.classList.add("on");
-                            recordsForWeek.sort((a, b) => new Date(a.date) - new Date(b.date));
+                            recordsForWeek.sort((a, b) => {
+                                const dateDiff = new Date(a.date) - new Date(b.date);
+                                if (dateDiff !== 0) return dateDiff;
+                                return (a.over || 0) - (b.over || 0);
+                            });
+                            console.log(recordsForWeek);
                             hermes.tooltip(recordsForWeek).show();
                             // tooltip.style.left = marker.getBoundingClientRect().left + marker.getBoundingClientRect().width / 2 + "px";
                             // tooltip.style.top = marker.getBoundingClientRect().top + window.scrollY + "px";
@@ -487,7 +513,13 @@ hermes.table = function () {
 
             if (valA < valB) return currentSort.direction === "asc" ? -1 : 1;
             if (valA > valB) return currentSort.direction === "asc" ? 1 : -1;
-            return b.dateObj - a.dateObj;
+            
+            // 날짜가 같을 경우 over를 기준으로 추가 정렬 (역순으로)
+            const overA = a.over || 0;
+            const overB = b.over || 0;
+            if (overA < overB) return 1;
+            if (overA > overB) return -1;
+            return 0;
         });
 
         tableBody.innerHTML = "";
