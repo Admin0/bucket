@@ -321,7 +321,7 @@ hermes.track = function () {
                                 if (dateDiff !== 0) return dateDiff;
                                 return (a.over || 0) - (b.over || 0);
                             });
-                            console.log(recordsForWeek);
+                            // console.log(recordsForWeek);
                             hermes.tooltip(recordsForWeek).show();
                             // tooltip.style.left = marker.getBoundingClientRect().left + marker.getBoundingClientRect().width / 2 + "px";
                             // tooltip.style.top = marker.getBoundingClientRect().top + window.scrollY + "px";

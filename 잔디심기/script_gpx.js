@@ -259,9 +259,10 @@ function initializeGenericTooltips() {
 if (!hermes.tooltipListenerAttached) {
     document.addEventListener("mousemove", (e) => {
         const tooltipEl = document.getElementById("tooltip");
+        
         if (tooltipEl && tooltipEl.classList.contains("on")) {
-            tooltipEl.style.left = e.pageX + "px";
-            tooltipEl.style.top = e.pageY + "px";
+            tooltipEl.style.left = `${e.pageX}px`;
+            tooltipEl.style.top = (tooltipEl.offsetHeight > e.pageY - scrollY) ? `calc(${tooltipEl.offsetHeight}px + ${scrollY}px + 3em)` : `${e.pageY}px`;
         }
     });
     hermes.tooltipListenerAttached = true;
