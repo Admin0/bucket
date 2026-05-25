@@ -420,7 +420,7 @@ hermes.gpx = (() => {
                 };
 
                 const rowValues = columns.map(col => record[col] ?? '');
-                csvRows.push(rowValues.map(toCsvField).join(','));
+                csvRows.push(rowValues.map(toCsvField).join('\t'));
             });
         });
 
@@ -428,7 +428,7 @@ hermes.gpx = (() => {
             alert('경고: 하나 이상의 레코드에서 geometry 데이터가 5만자를 초과합니다. 구글 시트 셀 제한을 초과할 수 있습니다.');
         }
 
-        const csvHeader = columns.join(',');
+        const csvHeader = columns.join('\t');
         const csvOutput = csvRows.join('\n'); //csvHeader + '\n' + csvRows.join('\n');
 
         // Directly copy to clipboard

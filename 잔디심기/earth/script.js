@@ -438,7 +438,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
             }
         });
 
-        const trackTooltip = document.getElementById("tooltip");
+        const tooltipEl = document.getElementById("tooltip");
         let hoveredFeatureId = null;
         const highlightLayers = ["gpx-highlight-border", "gpx-highlight-main", "gpx-highlight-points-border", "gpx-highlight-points"];
         const layersToQuery = ["gpx-line-base", "gpx-line-base-certi"];
@@ -454,7 +454,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
                     }
                 });
             }
-            trackTooltip.classList.remove("on");
+            tooltipEl.classList.remove("on");
             map.getCanvas().style.cursor = "";
         }
 
@@ -472,11 +472,11 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
             }
 
             map.getCanvas().style.cursor = "pointer";
-            trackTooltip.classList.add("on");
-            trackTooltip.innerHTML = generateTooltipHtml(feature.properties);
+            tooltipEl.classList.add("on");
+            tooltipEl.innerHTML = generateTooltipHtml(feature.properties);
             if (window.matchMedia("only screen and (min-width: 1920px)").matches) {
-                trackTooltip.style.left = `${e.point.x + 15}px`;
-                trackTooltip.style.top = `${e.point.y - 40}px`;
+                tooltipEl.style.left = `${e.point.x + 15}px`;
+                tooltipEl.style.top = `${e.point.y - 40}px`;
             }
         }
 
@@ -489,10 +489,32 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
                 map.getCanvas().style.cursor = "";
             }
 
-            if (trackTooltip.classList.contains("on")) {
+            if (tooltipEl.classList.contains("on")) {
                 if (window.matchMedia("only screen and (min-width: 1920px)").matches) {
-                    trackTooltip.style.left = `${e.point.x + 15}px`;
-                    trackTooltip.style.top = `${e.point.y - 40}px`;
+                    // 1. 가로(Left) 위치 계산: 왼쪽 및 오른쪽 한계 설정
+                    const halfWidth = tooltipEl.offsetWidth / 2;
+                    const maxRight = window.innerWidth - halfWidth;
+                    const margin = 16;
+
+                    if (halfWidth > e.point.x - margin) {
+                        // 1) 왼쪽 경계를 벗어날 때
+                        tooltipEl.style.left = `calc(${halfWidth}px + 1em)`;
+                    } else if (e.point.x > maxRight - margin) {
+                        // 2) 오른쪽 경계를 벗어날 때 (툴팁의 절반이 오른쪽에 걸칠 때)
+                        tooltipEl.style.left = `calc(${maxRight}px - 1em)`;
+                    } else {
+                        // 3) 정상 위치
+                        tooltipEl.style.left = `${e.point.x}px`;
+                    }
+
+                    // 2. 세로(Top) 위치 계산: 위쪽 한계 설정 (기존 코드 유지)
+                    if (tooltipEl.offsetHeight > e.point.y - 16 * 3) {
+                        tooltipEl.classList.add("fixedTop");
+                        tooltipEl.style.top = ``;
+                    } else {
+                        tooltipEl.classList.remove("fixedTop");
+                        tooltipEl.style.top = `${e.point.y}px`;
+                    }
                 }
             }
         });
@@ -511,5 +533,17 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
                 clearHighlightAndTooltip();
             }
         });
+
+        map.on("mousedown", (e) => {
+            tooltipEl.classList.remove("on");
+        });
+
+        map.on("mouseup", (e) => {
+            if (hoveredFeatureId !== null) {
+                tooltipEl.classList.add("on");
+            }
+        });
+
+
     });
 })();

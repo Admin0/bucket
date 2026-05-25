@@ -262,7 +262,14 @@ if (!hermes.tooltipListenerAttached) {
         
         if (tooltipEl && tooltipEl.classList.contains("on")) {
             tooltipEl.style.left = `${e.pageX}px`;
-            tooltipEl.style.top = (tooltipEl.offsetHeight > e.pageY - scrollY) ? `calc(${tooltipEl.offsetHeight}px + ${scrollY}px + 3em)` : `${e.pageY}px`;
+            if (tooltipEl.offsetHeight > e.pageY - scrollY - 16 * 3) {
+                tooltipEl.classList.add("fixedTop");
+                tooltipEl.style.top = ``;
+            } else {
+                tooltipEl.classList.remove("fixedTop");
+                tooltipEl.style.top = `${e.pageY}px`;
+            }
+            // tooltipEl.style.top = (tooltipEl.offsetHeight > e.pageY - scrollY - 16 * 3) ? `calc(${tooltipEl.offsetHeight}px + ${scrollY}px + 3em)` : `${e.pageY}px`;
         }
     });
     hermes.tooltipListenerAttached = true;

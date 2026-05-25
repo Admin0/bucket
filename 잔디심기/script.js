@@ -299,7 +299,6 @@ hermes.track = function () {
                         }
                         const representativeRecord = bestRecordForColor;
 
-
                         marker.dataset.recordIds = JSON.stringify(recordsForWeek.map((r) => r.id));
                         marker.classList.add("has-record");
                         if (recordsForWeek.some((r) => r.isOfficial)) {
@@ -314,17 +313,12 @@ hermes.track = function () {
                         // 마커에 대한 툴팁 및 하이라이트 이벤트 리스너
                         marker.addEventListener("mouseenter", (e) => {
                             let tooltip = document.getElementById("tooltip");
-                            // tooltip.innerHTML = hermes.tooltip(recordsForWeek);
-                            // tooltip.classList.add("on");
                             recordsForWeek.sort((a, b) => {
                                 const dateDiff = new Date(a.date) - new Date(b.date);
                                 if (dateDiff !== 0) return dateDiff;
                                 return (a.over || 0) - (b.over || 0);
                             });
-                            // console.log(recordsForWeek);
                             hermes.tooltip(recordsForWeek).show();
-                            // tooltip.style.left = marker.getBoundingClientRect().left + marker.getBoundingClientRect().width / 2 + "px";
-                            // tooltip.style.top = marker.getBoundingClientRect().top + window.scrollY + "px";
                             const recordIds = JSON.parse(marker.dataset.recordIds);
                             recordIds.forEach((id) => {
                                 document.querySelector(`#records-table tr[data-record-id="${id}"]`)?.classList.add("highlight");
@@ -393,20 +387,52 @@ hermes.track = function () {
             }
         }
 
-        // 트랙 스크롤 시 그림자 효과 업데이트
-        const tracks = document.querySelectorAll(".track");
-        tracks.forEach((track) => {
-            const updateShadows = () => {
+        // 트랙 스크롤 동기화 및 그림자 효과 업데이트
+        const tracks = document.querySelectorAll('.track');
+        let isSyncing = false; // 스크롤 동기화 중 무한 루프 방지용 플래그
+
+        tracks.forEach(track => {
+            // 각 트랙에 대해 초기 그림자 상태를 설정합니다.
+            const initialUpdate = () => {
                 const { scrollTop, scrollHeight, clientHeight } = track;
                 const isAtTop = scrollTop === 0;
                 const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
-
-                track.classList.toggle("shadow-top", !isAtTop);
-                track.classList.toggle("shadow-bottom", !isAtBottom);
+                track.classList.toggle('shadow-top', !isAtTop);
+                track.classList.toggle('shadow-bottom', !isAtBottom);
             };
+            initialUpdate();
 
-            track.addEventListener("scroll", updateShadows);
-            updateShadows();
+            track.addEventListener('scroll', e => {
+                // 동기화로 인한 스크롤 이벤트인 경우, 추가 동작을 방지합니다.
+                if (isSyncing) return;
+                
+                // 동기화 시작을 알립니다.
+                isSyncing = true;
+                
+                const scrolledTrack = e.target;
+                
+                // 스크롤 동기화: 현재 스크롤된 트랙의 위치를 다른 모든 트랙에 적용합니다.
+                tracks.forEach(otherTrack => {
+                    if (otherTrack !== scrolledTrack) {
+                        otherTrack.scrollTop = scrolledTrack.scrollTop;
+                    }
+                });
+                
+                // 그림자 업데이트: 모든 트랙의 그림자 상태를 다시 계산하고 적용합니다.
+                tracks.forEach(t => {
+                    const { scrollTop, scrollHeight, clientHeight } = t;
+                    const isAtTop = scrollTop === 0;
+                    const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
+                    t.classList.toggle('shadow-top', !isAtTop);
+                    t.classList.toggle('shadow-bottom', !isAtBottom);
+                });
+
+                // requestAnimationFrame을 사용하여 다음 프레임에 동기화 플래그를 리셋합니다.
+                // 이는 불필요한 재동기화를 방지하고 부드러운 스크롤을 보장합니다.
+                requestAnimationFrame(() => {
+                    isSyncing = false;
+                });
+            });
         });
     }
 
@@ -585,7 +611,8 @@ hermes.table = function () {
             // 마커에 대한 툴팁 및 하이라이트 이벤트 리스너
             row.addEventListener("mouseenter", (e) => {
                 let tooltip = document.getElementById("tooltip");
-                tooltip.innerHTML = `${record.comment !== undefined ? `<span class="tooltip-comment">${record.comment}</span>` : `<span class="tooltip-null">`} <svg class="svg-records">`;
+                const commentHtml = record.comment ? `<span class="tooltip-comment">${record.comment}</span>` : `<span class="tooltip-null"></span>`;
+                tooltip.innerHTML = `${commentHtml} <svg class="svg-records"></svg>`;
                 hermes.gpx2svg(record.geometry, `#tooltip svg`);
                 tooltip.classList.add("on", record.isOfficial ? "official" : "on");
             });

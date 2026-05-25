@@ -172,6 +172,14 @@
     transform: translate(-50%, -50%);
 }
 
+/* fixed edge */
+#tooltip.fixedTop {
+    position: fixed;
+    /* background-color: gold; */
+    top: 1em;
+    transform: translate(-50%, 0);
+}
+
 /* ========================================
  * tablet
  * ======================================== */

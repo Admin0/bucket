@@ -234,9 +234,9 @@ body {
 
 @media screen and (max-width: 1920px) {
     #tooltip {
-        top: 10px!important;
-        right: 50px;
-        left: inherit!important;
+        top: 1em !important;
+        right: 3.5em !important;
+        left: inherit !important;
         transform: none;
     }
 }
