@@ -83,7 +83,7 @@ hermes.gpx2svg = async (geometry, svgElementId) => {
             return;
         }
 
-        // --- SVG 렌더링 로직 ---
+        // --- SVG 렌더링 로직 (위도-경도 비율 보정 적용) ---
         let totalElevationGain = 0;
         for (let i = 1; i < pts.length; i++) {
             const eleDiff = pts[i].ele - pts[i - 1].ele;
@@ -98,9 +98,11 @@ hermes.gpx2svg = async (geometry, svgElementId) => {
         const minLon = Math.min(...lons) - tolerance,
             maxLon = Math.max(...lons) + tolerance;
 
-        const width = (maxLon - minLon) * 5000;
+        // 위도에 따른 경도 거리 보정 계수
+        const aspectRatio = Math.cos(minLat * Math.PI / 180);
+        const width = (maxLon - minLon) * 5000 * aspectRatio; // 너비에 보정 계수 적용
         const height = (maxLat - minLat) * 5000;
-        
+
         let pathSegments = "";
         const numPathElements = 64,
             totalSegments = pts.length - 1;
@@ -117,6 +119,7 @@ hermes.gpx2svg = async (geometry, svgElementId) => {
                 const endSegment = Math.min((i + 1) * segmentsPerPath, totalSegments);
                 const firstPoint = pts[startSegment];
 
+                // 경로 데이터 계산 시 x 좌표에 보정 계수 적용
                 let pathData = `M ${((firstPoint.lon - minLon) / (maxLon - minLon)) * width} ${height - ((firstPoint.lat - minLat) / (maxLat - minLat)) * height}`;
                 for (let j = startSegment; j < endSegment; j++) {
                     const nextPoint = pts[j + 1];
