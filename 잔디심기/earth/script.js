@@ -522,7 +522,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
         map.on("touchstart", (e) => {
             const features = map.queryRenderedFeatures(e.point, { layers: layersToQuery });
             if (features.length > 0) {
-                e.preventDefault();
+                // e.preventDefault();
                 showFeatureTooltip(features[0], e);
             }
         });

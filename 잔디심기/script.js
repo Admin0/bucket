@@ -326,7 +326,7 @@ hermes.track = function () {
                         });
 
                         marker.addEventListener("mouseleave", () => {
-                            tooltip.classList.remove("on");
+                            hermes.tooltip().hide();
                             const recordIds = JSON.parse(marker.dataset.recordIds);
                             recordIds.forEach((id) => {
                                 document.querySelector(`#records-table tr[data-record-id="${id}"]`)?.classList.remove("highlight");

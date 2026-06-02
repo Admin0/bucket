@@ -179,6 +179,7 @@ hermes.tooltip = function(records) {
     if (!Array.isArray(records)) records = [records];
 
     records.forEach((rec, i) => {
+        if (!rec) return;
         const paceValue = rec.course === "trail" ? rec.elevation_pace : rec.pace;
         const tooltipPace = `${Math.floor(paceValue / 60)}′${Math.floor(paceValue % 60)
             .toString()
@@ -231,11 +232,18 @@ hermes.tooltip = function(records) {
     };
 };
 
-// 일반 'title' 속성을 위한 툴팁 기능 초기화
-function initializeGenericTooltips() {
+/**
+ * 툴팁 관련 기능을 초기화합니다:
+ * 1. 일반 'title' 속성을 툴팁으로 표시합니다.
+ * 2. 모든 툴팁이 마우스를 따라다니도록 합니다.
+ */
+hermes.initializeTooltips = function() {
+    if (hermes.tooltipsInitialized) return; // 중복 초기화 방지
+
     const tooltip = document.getElementById("tooltip");
     if (!tooltip) return;
 
+    // 1. 일반 'title' 속성 툴팁 처리
     document.body.addEventListener("mouseover", (e) => {
         const target = e.target.closest("[title]");
         if (target && target.title && !target.closest(".day-cell, .marker, [data-record-id]")) {
@@ -256,26 +264,24 @@ function initializeGenericTooltips() {
             }
         }
     });
-}
 
-// 모든 툴팁이 마우스를 따라다니도록 공통 리스너 추가
-if (!hermes.tooltipListenerAttached) {
+    // 2. 툴팁 마우스 추적 기능
     document.addEventListener("mousemove", (e) => {
         const tooltipEl = document.getElementById("tooltip");
-        
         if (tooltipEl && tooltipEl.classList.contains("on")) {
             tooltipEl.style.left = `${e.pageX}px`;
             if (tooltipEl.offsetHeight > e.pageY - scrollY - 16 * 3) {
                 tooltipEl.classList.add("fixedTop");
-                tooltipEl.style.top = ``;
+                tooltipEl.style.top = "";
             } else {
                 tooltipEl.classList.remove("fixedTop");
                 tooltipEl.style.top = `${e.pageY}px`;
             }
-            // tooltipEl.style.top = (tooltipEl.offsetHeight > e.pageY - scrollY - 16 * 3) ? `calc(${tooltipEl.offsetHeight}px + ${scrollY}px + 3em)` : `${e.pageY}px`;
         }
     });
-    hermes.tooltipListenerAttached = true;
-}
 
-document.addEventListener("DOMContentLoaded", initializeGenericTooltips);
+    hermes.tooltipsInitialized = true;
+};
+
+// DOM이 로드되면 툴팁 기능 초기화
+document.addEventListener("DOMContentLoaded", hermes.initializeTooltips);
