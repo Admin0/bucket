@@ -42,7 +42,7 @@ async function play(no, done = true) {
 
     let title = `<div class="info">${points[index].id} | ${points[index].info.peak} | ${points[index].info.height.toLocaleString()} m</div>`;
     if (points[index].done.step) {
-        const imagePath = getImagePath(points[index]);
+        const imagePath = `../img/${points[index].no}_${points[index].id}.jpg`;
         if (await isImageExists(imagePath)) {
             title = `<img class="블랙야크_img" src='${imagePath}'> ${title} <div class="done">${points[index].done.date} (${no}/100)</div>`;
         } else {

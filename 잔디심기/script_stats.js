@@ -135,12 +135,12 @@ hermes.stats = () => {
         updateMax(category.longestDistance, record.distance, record);
         updateMin(category.fastestPace, pace, record);
         updateMax(category.highestElevation, record.elevation, record);
-        updateMin(category.fastestElevationPace, elevationPace, record);
+        if (isFinite(elevationPace)) {
+            updateMin(category.fastestElevationPace, elevationPace, record);
+            category.elevationPaces.push(elevationPace);
+        }
         if (isFinite(pace)) {
             category.paces.push(pace);
-        }
-        if (isFinite(elevationPace)) {
-            category.elevationPaces.push(elevationPace);
         }
     };
 
@@ -354,7 +354,7 @@ hermes.stats = () => {
                 } else if (statType.key === "fastestElevationPace") {
                     subItems.push(`<div style="${subStatStyle}"><span class="label">평균 <span class="hide_f">상승 페이스</span></span><span>${formatPace(stats.overall.averageElevationPace)} <span class="unit">/60 m↑</span></span></div>`);
                     subItems.push(`<div style="${subStatStyle}"><span class="label">러닝 <span class="hide_f">상승 페이스</span></span><span>${formatPace(stats.overall.averageRunningElevationPace)} <span class="unit">/60 m↑</span></span></div>`);
-                    subItems.push(`<div style="${subStatStyle}"><span class="label">트레일 <span class="hide_f">상승 페이스</span></span><span>${formatPace(stats.overall.averageTrailPace)} <span class="unit">/60 m↑</span></span></div>`);
+                    subItems.push(`<div style="${subStatStyle}"><span class="label">트레일 <span class="hide_f">상승 페이스</span></span><span>${formatPace(stats.overall.averageTrailElevationPace)} <span class="unit">/60 m↑</span></span></div>`);
                 }
                 if (subItems.length > 0) subStatHTML = `<div class="sub-stats">${subItems.join("")}</div>`;
             } else if (primaryCategory === "run" || primaryCategory === "trail" || primaryCategory === "walk") {
