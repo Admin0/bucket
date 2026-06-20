@@ -13,14 +13,13 @@
     width: var(--width--tooltip);
     max-width: calc(100% - var(--width--tooltip-padding) * 2);
     position: absolute;
+    z-index: 1000;
     opacity: 0;
-    /* background: rgba(0, 0, 0, 0.8); */
+    pointer-events: none;
     background: var(--color--track-dark);
     box-shadow: 0 5px 11px var(--color--track-shadow);
     padding: var(--width--tooltip-padding);
     border-radius: var(--width--tooltip-padding);
-    pointer-events: none;
-    z-index: 1000;
     color: var(--color--body-text);
     transform: translate(-50%, calc(-100% - 2em));
     transition: opacity 0.25s;
@@ -53,7 +52,9 @@
     font-size: 1.25em;
     font-weight: bold;
     overflow: hidden;
-    text-overflow: ellipsis;
+    display: flex;
+    align-items: flex-end;
+    /* text-overflow: ellipsis; */
     white-space: nowrap;
 }
 
@@ -62,6 +63,9 @@
     opacity: 0.7;
     font-style: italic;
     font-weight: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding: 0 .125em .125em .5em;
 }
 
 #tooltip .title .official {
@@ -71,6 +75,7 @@
     font-size: 0.9em;
     padding: 0.25em;
     font-variation-settings: "FILL" 1;
+    margin-left: .25em;
 }
 
 #tooltip .date {

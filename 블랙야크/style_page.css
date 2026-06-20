@@ -1,4 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
+@font-face {
+    font-family: 'GangwonEducationSaeum';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduSaeeum_OTFMediumA.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
 
 ::selection {
     background-color: transparent;
@@ -301,8 +307,8 @@ footer a:not(.o) {
     #tooltip .info,
     #tooltip .done,
     #tooltip .undone {
-        font-family: "East Sea Dokdo", sans-serif;
-        font-size: 1.5em;
+        font-family: "GangwonEducationSaeum", sans-serif;
+        font-size: 1.75em;
     }
 
     .tape {

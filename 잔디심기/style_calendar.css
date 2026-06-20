@@ -53,6 +53,10 @@
     line-height: 2;
 }
 
+#calendar-container .filters .filter:last-of-type {
+    margin-right: 7em;
+}
+
 #calendar-grid {
     /* background-color: var(--color--track); */
 }
@@ -553,7 +557,8 @@ td.on {
     }
 
     .nav-month {
-        display: none;
+        margin-top: -0.85em;
+        /* display: none; */
     }
 }
 
