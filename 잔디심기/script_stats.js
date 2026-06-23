@@ -82,14 +82,15 @@ hermes.stats = () => {
             "30k": { distance: 0, time: 0, count: 0, paces: [] },
             "full": { distance: 0, time: 0, count: 0, paces: [] }
         },
-        annual: {}
+        annual: {},
+        tootip_list_count: Math.floor(Math.min(screen.width, screen.height) / 300) ,
     };
 
     const updateMax = (statObject, value, record) => {
         statObject.records.push({ value, record });
         statObject.records.sort((a, b) => b.value - a.value);
-        if (statObject.records.length > 3) {
-            statObject.records.length = 3;
+        if (statObject.records.length > stats.tootip_list_count) {
+            statObject.records.length = stats.tootip_list_count;
         }
         if (statObject.records.length > 0) {
             statObject.value = statObject.records[0].value;
@@ -102,8 +103,8 @@ hermes.stats = () => {
         if (!isFinite(value)) return;
         statObject.records.push({ value, record });
         statObject.records.sort((a, b) => a.value - b.value);
-        if (statObject.records.length > 3) {
-            statObject.records.length = 3;
+        if (statObject.records.length > stats.tootip_list_count) {
+            statObject.records.length = stats.tootip_list_count;
         }
         if (statObject.records.length > 0) {
             statObject.value = statObject.records[0].value;
@@ -116,8 +117,8 @@ hermes.stats = () => {
         if (!isFinite(value)) return;
         statObject.records.push({ value, record, pace });
         statObject.records.sort((a, b) => a.value - b.value);
-        if (statObject.records.length > 3) {
-            statObject.records.length = 3;
+        if (statObject.records.length > stats.tootip_list_count) {
+            statObject.records.length = stats.tootip_list_count;
         }
         if (statObject.records.length > 0) {
             statObject.value = statObject.records[0].value;
@@ -607,25 +608,13 @@ hermes.stats = () => {
         });
         item.addEventListener("mouseout", (e) => {
             e.stopPropagation();
+            const tooltipEl = document.getElementById("tooltip");
+            if (tooltipEl) tooltipEl.classList.remove("on");
             tooltipHideTimeout = setTimeout(() => {
-                const tooltipEl = document.getElementById("tooltip");
-                if (tooltipEl) tooltipEl.classList.remove("on", "stats");
+                if (tooltipEl) tooltipEl.classList.remove("stats");
                 lastRecordsKey = null;
-            }, 50);
+            }, 250);
         });
     });
-
-    const tooltip = document.getElementById("tooltip");
-    if (tooltip) {
-        tooltip.addEventListener("mouseover", () => {
-            clearTimeout(tooltipHideTimeout);
-        });
-        tooltip.addEventListener("mouseout", () => {
-            tooltipHideTimeout = setTimeout(() => {
-                const tooltipEl = document.getElementById("tooltip");
-                if (tooltipEl) tooltipEl.classList.remove("on");
-                lastRecordsKey = null;
-            }, 50);
-        });
-    }
+    return stats;
 };
