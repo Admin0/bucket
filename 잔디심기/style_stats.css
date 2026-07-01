@@ -1,0 +1,220 @@
+/* ----------------------------------------
+ * statstics
+ * ---------------------------------------- */
+
+/* stats header */
+
+#stats-header {
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+    padding: 1em;
+    margin: 5em 0 6em 0;
+}
+
+#stats-header:hover .stat-item:nth-of-type(1),
+#stats-header:hover .stat-item:nth-of-type(2) {
+    color: var(--color--red);
+}
+
+#stats-header:hover .stat-item:nth-of-type(3),
+#stats-header:hover .stat-item:nth-of-type(4) {
+    color: var(--color--teal);
+}
+
+#stats-header:hover .stat-item:nth-of-type(5) {
+    color: var(--color--indigo);
+}
+
+.stat-item .label {
+    font-size: 0.8em;
+    color: var(--color--track-text);
+    opacity: 0.7;
+}
+
+#stats-header .stat-item .value .icon {
+    opacity: 0.5;
+}
+
+/* stats container */
+
+#stats-container {
+    max-width: var(--width--track);
+    /* width: calc(100% - 4em); */
+    margin: 10em auto;
+}
+#stats-container .stats-section {
+    margin-bottom: var(--width--normal-margin);
+}
+#stats-container .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, auto));
+    row-gap: var(--width--normal-margin);
+    column-gap: var(--width--normal-margin);
+    /* background: var(--color--track); */
+    border-radius: 1em;
+}
+
+#stats-container .stat-item .value {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.5em;
+}
+
+#stats-container .stat-item .value .icon {
+    line-height: inherit;
+}
+
+#stats-container .stat-item {
+    padding: var(--width--normal-margin);
+    border-radius: 1em;
+    background: var(--color--track);
+    transition: 0.05s;
+}
+
+#stats-container .stat-item:hover {
+    background-color: var(--color--track-hover);
+    box-shadow: 0 5px 12px var(--color--track-shadow);
+    transform: scale(1.05);
+}
+
+#stats-container .stat-item .icon {
+    /* display:block; */
+    font-size: 1.125em;
+    /* text-align: center; */
+}
+
+#stats-container .stat-item [data-type*="official"] {
+    transition: 0.05s;
+}
+
+#stats-container .stat-item[data-type="overall"] .label,
+#stats-container .stat-item[data-type="overall"] .icon,
+#stats-container .stat-item[data-type="overall"] .unit {
+    color: var(--color--gold-metalic);
+}
+#stats-container .stat-item[data-type*="run"] .icon {
+    color: var(--color--workout-run);
+}
+#stats-container .stat-item[data-type*="trail"] .icon {
+    color: var(--color--workout-trail);
+}
+#stats-container .stat-item[data-type="walk"] .icon {
+    color: var(--color--workout-walk);
+}
+#stats-container .stat-item [data-type*="official"] .label,
+#stats-container .stat-item [data-type*="official"] .icon,
+#stats-container .stat-item [data-type*="official"] .unit {
+    color: var(--color--gold-normal);
+    font-variation-settings: "FILL" 1;
+    opacity: 1;
+}
+
+#stats-container .stat-item [data-type*="official"]:hover {
+    background-color: var(--color--track-dark);
+    /* box-shadow: 0 5px 12px var(--color--track-shadow); */
+    /* transform: scale(1.1); */
+    padding: 0.5em 1em;
+    margin: -0.5em -1em;
+    border-radius: 2em;
+}
+
+#stats-container .stat-item .sub-stats {
+    margin-top: 0.5em;
+}
+
+/* ----------------------------------------
+ * annual statstics
+ * ---------------------------------------- */
+
+.annual-stats h3 {
+    margin-bottom: 1.5em;
+}
+
+#stats-container .annual-stats .stat-grid {
+    grid-template-columns: repeat(auto-fit, minmax(400px, auto));
+}
+.annual-summary {
+    display: flex;
+    justify-content: space-between;
+}
+.annual-summary h4 {
+    margin-right: 1em;
+    color: var(--color--track-text);
+}
+.annual-data span {
+    margin-left: .25em;
+}
+.monthly-chart {
+    display: flex;
+    justify-content: space-between;
+    height: 120px;
+    padding-bottom: 1.5em;
+    align-items: flex-end;
+}
+.chart-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    position: relative;
+    height: 100%;
+    justify-content: flex-end;
+}
+.chart-bar {
+    width: 60%;
+    /* background-color: #e9ecef; */
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+    overflow: visible;
+}
+.bar-segment {
+    width: 100%;
+    transition: 0.23s;
+}
+.bar-segment:first-child {
+    border-radius: 4px 4px 0 0;
+}
+.bar-segment.run {
+    background-color: var(--color--workout-run);
+}
+.bar-segment.trail {
+    background-color: var(--color--workout-trail);
+}
+.bar-segment.walk {
+    background-color: var(--color--workout-walk);
+}
+
+.bar-segment:hover {
+    box-shadow: 0 5px 11px var(--color--track-shadow);
+    z-index: 10;
+    border-radius: 4px;
+}
+.month-label {
+    font-size: 0.75em;
+    opacity: 0.75;
+    top: calc(100% + .5em);
+    position: absolute;
+}
+.bar-label {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 1em);
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: var(--color--track-text);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    white-space: nowrap;
+    z-index: 10;
+}
+.chart-bar-wrapper:hover .bar-label {
+    display: block;
+}

@@ -83,7 +83,7 @@ hermes.stats = () => {
             "full": { distance: 0, time: 0, count: 0, paces: [] }
         },
         annual: {},
-        tootip_list_count: Math.floor(Math.min(screen.width, screen.height) / 300) ,
+        tootip_list_count: Math.ceil(Math.min(screen.width, screen.height) / 360) ,
     };
 
     const updateMax = (statObject, value, record) => {
@@ -197,7 +197,7 @@ hermes.stats = () => {
                 for (const key in pbDistances) {
                     const targetDistance = pbDistances[key];
                     if (distance >= targetDistance) {
-                        // Estimate time for the target distance based on the run's average pace.
+                        // Estimate time for the target distance based on the run\'s average pace.
                         const estimatedTime = (time / distance) * targetDistance;
                         // The pace is the same for the estimation and the whole run.
                         updateMinPB(pbCategory[key], estimatedTime, pace, record);
@@ -227,12 +227,30 @@ hermes.stats = () => {
             if (record.distance >= 42.195) updateDistStats("full", record);
         }
 
-        const year = new Date(record.date).getFullYear();
+        const recordDate = new Date(record.date);
+        const year = recordDate.getFullYear();
+        const month = recordDate.getMonth(); // 0-11
+
         if (!stats.annual[year]) {
-            stats.annual[year] = { distance: 0, count: 0 };
+            stats.annual[year] = {
+                distance: 0,
+                count: 0,
+                elevation: 0,
+                monthly: Array(12).fill(null).map(() => ({
+                    distance: 0,
+                    run: 0,
+                    trail: 0,
+                    walk: 0
+                }))
+            };
         }
-        stats.annual[year].distance += record.distance;
+        stats.annual[year].distance += distance;
         stats.annual[year].count++;
+        stats.annual[year].elevation += elevation;
+
+        const monthData = stats.annual[year].monthly[month];
+        monthData.distance += distance;
+        monthData[type] = (monthData[type] || 0) + distance;
 
         if (new Date(record.date) >= oneYearAgo) {
             stats.overall.recentCount++;
@@ -522,7 +540,7 @@ hermes.stats = () => {
                 const formatPB = (stat) => `${formatDuration(stat.value)} <span class="unit">(${formatPace(stat.pace)})</span>`;
                 
                 const valueHTML = 
-                    `<span class="material-symbols-outlined icon" ${pbType.key == "full" ? `style="font-variation-settings: 'FILL' 1"` : ""}>${pbType.icon}</span> 
+                    `<span class="material-symbols-outlined icon" ${pbType.key == "full" ? `style="font-variation-settings: \'FILL\' 1"` : ""}>${pbType.icon}</span> 
                     <span>${formatPB(overallStat)}</span>`;
 
                 const subStatStyle = "display: flex; justify-content: space-between; align-items: center;";
@@ -558,13 +576,63 @@ hermes.stats = () => {
     };
 
     const renderAnnualStats = (annualStats) => {
-        let annualHtml = "";
         const sortedYears = Object.keys(annualStats).sort((a, b) => b - a);
-        for (const year of sortedYears) {
-            annualHtml += `<div class="stat-item"><span class="label">${year}년</span><span class="value">${annualStats[year].distance.toFixed(1)} <span class="unit">km</span></span></div>`;
-        }
-        if (annualHtml === "") return "";
-        return `<div class="stats-section"><h3>연간 기록</h3><div class="stat-grid">${annualHtml}</div></div>`;
+        if (sortedYears.length === 0) return "";
+
+        const maxMonthlyDistance = Math.max(
+            1,
+            ...Object.values(annualStats).flatMap(yearData => yearData.monthly.map(m => m.distance))
+        );
+
+        const yearSections = sortedYears.map(year => {
+            const yearData = annualStats[year];
+            if (yearData.count === 0) return '';
+
+            const monthlyBars = yearData.monthly.map((monthData, i) => {
+                const totalMonthDistance = monthData.distance;
+                if (totalMonthDistance === 0) {
+                    return `<div class="chart-bar-wrapper"><div class="chart-bar" style="height: 0%;"></div><div class="month-label">${new Intl.DateTimeFormat("en-US", { month: "short" }).format(new Date(year, i, 1))}</div></div>`;
+                }
+                
+                const barHeight = (totalMonthDistance / maxMonthlyDistance) * 100;
+                
+                const runHeight = (monthData.run / totalMonthDistance) * 100;
+                const trailHeight = (monthData.trail / totalMonthDistance) * 100;
+                const walkHeight = (monthData.walk / totalMonthDistance) * 100;
+
+                const barSegments = [];
+                if (runHeight > 0) barSegments.push(`<div class="bar-segment run" title="<i class='material-symbols-outlined'>directions_run</i> ${monthData.run.toFixed(1)} km" style="height: ${runHeight}%;"></div>`);
+                if (trailHeight > 0) barSegments.push(`<div class="bar-segment trail" title="<i class='material-symbols-outlined'>terrain</i> ${monthData.trail.toFixed(1)} km" style="height: ${trailHeight}%;"></div>`);
+                if (walkHeight > 0) barSegments.push(`<div class="bar-segment walk" title="<i class='material-symbols-outlined'>directions_walk</i> ${monthData.walk.toFixed(1)} km" style="height: ${walkHeight}%;"></div>`);
+                
+                return `
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar" style="height: ${barHeight}%;" title="">
+                            ${barSegments.join('')}
+                            <span class="bar-label">${totalMonthDistance.toFixed(0)}km</span>
+                        </div>
+                        <div class="month-label">${new Intl.DateTimeFormat("en-US", { month: "short" }).format(new Date(year, i, 1))}</div>
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div class="stat-annual stat-item">
+                    <div class="annual-summary">
+                        <span class="label">${year}년</span>
+                        <div class="annual-data value">
+                            <span class="material-symbols-outlined icon">distance</span><span>${yearData.distance.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})} <span class="unit">km</span></span>
+                            <span class="material-symbols-outlined icon">altitude</span><span>${(yearData.elevation/1000).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1})} <span class="unit">km</span></span>
+                        </div>
+                    </div>
+                    <div class="monthly-chart">${monthlyBars}</div>
+                </div>
+            `;
+        }).join('');
+
+        if (yearSections.trim() === "") return "";
+
+        return `<div class="stats-section annual-stats"><h3>연간 기록</h3><div class="stat-grid">${yearSections}</div></div>`;
     };
 
     const statsGrid = document.getElementById("stats-grid") || document.createElement("div");

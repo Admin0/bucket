@@ -152,6 +152,11 @@
     white-space: nowrap;
 }
 
+#tooltip .tooltip-comment .material-symbols-outlined {
+    line-height: 0;
+    vertical-align: bottom;
+}
+
 #tooltip svg .svg-info {
     width: 20px;
     height: 20px;

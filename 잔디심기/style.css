@@ -3,6 +3,7 @@
 @import url("style_calendar.css");
 @import url("style_tooltip.css");
 @import url("style_color.css");
+@import url("style_stats.css");
 
 ::selection {
     background-color: rgba(0, 0, 0, 0);
@@ -284,131 +285,6 @@ a {
 
 .marker.has-record.official {
     cursor: pointer;
-}
-
-/* ----------------------------------------
- * statstics
- * ---------------------------------------- */
-
-/* stats header */
-
-#stats-header {
-    display: flex;
-    justify-content: center;
-    gap: 2em;
-    padding: 1em;
-    margin: 5em 0 6em 0;
-}
-
-#stats-header:hover .stat-item:nth-of-type(1),
-#stats-header:hover .stat-item:nth-of-type(2) {
-    color: var(--color--red);
-}
-
-#stats-header:hover .stat-item:nth-of-type(3),
-#stats-header:hover .stat-item:nth-of-type(4) {
-    color: var(--color--teal);
-}
-
-#stats-header:hover .stat-item:nth-of-type(5) {
-    color: var(--color--indigo);
-}
-
-.stat-item .label {
-    font-size: 0.8em;
-    color: var(--color--track-text);
-    opacity: 0.7;
-}
-
-#stats-header .stat-item .value .icon {
-    opacity: 0.5;
-}
-
-/* stats container */
-
-#stats-container {
-    max-width: var(--width--track);
-    /* width: calc(100% - 4em); */
-    margin: 10em auto;
-}
-#stats-container .stats-section {
-    margin-bottom: var(--width--normal-margin);
-}
-#stats-container .stat-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, auto));
-    row-gap: var(--width--normal-margin);
-    column-gap: var(--width--normal-margin);
-    /* background: var(--color--track); */
-    border-radius: 1em;
-}
-
-#stats-container .stat-item .value {
-    display: flex;
-    justify-content: space-between;
-    font-size: 1.5em;
-}
-
-#stats-container .stat-item .value .icon {
-    line-height: inherit;
-}
-
-#stats-container .stat-item {
-    padding: var(--width--normal-margin);
-    border-radius: 1em;
-    background: var(--color--track);
-    transition: 0.05s;
-}
-
-#stats-container .stat-item:hover {
-    background-color: var(--color--track-hover);
-    box-shadow: 0 5px 12px var(--color--track-shadow);
-    transform: scale(1.05);
-}
-
-#stats-container .stat-item .icon {
-    /* display:block; */
-    font-size: 1.125em;
-    /* text-align: center; */
-}
-
-#stats-container .stat-item [data-type*="official"] {
-    transition: 0.05s;
-}
-
-#stats-container .stat-item[data-type="overall"] .label,
-#stats-container .stat-item[data-type="overall"] .icon,
-#stats-container .stat-item[data-type="overall"] .unit {
-    color: var(--color--gold-metalic);
-}
-#stats-container .stat-item[data-type*="run"] .icon {
-    color: var(--color--workout-run);
-}
-#stats-container .stat-item[data-type*="trail"] .icon {
-    color: var(--color--workout-trail);
-}
-#stats-container .stat-item[data-type="walk"] .icon {
-    color: var(--color--workout-walk);
-}
-#stats-container .stat-item [data-type*="official"] .label,
-#stats-container .stat-item [data-type*="official"] .icon,
-#stats-container .stat-item [data-type*="official"] .unit {
-    color: var(--color--gold-normal);
-    font-variation-settings: "FILL" 1;
-    opacity: 1;
-}
-
-#stats-container .stat-item [data-type*="official"]:hover {
-    background-color: var(--color--track-dark);
-    /* box-shadow: 0 5px 12px var(--color--track-shadow); */
-    /* transform: scale(1.1); */
-    padding: 0.5em 1em;
-    margin: -0.5em -1em;
-    border-radius: 2em;
-}
-
-#stats-container .stat-item .sub-stats {
-    margin-top: 0.5em;
 }
 
 /* ----------------------------------------

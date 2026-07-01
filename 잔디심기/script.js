@@ -619,11 +619,17 @@ hermes.table = function () {
                 const commentHtml = record.comment ? `<span class="tooltip-comment">${record.comment}</span>` : `<span class="tooltip-null"></span>`;
                 tooltip.innerHTML = `${commentHtml} <svg class="svg-records"></svg>`;
                 hermes.gpx2svg(record.geometry, `#tooltip svg`);
+                tooltip.classList.remove("official");
                 tooltip.classList.add("on", record.isOfficial ? "official" : "on");
             });
 
             row.addEventListener("mouseleave", () => {
-                tooltip.classList.remove("on", "official");
+                tooltip.classList.remove("on");
+                if (tooltip.classList.contains("official")) {
+                    officialTooltipTimeout = setTimeout(() => {
+                        tooltip.classList.remove("official");
+                    }, 250);
+                }
             });
 
             tableBody.appendChild(row);

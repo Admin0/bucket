@@ -109,8 +109,8 @@ hermes.calendar = () => {
             const statsHtml = `
                 <div class="year-stats">
                     <div class="stat-item"><span class="value">${year}</span></div>
-                    <div class="stat-item"><span class="label">러닝 거리</span><span class="value">${yearRunningDistance.toFixed(1)} <span class="unit"> km</span></span></div>
-                    <div class="stat-item"><span class="label">거리</span><span class="value">${yearTotalDistance.toFixed(1)} <span class="unit"> km</span></span></div>
+                    <div class="stat-item"><span class="label">러닝 거리</span><span class="value">${yearRunningDistance.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1})} <span class="unit"> km</span></span></div>
+                    <div class="stat-item"><span class="label">거리</span><span class="value">${yearTotalDistance.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1})} <span class="unit"> km</span></span></div>
                     <div class="stat-item"><span class="label">트레일 상승고도</span><span class="value">${
                         yearTrailElevation > 1000 ? (yearTrailElevation / 1000).toFixed(1) + ` <span class="unit">km</span>` : yearTrailElevation.toFixed(0) + ` <span class="unit">m</span>`
                     } </span></div>
@@ -154,13 +154,13 @@ hermes.calendar = () => {
                         <td colspan="8">
                             <div class="month-stats">
                                 <div class="stat-item"><span class="value">${new Intl.DateTimeFormat("en-US", { month: "short" }).format(new Date(year, month, 1))}</span></div>
-                                <div class="stat-item"><span class="label">러닝 거리</span><span class="value">${monthRunningDistance.toFixed(1)} <span class="unit"> km</span></span></div>
-                                <div class="stat-item"><span class="label">거리</span><span class="value">${monthTotalDistance.toFixed(1)} <span class="unit"> km</span></span></div>
+                                <div class="stat-item"><span class="label">러닝 거리</span><span class="value">${monthRunningDistance.toFixed(1)} <span class="unit">km</span></span></div>
+                                <div class="stat-item"><span class="label">거리</span><span class="value">${monthTotalDistance.toFixed(1)} <span class="unit">km</span></span></div>
                                 <div class="stat-item"><span class="label">트레일 상승고도</span><span class="value">${
-                                    monthTrailElevation > 1000 ? (monthTrailElevation / 1000).toFixed(1) + ` <span class="unit"> km</span>` : monthTrailElevation.toFixed(0) + ` <span class="unit">m</span>`
+                                    monthTrailElevation > 1000 ? (monthTrailElevation / 1000).toFixed(1) + ` <span class="unit">km</span>` : monthTrailElevation.toFixed(0) + ` <span class="unit">m</span>`
                                 }</span></div>
                                 <div class="stat-item"><span class="label">상승고도</span><span class="value">${
-                                    monthElevation > 1000 ? (monthElevation / 1000).toFixed(1) + ` <span class="unit"> km</span>` : monthElevation.toFixed(0) + ` <span class="unit">m</span>`
+                                    monthElevation > 1000 ? (monthElevation / 1000).toFixed(1) + ` <span class="unit">km</span>` : monthElevation.toFixed(0) + ` <span class="unit">m</span>`
                                 }</span></div>
                                 <div class="stat-item"><span class="label">활동</span><span class="value">${monthRecords.length}</span></div>
                             </div>
@@ -213,8 +213,8 @@ hermes.calendar = () => {
                         const weeklyDistanceHTML = `${weeklyRunningDistance.toFixed(1)} <span class="unit">km</span>`;
                         const weeklyTotalDistanceHTML = `${weeklyDistance.toFixed(1)} <span class="unit">km</span>`;
 
-                        const weeklyElevationHTML = `${weeklyTrailElevation > 1000 ? (weeklyTrailElevation / 1000).toFixed(1) + `<span class="unit">km</span>` : weeklyTrailElevation.toFixed(0) + `<span class="unit">m</span>`}`;
-                        const weeklyTotalElevationHTML = `${weeklyElevation > 1000 ? (weeklyElevation / 1000).toFixed(1) + `<span class="unit">km</span>` : weeklyElevation.toFixed(0) + `<span class="unit">m</span>`}`;
+                        const weeklyElevationHTML = `${weeklyTrailElevation > 1000 ? (weeklyTrailElevation / 1000).toFixed(1) + ` <span class="unit">km</span>` : weeklyTrailElevation.toFixed(0) + ` <span class="unit">m</span>`}`;
+                        const weeklyTotalElevationHTML = `${weeklyElevation > 1000 ? (weeklyElevation / 1000).toFixed(1) + ` <span class="unit">km</span>` : weeklyElevation.toFixed(0) + ` <span class="unit">m</span>`}`;
 
                         let weekHtml = `<tr>`;
                         weekHtml += `<td class="week-summary y${weekYear.toString().slice(2)} w${weekNo}">

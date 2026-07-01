@@ -1,3 +1,4 @@
+// deprecated
 const hermes_records = [
     // 2026
     {
