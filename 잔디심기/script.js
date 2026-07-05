@@ -448,11 +448,11 @@ hermes.track = function () {
 hermes.table = function () {
     const tableBody = document.querySelector("#records-table tbody");
     const tableHeaders = document.querySelectorAll("#records-table th");
-    const typeRadios = document.querySelectorAll('input[name="type"]');
+    const typeRadios = document.querySelectorAll('#table-container input[name="type"]');
     const courseFilterContainer = document.getElementById("course-filter-container");
-    const courseRadios = document.querySelectorAll('input[name="course"]');
+    const courseRadios = document.querySelectorAll('#table-container input[name="course"]');
     const yearRadiosContainer = document.getElementById("year-filter-container");
-    const yearRadios = document.querySelectorAll('input[name="year"]');
+    const yearRadios = document.querySelectorAll('#table-container input[name="year"]');
     const resetButton = document.getElementById("reset-filters");
     const searchInput = document.getElementById("search-input"); // 검색 입력 필드
 

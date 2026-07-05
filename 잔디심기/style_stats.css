@@ -62,7 +62,7 @@
 }
 
 #stats-container .stat-item .value .icon {
-    line-height: inherit;
+    line-height: 1.5;
 }
 
 #stats-container .stat-item {
@@ -148,8 +148,7 @@
 .monthly-chart {
     display: flex;
     justify-content: space-between;
-    height: 120px;
-    padding-bottom: 1.5em;
+    height: 100%;
     align-items: flex-end;
 }
 .chart-bar-wrapper {
@@ -164,7 +163,8 @@
 }
 .chart-bar {
     width: 60%;
-    /* background-color: #e9ecef; */
+    background-color: #e9ecef;
+    border-radius: .25em .25em 0 0;
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -178,7 +178,7 @@
     transition: 0.23s;
 }
 .bar-segment:first-child {
-    border-radius: 4px 4px 0 0;
+    border-radius: .25em .25em 0 0;
 }
 .bar-segment.run {
     background-color: var(--color--workout-run);
@@ -193,7 +193,6 @@
 .bar-segment:hover {
     box-shadow: 0 5px 11px var(--color--track-shadow);
     z-index: 10;
-    border-radius: 4px;
 }
 .month-label {
     font-size: 0.75em;
@@ -202,13 +201,14 @@
     position: absolute;
 }
 .bar-label {
-    display: none;
+    /* display: none; */
     position: absolute;
-    bottom: calc(100% + 1em);
+    bottom: calc(100% + .5em);
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: var(--color--track-text);
+    /* opacity: .7; */
+    /* background-color: rgba(0, 0, 0, 0.8); */
+    color: var(--color--workout-walk);
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 0.8em;
@@ -217,4 +217,48 @@
 }
 .chart-bar-wrapper:hover .bar-label {
     display: block;
+}
+.chart-container {
+    display: flex;
+    position: relative;
+    height: 120px;
+    margin: 2em 0 1.5em;
+}
+.y-axis {
+    position: relative;
+    height: 100%;
+    width: 1.125em;
+}
+.y-axis-label {
+    position: absolute;
+    right: 5px;
+    transform: translateY(50%);
+    font-size: 0.75em;
+    color: #6c757d;
+}
+.y-axis-grid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+.y-axis-grid-line {
+    position: absolute;
+    width: calc(100% - 1.125em);
+    border-top: 1px solid var(--color--track-border);
+    right: 0;
+}
+.monthly-chart-wrapper {
+    width: calc(100% - 1.125em);
+}
+
+/* ========================================
+ * mobile
+ * ======================================== */
+
+ @media screen and (max-width: 425px) {
+    #stats-container .annual-stats .stat-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, auto));
+    }
 }

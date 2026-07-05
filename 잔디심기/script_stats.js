@@ -238,9 +238,10 @@ hermes.stats = () => {
                 elevation: 0,
                 monthly: Array(12).fill(null).map(() => ({
                     distance: 0,
-                    run: 0,
-                    trail: 0,
-                    walk: 0
+                    elevation: 0,
+                    run: { distance: 0, elevation: 0 },
+                    trail: { distance: 0, elevation: 0 },
+                    walk: { distance: 0, elevation: 0 }
                 }))
             };
         }
@@ -250,7 +251,12 @@ hermes.stats = () => {
 
         const monthData = stats.annual[year].monthly[month];
         monthData.distance += distance;
-        monthData[type] = (monthData[type] || 0) + distance;
+        monthData.elevation += elevation;
+        if (['run', 'trail', 'walk'].includes(type)) {
+            monthData[type].distance += distance;
+            monthData[type].elevation += elevation;
+        }
+
 
         if (new Date(record.date) >= oneYearAgo) {
             stats.overall.recentCount++;
@@ -323,7 +329,7 @@ hermes.stats = () => {
     const renderStatsSection = (title, ...categories) => {
         const statTypes = [
             { key: "longestTime", label: "최장 시간", format: formatDuration, icon: "timer" },
-            { key: "longestDistance", label: "최장 거리", format: (d) => (d ? `${d.toFixed(2)} <span class="unit">km</span>` : "-"), icon: "distance" },
+            { key: "longestDistance", label: "최장 거리", format: (d) => (d ? `${d.toFixed(2)} <span class="unit">km</span>` : "-"), icon: "route" },
             { key: "fastestPace", label: "최고 페이스", format: (p) => (isFinite(p) ? `${formatPace(p)} <span class="unit">/km</span>` : "-"), icon: "speed" },
             { key: "highestElevation", label: "최고 상승 고도", format: (e) => (e ? `${e.toLocaleString()} <span class="unit">m</span>` : "-"), icon: "altitude" },
             { key: "fastestElevationPace", label: "최고 상승 페이스", format: (p) => (isFinite(p) ? `${formatPace(p)} <span class="unit">/60 m↑</span>` : "-"), icon: "speed" }
@@ -575,114 +581,211 @@ hermes.stats = () => {
         return `<div class="stats-section"><div class="stat-grid">${gridContent}</div></div>`;
     };
 
-    const renderAnnualStats = (annualStats) => {
+    const renderAnnualStats = (annualStats, activityType = 'all', dataType = 'distance') => {
         const sortedYears = Object.keys(annualStats).sort((a, b) => b - a);
         if (sortedYears.length === 0) return "";
+    
+        const isElevation = dataType === 'elevation';
+        const dataDivisor = isElevation ? 1000 : 1;
+        const valueFixed = isElevation ? 2 : (activityType === 'all' ? 1 : 0);
+        const dataUnit = 'km';
 
-        const maxMonthlyDistance = Math.max(
-            1,
-            ...Object.values(annualStats).flatMap(yearData => yearData.monthly.map(m => m.distance))
+        const allMonthlyValues = Object.values(annualStats).flatMap(yearData =>
+            yearData.monthly.map(m => {
+                let value = 0;
+                if (activityType === 'all') {
+                    value = (m.run[dataType] || 0) + (m.walk[dataType] || 0) + (m.trail[dataType] || 0);
+                } else if (m[activityType]) {
+                    value = m[activityType][dataType];
+                }
+                return value / dataDivisor;
+            })
         );
-
+    
+        const maxMonthlyValue = Math.max(0.1, ...allMonthlyValues);
+    
+        const getNiceStep = (maxValue) => {
+            if (maxValue <= 0) return 0.1;
+            const exponent = Math.floor(Math.log10(maxValue));
+            const powerOf10 = 10 ** exponent;
+            const mostSignificantDigit = Math.ceil(maxValue / powerOf10);
+    
+            if (mostSignificantDigit <= 1) return powerOf10 / 5;
+            if (mostSignificantDigit <= 2) return powerOf10 / 2;
+            if (mostSignificantDigit <= 5) return powerOf10;
+            return powerOf10 * 2;
+        };
+    
+        const step = getNiceStep(maxMonthlyValue);
+        const numTicks = Math.ceil(maxMonthlyValue / step);
+    
         const yearSections = sortedYears.map(year => {
             const yearData = annualStats[year];
             if (yearData.count === 0) return '';
-
+            
+            const yAxisLabels = Array.from({ length: numTicks + 1 }, (_, i) => {
+                const value = i * step;
+                const bottom = (value / (numTicks * step)) * 100;
+                const label = value.toFixed(step < 1 ? 2 : (isElevation ? 1 : 0));
+                return `<div class="y-axis-label" style="bottom: ${bottom}%;">${label}</div>`;
+            }).join('');
+            const yAxisGridLines = Array.from({ length: numTicks + 1 }, (_, i) => {
+                const value = i * step;
+                const bottom = (value / (numTicks * step)) * 100;
+                return `<div class="y-axis-grid-line" style="bottom: ${bottom}%;"></div>`;
+            }).join('');
+    
             const monthlyBars = yearData.monthly.map((monthData, i) => {
-                const totalMonthDistance = monthData.distance;
-                if (totalMonthDistance === 0) {
+                let rawValue;
+                if (activityType === 'all') {
+                    rawValue = (monthData.run[dataType] || 0) + (monthData.walk[dataType] || 0) + (monthData.trail[dataType] || 0);
+                } else {
+                    rawValue = monthData[activityType] ? monthData[activityType][dataType] : 0;
+                }
+                const totalMonthValue = rawValue / dataDivisor;
+    
+                if (totalMonthValue === 0) {
                     return `<div class="chart-bar-wrapper"><div class="chart-bar" style="height: 0%;"></div><div class="month-label">${new Intl.DateTimeFormat("en-US", { month: "short" }).format(new Date(year, i, 1))}</div></div>`;
                 }
-                
-                const barHeight = (totalMonthDistance / maxMonthlyDistance) * 100;
-                
-                const runHeight = (monthData.run / totalMonthDistance) * 100;
-                const trailHeight = (monthData.trail / totalMonthDistance) * 100;
-                const walkHeight = (monthData.walk / totalMonthDistance) * 100;
-
+    
+                const barHeight = (totalMonthValue / (numTicks * step)) * 100;
                 const barSegments = [];
-                if (runHeight > 0) barSegments.push(`<div class="bar-segment run" title="<i class='material-symbols-outlined'>directions_run</i> ${monthData.run.toFixed(1)} km" style="height: ${runHeight}%;"></div>`);
-                if (trailHeight > 0) barSegments.push(`<div class="bar-segment trail" title="<i class='material-symbols-outlined'>terrain</i> ${monthData.trail.toFixed(1)} km" style="height: ${trailHeight}%;"></div>`);
-                if (walkHeight > 0) barSegments.push(`<div class="bar-segment walk" title="<i class='material-symbols-outlined'>directions_walk</i> ${monthData.walk.toFixed(1)} km" style="height: ${walkHeight}%;"></div>`);
-                
+    
+                if (activityType === 'all') {
+                    const totalForPercent = rawValue;
+                    if (totalForPercent > 0) {
+                        ['run', 'walk', 'trail'].forEach(type => {
+                            const typeRawValue = monthData[type][dataType];
+                            if (typeRawValue > 0) {
+                                const heightPercent = (typeRawValue / totalForPercent) * 100;
+                                const icon = {run: 'directions_run', walk: 'directions_walk', trail: 'hiking'}[type];
+                                const displayValue = (typeRawValue / dataDivisor).toFixed(valueFixed);
+                                barSegments.push(`<div class="bar-segment ${type}" title="<i class='material-symbols-outlined'>${icon}</i> ${displayValue} ${dataUnit}" style="height: ${heightPercent}%;"></div>`);
+                            }
+                        });
+                    }
+                } else {
+                     if(totalMonthValue > 0) {
+                        barSegments.push(`<div class="bar-segment ${activityType}" style="height: 100%;"></div>`);
+                     }
+                }
+    
                 return `
                     <div class="chart-bar-wrapper">
-                        <div class="chart-bar" style="height: ${barHeight}%;" title="">
+                        <div class="chart-bar" style="height: ${barHeight}%;">
                             ${barSegments.join('')}
-                            <span class="bar-label">${totalMonthDistance.toFixed(0)}km</span>
+                            <span class="bar-label">${totalMonthValue.toFixed(isElevation ? 2 : 0)}</span>
                         </div>
                         <div class="month-label">${new Intl.DateTimeFormat("en-US", { month: "short" }).format(new Date(year, i, 1))}</div>
                     </div>
                 `;
             }).join('');
-
+    
+            const yearTotals = yearData.monthly.reduce((acc, month) => {
+                 if (activityType === 'all') {
+                    acc.distance += (month.run.distance || 0) + (month.walk.distance || 0) + (month.trail.distance || 0);
+                    acc.elevation += (month.run.elevation || 0) + (month.walk.elevation || 0) + (month.trail.elevation || 0);
+                } else {
+                    acc.distance += month[activityType] ? month[activityType].distance : 0;
+                    acc.elevation += month[activityType] ? month[activityType].elevation : 0;
+                }
+                return acc;
+            }, { distance: 0, elevation: 0 });
+    
+            const annualDistanceFormatted = yearTotals.distance.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0});
+            const annualElevationFormatted = (yearTotals.elevation / 1000).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2});
+    
+            let annualDataDisplay = '';
+            if (dataType === 'distance') {
+                annualDataDisplay = `<span class="material-symbols-outlined icon">route</span><span>${annualDistanceFormatted} <span class="unit">km</span></span>`;
+            } else { // elevation
+                annualDataDisplay = `<span class="material-symbols-outlined icon">altitude</span><span>${annualElevationFormatted} <span class="unit">km</span></span>`;
+            }
+    
             return `
                 <div class="stat-annual stat-item">
                     <div class="annual-summary">
                         <span class="label">${year}년</span>
                         <div class="annual-data value">
-                            <span class="material-symbols-outlined icon">distance</span><span>${yearData.distance.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})} <span class="unit">km</span></span>
-                            <span class="material-symbols-outlined icon">altitude</span><span>${(yearData.elevation/1000).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1})} <span class="unit">km</span></span>
+                            ${annualDataDisplay}
                         </div>
                     </div>
-                    <div class="monthly-chart">${monthlyBars}</div>
+                    <div class="chart-container">
+                        <div class="y-axis">${yAxisLabels}</div>
+                        <div class="monthly-chart-wrapper">
+                           <div class="y-axis-grid">${yAxisGridLines}</div>
+                           <div class="monthly-chart">${monthlyBars}</div>
+                        </div>
+                    </div>
                 </div>
             `;
         }).join('');
-
+    
         if (yearSections.trim() === "") return "";
-
+    
         return `<div class="stats-section annual-stats"><h3>연간 기록</h3><div class="stat-grid">${yearSections}</div></div>`;
     };
 
-    const statsGrid = document.getElementById("stats-grid") || document.createElement("div");
-    if (!document.getElementById("stats-container")) {
-        statsGrid.id = "stats-container";
-        document.querySelector(".container").appendChild(statsGrid);
-    }
-
-    statsGrid.innerHTML = `
-        ${renderStatsSection("전체 통계", "overall")}
-        ${renderStatsSection("러닝", "run", "run_official")}
-        ${renderRunningPBs("run_pb_overall", "run_pb_official")}
-        ${renderStatsSection("트레일", "trail", "trail_official")}
-        ${renderStatsSection("걷기", "walk")}
-        ${renderAnnualStats(stats.annual)}
-    `;
-
-    let lastRecordsKey = null;
-    let tooltipHideTimeout;
-    statsGrid.querySelectorAll("[data-tooltip]").forEach((item) => {
-        item.addEventListener("mouseover", (e) => {
-            clearTimeout(tooltipHideTimeout);
-            e.stopPropagation();
-            const currentTarget = e.currentTarget;
-            const type = currentTarget.dataset.type;
-            const tooltipKey = currentTarget.dataset.tooltip;
-            const newRecordsKey = `${type}-${tooltipKey}`;
-
-            if (lastRecordsKey === newRecordsKey) {
+    const fullRender = () => {
+        const activityType = document.querySelector('input[name="stats-type"]:checked')?.value || 'all';
+        const dataType = document.querySelector('input[name="stats-view"]:checked')?.value || 'distance';
+    
+        const statsGrid = document.getElementById("stats-grid") || document.createElement("div");
+        if (!document.getElementById("stats-container")) {
+            statsGrid.id = "stats-container";
+            document.querySelector(".container").appendChild(statsGrid);
+        }
+    
+        statsGrid.innerHTML = `
+            ${renderAnnualStats(stats.annual, activityType, dataType)}
+            ${renderStatsSection("전체 통계", "overall")}
+            ${renderStatsSection("러닝", "run", "run_official")}
+            ${renderRunningPBs("run_pb_overall", "run_pb_official")}
+            ${renderStatsSection("트레일", "trail", "trail_official")}
+            ${renderStatsSection("걷기", "walk")}
+        `;
+    
+        let lastRecordsKey = null;
+        let tooltipHideTimeout;
+        statsGrid.querySelectorAll("[data-tooltip]").forEach((item) => {
+            item.addEventListener("mouseover", (e) => {
+                clearTimeout(tooltipHideTimeout);
+                e.stopPropagation();
+                const currentTarget = e.currentTarget;
+                const type = currentTarget.dataset.type;
+                const tooltipKey = currentTarget.dataset.tooltip;
+                const newRecordsKey = `${type}-${tooltipKey}`;
+    
+                if (lastRecordsKey === newRecordsKey) {
+                    const tooltipEl = document.getElementById("tooltip");
+                    if (tooltipEl) tooltipEl.classList.add("on");
+                    return;
+                }
+                lastRecordsKey = newRecordsKey;
+                
+                const recordHolder = stats[type]?.[tooltipKey];
+                if (recordHolder && recordHolder.records && recordHolder.records.length > 0) {
+                    const records = recordHolder.records.map(r => r.record);
+                    hermes.tooltip(records).show().addClass("stats");
+                }
+            });
+            item.addEventListener("mouseout", (e) => {
+                e.stopPropagation();
                 const tooltipEl = document.getElementById("tooltip");
-                if (tooltipEl) tooltipEl.classList.add("on");
-                return;
-            }
-            lastRecordsKey = newRecordsKey;
-            
-            const recordHolder = stats[type]?.[tooltipKey];
-            if (recordHolder && recordHolder.records && recordHolder.records.length > 0) {
-                const records = recordHolder.records.map(r => r.record);
-                hermes.tooltip(records).show().addClass("stats");
-            }
+                if (tooltipEl) tooltipEl.classList.remove("on");
+                tooltipHideTimeout = setTimeout(() => {
+                    if (tooltipEl) tooltipEl.classList.remove("stats");
+                    lastRecordsKey = null;
+                }, 250);
+            });
         });
-        item.addEventListener("mouseout", (e) => {
-            e.stopPropagation();
-            const tooltipEl = document.getElementById("tooltip");
-            if (tooltipEl) tooltipEl.classList.remove("on");
-            tooltipHideTimeout = setTimeout(() => {
-                if (tooltipEl) tooltipEl.classList.remove("stats");
-                lastRecordsKey = null;
-            }, 250);
-        });
+    }
+    
+    fullRender();
+    
+    document.querySelectorAll('input[name="stats-type"], input[name="stats-view"]').forEach(radio => {
+        radio.addEventListener('change', fullRender);
     });
+
     return stats;
 };

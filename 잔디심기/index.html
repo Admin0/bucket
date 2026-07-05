@@ -103,6 +103,23 @@
 
         <div id="stats-container">
             <h2>STASTATICS</h2>
+            <div class="filters">
+                <!-- <div class="filters" onclick="location.href='#calendar-container'"> -->
+                <fieldset>
+                    <legend>필터</legend>
+                    <span id="stats-type-filter-container" class="filter">
+                        <label title="전체"><input type="radio" name="stats-type" value="all" checked /><span class="material-symbols-outlined"> done_all </span></label>
+                        <label title="러닝"><input type="radio" name="stats-type" value="run" /><span class="material-symbols-outlined"> directions_run </span></label>
+                        <label title="걷기"><input type="radio" name="stats-type" value="walk" /><span class="material-symbols-outlined"> directions_walk </span></label>
+                        <label title="트레일"><input type="radio" name="stats-type" value="trail" /><span class="material-symbols-outlined"> hiking </span></label>
+                    </span>
+                    <span class="div"></span>
+                    <span id="stats-view-filter-container" class="filter">
+                        <label title="거리"><input type="radio" name="stats-view" value="distance" checked /><span class="material-symbols-outlined"> route </span></label>
+                        <label title="상승 고도"><input type="radio" name="stats-view" value="elevation" /><span class="material-symbols-outlined"> altitude </span></label>
+                    </span>
+                </fieldset>
+            </div>
             <div id="stats-grid">
                 <h2>STASTATICS</h2>
             </div>
@@ -153,7 +170,14 @@
             </table>
         </div>
 
-        <nav></nav>
+        <nav>
+            <ul>
+                <li><a href="#main-container">M</a></li>
+                <li><a href="#calendar-container">C</a></li>
+                <li><a href="#stats-container">S</a></li>
+                <li><a href="#table-container">T</a></li>
+            </ul>
+        </nav>
 
         <footer>
             <a href="//www.instagram.com/jinh.kr/" class="i o" title="러닝개굴의 본체 인스타그램 바로가기">

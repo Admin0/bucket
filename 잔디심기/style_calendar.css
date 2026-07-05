@@ -422,7 +422,7 @@ td.on {
  * 4K
  * ======================================== */
 
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: calc(1280px + 4em)) {
     /* Adjustments for larger screens if needed */
     .nav-month {
         top: 24.2em;

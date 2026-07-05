@@ -54,9 +54,9 @@ a {
     gap: 2em;
     padding: var(--width--track-padding);
     justify-content: center;
-    transform: rotate(-90deg) translateX(-100%) translateY(calc((100vw - 100%) / 2 - var(--width--track-padding)));
+    transform: rotate(-90deg) translateX(-100%) translateY(calc((100vw - 100%) / 2 ));
     transform-origin: 0 0;
-    height: calc(100vw - (var(--margin--body-lr) + var(--width--track-padding)) * 2);
+    height: calc(100vw - (var(--margin--body-lr) ) * 2);
     max-height: var(--width--track);
     width: fit-content;
 }
@@ -584,6 +584,41 @@ a {
 }
 
 /* ----------------------------------------
+* navigation
+* ---------------------------------------- */
+
+nav {
+    position: fixed;
+    /* right: calc((100% - var(--width--track)) / 2 - 9em); */
+    right: 1em;
+    bottom: 1em;
+    opacity: 0;
+}
+nav:hover {
+    opacity: 01;
+}
+nav ul {
+    padding: 0;
+    margin: 0;
+}
+nav li {
+    list-style: none;
+}
+nav li a {
+    width: 1em;
+    text-align: center;
+    margin: 1em;
+    display: block;
+    padding: 2em;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: var(--color--calendar-hover);
+    color: var(--color--body-text);
+    transition: transform 0.25s;
+}
+
+/* ----------------------------------------
  * footer
  * ---------------------------------------- */
 
@@ -620,7 +655,6 @@ footer a:not(.o) {
     font-weight: bold;
     color: var(--color--track-text);
 }
-
 
 /* ----------------------------------------
  * splash
@@ -804,6 +838,14 @@ footer a:not(.o) {
     }
 
     #records-table th .text {
+        display: none;
+    }
+
+    /* ----------------------------------------
+     * navigation
+     * ---------------------------------------- */
+
+    nav {
         display: none;
     }
 
