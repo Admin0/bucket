@@ -54,9 +54,9 @@ a {
     gap: 2em;
     padding: var(--width--track-padding);
     justify-content: center;
-    transform: rotate(-90deg) translateX(-100%) translateY(calc((100vw - 100%) / 2 ));
+    transform: rotate(-90deg) translateX(-100%) translateY(calc((100vw - 100%) / 2));
     transform-origin: 0 0;
-    height: calc(100vw - (var(--margin--body-lr) ) * 2);
+    height: calc(100vw - (var(--margin--body-lr)) * 2);
     max-height: var(--width--track);
     width: fit-content;
 }
@@ -370,6 +370,10 @@ a {
 .filters input#search-input:not(:placeholder-shown) {
     width: 10em;
     margin-left: 0.5em;
+}
+
+.filters input#search-input::placeholder {
+    color: var(--color--body-text);
 }
 
 .filters #reset-filters:hover,

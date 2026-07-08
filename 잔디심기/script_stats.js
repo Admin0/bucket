@@ -197,7 +197,7 @@ hermes.stats = () => {
                 for (const key in pbDistances) {
                     const targetDistance = pbDistances[key];
                     if (distance >= targetDistance) {
-                        // Estimate time for the target distance based on the run\'s average pace.
+                        // Estimate time for the target distance based on the run's average pace.
                         const estimatedTime = (time / distance) * targetDistance;
                         // The pace is the same for the estimation and the whole run.
                         updateMinPB(pbCategory[key], estimatedTime, pace, record);
@@ -236,25 +236,33 @@ hermes.stats = () => {
                 distance: 0,
                 count: 0,
                 elevation: 0,
+                time: 0,
                 monthly: Array(12).fill(null).map(() => ({
                     distance: 0,
                     elevation: 0,
-                    run: { distance: 0, elevation: 0 },
-                    trail: { distance: 0, elevation: 0 },
-                    walk: { distance: 0, elevation: 0 }
+                    time: 0,
+                    count: 0,
+                    run: { distance: 0, elevation: 0, time: 0, count: 0 },
+                    trail: { distance: 0, elevation: 0, time: 0, count: 0 },
+                    walk: { distance: 0, elevation: 0, time: 0, count: 0 }
                 }))
             };
         }
         stats.annual[year].distance += distance;
         stats.annual[year].count++;
         stats.annual[year].elevation += elevation;
+        stats.annual[year].time += time;
 
         const monthData = stats.annual[year].monthly[month];
         monthData.distance += distance;
         monthData.elevation += elevation;
+        monthData.time += time;
+        monthData.count++;
         if (['run', 'trail', 'walk'].includes(type)) {
             monthData[type].distance += distance;
             monthData[type].elevation += elevation;
+            monthData[type].time += time;
+            monthData[type].count++;
         }
 
 
@@ -546,7 +554,7 @@ hermes.stats = () => {
                 const formatPB = (stat) => `${formatDuration(stat.value)} <span class="unit">(${formatPace(stat.pace)})</span>`;
                 
                 const valueHTML = 
-                    `<span class="material-symbols-outlined icon" ${pbType.key == "full" ? `style="font-variation-settings: \'FILL\' 1"` : ""}>${pbType.icon}</span> 
+                    `<span class="material-symbols-outlined icon" ${pbType.key == "full" ? `style="font-variation-settings: 'FILL' 1"` : ""}>${pbType.icon}</span> 
                     <span>${formatPB(overallStat)}</span>`;
 
                 const subStatStyle = "display: flex; justify-content: space-between; align-items: center;";
@@ -585,20 +593,23 @@ hermes.stats = () => {
         const sortedYears = Object.keys(annualStats).sort((a, b) => b - a);
         if (sortedYears.length === 0) return "";
     
-        const isElevation = dataType === 'elevation';
-        const dataDivisor = isElevation ? 1000 : 1;
-        const valueFixed = isElevation ? 2 : (activityType === 'all' ? 1 : 0);
-        const dataUnit = 'km';
-
+        const dataTypeSettings = {
+            'distance': { divisor: 1, unit: 'km' },
+            'elevation': { divisor: 1000, unit: 'km' },
+            'time': { divisor: 3600, unit: 'hr' },
+            'count': { divisor: 1, unit: ''}
+        };
+        const setting = dataTypeSettings[dataType];
+    
         const allMonthlyValues = Object.values(annualStats).flatMap(yearData =>
             yearData.monthly.map(m => {
                 let value = 0;
                 if (activityType === 'all') {
                     value = (m.run[dataType] || 0) + (m.walk[dataType] || 0) + (m.trail[dataType] || 0);
                 } else if (m[activityType]) {
-                    value = m[activityType][dataType];
+                    value = m[activityType][dataType] || 0;
                 }
-                return value / dataDivisor;
+                return value / setting.divisor;
             })
         );
     
@@ -622,27 +633,33 @@ hermes.stats = () => {
         const yearSections = sortedYears.map(year => {
             const yearData = annualStats[year];
             if (yearData.count === 0) return '';
+    
+            const yAxisFormatter = (value) => {
+                if (dataType === 'distance') return value.toFixed(step < 1 ? 1 : 0);
+                if (dataType === 'elevation') return value.toFixed(step < 1 ? 2 : 1);
+                if (dataType === 'time') return value.toFixed(0);
+                if (dataType === 'count') return value.toFixed(0);
+                return value;
+            };
             
             const yAxisLabels = Array.from({ length: numTicks + 1 }, (_, i) => {
                 const value = i * step;
                 const bottom = (value / (numTicks * step)) * 100;
-                const label = value.toFixed(step < 1 ? 2 : (isElevation ? 1 : 0));
-                return `<div class="y-axis-label" style="bottom: ${bottom}%;">${label}</div>`;
+                return `<div class="y-axis-label" style="bottom: ${bottom}%;">${yAxisFormatter(value)}</div>`;
             }).join('');
             const yAxisGridLines = Array.from({ length: numTicks + 1 }, (_, i) => {
-                const value = i * step;
-                const bottom = (value / (numTicks * step)) * 100;
+                const bottom = (i / numTicks) * 100;
                 return `<div class="y-axis-grid-line" style="bottom: ${bottom}%;"></div>`;
             }).join('');
     
             const monthlyBars = yearData.monthly.map((monthData, i) => {
-                let rawValue;
+                let rawValue = 0;
                 if (activityType === 'all') {
                     rawValue = (monthData.run[dataType] || 0) + (monthData.walk[dataType] || 0) + (monthData.trail[dataType] || 0);
                 } else {
-                    rawValue = monthData[activityType] ? monthData[activityType][dataType] : 0;
+                    rawValue = monthData[activityType] ? (monthData[activityType][dataType] || 0) : 0;
                 }
-                const totalMonthValue = rawValue / dataDivisor;
+                const totalMonthValue = rawValue / setting.divisor;
     
                 if (totalMonthValue === 0) {
                     return `<div class="chart-bar-wrapper"><div class="chart-bar" style="height: 0%;"></div><div class="month-label">${new Intl.DateTimeFormat("en-US", { month: "short" }).format(new Date(year, i, 1))}</div></div>`;
@@ -654,13 +671,13 @@ hermes.stats = () => {
                 if (activityType === 'all') {
                     const totalForPercent = rawValue;
                     if (totalForPercent > 0) {
-                        ['run', 'walk', 'trail'].forEach(type => {
-                            const typeRawValue = monthData[type][dataType];
+                        ['run', 'trail', 'walk'].forEach(type => {
+                            const typeRawValue = monthData[type][dataType] || 0;
                             if (typeRawValue > 0) {
                                 const heightPercent = (typeRawValue / totalForPercent) * 100;
                                 const icon = {run: 'directions_run', walk: 'directions_walk', trail: 'hiking'}[type];
-                                const displayValue = (typeRawValue / dataDivisor).toFixed(valueFixed);
-                                barSegments.push(`<div class="bar-segment ${type}" title="<i class='material-symbols-outlined'>${icon}</i> ${displayValue} ${dataUnit}" style="height: ${heightPercent}%;"></div>`);
+                                const displayValue = (typeRawValue / setting.divisor).toFixed(dataType === 'distance' ? 1 : (dataType === 'elevation' ? 2 : (dataType === 'time' ? 1 : 0)));
+                                barSegments.push(`<div class="bar-segment ${type}" title="<i class='material-symbols-outlined'>${icon}</i> ${displayValue} ${setting.unit}" style="height: ${heightPercent}%;"></div>`);
                             }
                         });
                     }
@@ -672,9 +689,9 @@ hermes.stats = () => {
     
                 return `
                     <div class="chart-bar-wrapper">
+                        <span class="bar-label">${yAxisFormatter(totalMonthValue)}</span>
                         <div class="chart-bar" style="height: ${barHeight}%;">
                             ${barSegments.join('')}
-                            <span class="bar-label">${totalMonthValue.toFixed(isElevation ? 2 : 0)}</span>
                         </div>
                         <div class="month-label">${new Intl.DateTimeFormat("en-US", { month: "short" }).format(new Date(year, i, 1))}</div>
                     </div>
@@ -682,33 +699,62 @@ hermes.stats = () => {
             }).join('');
     
             const yearTotals = yearData.monthly.reduce((acc, month) => {
-                 if (activityType === 'all') {
-                    acc.distance += (month.run.distance || 0) + (month.walk.distance || 0) + (month.trail.distance || 0);
-                    acc.elevation += (month.run.elevation || 0) + (month.walk.elevation || 0) + (month.trail.elevation || 0);
+                if (activityType === 'all') {
+                    acc.distance += month.distance;
+                    acc.elevation += month.elevation;
+                    acc.time += month.time;
+                    acc.count += month.count;
                 } else {
-                    acc.distance += month[activityType] ? month[activityType].distance : 0;
-                    acc.elevation += month[activityType] ? month[activityType].elevation : 0;
+                    if (month[activityType]) {
+                        acc.distance += month[activityType].distance || 0;
+                        acc.elevation += month[activityType].elevation || 0;
+                        acc.time += month[activityType].time || 0;
+                        acc.count += month[activityType].count || 0;
+                    }
                 }
                 return acc;
-            }, { distance: 0, elevation: 0 });
-    
-            const annualDistanceFormatted = yearTotals.distance.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0});
-            const annualElevationFormatted = (yearTotals.elevation / 1000).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2});
-    
-            let annualDataDisplay = '';
-            if (dataType === 'distance') {
-                annualDataDisplay = `<span class="material-symbols-outlined icon">route</span><span>${annualDistanceFormatted} <span class="unit">km</span></span>`;
-            } else { // elevation
-                annualDataDisplay = `<span class="material-symbols-outlined icon">altitude</span><span>${annualElevationFormatted} <span class="unit">km</span></span>`;
-            }
+            }, { distance: 0, elevation: 0, time: 0, count: 0 });
+
+            const annualDistanceFormatted = yearTotals.distance.toLocaleString(undefined, {maximumFractionDigits: 0});
+            const annualElevationFormatted = (yearTotals.elevation / 1000).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1});
+            const annualTimeFormatted = (yearTotals.time / 3600).toLocaleString(undefined, {maximumFractionDigits: 0});
+            const annualCountFormatted = yearTotals.count.toLocaleString();
     
             return `
                 <div class="stat-annual stat-item">
                     <div class="annual-summary">
                         <span class="label">${year}년</span>
-                        <div class="annual-data value">
-                            ${annualDataDisplay}
+
+                        <div class="annual-data-grid">
+                            <div class="annual-data ${dataType === 'distance' ? 'on' : ''}"  onclick="document.querySelector('input[name=stats-view][value=distance]').checked=true; document.querySelector('input[name=stats-view][value=distance]').dispatchEvent(new Event('change'))">
+                                <span class="label">거리</span>
+                                <div class="value">
+                                    <span class="material-symbols-outlined icon">route</span> <span>${annualDistanceFormatted} <span class="unit">km</span></span>
+                                </div>
+                            </div>
+
+                            <div class="annual-data ${dataType === 'elevation' ? 'on' : ''}" onclick="document.querySelector('input[name=stats-view][value=elevation]').checked=true; document.querySelector('input[name=stats-view][value=elevation]').dispatchEvent(new Event('change'))">
+                                <span class="label">상승 고도</span>
+                                <div class="value">
+                                    <span class="material-symbols-outlined icon">altitude</span> <span>${annualElevationFormatted} <span class="unit">km</span></span>
+                                </div>
+                            </div>
+
+                            <div class="annual-data ${dataType === 'time' ? 'on' : ''}" onclick="document.querySelector('input[name=stats-view][value=time]').checked=true; document.querySelector('input[name=stats-view][value=time]').dispatchEvent(new Event('change'))">
+                                <span class="label">시간</span>
+                                <div class="value">
+                                    <span class="material-symbols-outlined icon">timer</span> <span>${annualTimeFormatted} <span class="unit">hr</span></span>
+                                </div>
+                            </div>
+
+                            <div class="annual-data ${dataType === 'count' ? 'on' : ''}" onclick="document.querySelector('input[name=stats-view][value=count]').checked=true; document.querySelector('input[name=stats-view][value=count]').dispatchEvent(new Event('change'))">
+                                <span class="label">활동</span>
+                                <div class="value">
+                                    <span class="material-symbols-outlined icon">tag</span> <span>${annualCountFormatted} <span class="unit">times</span></span>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                     <div class="chart-container">
                         <div class="y-axis">${yAxisLabels}</div>
