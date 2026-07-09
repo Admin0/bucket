@@ -364,6 +364,7 @@ a {
     width: 0;
     transition: 0.25s;
     padding: 0;
+    color: var(--color--text);
 }
 
 .filters input#search-input:focus,
@@ -373,7 +374,7 @@ a {
 }
 
 .filters input#search-input::placeholder {
-    color: var(--color--body-text);
+    color: var(--color--text);
 }
 
 .filters #reset-filters:hover,
@@ -597,9 +598,14 @@ nav {
     right: 1em;
     bottom: 1em;
     opacity: 0;
+    margin-right: -5em;
+    padding-left: 5em;
+    transition: .25s;
 }
 nav:hover {
-    opacity: 01;
+    opacity: 1;
+    margin: 0;
+    padding: 0;
 }
 nav ul {
     padding: 0;
@@ -607,19 +613,20 @@ nav ul {
 }
 nav li {
     list-style: none;
-}
-nav li a {
-    width: 1em;
-    text-align: center;
     margin: 1em;
     display: block;
-    padding: 2em;
+    padding: 1em;
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    background-color: var(--color--calendar-hover);
+    background-color: var(--color--track);
     color: var(--color--body-text);
-    transition: transform 0.25s;
+    transition: 0.25s;
+}
+
+nav li:hover{
+    color: var(--color--theme);
+    background-color: var(--color--calendar-hover);
 }
 
 /* ----------------------------------------

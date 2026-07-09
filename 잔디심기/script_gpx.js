@@ -233,9 +233,7 @@ hermes.tooltip = function(records) {
 };
 
 /**
- * 툴팁 관련 기능을 초기화합니다:
- * 1. 일반 'title' 속성을 툴팁으로 표시합니다.
- * 2. 모든 툴팁이 마우스를 따라다니도록 합니다.
+ * 툴팁 관련 기능을 초기화합니다. (CSS position: fixed 버전)
  */
 hermes.initializeTooltips = function() {
     if (hermes.tooltipsInitialized) return; // 중복 초기화 방지
@@ -246,9 +244,11 @@ hermes.initializeTooltips = function() {
     // 1. 일반 'title' 속성 툴팁 처리
     document.body.addEventListener("mouseover", (e) => {
         const target = e.target.closest("[title]");
-        if (target && target.title && !target.closest(".day-cell, .marker, [data-record-id]")) {
+        
+        if (target && !target.closest(".day-cell, .marker, [data-record-id]")) {
             target.dataset.genericTooltip = target.title;
-            target.title = "";
+            target.removeAttribute("title"); 
+            
             tooltip.innerHTML = `<div class="tooltip-comment">${target.dataset.genericTooltip}</div>`;
             tooltip.classList.add("on", "generic");
         }
@@ -256,32 +256,57 @@ hermes.initializeTooltips = function() {
 
     document.body.addEventListener("mouseout", (e) => {
         const target = e.target.closest("[data-generic-tooltip]");
-        if (target) {
-            target.title = target.dataset.genericTooltip;
-            target.removeAttribute("data-generic-tooltip");
-            if (tooltip.classList.contains("generic")) {
-                tooltip.classList.remove("on", "generic");
-            }
+        if (!target) return;
+
+        const relatedTarget = e.relatedTarget;
+        if (relatedTarget && target.contains(relatedTarget)) return;
+
+        target.title = target.dataset.genericTooltip;
+        target.removeAttribute("data-generic-tooltip");
+        
+        if (tooltip.classList.contains("generic")) {
+            tooltip.classList.remove("on", "generic", "fixedTop");
+            tooltip.style.top = "";
+            tooltip.style.left = "";
         }
     });
 
-    // 2. 툴팁 마우스 추적 기능
+    // 2. 툴팁 마우스 추적 기능 (position: fixed 전용)
+    let ticked = false;
+    const OFFSET_X = 10; // 마우스 커서 우측 여백
+    const OFFSET_Y = 15; // 마우스 커서 하단 여백
+
     document.addEventListener("mousemove", (e) => {
-        const tooltipEl = document.getElementById("tooltip");
-        if (tooltipEl && tooltipEl.classList.contains("on")) {
-            tooltipEl.style.left = `${e.pageX}px`;
-            if (tooltipEl.offsetHeight > e.pageY - scrollY - 16 * 3) {
-                tooltipEl.classList.add("fixedTop");
-                tooltipEl.style.top = "";
-            } else {
-                tooltipEl.classList.remove("fixedTop");
-                tooltipEl.style.top = `${e.pageY}px`;
-            }
+        if (!tooltip.classList.contains("on")) return;
+
+        if (!ticked) {
+            window.requestAnimationFrame(() => {
+                // fixed 레이아웃이므로 clientX, clientY 사용
+                tooltip.style.left = `${e.clientX + OFFSET_X}px`;
+                
+                // 화면 상단 경계선 감지 (e.clientY 기준이므로 scrollY 계산이 필요 없음)
+                const shouldFixTop = tooltip.offsetHeight > (e.clientY - 48);
+                
+                if (shouldFixTop) {
+                    tooltip.classList.add("fixedTop");
+                    tooltip.style.top = ""; 
+                } else {
+                    tooltip.classList.remove("fixedTop");
+                    // 마우스 커서 살짝 아래에 위치하도록 여백(OFFSET_Y) 추가
+                    tooltip.style.top = `${e.clientY + OFFSET_Y}px`;
+                }
+                ticked = false;
+            });
+            ticked = true;
         }
     });
 
     hermes.tooltipsInitialized = true;
 };
 
-// DOM이 로드되면 툴팁 기능 초기화
-document.addEventListener("DOMContentLoaded", hermes.initializeTooltips);
+// DOM 로드 체크
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", hermes.initializeTooltips);
+} else {
+    hermes.initializeTooltips();
+}

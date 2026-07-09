@@ -722,9 +722,8 @@ hermes.stats = () => {
     
             return `
                 <div class="stat-annual stat-item">
+                    <span class="label annual-label">${year}</span>
                     <div class="annual-summary">
-                        <span class="label">${year}년</span>
-
                         <div class="annual-data-grid">
                             <div class="annual-data ${dataType === 'distance' ? 'on' : ''}"  onclick="document.querySelector('input[name=stats-view][value=distance]').checked=true; document.querySelector('input[name=stats-view][value=distance]').dispatchEvent(new Event('change'))">
                                 <span class="label">거리</span>
@@ -750,11 +749,10 @@ hermes.stats = () => {
                             <div class="annual-data ${dataType === 'count' ? 'on' : ''}" onclick="document.querySelector('input[name=stats-view][value=count]').checked=true; document.querySelector('input[name=stats-view][value=count]').dispatchEvent(new Event('change'))">
                                 <span class="label">활동</span>
                                 <div class="value">
-                                    <span class="material-symbols-outlined icon">tag</span> <span>${annualCountFormatted} <span class="unit">times</span></span>
+                                    <span class="material-symbols-outlined icon">tag</span> <span>${annualCountFormatted} <span class="unit"></span></span>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div class="chart-container">
                         <div class="y-axis">${yAxisLabels}</div>

@@ -127,8 +127,9 @@
  * annual statstics
  * ---------------------------------------- */
 
-.annual-stats h3 {
-    margin-bottom: 1.5em;
+.annual-stats .annual-label {
+    font-size: 1em;
+    opacity: .9;
 }
 
 #stats-container .annual-stats .stat-grid {

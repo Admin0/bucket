@@ -359,7 +359,7 @@ td.on {
     right: 2.5em;
     background-color: var(--color--calendar-hover);
     color: var(--color--body-text);
-    transition: transform 0.25s;
+    transition: transform 0.25s, opacity 0.125s;
 }
 .nav-month#prev-month {
     right: 0.5em;
@@ -369,7 +369,7 @@ td.on {
 }
 .nav-month.disabled {
     pointer-events: none;
-    display: none;
+    opacity: 0;
 }
 
 /* ----------------------------------------

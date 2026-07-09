@@ -174,10 +174,11 @@
 
         <nav>
             <ul>
-                <li><a href="#main-container">M</a></li>
-                <li><a href="#calendar-container">C</a></li>
-                <li><a href="#stats-container">S</a></li>
-                <li><a href="#table-container">T</a></li>
+                <li title="요약" onclick="document.querySelector('html').scrollIntoView({behavior: 'smooth'})"><span class="material-symbols-outlined"> lists </span></li>
+                <li title="상세" onclick="document.querySelector('#calendar-container').scrollIntoView({behavior: 'smooth'})"><span class="material-symbols-outlined"> calendar_month </span></li>
+                <li title="통계" onclick="document.querySelector('#stats-container').scrollIntoView({behavior: 'smooth'})"><span class="material-symbols-outlined"> stacked_bar_chart </span></li>
+                <li title="기록" onclick="document.querySelector('#table-container').scrollIntoView({behavior: 'smooth'})"><span class="material-symbols-outlined"> archive </span></li>
+                <li title="꼬릿말" onclick="document.querySelector('footer').scrollIntoView({behavior: 'smooth'})"><span class="material-symbols-outlined"> bottom_navigation </span></li>
             </ul>
         </nav>
 
