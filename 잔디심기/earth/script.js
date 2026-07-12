@@ -438,6 +438,9 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
             }
         });
 
+        hermes.initializeTooltips();
+        hermes.settingsRouteDesign(map);
+
         const tooltipEl = document.getElementById("tooltip");
         let hoveredFeatureId = null;
         const highlightLayers = ["gpx-highlight-border", "gpx-highlight-main", "gpx-highlight-points-border", "gpx-highlight-points"];

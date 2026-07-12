@@ -212,7 +212,12 @@
         right: 0;
     }
 
-    
+    #tooltip.generic {
+        top: inherit!important;
+        bottom: 3em;
+        left: 50%!important;
+        transform: translateX(-50%);
+    }
     #tooltip.stats .tooltip-item:not(:nth-child(1)) {
         /* display: none; */
     }

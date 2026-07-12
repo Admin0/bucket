@@ -23,7 +23,7 @@ body {
     left: 0;
     width: 100%;
     height: 4px;
-    z-index: 1001;
+    z-index: 21;
     background-color: transparent;
     transition: opacity 0.5s ease-out;
 }
@@ -40,7 +40,7 @@ body {
 #gpx-counter {
     position: fixed;
     top: 8px;
-    z-index: 1000;
+    z-index: 20;
     background: rgba(0, 0, 0, 0.7);
     color: white;
     padding: 4px 10px;
@@ -63,7 +63,7 @@ body {
     position: fixed;
     top: 11.6em; /* NavigationControl 바로 아래에 위치 */
     right: 10px;
-    z-index: 1001;
+    z-index: 21;
     display: flex;
     flex-direction: column;
 }
@@ -229,6 +229,44 @@ body {
 }
 
 /* ========================================
+ * controls
+ * ======================================== */
+#controls {
+    position: absolute;
+    top: 145px;
+    right: 10px; /* Adjusted to not overlap with maplibre controls */
+    z-index: 21;
+}
+#terrarium-btn {
+    /* background-color: white; */
+    padding: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    font-variation-settings: "wght" 600;
+}
+#controls button.active {
+    color: #33b5e5;
+}
+
+#route-detail {
+    background: #fff;
+    position: absolute;
+    padding: .25em;
+    border-radius: .25em;
+    right: 2.5em;
+    top: 0;
+    display: none;
+    color: #777;
+}
+#route-detail.on {
+    display: block;
+}
+.route-detail {
+    white-space: nowrap;
+}
+
+
+/* ========================================
  * tooltip custom
  * ======================================== */
 
@@ -238,6 +276,13 @@ body {
         right: 3.5em !important;
         left: inherit !important;
         transform: none;
+    }
+
+    #tooltip.generic {
+        top: inherit!important;
+        bottom: 3em;
+        left: 50%!important;
+        transform: translateX(-50%);
     }
 }
 

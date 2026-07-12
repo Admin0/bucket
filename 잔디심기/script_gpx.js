@@ -252,7 +252,7 @@ hermes.initializeTooltips = function() {
             tooltip.innerHTML = `<div class="tooltip-comment">${target.dataset.genericTooltip}</div>`;
             tooltip.classList.add("on", "generic");
         }
-    });
+    }, { passive: true });
 
     document.body.addEventListener("mouseout", (e) => {
         const target = e.target.closest("[data-generic-tooltip]");
@@ -269,7 +269,7 @@ hermes.initializeTooltips = function() {
             tooltip.style.top = "";
             tooltip.style.left = "";
         }
-    });
+    }, { passive: true });
 
     // 2. 툴팁 마우스 추적 기능 (position: fixed 전용)
     let ticked = false;

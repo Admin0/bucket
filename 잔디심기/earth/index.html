@@ -9,24 +9,6 @@
         <link rel="preload" href="https://fonts.gstatic.com/s/materialsymbolsoutlined/v315/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsI.woff2" as="font" type="font/woff2" crossorigin> <!-- 'Material Symbols Outlined -->
         <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
         <link href="style.css" rel="stylesheet" />
-        <style>
-            #controls {
-                position: absolute;
-                top: 145px;
-                right: 10px; /* Adjusted to not overlap with maplibre controls */
-                z-index: 1;
-            }
-            #terrarium-btn {
-                /* background-color: white; */
-                padding: 5px;
-                cursor: pointer;
-                font-size: 20px;
-                font-variation-settings: 'wght' 600;
-            }
-            #terrarium-btn.active {
-                color: #33b5e5;
-            }
-        </style>
     </head>
     <body>
         <div id="progress-container">
@@ -35,7 +17,12 @@
         </div>
         <div id="map"></div>
         <div id="controls" class="maplibregl-ctrl maplibregl-ctrl-group">
-            <button id="terrarium-btn" class="material-symbols-outlined">landscape</button>
+            <button id="terrarium-btn" class="material-symbols-outlined" title="지형">landscape</button>
+            <button id="route-btn" class="material-symbols-outlined" title="경로" onclick="document.querySelector('#route-detail').classList.toggle('on'); this.classList.toggle('active')">route</button>
+            <div id="route-detail" class="maplibregl-ctrl-group">
+                <div class="route-detail" title="굵기"><span class="material-symbols-outlined"> line_weight </span> <input type="range" id="line-width-slider" min="1" max="10" value="4" step="0.5"></div>
+                <div class="route-detail" title="투명도"><span class="material-symbols-outlined"> opacity </span> <input type="range" id="line-opacity-slider" min="0" max="1" value="0.5" step="0.1"></div>
+            </div>
         </div>
         
         <div id="gpx-list-container">
@@ -54,5 +41,6 @@
         <script src="script_records_4_earth.js" defer></script>
         <script src="script.js" defer></script>
         <script src="script_gpx.js" defer></script>
+        <script src="script_sub.js" defer></script>
     </body>
 </html>
