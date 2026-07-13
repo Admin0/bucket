@@ -599,13 +599,14 @@ nav {
     bottom: 1em;
     opacity: 0;
     margin-right: -5em;
-    padding-left: 5em;
-    transition: .25s;
+    padding-left: 4em;
+    padding-bottom: 5em;
+    transition: 0.25s;
 }
 nav:hover {
     opacity: 1;
     margin: 0;
-    padding: 0;
+    padding-left: 0;
 }
 nav ul {
     padding: 0;
@@ -624,9 +625,34 @@ nav li {
     transition: 0.25s;
 }
 
-nav li:hover{
+nav li:not(.link):hover {
     color: var(--color--theme);
     background-color: var(--color--calendar-hover);
+}
+
+nav li.link {
+    position: absolute;
+    bottom: -.5em;
+    display: flex;
+    border-radius: 3em;
+    right: 0;
+    padding: 0;
+}
+
+nav li.link a {
+    padding: 1em;
+    border-radius: 50%;
+}
+
+nav li a:hover {
+    color: #303F9F;
+    background-color: #90CAF9;
+}
+nav li a.instagram img{
+    filter: invert(100%);
+}
+nav li a.instagram:hover img {
+    filter: brightness(0) saturate(100%) invert(15%) sepia(77%) saturate(2640%) hue-rotate(227deg) brightness(101%) contrast(85%);
 }
 
 /* ----------------------------------------

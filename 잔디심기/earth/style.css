@@ -271,14 +271,8 @@ body {
  * ======================================== */
 
 @media screen and (max-width: 1920px) {
-    #tooltip {
-        top: 1em !important;
-        right: 3.5em !important;
-        left: inherit !important;
-        transform: none;
-    }
 
-    #tooltip.generic {
+    #tooltip {
         top: inherit!important;
         bottom: 3em;
         left: 50%!important;
