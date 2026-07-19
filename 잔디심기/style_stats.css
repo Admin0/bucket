@@ -172,9 +172,10 @@
     width: calc(100% / 12);
     height: 100%;
     justify-content: flex-end;
+    transition: .25s;
 }
 .chart-bar {
-    width: 60%;
+    width: .75em;
     background-color: #e9ecef;
     border-radius: 0.25em 0.25em 0 0;
     position: relative;
@@ -219,6 +220,19 @@
     /* transform: rotate(-90deg); */
     margin-bottom: 0.5em;
 }
+
+.chart-bar-wrapper:hover {
+    background: linear-gradient(0deg,color-mix(in srgb, var(--color--theme) 50%, transparent) 0%, transparent 100%);
+    /* background: color-mix(in srgb, var(--color--theme) 50%, transparent); */
+    color: var(--color--workout-walk);
+}
+.chart-bar-wrapper:hover .month-label{
+    text-decoration: underline;
+}
+.monthly-chart:hover .chart-bar-wrapper:not(.chart-bar-wrapper:hover) {
+    filter: grayscale(100%) brightness(1.5);
+}
+
 .chart-bar-wrapper:hover .bar-label {
     display: block;
 }

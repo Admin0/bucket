@@ -74,8 +74,9 @@ html {
         --color--gold-normal: #ffd700;
     }
 
-    footer img {
+    footer img,
+    nav li a.instagram img {
         opacity: inherit;
-        filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7150%) hue-rotate(2deg) brightness(119%) contrast(96%);
+        filter: invert(100%);
     }
 }
