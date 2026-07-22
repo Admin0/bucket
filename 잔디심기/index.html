@@ -174,21 +174,36 @@
 
         <nav>
             <ul>
-                <li title="요약" onclick="document.querySelector('html').scrollIntoView({behavior: 'smooth'})"><span class="material-symbols-outlined"> lists </span></li>
-                <li title="상세" onclick="document.querySelector('#calendar-container').scrollIntoView({behavior: 'smooth'})"><span class="material-symbols-outlined"> calendar_month </span></li>
-                <li title="통계" onclick="document.querySelector('#stats-container').scrollIntoView({behavior: 'smooth'})"><span class="material-symbols-outlined"> stacked_bar_chart </span></li>
-                <li title="기록" onclick="document.querySelector('#table-container').scrollIntoView({behavior: 'smooth'})"><span class="material-symbols-outlined"> archive </span></li>
-                <li title="꼬릿말" onclick="document.querySelector('footer').scrollIntoView({behavior: 'smooth'})">
-                    <span class="material-symbols-outlined"> bottom_navigation </span>
-                    <ul>
-                        
-                <li class="link">
-                    <a href="//www.instagram.com/jinh.kr/" class="instagram" title="러닝개굴의 본체 인스타그램 바로가기"><img src="../img/icon_instragram.svg" alt="" /></a>
-                    <a href="earth" title="하위 프로젝트: 🌏 earth"><span class="material-symbols-outlined"> public </span></a>
-                    <a href="../#잔디심기" title="상위 프로젝트: 버킷리스트"><span class="material-symbols-outlined"> playlist_add_check </span></a>
-                    <a href="../블랙야크/" title="자매 프로젝트: 블랙야크"><span class="material-symbols-outlined"> money </span></a>
-                    <a href="//jinh.kr/" title="개구리의 코딩 포트폴리오"><span class="material-symbols-outlined"> code </span></a>
+                <li>
+                    <div title="요약" onclick="document.querySelector('html').scrollIntoView({behavior: 'smooth'})" class="item"><span class="material-symbols-outlined"> lists </span></div>
                 </li>
+                <li>
+                    <div title="상세" onclick="document.querySelector('#calendar-container').scrollIntoView({behavior: 'smooth'})" class="item"><span class="material-symbols-outlined"> calendar_month </span></div>
+                </li>
+                <li>
+                    <div title="통계" onclick="document.querySelector('#stats-container').scrollIntoView({behavior: 'smooth'})" class="item"><span class="material-symbols-outlined"> stacked_bar_chart </span></div>
+                </li>
+                <li>
+                    <div title="기록" onclick="document.querySelector('#table-container').scrollIntoView({behavior: 'smooth'})" class="item"><span class="material-symbols-outlined"> archive </span></div>
+                </li>
+                <li id="nav_link">
+                    <div title="꼬릿말" onclick="document.querySelector('footer').scrollIntoView({behavior: 'smooth'})" class="item"><span class="material-symbols-outlined"> bottom_navigation </span></div>
+                    <ul class="link">
+                        <li>
+                            <div class="item sub"><a href="//www.instagram.com/jinh.kr/" class="instagram" title="러닝개굴의 본체 인스타그램 바로가기"><img src="../img/icon_instragram.svg" alt="" /></a></div>
+                        </li>
+                        <li>
+                            <div class="item sub"><a href="earth" title="하위 프로젝트: 🌏 earth"><span class="material-symbols-outlined"> public </span></a></div>
+                        </li>
+                        <li>
+                            <div class="item sub"><a href="../#잔디심기" title="상위 프로젝트: 버킷리스트"><span class="material-symbols-outlined"> playlist_add_check </span></a></div>
+                        </li>
+                        <li>
+                            <div class="item sub"><a href="../블랙야크/" title="자매 프로젝트: 블랙야크"><span class="material-symbols-outlined"> money </span></a></div>
+                        </li>
+                        <li>
+                            <div class="item sub"><a href="//jinh.kr/" title="개구리의 코딩 포트폴리오"><span class="material-symbols-outlined"> code </span></a></div>
+                        </li>
                     </ul>
                 </li>
             </ul>

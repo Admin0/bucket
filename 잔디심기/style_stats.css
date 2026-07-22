@@ -222,10 +222,10 @@
 }
 
 .chart-bar-wrapper:hover {
-    background: linear-gradient(0deg, color-mix(in srgb, var(--color--theme) 50%, transparent) 50%, transparent 100%);
+    background: linear-gradient(0deg, color-mix(in srgb, var(--color--theme) 50%, transparent) 25%, transparent 100%);
     /* background: color-mix(in srgb, var(--color--theme) 50%, transparent); */
     border-bottom: 1px solid var(--color--theme);
-    margin-bottom: -1px;
+    bottom: -1px;
     color: var(--color--workout-walk);
 }
 
