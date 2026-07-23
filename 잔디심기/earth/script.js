@@ -1,3 +1,5 @@
+import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.0.0/dist/maplibre-gl.mjs';
+
 const style_light = VersaTilesStyle.graybeard({
     baseUrl: "https://tiles.versatiles.org/",
     language: "ko",
