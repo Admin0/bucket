@@ -71,7 +71,7 @@ async function loadGpxFiles() {
     const compressedDataMap = new Map();
 
     const compressedJsonPromises = years.map(year => {
-        return fetch(`../../records/${year}.json`)
+        return fetch(`./records/${year}.json`)
             .then(res => res.ok ? res.json() : null)
             .then(data => {
                 if (data) {
@@ -117,7 +117,7 @@ async function loadGpxFiles() {
 
     if (gpxRecordsToFetch.length > 0) {
         const gpxFiles = gpxRecordsToFetch.map(record => {
-            const basePath = `../../records/${record.date.substring(0, 4)}/${record.date}`;
+            const basePath = `./records/${record.date.substring(0, 4)}/${record.date}`;
             return record.over ? `${basePath}_${record.over}.gpx` : `${basePath}.gpx`;
         });
 

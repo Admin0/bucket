@@ -1,5 +1,3 @@
-import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.0.0/dist/maplibre-gl.mjs';
-
 if (typeof hermes === "undefined") {
     hermes = {};
 }
@@ -306,16 +304,18 @@ hermes.gpx = (() => {
             return;
         }
 
-        const bounds = new maplibregl.LngLatBounds();
-        selectedTracks.forEach((track) => {
-            state.map
-                .setPaintProperty(`gpx-layer-${track.id}`, "line-gradient", ["interpolate", ["linear"], ["line-progress"], 0, "#f57f17", 0.5, "#f44a01", 1, "#ff1744"])
-                .setPaintProperty(`gpx-layer-${track.id}`, "line-width", 6)
-                .setPaintProperty(`gpx-layer-${track.id}-border`, "line-width", 10);
-            track.points.forEach((point) => bounds.extend(point));
-        });
+        //todo : maplibre-gl을 동적으로 import하여 사용하는데, deprecated된 방식이므로 향후 개선 필요
+        // const maplibregl = await import('https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js'); 
+        // const bounds = new maplibregl.LngLatBounds();
+        // selectedTracks.forEach((track) => {
+        //     state.map
+        //         .setPaintProperty(`gpx-layer-${track.id}`, "line-gradient", ["interpolate", ["linear"], ["line-progress"], 0, "#f57f17", 0.5, "#f44a01", 1, "#ff1744"])
+        //         .setPaintProperty(`gpx-layer-${track.id}`, "line-width", 6)
+        //         .setPaintProperty(`gpx-layer-${track.id}-border`, "line-width", 10);
+        //     track.points.forEach((point) => bounds.extend(point));
+        // });
 
-        state.map.fitBounds(bounds, { padding: 100, maxZoom: 15 });
+        // state.map.fitBounds(bounds, { padding: 100, maxZoom: 15 });
         updateList();
     }
 
@@ -371,7 +371,7 @@ hermes.gpx = (() => {
             return str;
         };
 
-        const columns = ['date', 'over', 'type', 'course', 'distance', 'elevation', 'record', 'title', 'comment', 'certi', 'geometry'];
+        const columns = ['date', 'over', 'type', 'gear', 'course', 'distance', 'elevation', 'record', 'title', 'comment', 'certi', 'geometry'];
         let isGeometryTooLong = false;
 
         const tracksByDate = {};

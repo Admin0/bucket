@@ -302,6 +302,13 @@ a {
     margin-top: 10em;
 }
 
+#table-container h2,
+#table-container .filters,
+#table-container #records-table thead{
+    max-width: var(--width--track);
+    margin: 1em auto;
+}
+
 .filters {
     background-color: var(--color--track);
     border-radius: 2em;
@@ -382,7 +389,7 @@ a {
 .filters label:hover {
     background-color: var(--color--theme-light);
     transition: 0.125s;
-    color: var(--color--track);
+    color: #212121;
 }
 
 .filters label:has(input:checked),
