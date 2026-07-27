@@ -1,4 +1,9 @@
 import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.0.0/dist/maplibre-gl.mjs';
+import { gpx } from './script_gpx.js';
+import { initializeTooltips, settingsTerraium, settingsRouteDesign } from './script_sub.js';
+
+// 전역 'hermes' 객체 초기화
+const hermes = { gpx, initializeTooltips, settingsTerraium, settingsRouteDesign };
 
 const style_light = VersaTilesStyle.graybeard({
     baseUrl: "https://tiles.versatiles.org/",
@@ -258,7 +263,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
             csvTexts.forEach(csvText => {
                 const rows = csvText.trim().split('\n');
                 const headers = rows.shift().trim().split(',').map(h => h.trim());
-                
+
                 const records = rows.map(row => {
                     if (!row || !row.trim()) return null;
 
@@ -274,10 +279,10 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
                     });
                     return obj;
                 }).filter(r => r && r.date);
-                
+
                 hermes_records.push(...records);
             });
-            
+
         } catch (error) {
             console.error("Google Sheet에서 기록을 불러오지 못했습니다:", error);
             const progressContainer = document.getElementById("progress-container");
@@ -288,13 +293,13 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
         const totalRecords = hermes_records.length;
         let processedCount = 0;
         const gpxRecordsToFetch = [];
-        
+
         const featuresFromSheet = [];
 
         for (const record of hermes_records) {
             const suffix = record.over || record.type;
             const shortPath = `${record.date}${suffix ? `_${suffix}` : ""}`.trim();
-            
+
             if (record.geometry && record.geometry.length > 10) {
                 const coordinates = decodeCoordinates(record.geometry);
                 if (coordinates.length > 0) {
@@ -311,7 +316,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
             processedCount += featuresFromSheet.length;
             updateProgress(processedCount, totalRecords);
         }
-        
+
         if (gpxRecordsToFetch.length > 0) {
             const gpxWorker = new Worker("/잔디심기/earth/gpx-worker.js");
             const promises = new Map();
@@ -340,7 +345,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
                                 }
                             }
                         })
-                        .catch(() => {})
+                        .catch(() => { })
                         .finally(() => {
                             processedCount++;
                             updateProgress(processedCount, totalRecords);
@@ -351,7 +356,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
             }
             gpxWorker.terminate();
         }
-        
+
         updateProgress(totalRecords, totalRecords);
     }
 
@@ -364,7 +369,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
     map.on("load", () => {
         map.setProjection({ type: "globe" });
         loadGpxData();
-        if (hermes && typeof hermes.gpx.init === "function") hermes.gpx.init(map);
+        if (hermes && typeof hermes.gpx?.init === "function") hermes.gpx.init(map);
 
         hermes.initializeTooltips(map);
         hermes.settingsTerraium(map, currentStyle, useFreeService);

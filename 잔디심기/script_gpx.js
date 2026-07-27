@@ -185,7 +185,7 @@ hermes.tooltip = function(records) {
             .toString()
             .padStart(2, "0")}″${rec.course === "trail" ? '<span class="unit">/60 m↑</span>' : '<span class="unit">/km</span>'}`;
         const tooltipDistance = rec.course === "trail" ? `${rec.elevation.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})} <span class="unit"> m</span>` : `${rec.distance.toFixed(2)} <span class="unit"> km</span>`;
-        const tooltip_type = rec.isOfficial ? "공식 기록" : rec.type === "trail" ? "하이킹 / 트레일러닝" : rec.type === "walk" ? "걷기" : "러닝";
+        const tooltip_type = rec.isOfficial ? "공식 기록" : rec.type === "ride" ? "라이딩" : rec.type === "trail" ? "하이킹 / 트레일러닝" : rec.type === "walk" ? "걷기" : "러닝";
         const icon_distance = rec.course === "trail" ? "altitude" : "conversion_path";
         const comment = rec.comment ? `<span class="comment">${rec.comment}</span>` : "";
         const uniqueId = `${rec.date}-${rec.over || 0}`;

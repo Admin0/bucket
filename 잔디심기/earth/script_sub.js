@@ -1,6 +1,7 @@
-hermes.initializeTooltips = function(map) {
-    if (hermes.tooltipsInitialized) return; // 중복 초기화 방지
+let tooltipsInitialized = false; // Local state for this module
 
+export const initializeTooltips = function(map) {
+    if (tooltipsInitialized) return; // 중복 초기화 방지
     const tooltip = document.getElementById("tooltip");
     if (!tooltip) return;
 
@@ -63,8 +64,6 @@ hermes.initializeTooltips = function(map) {
             ticked = true;
         }
     });
-
-    hermes.tooltipsInitialized = true;
 
     /* ----------------------------------------
      * ↑ same as original code / ↓ customed for earth
@@ -199,6 +198,7 @@ hermes.initializeTooltips = function(map) {
             }
         }
     });
+    tooltipsInitialized = true;
 
     map.on("touchstart", (e) => {
         const features = map.queryRenderedFeatures(e.point, { layers: layersToQuery });
@@ -227,7 +227,7 @@ hermes.initializeTooltips = function(map) {
 };
 
 
-hermes.settingsTerraium = function(map, currentStyle, useFreeService) {
+export const settingsTerraium = function(map, currentStyle, useFreeService) {
     const terrariumBtn = document.getElementById("terrarium-btn");
     let isTerrariumOn = false;
     terrariumBtn.addEventListener("click", () => {
@@ -257,7 +257,7 @@ hermes.settingsTerraium = function(map, currentStyle, useFreeService) {
     });
 }
 
-hermes.settingsRouteDesign = function(map) {
+export const settingsRouteDesign = function(map) {
     const lineWidthSlider = document.getElementById('line-width-slider');
     lineWidthSlider.addEventListener('input', (e) => {
         const newWidth = parseFloat(e.target.value);
