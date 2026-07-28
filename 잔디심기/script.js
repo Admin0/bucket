@@ -81,8 +81,12 @@ function getWeekInfo(d) {
 // 기록 데이터 초기화 및 계산된 속성 추가
 hermes.recordInit = function () {
     hermes.records = hermes.records.map((record, index) => {
+
+        // 미래 날짜의 경우에도 기록이 있는데, 이거는 계획을 나타냄
+        const isPlaned = record.record === undefined || new Date(record.date) > new Date();
+
         // 기록 시간을 초로 변환
-        const parts = record.record.split(":").map(Number);
+        const parts = !isPlaned ? record.record.split(":").map(Number) : [0, 0, 0];
         let time;
         if (parts.length === 3) {
             time = parts[0] * 3600 + parts[1] * 60 + parts[2];
@@ -111,6 +115,7 @@ hermes.recordInit = function () {
             ...record,
             id: index,
             isOfficial: record.course !== undefined,
+            isPlaned: record.record === undefined || new Date(record.date) > new Date(),
             time,
             distance,
             distance_pace: time / distance,
@@ -130,14 +135,14 @@ hermes.track = function () {
     if (!hermes.records || hermes.records.length === 0) return;
 
     // 달리기 기록 페이스 계산
-    const runRecords = hermes.records.filter((r) => r.course !== "trail");
+    const runRecords = hermes.records.filter((r) => r.type === "run" && !r.isPlaned);
     const runPaces = runRecords.map((r) => r.pace).filter((p) => p !== Infinity);
     const limitPace = 7 * 60; // 7분/km
     const minPace = runPaces.length > 0 ? Math.min(...runPaces) : 0;
     const maxPace = runPaces.length > 0 ? Math.min(Math.max(...runPaces), limitPace) : limitPace;
 
     // 트레일 기록 통계 계산
-    const trailRecords = hermes.records.filter((r) => r.course === "trail");
+    const trailRecords = hermes.records.filter((r) => r.type === "trail" && !r.isPlaned);
     hermes.trailStats = {
         elevations: trailRecords.map((r) => r.elevation),
         elevation_paces: trailRecords.map((r) => r.elevation_pace).filter((p) => p !== Infinity),
@@ -158,7 +163,7 @@ hermes.track = function () {
     hermes.trailStats.minDistancePace = Math.min(...hermes.trailStats.distance_paces);
 
     // 기록의 시작 및 종료 연도 설정
-    const years = [...new Set(hermes.records.map((r) => r.weekInfo.year))];
+    const years = [...new Set(hermes.records.map((r) => r.weekInfo.year ))].filter((years) => years <= new Date().getFullYear());
     const startYear = years.length > 0 ? Math.min(...years) : new Date().getFullYear();
     const endYear = years.length > 0 ? Math.max(...years) : new Date().getFullYear();
 
@@ -252,7 +257,7 @@ hermes.track = function () {
             for (let year = endYear; year >= startYear; year--) {
                 const yearRecords = categoryRecords.filter((r) => r.weekInfo.year === year);
                 const yearMarkerContainer = document.createElement("div");
-                yearMarkerContainer.className = "year-marker-container";
+                yearMarkerContainer.className = `year-marker-container`;
                 const yearLabel = document.createElement("div");
                 yearLabel.className = "year-label";
                 yearLabel.textContent = year;
@@ -378,6 +383,11 @@ hermes.track = function () {
                             colorValue = ((Math.min(record.pace, limitPace) - minPace) / (maxPace - minPace)) * 100;
                         }
                         marker.style.backgroundColor = `color-mix(in oklab, var(--color--gpx-start), var(--color--gpx-end) ${colorValue}%)`;
+                        if (record.isPlaned) {
+                            marker.style.backgroundColor = `color-mix(in oklab, var(--color--gold-metalic), var(--color--theme) 50%)`;                            
+                            // marker.style.backgroundColor = `var(--color--indigo)`;                            
+                        }
+
                     }
                     marker.textContent = `${weekNumber}`;
                     markerGrid.appendChild(marker);
