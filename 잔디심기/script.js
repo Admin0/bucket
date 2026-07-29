@@ -228,8 +228,8 @@ hermes.track = function () {
                     }
                 }
             } else {
-                const officialRecords = categoryRecords.filter((r) => r.isOfficial);
-                const unofficialRecords = categoryRecords.filter((r) => !r.isOfficial);
+                const officialRecords = categoryRecords.filter((r) => r.isOfficial && !r.isPlaned);
+                const unofficialRecords = categoryRecords.filter((r) => !r.isOfficial && !r.isPlaned);
                 let bestOfficial = officialRecords.length > 0 ? officialRecords.reduce((best, current) => (current.pace < best.pace ? current : best)) : null;
                 let bestUnofficial = unofficialRecords.length > 0 ? unofficialRecords.reduce((best, current) => (current.pace < best.pace ? current : best)) : null;
 
@@ -384,8 +384,8 @@ hermes.track = function () {
                         }
                         marker.style.backgroundColor = `color-mix(in oklab, var(--color--gpx-start), var(--color--gpx-end) ${colorValue}%)`;
                         if (record.isPlaned) {
-                            marker.style.backgroundColor = `color-mix(in oklab, var(--color--gold-metalic), var(--color--theme) 50%)`;                            
-                            // marker.style.backgroundColor = `var(--color--indigo)`;                            
+                            // marker.style.backgroundColor = `color-mix(in oklab, var(--color--gold-metalic), var(--color--theme) 50%)`;                            
+                            marker.style.backgroundColor = `var(--color--theme)`;                            
                         }
 
                     }
