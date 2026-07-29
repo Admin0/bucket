@@ -28,7 +28,7 @@ hermes.calendar = () => {
     });
 
     // 기록에서 중복 없는 연도를 추출하고 정렬합니다.
-    const allYears = [...new Set(records.map((r) => new Date(r.date).getFullYear()))].sort((a, b) => b - a);
+    const allYears = [...new Set(records.filter((r) => !r.isPlaned).map((r) => new Date(r.date).getFullYear()))].sort((a, b) => b - a);
 
     // 시각화 스케일링을 위해 하루 최대 활동량(거리)을 계산합니다.
     let maxActivity = 0;
@@ -109,14 +109,12 @@ hermes.calendar = () => {
             const statsHtml = `
                 <div class="year-stats">
                     <div class="stat-item"><span class="value">${year}</span></div>
-                    <div class="stat-item"><span class="label">러닝 거리</span><span class="value">${yearRunningDistance.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1})} <span class="unit"> km</span></span></div>
-                    <div class="stat-item"><span class="label">거리</span><span class="value">${yearTotalDistance.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1})} <span class="unit"> km</span></span></div>
-                    <div class="stat-item"><span class="label">트레일 상승고도</span><span class="value">${
-                        yearTrailElevation > 1000 ? (yearTrailElevation / 1000).toFixed(1) + ` <span class="unit">km</span>` : yearTrailElevation.toFixed(0) + ` <span class="unit">m</span>`
-                    } </span></div>
-                    <div class="stat-item"><span class="label">상승고도</span><span class="value">${
-                        yearElevation > 1000 ? (yearElevation / 1000).toFixed(1) + ` <span class="unit">km</span>` : yearElevation.toFixed(0) + ` <span class="unit">m</span>`
-                    } </span></div>
+                    <div class="stat-item"><span class="label">러닝 거리</span><span class="value">${yearRunningDistance.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} <span class="unit"> km</span></span></div>
+                    <div class="stat-item"><span class="label">거리</span><span class="value">${yearTotalDistance.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} <span class="unit"> km</span></span></div>
+                    <div class="stat-item"><span class="label">트레일 상승고도</span><span class="value">${yearTrailElevation > 1000 ? (yearTrailElevation / 1000).toFixed(1) + ` <span class="unit">km</span>` : yearTrailElevation.toFixed(0) + ` <span class="unit">m</span>`
+                } </span></div>
+                    <div class="stat-item"><span class="label">상승고도</span><span class="value">${yearElevation > 1000 ? (yearElevation / 1000).toFixed(1) + ` <span class="unit">km</span>` : yearElevation.toFixed(0) + ` <span class="unit">m</span>`
+                } </span></div>
                     <div class="stat-item"><span class="label">활동</span><span class="value">${yearRecords.length}</span></div>
                 </div>
             `;
@@ -156,12 +154,10 @@ hermes.calendar = () => {
                                 <div class="stat-item"><span class="value">${new Intl.DateTimeFormat("en-US", { month: "short" }).format(new Date(year, month, 1))}</span></div>
                                 <div class="stat-item"><span class="label">러닝 거리</span><span class="value">${monthRunningDistance.toFixed(1)} <span class="unit">km</span></span></div>
                                 <div class="stat-item"><span class="label">거리</span><span class="value">${monthTotalDistance.toFixed(1)} <span class="unit">km</span></span></div>
-                                <div class="stat-item"><span class="label">트레일 상승고도</span><span class="value">${
-                                    monthTrailElevation > 1000 ? (monthTrailElevation / 1000).toFixed(1) + ` <span class="unit">km</span>` : monthTrailElevation.toFixed(0) + ` <span class="unit">m</span>`
-                                }</span></div>
-                                <div class="stat-item"><span class="label">상승고도</span><span class="value">${
-                                    monthElevation > 1000 ? (monthElevation / 1000).toFixed(1) + ` <span class="unit">km</span>` : monthElevation.toFixed(0) + ` <span class="unit">m</span>`
-                                }</span></div>
+                                <div class="stat-item"><span class="label">트레일 상승고도</span><span class="value">${monthTrailElevation > 1000 ? (monthTrailElevation / 1000).toFixed(1) + ` <span class="unit">km</span>` : monthTrailElevation.toFixed(0) + ` <span class="unit">m</span>`
+                        }</span></div>
+                                <div class="stat-item"><span class="label">상승고도</span><span class="value">${monthElevation > 1000 ? (monthElevation / 1000).toFixed(1) + ` <span class="unit">km</span>` : monthElevation.toFixed(0) + ` <span class="unit">m</span>`
+                        }</span></div>
                                 <div class="stat-item"><span class="label">활동</span><span class="value">${monthRecords.length}</span></div>
                             </div>
                         </td>

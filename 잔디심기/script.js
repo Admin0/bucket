@@ -384,8 +384,8 @@ hermes.track = function () {
                         }
                         marker.style.backgroundColor = `color-mix(in oklab, var(--color--gpx-start), var(--color--gpx-end) ${colorValue}%)`;
                         if (record.isPlaned) {
-                            // marker.style.backgroundColor = `color-mix(in oklab, var(--color--gold-metalic), var(--color--theme) 50%)`;                            
-                            marker.style.backgroundColor = `var(--color--theme)`;                            
+                            marker.style.backgroundColor = `color-mix(in oklab, var(--color--gold), var(--color--indigo) 80%)`;                            
+                            // marker.style.backgroundColor = `var(--color--theme)`;                            
                         }
 
                     }
