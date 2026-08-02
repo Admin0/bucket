@@ -252,11 +252,14 @@ export const gpx = (() => {
 
             const displayName = track.title ? `${track.title} ${activityTitle} (${track.name})` : `${track.name} ${activityTitle}`;
 
-            li.innerHTML = `<div class="track-name">${displayName}</div><div class="track-meta">📅 ${track.date || "N/A"}<span class="meta-separator">|</span>📏 ${track.distance.toFixed(
-                2
-            )} km<span class="meta-separator">|</span>⛰️ ${track.elevation} m<span class="meta-separator">|</span>⏱️ ${formatDuration(
-                track.duration
-            )}<span class="meta-separator">|</span>🏃 ${pace}/km</div>`;
+            li.innerHTML = `<div class="track-name">${displayName}</div>
+            <div class="track-meta">
+                <span class="material-symbols-outlined"> event </span> ${track.date || "N/A"}
+                <span class="material-symbols-outlined"> conversion_path </span> ${track.distance.toFixed(2)} km
+                <span class="material-symbols-outlined"> floor </span> ${track.elevation} m
+                <span class="material-symbols-outlined"> timer </span> ${formatDuration(track.duration)}
+                <span class="material-symbols-outlined"> avg_pace </span> ${pace}/km
+            </div>`;
             li.addEventListener("click", (e) => {
                 handleTrackSelection(track.id, e.shiftKey, e.metaKey || e.ctrlKey);
             });
@@ -311,7 +314,9 @@ export const gpx = (() => {
             track.points.forEach((point) => bounds.extend(point));
         });
 
-        state.map.fitBounds(bounds, { padding: 256, maxZoom: 15 });
+        requestAnimationFrame(() => {
+            state.map.fitBounds(bounds, { padding: 256, maxZoom: 15 });
+        });
         updateList();
     }
 
@@ -354,7 +359,7 @@ export const gpx = (() => {
         }
 
         const selectedTracks = state.droppedTracks.filter((track) => state.selectedTrackIds.includes(track.id));
-        
+
         // Helper for CSV formatting to handle commas and quotes
         const toCsvField = (value) => {
             if (value === null || value === undefined || value === '') return '';
@@ -381,7 +386,7 @@ export const gpx = (() => {
             tracksByDate[date].push(track);
         });
         orderedDates.sort();
-        
+
         const csvRows = [];
         orderedDates.forEach(date => {
             const tracksOnDate = tracksByDate[date];
@@ -454,6 +459,53 @@ export const gpx = (() => {
         });
     }
 
+    function processFiles(files) {
+        const filteredFiles = Array.from(files).filter((f) => /\.(gpx|tcx)$/i.test(f.name));
+        if (filteredFiles.length === 0) return;
+
+        const readPromises = filteredFiles.map((file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const fileType = file.name.split(".").pop().toLowerCase();
+                    const trackData = parseFile(event.target.result, fileType, file.name);
+                    if (trackData) {
+                        resolve({ id: `track-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, ...trackData });
+                    } else {
+                        resolve(null);
+                    }
+                };
+                reader.onerror = reject;
+                reader.readAsText(file);
+            });
+        });
+
+        Promise.all(readPromises).then((newTracksData) => {
+            const validTracks = newTracksData.filter(Boolean);
+            if (validTracks.length === 0) return;
+
+            state.droppedTracks.push(...validTracks);
+            validTracks.forEach((track) => addTrackLayer(track));
+
+            state.selectedTrackIds = validTracks.map((t) => t.id);
+            state.lastSelectedTrackId = validTracks.length > 0 ? validTracks[validTracks.length - 1].id : null;
+            focusOnSelectedTracks();
+
+            const geocodingPromises = validTracks.map((track) => {
+                if (track.points.length > 0) {
+                    return getAddressFromCoordinates(track.points[0][1], track.points[0][0]).then((addressTitle) => {
+                        if (addressTitle) {
+                            const trackToUpdate = state.droppedTracks.find((t) => t.id === track.id);
+                            if (trackToUpdate) trackToUpdate.title = addressTitle;
+                        }
+                    });
+                }
+                return Promise.resolve();
+            });
+
+            Promise.all(geocodingPromises).then(() => updateList());
+        });
+    }
 
     // --- Initialization ---
     function initDragAndDrop() {
@@ -480,55 +532,7 @@ export const gpx = (() => {
             dragCounter = 0;
             mapContainer.classList.remove("drag-over");
 
-            const files = Array.from(e.dataTransfer.files).filter((f) => /\.(gpx|tcx)$/i.test(f.name));
-            if (files.length === 0) return;
-
-            const readPromises = files.map((file) => {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        const fileType = file.name.split(".").pop().toLowerCase();
-                        const trackData = parseFile(event.target.result, fileType, file.name);
-                        if (trackData) {
-                            resolve({ id: `track-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, ...trackData });
-                        } else {
-                            resolve(null);
-                        }
-                    };
-                    reader.onerror = reject;
-                    reader.readAsText(file);
-                });
-            });
-
-            Promise.all(readPromises).then((newTracksData) => {
-                const validTracks = newTracksData.filter(Boolean);
-                if (validTracks.length === 0) return;
-
-                state.droppedTracks.push(...validTracks);
-                validTracks.forEach((track) => addTrackLayer(track));
-
-                state.selectedTrackIds = validTracks.map((t) => t.id);
-                state.lastSelectedTrackId = validTracks.length > 0 ? validTracks[validTracks.length - 1].id : null;
-                focusOnSelectedTracks();
-
-                const geocodingPromises = validTracks.map((track) => {
-                    if (track.points.length > 0) {
-                        return getAddressFromCoordinates(track.points[0][1], track.points[0][0]).then((addressTitle) => {
-                            if (addressTitle) {
-                                const trackToUpdate = state.droppedTracks.find((t) => t.id === track.id);
-                                if (trackToUpdate) {
-                                    trackToUpdate.title = addressTitle;
-                                }
-                            }
-                        });
-                    }
-                    return Promise.resolve();
-                });
-
-                Promise.all(geocodingPromises).then(() => {
-                    updateList();
-                });
-            });
+            processFiles(e.dataTransfer.files);
         });
 
         if (listElement) {
@@ -540,6 +544,17 @@ export const gpx = (() => {
     function init(mapInstance) {
         if (!mapInstance) return console.error("Map instance not provided for gpx module initialization.");
         state.map = mapInstance;
+
+        document.getElementById("gpx-upload-btn")?.addEventListener("click", () => {
+            const fileInput = document.createElement("input");
+            fileInput.type = "file";
+            fileInput.accept = ".gpx,.tcx";
+            fileInput.multiple = true;
+            fileInput.addEventListener("change", (e) => {
+                processFiles(e.target.files);
+            });
+            fileInput.click();
+        });
 
         document.getElementById("export-button")?.addEventListener("click", handleExport);
 

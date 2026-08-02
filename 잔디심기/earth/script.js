@@ -319,42 +319,38 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
 
         if (gpxRecordsToFetch.length > 0) {
             const gpxWorker = new Worker("/잔디심기/earth/gpx-worker.js");
-            const promises = new Map();
-            gpxWorker.onmessage = ({ data }) => {
-                if (promises.has(data.path)) promises.get(data.path).resolve(data.encodedCoordinates);
-            };
-            gpxWorker.onerror = (error) => promises.forEach(({ reject }) => reject(error));
+            const fetchPromises = [];
 
+            gpxWorker.onmessage = ({ data }) => {
+                if (data.encodedCoordinates) {
+                    const coordinates = decodeCoordinates(data.encodedCoordinates);
+                    if (coordinates.length > 0) {
+                        const record = gpxRecordsToFetch.find(r => `../records/${r.record.date.substring(0, 4)}/${r.shortPath}.gpx` === data.path)?.record;
+                        if (record) {
+                            const newFeature = createFeature(record, coordinates, data.shortPath);
+                            processNewFeatures([newFeature]);
+                            updateMapSources();
+                        }
+                    }
+                }
+                processedCount++;
+                updateProgress(processedCount, totalRecords);
+            };
+            gpxWorker.onerror = (error) => {
+                console.error("GPX Worker error:", error);
+                // 오류가 발생해도 모든 레코드를 처리한 것으로 간주하여 진행률을 업데이트합니다.
+                processedCount += gpxRecordsToFetch.length - processedCount + featuresFromSheet.length;
+                updateProgress(processedCount, totalRecords);
+            };
+    
             for (const { record, shortPath } of gpxRecordsToFetch) {
                 const fullPath = `../records/${record.date.substring(0, 4)}/${shortPath}.gpx`;
-                await new Promise((resolve) => {
-                    new Promise((res, rej) => {
-                        promises.set(fullPath, { resolve: res, reject: rej });
-                        fetch(fullPath)
-                            .then((r) => (r.ok ? r.text() : Promise.reject(new Error(r.statusText))))
-                            .then((gpxText) => gpxWorker.postMessage({ gpxText, path: fullPath }))
-                            .catch(rej);
-                    })
-                        .then((encoded) => {
-                            if (encoded) {
-                                const coordinates = decodeCoordinates(encoded);
-                                if (coordinates.length > 0) {
-                                    const newFeature = createFeature(record, coordinates, shortPath);
-                                    processNewFeatures([newFeature]);
-                                    updateMapSources();
-                                }
-                            }
-                        })
-                        .catch(() => { })
-                        .finally(() => {
-                            processedCount++;
-                            updateProgress(processedCount, totalRecords);
-                            promises.delete(fullPath);
-                            resolve();
-                        });
-                });
+                fetchPromises.push(fetch(fullPath)
+                    .then(r => r.ok ? r.text() : Promise.reject(new Error(r.statusText)))
+                    .then(gpxText => gpxWorker.postMessage({ gpxText, path: fullPath, shortPath: shortPath }))
+                    .catch(() => { processedCount++; updateProgress(processedCount, totalRecords); }));
             }
-            gpxWorker.terminate();
+            await Promise.all(fetchPromises).then(() => { gpxWorker.terminate(); });
         }
 
         updateProgress(totalRecords, totalRecords);
