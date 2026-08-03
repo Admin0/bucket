@@ -163,7 +163,7 @@ hermes.track = function () {
     hermes.trailStats.minDistancePace = Math.min(...hermes.trailStats.distance_paces);
 
     // 기록의 시작 및 종료 연도 설정
-    const years = [...new Set(hermes.records.map((r) => r.weekInfo.year ))].filter((years) => years <= new Date().getFullYear());
+    const years = [...new Set(hermes.records.map((r) => r.weekInfo.year))].filter((years) => years <= new Date().getFullYear());
     const startYear = years.length > 0 ? Math.min(...years) : new Date().getFullYear();
     const endYear = years.length > 0 ? Math.max(...years) : new Date().getFullYear();
 
@@ -308,8 +308,10 @@ hermes.track = function () {
                         marker.classList.add("has-record");
                         if (recordsForWeek.some((r) => r.isOfficial)) {
                             marker.classList.add("official");
-                            marker.addEventListener("click", () => {
-                                open(representativeRecord.certi);
+                            marker.addEventListener("click", (event) => {
+                                if (!navigator.userAgentData.mobile || event.detail === 2) {
+                                    open(representativeRecord.certi);
+                                }
                             });
                         } else {
                             marker.classList.add("unofficial");
@@ -384,7 +386,7 @@ hermes.track = function () {
                         }
                         marker.style.backgroundColor = `color-mix(in oklab, var(--color--gpx-start), var(--color--gpx-end) ${colorValue}%)`;
                         if (record.isPlaned) {
-                            marker.style.backgroundColor = `color-mix(in oklab, var(--color--gold), var(--color--indigo) 80%)`;                            
+                            marker.style.backgroundColor = `color-mix(in oklab, var(--color--gold), var(--color--indigo) 80%)`;
                             // marker.style.backgroundColor = `var(--color--theme)`;                            
                         }
 
@@ -415,19 +417,19 @@ hermes.track = function () {
             track.addEventListener('scroll', e => {
                 // 동기화로 인한 스크롤 이벤트인 경우, 추가 동작을 방지합니다.
                 if (isSyncing) return;
-                
+
                 // 동기화 시작을 알립니다.
                 isSyncing = true;
-                
+
                 const scrolledTrack = e.target;
-                
+
                 // 스크롤 동기화: 현재 스크롤된 트랙의 위치를 다른 모든 트랙에 적용합니다.
                 tracks.forEach(otherTrack => {
                     if (otherTrack !== scrolledTrack) {
                         otherTrack.scrollTop = scrolledTrack.scrollTop;
                     }
                 });
-                
+
                 // 그림자 업데이트: 모든 트랙의 그림자 상태를 다시 계산하고 적용합니다.
                 tracks.forEach(t => {
                     const { scrollTop, scrollHeight, clientHeight } = t;
@@ -554,7 +556,7 @@ hermes.table = function () {
 
             if (valA < valB) return currentSort.direction === "asc" ? -1 : 1;
             if (valA > valB) return currentSort.direction === "asc" ? 1 : -1;
-            
+
             // 날짜가 같을 경우 over를 기준으로 추가 정렬 (역순으로)
             const overA = a.over || 0;
             const overB = b.over || 0;
@@ -650,18 +652,18 @@ hermes.table = function () {
     const eventSettings = [
         { el: [...typeRadios, ...courseRadios, ...yearRadios], type: 'change' },
         { el: [searchInput], type: 'input' }
-      ];
-      
-      eventSettings.forEach(({ el, type }) => {
+    ];
+
+    eventSettings.forEach(({ el, type }) => {
         el?.forEach?.((item) => {
-          if (!item) return;
-      
-          item.addEventListener(type, (e) => {
-            filterAndRender();
-            if (e.isTrusted) document.getElementById('table-container').scrollIntoView({ behavior: 'smooth' });
-          });
+            if (!item) return;
+
+            item.addEventListener(type, (e) => {
+                filterAndRender();
+                if (e.isTrusted) document.getElementById('table-container').scrollIntoView({ behavior: 'smooth' });
+            });
         });
-      });
+    });
 
     // 테이블 헤더 클릭 시 정렬
     tableHeaders.forEach((header) => {

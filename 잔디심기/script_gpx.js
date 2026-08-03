@@ -285,7 +285,7 @@ hermes.initializeTooltips = function() {
                 tooltip.style.left = `${e.clientX + OFFSET_X}px`;
                 
                 // 화면 상단 경계선 감지 (e.clientY 기준이므로 scrollY 계산이 필요 없음)
-                const shouldFixTop = tooltip.offsetHeight > (e.clientY - 48);
+                const shouldFixTop = tooltip.offsetHeight > (e.clientY - 16 * 3);
                 
                 if (shouldFixTop) {
                     tooltip.classList.add("fixedTop");

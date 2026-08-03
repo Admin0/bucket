@@ -661,6 +661,10 @@ nav ul.link {
     box-shadow: 0 5px 12px var(--color--track-shadow);
 }
 
+nav ul.link:hover {
+    box-shadow: 0 12px 28px var(--color--track-shadow);
+}
+
 nav #nav_link:hover ul.link {
     opacity: 1;
     margin-right: 0;
