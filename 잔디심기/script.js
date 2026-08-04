@@ -474,7 +474,7 @@ hermes.table = function () {
     let filteredRecords = [...hermes.records];
 
     // 연도 필터 동적 생성
-    const years = [...new Set(hermes.records.map((r) => r.weekInfo.year))].sort((a, b) => b - a);
+    const years = [...new Set(hermes.records.filter((r) => !r.isPlaned).map((r) => r.weekInfo.year))].sort((a, b) => b - a);
     if (yearRadiosContainer.children.length < years.length + 1) {
         years.forEach((year) => {
             const label = document.createElement("label");
