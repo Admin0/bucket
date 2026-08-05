@@ -96,6 +96,19 @@
     padding: 1em;
     border-radius: 2em;
 }
+
+#tooltip .replace {
+    /* position: absolute; */
+    /* left: 0; */
+    /* background-color: gold; */
+    background-color: var(--color--track);
+}
+
+body.alt #tooltip .main,
+body:not(.alt) #tooltip .replace {
+    display: none;
+}
+
 #tooltip .data span.div {
     border-right: 1px solid var(--color--track-border);
 }

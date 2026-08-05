@@ -174,19 +174,24 @@ hermes.gpx2svg = async (geometry, svgElementId) => {
 /**
  * 활동 기록 배열을 받아 GPX 경로를 포함한 상세 툴팁 HTML을 생성합니다.
  */
-hermes.tooltip = function(records) {
+hermes.tooltip = function (records) {
     let tooltipContent = "";
     if (!Array.isArray(records)) records = [records];
 
     records.forEach((rec, i) => {
         if (!rec) return;
-        const paceValue = rec.course === "trail" ? rec.elevation_pace : rec.pace;
-        const tooltipPace = `${Math.floor(paceValue / 60)}′${Math.floor(paceValue % 60)
-            .toString()
-            .padStart(2, "0")}″${rec.course === "trail" ? '<span class="unit">/60 m↑</span>' : '<span class="unit">/km</span>'}`;
-        const tooltipDistance = rec.course === "trail" ? `${rec.elevation.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})} <span class="unit"> m</span>` : `${rec.distance.toFixed(2)} <span class="unit"> km</span>`;
+        const paceValue = (pace) => { return `${Math.floor(pace / 60)}′${Math.floor(pace % 60).toString().padStart(2, "0")}″` };
+        const tooltipPace = `${rec.course === "trail" ?
+                `<span class="main">${paceValue(rec.elevation_pace)}</span><span class="replace">${paceValue(rec.pace)}</span>` :
+                `<span class="replace">${paceValue(rec.elevation_pace)}</span><span class="main">${paceValue(rec.pace)}</span>`}
+            ${rec.course === "trail" ? '<span class="unit main">/60 m↑</span><span class="unit replace">/km</span>' : '<span class="unit replace">/60 m↑</span><span class="unit main">/km</span>'}`;
+        const tooltipDistance = rec.course === "trail" ?
+            `<span class="main">${rec.elevation.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })} <span class="unit"> m</span></span><span class="replace">${rec.distance.toFixed(2)} <span class="unit"> km</span></span>` :
+            `<span class="replace">${rec.elevation.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })} <span class="unit"> m</span></span><span class="main">${rec.distance.toFixed(2)} <span class="unit"> km</span></span>`;
         const tooltip_type = rec.isOfficial ? "공식 기록" : rec.type === "ride" ? "라이딩" : rec.type === "trail" ? "하이킹 / 트레일러닝" : rec.type === "walk" ? "걷기" : "러닝";
-        const icon_distance = rec.course === "trail" ? "altitude" : "conversion_path";
+        const icon_distance = rec.course === "trail" ?
+            `<span class="main">altitude</span><span class="replace">conversion_path</span>` :
+            `<span class="replace">altitude</span><span class="main">conversion_path</span>`;
         const comment = rec.comment ? `<span class="comment">${rec.comment}</span>` : "";
         const uniqueId = `${rec.date}-${rec.over || 0}`;
 
@@ -199,12 +204,14 @@ hermes.tooltip = function(records) {
                 <div class="title">${rec.title} ${rec.isOfficial ? '<span class="material-symbols official"> crown </span>' : ""} ${comment}</div>
             </div>
             <div class="data">
-                <span class="material-symbols-outlined icon distance">${icon_distance}</span> <span class="distance">${tooltipDistance}</span> <span class="div"></span>
-                <span class="material-symbols-outlined icon record">timer</span> <span class="rec">${rec.record}</span> <span class="div"></span>
+                <span class="material-symbols-outlined icon distance">${icon_distance}</span> <span class="distance">${tooltipDistance}</span>
+                <span class="div"></span>
+                <span class="material-symbols-outlined icon record">timer</span> <span class="rec">${rec.record}</span> 
+                <span class="div"></span>
                 <span class="material-symbols-outlined icon pace">speed</span> <span class="pace">${tooltipPace}</span>
             </div>
         </div>`;
-        
+
         setTimeout(() => {
             if (rec.geometry) {
                 hermes.gpx2svg(rec.geometry, `#gpx-${uniqueId} svg`);
@@ -215,27 +222,27 @@ hermes.tooltip = function(records) {
     const tooltip = document.getElementById("tooltip");
 
     return {
-        show: function() {
+        show: function () {
             tooltip.innerHTML = tooltipContent;
             tooltip.classList.add("on");
             return this;
         },
-        addClass: function(className) {
+        addClass: function (className) {
             tooltip.classList.add(className);
             return this;
         },
-        hide: function() {
+        hide: function () {
             tooltip.className = '';
             return this;
         },
-        position: function(e) {}
+        position: function (e) { }
     };
 };
 
 /**
  * 툴팁 관련 기능을 초기화합니다. (CSS position: fixed 버전)
  */
-hermes.initializeTooltips = function() {
+hermes.initializeTooltips = function () {
     if (hermes.tooltipsInitialized) return; // 중복 초기화 방지
 
     const tooltip = document.getElementById("tooltip");
@@ -244,11 +251,11 @@ hermes.initializeTooltips = function() {
     // 1. 일반 'title' 속성 툴팁 처리
     document.body.addEventListener("mouseover", (e) => {
         const target = e.target.closest("[title]");
-        
+
         if (target && !target.closest(".day-cell, .marker, [data-record-id]")) {
             target.dataset.genericTooltip = target.title;
-            target.removeAttribute("title"); 
-            
+            target.removeAttribute("title");
+
             tooltip.innerHTML = `<div class="tooltip-comment">${target.dataset.genericTooltip}</div>`;
             tooltip.classList.add("on", "generic");
         }
@@ -263,7 +270,7 @@ hermes.initializeTooltips = function() {
 
         target.title = target.dataset.genericTooltip;
         target.removeAttribute("data-generic-tooltip");
-        
+
         if (tooltip.classList.contains("generic")) {
             tooltip.classList.remove("on", "generic", "fixedTop");
             tooltip.style.top = "";
@@ -283,13 +290,13 @@ hermes.initializeTooltips = function() {
             window.requestAnimationFrame(() => {
                 // fixed 레이아웃이므로 clientX, clientY 사용
                 tooltip.style.left = `${e.clientX + OFFSET_X}px`;
-                
+
                 // 화면 상단 경계선 감지 (e.clientY 기준이므로 scrollY 계산이 필요 없음)
                 const shouldFixTop = tooltip.offsetHeight > (e.clientY - 16 * 3);
-                
+
                 if (shouldFixTop) {
                     tooltip.classList.add("fixedTop");
-                    tooltip.style.top = ""; 
+                    tooltip.style.top = "";
                 } else {
                     tooltip.classList.remove("fixedTop");
                     // 마우스 커서 살짝 아래에 위치하도록 여백(OFFSET_Y) 추가

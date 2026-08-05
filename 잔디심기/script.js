@@ -103,10 +103,8 @@ hermes.recordInit = function () {
         let elevation_pace = Infinity;
         let distance_pace = Infinity;
 
-        if (isTrail) {
-            if (elevation > 0) elevation_pace = (time / elevation / 2) * 60; // 60m당 페이스
-            if (distance > 0) distance_pace = time / distance;
-        }
+        if (elevation > 0) elevation_pace = (time / elevation / 2) * 60; // 60m당 페이스
+        if (distance > 0) distance_pace = time / distance;
 
         const dateObj = new Date(record.date);
 
@@ -121,7 +119,7 @@ hermes.recordInit = function () {
             distance_pace: time / distance,
             elevation,
             pace: time / distance,
-            elevation_pace: isTrail ? elevation_pace : distance > 0 ? time / distance : Infinity,
+            elevation_pace,
             distance_pace,
             course: record.type == "run" ? (distance >= 42.195 ? "full" : distance >= 21.0975 ? "half" : distance >= 10 ? "10k" : "5k") : record.type,
             dateObj: dateObj,
@@ -705,6 +703,23 @@ hermes.table = function () {
     filterAndRender();
 };
 
+hermes.key = function () {
+    // 키를 눌렀을 때 실행
+    window.addEventListener('keydown', (event) => {
+        if (event.key === 'Alt') {
+            event.preventDefault();
+            document.body.classList.add('alt');
+        }
+    });
+
+    // 키를 떼었을 때 실행
+    window.addEventListener('keyup', (event) => {
+        if (event.key === 'Alt') {
+            document.body.classList.remove('alt');
+        }
+    });
+}
+
 // 애플리케이션 초기화 함수
 hermes.initiate = async function () {
     await loadSheetData(); // 데이터를 먼저 로드
@@ -713,6 +728,7 @@ hermes.initiate = async function () {
     hermes.calendar();
     hermes.table();
     hermes.stats();
+    hermes.key();
 };
 
 // DOM 콘텐츠 로드 완료 시 애플리케이션 초기화 및 스플래시 화면 숨기기

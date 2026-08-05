@@ -304,7 +304,7 @@ a {
 
 #table-container h2,
 #table-container .filters,
-#table-container #records-table thead{
+#table-container #records-table thead {
     max-width: var(--width--track);
     margin: 1em auto;
 }
@@ -546,6 +546,8 @@ a {
 
 #records-table tr .replace,
 #records-table tr:hover td .main,
+body:not(.alt) #records-table tr .replace,
+body.alt #records-table td .main,
 #records-table tr .comment {
     display: none;
 }
@@ -560,17 +562,20 @@ a {
     left: calc(1.5em / 0.8);
 }
 
-#records-table td:has(.replace) {
+#records-table td:has(.replace),
+body.alt #records-table td:has(.replace) {
     outline-color: var(--color--track-dark);
 }
 
-#records-table tr:hover td:has(.replace) {
+#records-table tr:hover td:has(.replace),
+body.alt #records-table tr td:has(.replace) {
     background-color: var(--color--track-dark);
     outline: 0.5em solid var(--color--track-dark);
     border-radius: 1em;
 }
 
 #records-table tr:hover td .replace,
+body.alt #records-table tr .replace,
 #records-table tr:hover .comment {
     display: inline-block;
 }
@@ -611,6 +616,7 @@ nav {
     /* padding-bottom: 1em; */
     transition: 0.25s;
     line-height: 1;
+    z-index: 20;
 }
 
 nav:hover {
@@ -640,7 +646,7 @@ nav li .item {
     box-shadow: 0 5px 12px var(--color--track-shadow);
 }
 
-nav li:not(.link) .item:hover {
+nav>ul>li>.item:hover {
     color: var(--color--theme);
     background-color: var(--color--calendar-hover);
     box-shadow: 0 12px 28px var(--color--track-shadow);
@@ -688,9 +694,10 @@ nav ul.link a {
     border-radius: 50%;
 }
 
-nav ul.link a:hover {
+nav ul.link li .item:hover {
     color: #303F9F;
-    background-color: #90CAF9;
+    background: #90caf9;
+    /* background: radial-gradient(circle, #90caf9 0%, var(--color--track) 70%); */
 }
 
 nav ul.link a.instagram img {
