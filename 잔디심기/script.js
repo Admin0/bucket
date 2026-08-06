@@ -222,6 +222,7 @@ hermes.track = function () {
                         const p = document.createElement("p");
                         p.className = `best-record ${bestRecord.isOfficial ? "official" : "unofficial"}`;
                         p.innerHTML = `<strong>${value}</strong> (${paceMinutes}\'${paceSeconds}\'\'<span class="unit">${unit}</span>)`;
+                        p.dataset.recordId = bestRecord.id;
                         bestRecordContainer.appendChild(p);
                     }
                 }
@@ -235,12 +236,14 @@ hermes.track = function () {
                     const p = document.createElement("p");
                     p.className = "best-record official";
                     p.innerHTML = `<strong>${bestOfficial.record}</strong> (${Math.floor(bestOfficial.pace / 60)}\'${Math.floor(bestOfficial.pace % 60)}\'\'<span class="unit">/km</span>)`;
+                    p.dataset.recordId = bestOfficial.id;
                     bestRecordContainer.appendChild(p);
                 }
                 if (bestUnofficial && (!bestOfficial || bestUnofficial.time < bestOfficial.time)) {
                     const p = document.createElement("p");
                     p.className = "best-record unofficial";
                     p.innerHTML = `<strong>${bestUnofficial.record}</strong> (${Math.floor(bestUnofficial.pace / 60)}\'${Math.floor(bestUnofficial.pace % 60)}\'\'<span class="unit">/km</span>)`;
+                    p.dataset.recordId = bestUnofficial.id;
                     bestRecordContainer.appendChild(p);
                 }
             }
@@ -444,6 +447,18 @@ hermes.track = function () {
                 });
             });
         });
+
+        // 최고 기록에 대한 툴팁
+        const bestRecord = document.querySelectorAll(".best-record:has(.unit)");
+        bestRecord.forEach((record) => {
+            record.addEventListener("mouseenter", (e) => {
+                hermes.tooltip(hermes.records.filter((r) => r.id === parseInt(record.dataset.recordId))).show();
+            });
+            record.addEventListener("mouseleave", (e) => {
+                hermes.tooltip().hide();
+            });
+        });
+        console.log(bestRecord);
     }
 
     renderTracks();

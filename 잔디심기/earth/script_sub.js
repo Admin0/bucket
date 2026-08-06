@@ -99,7 +99,7 @@ export const initializeTooltips = function(map) {
         const distanceIcon = isTrail ? "altitude" : "conversion_path";
 
         const comment = properties.comment ? `<span class="comment">${properties.comment}</span>` : "";
-        const typeText = isOfficial ? "공식 대회" : isTrail ? "하이킹 / 트레일러닝" : properties.type === "walk" ? "걷기" : properties.type === "ride" ? "자전거 타기" : "러닝";
+        const typeText = isOfficial ? "공식 대회" : isTrail ? "하이킹 / 트레일러닝" : properties.type === "walk" ? "걷기" : properties.type === "ride" ? "라이딩" : "러닝";
 
         return `
             <div class="tooltip-item ${isOfficial ? "official" : ""}">
