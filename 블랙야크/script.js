@@ -4,6 +4,7 @@ const p = document.getElementById("블랙야크_p");
 
 // The 'points' array will be populated from the Google Sheet.
 let points = [];
+let lastHoveredPointId = null;
 const googleSheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2sIB7-0jMCuFQWhaawx6bYXISAP4IOKffPgCsJF2EFG_JCDbbmNghCclU2jY3qfrnl-64iJf6U1__/pub?output=csv';
 
 const MAP_MARGIN = 0;
@@ -91,7 +92,7 @@ async function updateTitle(p_el, point) {
         title += `<div class="undone"></div>`;
     }
 
-    p_el.addEventListener("mouseover", (e) => {
+    p_el.addEventListener("mouseenter", (e) => {
         let tooltip = document.getElementById("tooltip");
         tooltip.innerHTML = title;
 
@@ -107,7 +108,10 @@ async function updateTitle(p_el, point) {
                     table_item_target.scrollIntoView({ behavior: "smooth" });
                 }
             }
-            tooltip.style.setProperty("--tooltip-rotate", `${-3 + Math.random() * 6}deg`);
+            if (lastHoveredPointId !== point.no) {
+                tooltip.style.setProperty("--tooltip-rotate", `${-3 + Math.random() * 6}deg`);
+            }
+            lastHoveredPointId = point.no;
         }
         tooltip.classList.add("on", "블랙야크");
         if (!isOnPage()) {
@@ -117,7 +121,7 @@ async function updateTitle(p_el, point) {
             tooltip.style.left = left + "px";
         }
     });
-    p_el.addEventListener("mouseout", (e) => {
+    p_el.addEventListener("mouseleave", (e) => {
         tooltip.classList.remove("on", "블랙야크");
     });
 }

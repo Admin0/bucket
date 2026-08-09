@@ -2,6 +2,13 @@
  * statstics
  * ---------------------------------------- */
 
+/* filters */
+
+#stats-type-filter-container {
+    margin-left: 0;
+}
+
+
 /* stats header */
 
 #stats-header {
