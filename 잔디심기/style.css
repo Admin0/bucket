@@ -348,6 +348,10 @@ a {
     cursor: pointer;
 }
 
+.filters .filter:first-of-type {
+    margin-left: -.25em;
+}
+
 .filters input:not([type="search"]) {
     display: none;
 }
