@@ -21,7 +21,8 @@ function hideSplashScreen() {
 // --- End Splash Screen Logic ---
 
 // 전역 'hermes' 객체 초기화
-const hermes = {};
+import { createTooltip, initializeTooltips } from './script_tooltip.js';
+import { gpx2svg } from './script_gpx.js';
 
 // Google Sheet에서 데이터를 비동기적으로 로드하는 함수
 async function loadSheetData() {
@@ -327,7 +328,7 @@ hermes.track = function () {
                                 return (a.over || 0) - (b.over || 0);
                             });
                             hermes.tooltip(recordsForWeek).show();
-                            const recordIds = JSON.parse(marker.dataset.recordIds);
+                            const recordIds = JSON.parse(marker.dataset.recordIds || '[]');
                             recordIds.forEach((id) => {
                                 document.querySelector(`#records-table tr[data-record-id="${id}"]`)?.classList.add("highlight");
                             });
@@ -335,7 +336,7 @@ hermes.track = function () {
 
                         marker.addEventListener("mouseleave", () => {
                             hermes.tooltip().hide();
-                            const recordIds = JSON.parse(marker.dataset.recordIds);
+                            const recordIds = JSON.parse(marker.dataset.recordIds || '[]');
                             recordIds.forEach((id) => {
                                 document.querySelector(`#records-table tr[data-record-id="${id}"]`)?.classList.remove("highlight");
                             });
@@ -737,6 +738,7 @@ hermes.key = function () {
 
 // 애플리케이션 초기화 함수
 hermes.initiate = async function () {
+    initializeTooltips();
     await loadSheetData(); // 데이터를 먼저 로드
     hermes.recordInit();
     hermes.track();
@@ -744,6 +746,8 @@ hermes.initiate = async function () {
     hermes.table();
     hermes.stats();
     hermes.key();
+    hermes.tooltip = createTooltip; // 전역에서 접근 가능하도록 할당
+    hermes.gpx2svg = gpx2svg; // 전역에서 접근 가능하도록 할당
 };
 
 // DOM 콘텐츠 로드 완료 시 애플리케이션 초기화 및 스플래시 화면 숨기기

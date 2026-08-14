@@ -1,7 +1,7 @@
 // GPX-SVG 변환 및 툴팁 관련 기능을 담당하는 스크립트
 
 // 전역 캐시 객체 초기화
-hermes.svgCache = {}; // 렌더링된 SVG 경로 캐시
+window.hermes.svgCache = {}; // 렌더링된 SVG 경로 캐시
 
 // 좌표 디코딩 함수
 function decodeCoordinates(encoded) {
@@ -44,7 +44,7 @@ function decodeCoordinates(encoded) {
  * @param {string} geometry - 인코딩된 폴리라인 문자열.
  * @param {string} svgElementId - SVG를 렌더링할 요소의 CSS 셀렉터.
  */
-hermes.gpx2svg = async (geometry, svgElementId) => {
+export const gpx2svg = async (geometry, svgElementId) => {
     await new Promise((resolve) => setTimeout(resolve, 0)); // DOM 업데이트 대기
 
     const svg = document.querySelector(svgElementId);
@@ -57,7 +57,7 @@ hermes.gpx2svg = async (geometry, svgElementId) => {
 
     // 1. 렌더링된 SVG 캐시 확인 (geometry를 키로 사용)
     const cacheKey = geometry;
-    const cachedSvg = hermes.svgCache[cacheKey];
+    const cachedSvg = window.hermes.svgCache[cacheKey];
     if (cachedSvg) {
         if (cachedSvg === "not-found") {
             svg.innerHTML = svgNotFound;
@@ -79,7 +79,7 @@ hermes.gpx2svg = async (geometry, svgElementId) => {
 
         if (!pts || pts.length < 2) {
             svg.innerHTML = svgNotFound; // Fallback for no points
-            hermes.svgCache[cacheKey] = "not-found"; // 캐시에 'not-found' 저장
+            window.hermes.svgCache[cacheKey] = "not-found"; // 캐시에 'not-found' 저장
             return;
         }
 
@@ -162,158 +162,11 @@ hermes.gpx2svg = async (geometry, svgElementId) => {
         svg.setAttribute("style", style);
         svg.innerHTML = svgInnerHtml;
 
-        hermes.svgCache[cacheKey] = { viewBox, style, innerHTML: svgInnerHtml };
+        window.hermes.svgCache[cacheKey] = { viewBox, style, innerHTML: svgInnerHtml };
 
     } catch (error) {
         console.error("Error rendering SVG:", error);
-        hermes.svgCache[cacheKey] = "not-found";
+        window.hermes.svgCache[cacheKey] = "not-found";
         svg.innerHTML = svgNotFound;
     }
 };
-
-/**
- * 활동 기록 배열을 받아 GPX 경로를 포함한 상세 툴팁 HTML을 생성합니다.
- */
-hermes.tooltip = function (records) {
-    let tooltipContent = "";
-    if (!Array.isArray(records)) records = [records];
-
-    records.forEach((rec, i) => {
-        if (!rec) return;
-        const paceValue = (pace) => { return `${Math.floor(pace / 60)}′${Math.floor(pace % 60).toString().padStart(2, "0")}″` };
-        const tooltipPace = `${rec.course === "trail" ?
-                `<span class="main">${paceValue(rec.elevation_pace)}</span><span class="replace">${paceValue(rec.pace)}</span>` :
-                `<span class="replace">${paceValue(rec.elevation_pace)}</span><span class="main">${paceValue(rec.pace)}</span>`}
-            ${rec.course === "trail" ? '<span class="unit main">/60 m↑</span><span class="unit replace">/km</span>' : '<span class="unit replace">/60 m↑</span><span class="unit main">/km</span>'}`;
-        const tooltipDistance = rec.course === "trail" ?
-            `<span class="main">${rec.elevation.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })} <span class="unit"> m</span></span><span class="replace">${rec.distance.toFixed(2)} <span class="unit"> km</span></span>` :
-            `<span class="replace">${rec.elevation.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })} <span class="unit"> m</span></span><span class="main">${rec.distance.toFixed(2)} <span class="unit"> km</span></span>`;
-        const tooltip_type = rec.isOfficial ? "공식 기록" : rec.type === "ride" ? "라이딩" : rec.type === "trail" ? "하이킹 / 트레일러닝" : rec.type === "walk" ? "걷기" : "러닝";
-        const icon_distance = rec.course === "trail" ?
-            `<span class="main">altitude</span><span class="replace">conversion_path</span>` :
-            `<span class="replace">altitude</span><span class="main">conversion_path</span>`;
-        const comment = rec.comment ? `<span class="comment">${rec.comment}</span>` : "";
-        const uniqueId = `${rec.date}-${rec.over || 0}`;
-
-        tooltipContent += `
-        <div class="tooltip-item ${rec.isOfficial ? "official" : ""}">
-            <div class="gpx" id="gpx-${uniqueId}"><svg></svg></div>
-            <div class="title-container">
-                <span class="type">${tooltip_type}</span>
-                <span class="date">${rec.date}</span>
-                <div class="title">${rec.title} ${rec.isOfficial ? '<span class="material-symbols official"> crown </span>' : ""} ${comment}</div>
-            </div>
-            <div class="data">
-                <span class="material-symbols-outlined icon distance">${icon_distance}</span> <span class="distance">${tooltipDistance}</span>
-                <span class="div"></span>
-                <span class="material-symbols-outlined icon record">timer</span> <span class="rec">${rec.record}</span> 
-                <span class="div"></span>
-                <span class="material-symbols-outlined icon pace">speed</span> <span class="pace">${tooltipPace}</span>
-            </div>
-        </div>`;
-
-        setTimeout(() => {
-            if (rec.geometry) {
-                hermes.gpx2svg(rec.geometry, `#gpx-${uniqueId} svg`);
-            }
-        }, 0);
-    });
-
-    const tooltip = document.getElementById("tooltip");
-
-    return {
-        show: function () {
-            tooltip.innerHTML = tooltipContent;
-            tooltip.classList.add("on");
-            return this;
-        },
-        addClass: function (className) {
-            tooltip.classList.add(className);
-            return this;
-        },
-        hide: function () {
-            tooltip.className = '';
-            return this;
-        },
-        position: function (e) { }
-    };
-};
-
-/**
- * 툴팁 관련 기능을 초기화합니다. (CSS position: fixed 버전)
- */
-hermes.initializeTooltips = function () {
-    if (hermes.tooltipsInitialized) return; // 중복 초기화 방지
-
-    const tooltip = document.getElementById("tooltip");
-    if (!tooltip) return;
-
-    // 1. 일반 'title' 속성 툴팁 처리
-    document.body.addEventListener("mouseover", (e) => {
-        const target = e.target.closest("[title]");
-
-        if (target && !target.closest(".day-cell, .marker, [data-record-id]")) {
-            target.dataset.genericTooltip = target.title;
-            target.removeAttribute("title");
-
-            tooltip.innerHTML = `<div class="tooltip-comment">${target.dataset.genericTooltip}</div>`;
-            tooltip.classList.add("on", "generic");
-        }
-    }, { passive: true });
-
-    document.body.addEventListener("mouseout", (e) => {
-        const target = e.target.closest("[data-generic-tooltip]");
-        if (!target) return;
-
-        const relatedTarget = e.relatedTarget;
-        if (relatedTarget && target.contains(relatedTarget)) return;
-
-        target.title = target.dataset.genericTooltip;
-        target.removeAttribute("data-generic-tooltip");
-
-        if (tooltip.classList.contains("generic")) {
-            tooltip.classList.remove("on", "generic", "fixedTop");
-            tooltip.style.top = "";
-            tooltip.style.left = "";
-        }
-    }, { passive: true });
-
-    // 2. 툴팁 마우스 추적 기능 (position: fixed 전용)
-    let ticked = false;
-    const OFFSET_X = 10; // 마우스 커서 우측 여백
-    const OFFSET_Y = 15; // 마우스 커서 하단 여백
-
-    document.addEventListener("mousemove", (e) => {
-        if (!tooltip.classList.contains("on")) return;
-
-        if (!ticked) {
-            window.requestAnimationFrame(() => {
-                // fixed 레이아웃이므로 clientX, clientY 사용
-                tooltip.style.left = `${e.clientX + OFFSET_X}px`;
-
-                // 화면 상단 경계선 감지 (e.clientY 기준이므로 scrollY 계산이 필요 없음)
-                const shouldFixTop = tooltip.offsetHeight > (e.clientY - 16 * 3);
-
-                if (shouldFixTop) {
-                    tooltip.classList.add("fixedTop");
-                    tooltip.style.top = "";
-                } else {
-                    tooltip.classList.remove("fixedTop");
-                    // 마우스 커서 살짝 아래에 위치하도록 여백(OFFSET_Y) 추가
-                    tooltip.style.top = `${e.clientY + OFFSET_Y}px`;
-                }
-                ticked = false;
-            });
-            ticked = true;
-        }
-    });
-
-    hermes.tooltipsInitialized = true;
-};
-
-// DOM 로드 체크
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", hermes.initializeTooltips);
-} else {
-    hermes.initializeTooltips();
-}

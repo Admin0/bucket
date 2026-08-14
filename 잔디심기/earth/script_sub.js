@@ -1,6 +1,8 @@
+import { createTooltip } from '../script_tooltip.js';
+
 let tooltipsInitialized = false; // Local state for this module
 
-export const initializeTooltips = function(map) {
+export const initializeTooltips = function (map) {
     if (tooltipsInitialized) return; // 중복 초기화 방지
     const tooltip = document.getElementById("tooltip");
     if (!tooltip) return;
@@ -8,11 +10,11 @@ export const initializeTooltips = function(map) {
     // 1. 일반 'title' 속성 툴팁 처리
     document.body.addEventListener("mouseover", (e) => {
         const target = e.target.closest("[title]");
-        
+
         if (target && !target.closest(".day-cell, .marker, [data-record-id]")) {
             target.dataset.genericTooltip = target.title;
-            target.removeAttribute("title"); 
-            
+            target.removeAttribute("title");
+
             tooltip.innerHTML = `<div class="tooltip-comment">${target.dataset.genericTooltip}</div>`;
             tooltip.classList.add("on", "generic");
         }
@@ -27,7 +29,7 @@ export const initializeTooltips = function(map) {
 
         target.title = target.dataset.genericTooltip;
         target.removeAttribute("data-generic-tooltip");
-        
+
         if (tooltip.classList.contains("generic")) {
             tooltip.classList.remove("on", "generic", "fixedTop");
             tooltip.style.top = "";
@@ -47,13 +49,13 @@ export const initializeTooltips = function(map) {
             window.requestAnimationFrame(() => {
                 // fixed 레이아웃이므로 clientX, clientY 사용
                 tooltip.style.left = `${e.clientX + OFFSET_X}px`;
-                
+
                 // 화면 상단 경계선 감지 (e.clientY 기준이므로 scrollY 계산이 필요 없음)
                 const shouldFixTop = tooltip.offsetHeight > (e.clientY - 48);
-                
+
                 if (shouldFixTop) {
                     tooltip.classList.add("fixedTop");
-                    tooltip.style.top = ""; 
+                    tooltip.style.top = "";
                 } else {
                     tooltip.classList.remove("fixedTop");
                     // 마우스 커서 살짝 아래에 위치하도록 여백(OFFSET_Y) 추가
@@ -70,52 +72,6 @@ export const initializeTooltips = function(map) {
      * ---------------------------------------- */
 
     // create tooltip
-
-    function generateTooltipHtml(properties) {
-        const isTrail = properties.type === "trail";
-        const isOfficial = properties.certified;
-
-        const parts = properties.record.split(":").map(Number);
-        let time;
-        if (parts.length === 3) {
-            time = parts[0] * 3600 + parts[1] * 60 + parts[2];
-        } else if (parts.length === 2) {
-            time = parts[0] * 60 + parts[1];
-        }
-
-        const distance = properties.distance || (properties.course == "full" ? 42.195 : properties.course == "half" ? 21.0975 : properties.course == "10k" ? 10 : properties.course == "5k" ? 5 : 0);
-
-        const elevation_pace = (time / properties.elevation / 2) * 60; // 60 m 당 페이스
-        const pace = time / distance;
-        const paceValue = isTrail ? elevation_pace : pace;
-        const paceUnit = isTrail ? "/60 m↑" : "/km";
-        const tooltipPace = paceValue
-            ? `${Math.floor(paceValue / 60)}′${Math.floor(paceValue % 60)
-                  .toString()
-                  .padStart(2, "0")}″<span class="unit">${paceUnit}</span>`
-            : "N/A";
-
-        const distanceValue = isTrail ? `${properties.elevation} m` : `${parseFloat(distance).toFixed(2)} km`;
-        const distanceIcon = isTrail ? "altitude" : "conversion_path";
-
-        const comment = properties.comment ? `<span class="comment">${properties.comment}</span>` : "";
-        const typeText = isOfficial ? "공식 대회" : isTrail ? "하이킹 / 트레일러닝" : properties.type === "walk" ? "걷기" : properties.type === "ride" ? "라이딩" : "러닝";
-
-        return `
-            <div class="tooltip-item ${isOfficial ? "official" : ""}">
-                 <div class="title-container">
-                    <span class="type">${typeText}</span>
-                    <span class="date">${properties.date}</span>
-                    <div class="title">${properties.title} ${isOfficial ? '<span class="material-symbols official"> crown </span>' : ""}${comment}</div>
-                </div>
-                <div class="data">
-                    <span class="material-symbols-outlined icon distance">${distanceIcon}</span> <span class="distance">${distanceValue}</span> <span class="div"></span>
-                    <span class="material-symbols-outlined icon record">timer</span> <span class="rec">${properties.record || "N/A"}</span> <span class="div"></span>
-                    <span class="material-symbols-outlined icon pace">speed</span> <span class="pace">${tooltipPace}</span>
-                </div>
-            </div>`;
-    }
-    
     // activate tooltip
 
     const tooltipEl = document.getElementById("tooltip");
@@ -153,7 +109,13 @@ export const initializeTooltips = function(map) {
 
         map.getCanvas().style.cursor = "pointer";
         tooltipEl.classList.add("on");
-        tooltipEl.innerHTML = generateTooltipHtml(feature.properties);
+
+        // createTooltip에 전달하기 전에 distance를 숫자로 변환합니다.
+        const tooltipProps = { ...feature.properties };
+        if (typeof tooltipProps.distance === 'string') {
+            tooltipProps.distance = parseFloat(tooltipProps.distance);
+        }
+        createTooltip(tooltipProps, { showGpx: false }).show();
         if (window.matchMedia("only screen and (min-width: 1920px)").matches) {
             tooltipEl.style.left = `${e.point.x + 15}px`;
             tooltipEl.style.top = `${e.point.y - 40}px`;

@@ -1,5 +1,5 @@
 // hermes.calendar: 캘린더 UI를 생성하고 관리하는 메인 함수
-hermes.calendar = () => {
+window.hermes.calendar = () => {
     // 필요한 DOM 요소들을 가져옵니다.
     const calendarGrid = document.getElementById("calendar-grid");
     const tooltip = document.getElementById("tooltip");
@@ -10,7 +10,7 @@ hermes.calendar = () => {
     let currentDate = new Date(); // 'recent' 뷰의 현재 날짜
 
     // 기록 데이터를 날짜 역순으로 정렬합니다.
-    const records = hermes.records.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const records = window.hermes.records.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     // 기록이 없으면 함수를 종료합니다.
     if (!records.length) {
@@ -402,7 +402,7 @@ hermes.calendar = () => {
                     if (dayRecords) {
                         // tooltip.innerHTML = hermes.tooltip(dayRecords);
                         // tooltip.classList.add("on");
-                        hermes.tooltip(dayRecords, false).show();
+                        window.hermes.tooltip(dayRecords, false).show();
                     }
                 }
             });

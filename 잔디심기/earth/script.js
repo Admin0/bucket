@@ -87,9 +87,30 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
     }
 
     function createFeature(record, coordinates, path) {
+        // 페이스 계산 로직 추가
+        const parts = record.record ? record.record.split(":").map(Number) : [0, 0, 0];
+        let timeInSeconds = 0;
+        if (parts.length === 3) {
+            timeInSeconds = parts[0] * 3600 + parts[1] * 60 + parts[2];
+        } else if (parts.length === 2) {
+            timeInSeconds = parts[0] * 60 + parts[1];
+        }
+
+        const distance = parseFloat(record.distance) || (record.course == "full" ? 42.195 : record.course == "half" ? 21.0975 : record.course == "10k" ? 10 : record.course == "5k" ? 5 : 0);
+        const elevationInM = parseFloat(record.elevation) || 0;
+
+        const pace = distance > 0 ? timeInSeconds / distance : Infinity;
+        const elevation_pace = elevationInM > 0 ? timeInSeconds / (elevationInM / 60) : Infinity;
+
         const newFeature = {
             type: "Feature",
-            properties: { ...record, id: featureIdCounter, path: path, certified: record.certi != null && record.certi.length > 0 },
+            properties: {
+                ...record,
+                pace,
+                elevation_pace,
+                distance,
+                id: featureIdCounter, path: path, certified: record.certi != null && record.certi.length > 0,
+            },
             geometry: { type: "LineString", coordinates }
         };
         featureIdCounter++;
@@ -362,6 +383,23 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
         updateMapSources();
     });
 
+    hermes.key = function () {
+        // 키를 눌렀을 때 실행
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Alt') {
+                event.preventDefault();
+                document.body.classList.add('alt');
+            }
+        });
+
+        // 키를 떼었을 때 실행
+        window.addEventListener('keyup', (event) => {
+            if (event.key === 'Alt') {
+                document.body.classList.remove('alt');
+            }
+        });
+    }
+
     map.on("load", () => {
         map.setProjection({ type: "globe" });
         loadGpxData();
@@ -370,6 +408,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
         hermes.initializeTooltips(map);
         hermes.settingsTerraium(map, currentStyle, useFreeService);
         hermes.settingsRouteDesign(map);
+        hermes.key();
 
     });
 })();

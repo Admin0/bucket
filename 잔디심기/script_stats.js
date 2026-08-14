@@ -1,5 +1,5 @@
 // 전체 통계 계산 및 표시
-hermes.stats = () => {
+window.hermes.stats = function() {
     // top-level totals
     let totalDistance = 0,
         totalRunningDistance = 0,
