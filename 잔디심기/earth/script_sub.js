@@ -234,3 +234,24 @@ export const settingsRouteDesign = function(map) {
         map.setPaintProperty('gpx-line-base-certi', 'line-opacity', newOpacity);
     });
 }
+
+export const settingsRouteSearch = function(map, getFeatures) {
+    const input = document.getElementById("route-search-input");
+    const count = document.getElementById("route-search-count");
+    if (!input || !count) return;
+
+    const updateSearch = () => {
+        const query = input.value.trim().toLocaleLowerCase();
+        const matchingIds = query
+            ? getFeatures().filter(feature => feature.properties.searchText?.includes(query)).map(feature => feature.properties.id)
+            : [];
+        const filter = matchingIds.length > 0 ? ["in", ["get", "id"], ["literal", matchingIds]] : ["==", ["get", "id"], -1];
+
+        if (map.getLayer("gpx-search-highlight")) map.setFilter("gpx-search-highlight", filter);
+        count.textContent = query ? `${matchingIds.length}개` : "";
+    };
+
+    input.addEventListener("input", updateSearch);
+    updateSearch();
+    return updateSearch;
+};

@@ -135,9 +135,11 @@
 #calendar-grid .week-summary [class^="week"].replace {
     display: none;
 }
+
 #calendar-grid .week-summary [class^="week"].replace {
     color: var(--color--theme);
 }
+
 #calendar-grid .week-stats [class^="week"]:before {
     font-size: 0.6em;
     opacity: 0.7;
@@ -190,7 +192,7 @@ td.on {
     line-height: 1;
 }
 
-#calendar-grid svg.activity-circle  {
+#calendar-grid svg.activity-circle {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -202,6 +204,7 @@ td.on {
 #calendar-grid .activity-circle circle {
     fill: rgb(0, 178, 100);
 }
+
 #calendar-grid .activity-circle path {
     stroke-linejoin: round;
     stroke-width: 1.5;
@@ -211,10 +214,12 @@ td.on {
     fill: var(--color--workout-run);
     stroke: var(--color--workout-run);
 }
+
 #calendar-grid .activity-circle .trail {
     fill: var(--color--workout-trail);
     stroke: var(--color--workout-trail);
 }
+
 #calendar-grid .activity-circle .walk {
     fill: var(--color--workout-walk);
     stroke: var(--color--workout-walk);
@@ -223,6 +228,7 @@ td.on {
 #calendar-grid .day-cell.official {
     cursor: pointer;
 }
+
 #calendar-grid .day-cell.official .activity-circle circle {
     fill: gold;
     stroke: gold;
@@ -234,6 +240,7 @@ td.on {
     position: absolute;
     opacity: 0.7;
     font-size: 0.8em;
+    text-shadow: -1px -1px 0 var(--color--track), 1px -1px 0 var(--color--track), -1px 1px 0 var(--color--track), 1px 1px 0 var(--color--track);
 }
 
 .activity-stats .distance,
@@ -269,6 +276,7 @@ td.on {
     background-color: var(--color--track-dark);
     color: var(--color--track-border);
 }
+
 .activity-icons .activity-count {
     width: fit-content;
     font-size: 0.75em;
@@ -320,9 +328,11 @@ td.on {
     padding: 0 0 1em;
     z-index: 2;
 }
+
 #calendar-grid .stat-item .value {
     display: block;
 }
+
 #calendar-grid .year-stats .stat-item,
 #calendar-grid .month-stats .stat-item {
     flex-grow: 1;
@@ -361,12 +371,15 @@ td.on {
     color: var(--color--body-text);
     transition: transform 0.25s, opacity 0.125s;
 }
+
 .nav-month#prev-month {
     right: 0.5em;
 }
+
 .nav-month:hover {
     background-color: var(--color--theme);
 }
+
 .nav-month.disabled {
     pointer-events: none;
     opacity: 0;
@@ -399,12 +412,15 @@ td.on {
 #calendar-grid.compact .day-cell:has(.activity-circle):not(.official) .date-display {
     color: var(--color--body-background);
 }
+
 #calendar-grid.compact .day-cell:has(.activity-circle) .date-display {
     /* font-weight: bold; */
 }
+
 #calendar-grid.compact .day-cell:has(.activity-circle).official .date-display {
     color: #212121;
 }
+
 #calendar-grid.compact .months-grid {
     /* justify-content: space-between; */
 }
@@ -423,6 +439,7 @@ td.on {
  * ======================================== */
 
 @media screen and (min-width: calc(1280px + 4em)) {
+
     /* Adjustments for larger screens if needed */
     .nav-month {
         top: 24.2em;
@@ -431,6 +448,7 @@ td.on {
         right: inherit;
         transform: rotate(-90deg);
     }
+
     .nav-month#prev-month {
         left: inherit;
         right: calc((100% - var(--width--track)) / 2 - 5em);
@@ -447,6 +465,7 @@ td.on {
         margin-left: auto;
         margin-right: auto;
     }
+
     #calendar-container .filters,
     #calendar-container h2 {
         margin-left: auto;
@@ -477,9 +496,11 @@ td.on {
         background-color: var(--color--track-dark);
         pointer-events: none;
     }
-    .filters #calendar-view-filter-container input:checked + .material-symbols-outlined {
+
+    .filters #calendar-view-filter-container input:checked+.material-symbols-outlined {
         font-variation-settings: "FILL" 0;
     }
+
     #calendar-grid.compact,
     .calendar-grid {
         width: 100%;
@@ -503,9 +524,11 @@ td.on {
     #calendar-grid .day-cell:has(.activity-circle) .date-display {
         color: var(--color--body-background);
     }
+
     #calendar-grid .day-cell:has(.activity-circle) .date-display {
         /* font-weight: bold; */
     }
+
     #calendar-grid .day-cell:has(.activity-circle).official .date-display {
         color: #212121;
     }
@@ -513,6 +536,7 @@ td.on {
     #calendar-grid th {
         padding: calc(0.5em / 0.8) 0;
     }
+
     #calendar-grid .month-stats-row {
         top: 36px;
     }

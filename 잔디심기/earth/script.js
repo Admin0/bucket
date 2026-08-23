@@ -1,9 +1,9 @@
 import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.0.0/dist/maplibre-gl.mjs';
 import { gpx } from './script_gpx.js';
-import { initializeTooltips, settingsTerraium, settingsRouteDesign } from './script_sub.js';
+import { initializeTooltips, settingsTerraium, settingsRouteDesign, settingsRouteSearch } from './script_sub.js';
 
 // 전역 'hermes' 객체 초기화
-const hermes = { gpx, initializeTooltips, settingsTerraium, settingsRouteDesign };
+const hermes = { gpx, initializeTooltips, settingsTerraium, settingsRouteDesign, settingsRouteSearch };
 
 const style_light = VersaTilesStyle.graybeard({
     baseUrl: "https://tiles.versatiles.org/",
@@ -52,6 +52,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
     let allLineFeatures = [],
         allPointFeatures = [];
     let featureIdCounter = 0;
+    let updateRouteSearch = () => {};
 
     // --- Utility Functions ---
     function decodeCoordinates(encoded) {
@@ -109,6 +110,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
                 pace,
                 elevation_pace,
                 distance,
+                searchText: [...Object.values(record), path].filter(value => value != null).join(" ").toLocaleLowerCase(),
                 id: featureIdCounter, path: path, certified: record.certi != null && record.certi.length > 0,
             },
             geometry: { type: "LineString", coordinates }
@@ -189,6 +191,14 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
                 }
             },
             {
+                id: "gpx-search-highlight",
+                type: "line",
+                source: "gpx-lines-source",
+                layout: lineLayout,
+                filter: highlightFilter,
+                paint: { "line-gradient": ["interpolate", ["linear"], ["line-progress"], 0, "#f44a01", 1, "#ff1744"], "line-width": ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 4, 13, 2], "line-opacity": 0.95 }
+            },
+            {
                 id: "gpx-highlight-border",
                 type: "line",
                 source: "gpx-lines-source",
@@ -248,6 +258,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
     function updateMapSources() {
         if (map.getSource("gpx-lines-source")) map.getSource("gpx-lines-source").setData({ type: "FeatureCollection", features: allLineFeatures });
         if (map.getSource("gpx-points-source")) map.getSource("gpx-points-source").setData({ type: "FeatureCollection", features: allPointFeatures });
+        updateRouteSearch();
     }
 
     function processNewFeatures(features) {
@@ -408,6 +419,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
         hermes.initializeTooltips(map);
         hermes.settingsTerraium(map, currentStyle, useFreeService);
         hermes.settingsRouteDesign(map);
+        updateRouteSearch = hermes.settingsRouteSearch(map, () => allLineFeatures);
         hermes.key();
 
     });
