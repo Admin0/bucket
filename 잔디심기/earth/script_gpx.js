@@ -4,6 +4,7 @@ export const gpx = (() => {
     const state = {
         map: null,
         droppedTracks: [],
+        searchResults: [],
         selectedTrackIds: [],
         lastSelectedTrackId: null
     };
@@ -227,7 +228,52 @@ export const gpx = (() => {
     function updateList() {
         if (!listElement) return;
         listElement.innerHTML = "";
-        listContainer.style.display = state.droppedTracks.length > 0 ? "flex" : "none";
+        listContainer.style.display = state.droppedTracks.length > 0 || state.searchResults.length > 0 ? "flex" : "none";
+
+        if (state.searchResults.length > 0) {
+            const heading = document.createElement("li");
+            heading.className = "list-heading";
+            heading.textContent = `검색된 경로 (${state.searchResults.length})`;
+            listElement.appendChild(heading);
+        }
+
+        state.searchResults.forEach((feature) => {
+            const prop = feature.properties;
+            const li = document.createElement("li");
+            li.className = "search-result";
+            li.innerHTML = `
+            <span class="course">${prop.type}</span>
+            <span class="date"><span class="main">${prop.date}</span></span>
+            <span class="title">${prop.title || "이름 없는 경로"}</span>
+            <span class="isOfficial">${prop.isOfficial ? "공식" : ""}</span>
+            <span class="distance">
+                <span class="${prop.type === "trail" ? "main" : "replace"} material-symbols-outlined icon distance">altitude</span> 
+                <span class="${prop.type === "trail" ? "main" : "replace"}">${Number(prop.elevation).toFixed(0)}<span class="unit"> m</span></span>
+                <span class="${prop.type === "trail" ? "replace" : "main"} material-symbols-outlined icon distance">conversion_path</span>
+                <span class="${prop.type === "trail" ? "replace" : "main"}">${Number(prop.distance).toFixed(2)}<span class="unit"> km</span></span> 
+            </span>
+            <span class="record"><span class="material-symbols-outlined icon record"> timer </span>${prop.record}</span>
+            <span class="pace">
+                <span class="material-symbols-outlined icon pace"> speed </span>
+                <span class="${prop.type === "trail" ? "replace" : "main"}">${Number(prop.pace / 60).toFixed(0)}'${Number(prop.pace % 60).toFixed(0).toString().padStart(2, "0")}''<span class="unit">/km</span></span>
+                <span class="${prop.type === "trail" ? "main" : "replace"}">${Number(prop.elevation_pace / 60).toFixed(0)}'${Number(prop.elevation_pace % 60).toFixed(0).toString().padStart(2, "0")}''<span class="unit">/60 m↑</span></span>
+                </span>
+            `;
+            li.addEventListener("click", () => {
+                const bounds = new maplibregl.LngLatBounds();
+                feature.geometry.coordinates.forEach((point) => bounds.extend(point));
+                state.map.fitBounds(bounds, { padding: 160, maxZoom: 15 });
+            });
+            // console.log("Search Result:", feature);
+            listElement.appendChild(li);
+        });
+
+        if (state.droppedTracks.length > 0 && state.searchResults.length > 0) {
+            const heading = document.createElement("li");
+            heading.className = "list-heading uploaded-heading";
+            heading.textContent = "업로드한 GPX";
+            listElement.appendChild(heading);
+        }
 
         state.droppedTracks.forEach((track) => {
             const li = document.createElement("li");
@@ -572,5 +618,10 @@ export const gpx = (() => {
         initDragAndDrop();
     }
 
-    return { init };
+    function setSearchResults(features) {
+        state.searchResults = features || [];
+        updateList();
+    }
+
+    return { init, setSearchResults };
 })();

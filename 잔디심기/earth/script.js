@@ -45,8 +45,8 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
         maxZoom: 20,
         minZoom: 3
     })
-        .addControl(new maplibregl.NavigationControl({ visualizePitch: true, showZoom: true, showCompass: true }))
-        .addControl(new maplibregl.GeolocateControl({ positionOptions: { enableHighAccuracy: true }, trackUserLocation: true, showUserHeading: true }));
+        .addControl(new maplibregl.NavigationControl({ visualizePitch: true, showZoom: true, showCompass: true }), 'bottom-right')
+        .addControl(new maplibregl.GeolocateControl({ positionOptions: { enableHighAccuracy: true }, trackUserLocation: true, showUserHeading: true }),'bottom-right');
 
     // --- Global State ---
     let allLineFeatures = [],
@@ -110,7 +110,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
                 pace,
                 elevation_pace,
                 distance,
-                searchText: [...Object.values(record), path].filter(value => value != null).join(" ").toLocaleLowerCase(),
+                searchText: [...Object.entries(record).filter(([key]) => key !== "geometry").map(([, value]) => value), path].filter(value => value != null).join(" ").toLocaleLowerCase(),
                 id: featureIdCounter, path: path, certified: record.certi != null && record.certi.length > 0,
             },
             geometry: { type: "LineString", coordinates }
@@ -191,14 +191,6 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
                 }
             },
             {
-                id: "gpx-search-highlight",
-                type: "line",
-                source: "gpx-lines-source",
-                layout: lineLayout,
-                filter: highlightFilter,
-                paint: { "line-gradient": ["interpolate", ["linear"], ["line-progress"], 0, "#f44a01", 1, "#ff1744"], "line-width": ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 4, 13, 2], "line-opacity": 0.95 }
-            },
-            {
                 id: "gpx-highlight-border",
                 type: "line",
                 source: "gpx-lines-source",
@@ -237,6 +229,14 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
                     ],
                     "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 9, 2, 16, 5]
                 }
+            },
+            {
+                id: "gpx-search-highlight",
+                type: "line",
+                source: "gpx-lines-source",
+                layout: lineLayout,
+                filter: highlightFilter,
+                paint: { "line-gradient": ["interpolate", ["linear"], ["line-progress"], 0, "#f57f17", 1, "#ff1744"], "line-width": ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 4, 13, 2], "line-opacity": 0.95 }
             }
         ];
 
@@ -419,7 +419,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
         hermes.initializeTooltips(map);
         hermes.settingsTerraium(map, currentStyle, useFreeService);
         hermes.settingsRouteDesign(map);
-        updateRouteSearch = hermes.settingsRouteSearch(map, () => allLineFeatures);
+        updateRouteSearch = hermes.settingsRouteSearch(map, () => allLineFeatures, hermes.gpx.setSearchResults);
         hermes.key();
 
     });

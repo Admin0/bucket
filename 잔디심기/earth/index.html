@@ -1,55 +1,57 @@
 <!DOCTYPE html>
 <html lang="ko">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>#잔디심기 🌏 earth</title>
-        <link rel="icon" href="favicon.ico" type="image/x-icon" />
-        <link rel="preload" href="https://fonts.gstatic.com/s/materialsymbols/v43/d6lekb-sS9m3-i1LgQNcsFOOuLQXvG55_bpeDM1CWRsbxki3.woff2" as="font" type="font/woff2" crossorigin> <!-- 'Material Symbols -->
-        <link rel="preload" href="https://fonts.gstatic.com/s/materialsymbolsoutlined/v315/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsI.woff2" as="font" type="font/woff2" crossorigin> <!-- 'Material Symbols Outlined -->
-        <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
-        <link href="style.css" rel="stylesheet" />
-    </head>
-    <body>
-        <div id="progress-container">
-            <div id="progress-bar"></div>
-            <div id="gpx-counter">0%</div>
-        </div>
-        <div id="map"></div>
-        <div id="controls" class="maplibregl-ctrl maplibregl-ctrl-group">
-            <button id="terrarium-btn" class="material-symbols-outlined" title="지형">landscape</button>
-            <button id="route-btn" class="material-symbols-outlined" title="경로" onclick="document.querySelector('#route-detail').classList.toggle('on'); this.classList.toggle('active')">route</button>
-            <div id="route-detail" class="">
-                <div class="inner_wrap maplibregl-ctrl-group">
-                    <div class="route-detail" title="굵기"> <input type="range" id="line-width-slider" min="1" max="4" value="2.5" step="0.5"> <span class="material-symbols-outlined"> line_weight </span> </div>
-                    <div class="route-detail" title="투명도"> <input type="range" id="line-opacity-slider" min="0.1" max="0.5" value="0.3" step="0.05"> <span class="material-symbols-outlined"> opacity </span> </div>
-                </div>
-                <button id="gpx-upload-btn" class="item material-symbols-outlined maplibregl-ctrl maplibregl-ctrl-group" title="GPX 업로드">upload</button>
-                <div id="route-search" class="maplibregl-ctrl">
-                    <label for="route-search-input" class="material-symbols-outlined" title="경로 검색">search</label>
-                    <input id="route-search-input" type="search" placeholder="경로 검색" autocomplete="off">
-                    <span id="route-search-count" aria-live="polite"></span>
-                </div>
-            </div>
-        </div>
-        
-        <div id="gpx-list-container">
-            <ul></ul>
-            <div id="export-controls">
-                <button id="export-button">내보내기</button>
-            </div>
-            <div id="export-output"></div>
-        </div>
-        <div id="tooltip"></div>
 
-        <!-- <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js" defer></script> -->
-        <script src="https://unpkg.com/maplibre-contour@0.1.0/dist/index.min.js" defer></script>
-        <script src="https://tiles.versatiles.org/assets/lib/versatiles-style/versatiles-style.js" defer></script>
-        <script src="../script_records.js" defer></script>
-        <script src="script_records_4_earth.js" defer></script>
-        <script type="module" src="script.js" defer></script>
-        <script type="module" src="../script_tooltip.js" defer></script>
-        <script type="module" src="script_gpx.js" defer></script>
-        <script src="script_sub.js" defer></script>
-    </body>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>#잔디심기 🌏 earth</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="preload" href="https://fonts.gstatic.com/s/materialsymbols/v43/d6lekb-sS9m3-i1LgQNcsFOOuLQXvG55_bpeDM1CWRsbxki3.woff2" as="font" type="font/woff2" crossorigin> <!-- 'Material Symbols -->
+    <link rel="preload" href="https://fonts.gstatic.com/s/materialsymbolsoutlined/v315/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsI.woff2" as="font" type="font/woff2" crossorigin> <!-- 'Material Symbols Outlined -->
+    <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+        <div id="gpx-counter">0%</div>
+    </div>
+    <div id="map"></div>
+    <div id="route-search" class="maplibregl-ctrl">
+        <label for="route-search-input" class="material-symbols-outlined" title="경로 검색">search</label>
+        <input id="route-search-input" type="search" placeholder="경로 검색" autocomplete="off">
+        <button id="gpx-upload-btn" class="item material-symbols" title="GPX 업로드">upload</button>
+    </div>
+    <div id="controls" class="maplibregl-ctrl maplibregl-ctrl-group">
+        <button id="terrarium-btn" class="material-symbols-outlined" title="지형">landscape</button>
+        <button id="route-btn" class="material-symbols-outlined" title="경로" onclick="document.querySelector('#route-detail').classList.toggle('on'); this.classList.toggle('active')">route</button>
+        <div id="route-detail" class="">
+            <div class="inner_wrap maplibregl-ctrl-group">
+                <div class="route-detail" title="굵기"> <input type="range" id="line-width-slider" min="1" max="4" value="2.5" step="0.5"> <span class="material-symbols-outlined"> line_weight </span> </div>
+                <div class="route-detail" title="투명도"> <input type="range" id="line-opacity-slider" min="0.1" max="0.5" value="0.3" step="0.05"> <span class="material-symbols-outlined"> opacity </span> </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="gpx-list-container">
+        <ul></ul>
+        <div id="export-controls">
+            <button id="export-button">내보내기</button>
+        </div>
+        <div id="export-output"></div>
+    </div>
+    <div id="tooltip"></div>
+
+    <!-- <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js" defer></script> -->
+    <script src="https://unpkg.com/maplibre-contour@0.1.0/dist/index.min.js" defer></script>
+    <script src="https://tiles.versatiles.org/assets/lib/versatiles-style/versatiles-style.js" defer></script>
+    <script src="../script_records.js" defer></script>
+    <script src="script_records_4_earth.js" defer></script>
+    <script type="module" src="script.js" defer></script>
+    <script type="module" src="../script_tooltip.js" defer></script>
+    <script type="module" src="script_gpx.js" defer></script>
+    <script src="script_sub.js" defer></script>
+</body>
+
 </html>

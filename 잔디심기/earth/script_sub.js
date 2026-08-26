@@ -94,6 +94,16 @@ export const initializeTooltips = function (map) {
         map.getCanvas().style.cursor = "";
     }
 
+    function dismissTooltip() {
+        tooltipEl.classList.remove("on", "generic", "fixedTop");
+        tooltipEl.style.top = "";
+        tooltipEl.style.left = "";
+    }
+
+    ["#route-search", "#gpx-list-container"].forEach((selector) => {
+        document.querySelector(selector)?.addEventListener("mouseenter", dismissTooltip);
+    });
+
     function showFeatureTooltip(feature, e) {
         const newHoveredId = feature.properties.id;
         if (hoveredFeatureId !== newHoveredId) {
@@ -235,20 +245,62 @@ export const settingsRouteDesign = function(map) {
     });
 }
 
-export const settingsRouteSearch = function(map, getFeatures) {
+export const settingsRouteSearch = function(map, getFeatures, setSearchResults) {
+    const search = document.getElementById("route-search");
     const input = document.getElementById("route-search-input");
-    const count = document.getElementById("route-search-count");
-    if (!input || !count) return;
+    if (!search || !input) return;
 
     const updateSearch = () => {
         const query = input.value.trim().toLocaleLowerCase();
+        const tokens = query
+            .replace(/([&,])/g, " $1 ")
+            .replace(/\b(AND|OR|NOT)\b/gi, " $1 ")
+            .split(/\s+/)
+            .filter(Boolean);
+        const includedGroups = [[]];
+        const excludedTerms = [];
+        let negateNext = false;
+
+        tokens.forEach(token => {
+            const operator = token.toUpperCase();
+            if (operator === "OR" || token === ",") {
+                if (includedGroups.at(-1).length > 0) includedGroups.push([]);
+                negateNext = false;
+                return;
+            }
+            if (operator === "AND" || token === "&") return;
+            if (operator === "NOT") {
+                negateNext = true;
+                return;
+            }
+
+            if (token.startsWith("-")) {
+                const term = token.slice(1);
+                if (term) excludedTerms.push(term);
+            } else if (negateNext) {
+                excludedTerms.push(token);
+            } else {
+                includedGroups.at(-1).push(token);
+            }
+            negateNext = false;
+        });
+        const validIncludedGroups = includedGroups.filter(group => group.length > 0);
         const matchingIds = query
-            ? getFeatures().filter(feature => feature.properties.searchText?.includes(query)).map(feature => feature.properties.id)
+            ? getFeatures()
+                .filter(feature => {
+                    const searchText = feature.properties.searchText || "";
+                    const isExcluded = excludedTerms.some(term => searchText.includes(term));
+                    const isIncluded = validIncludedGroups.length === 0 || validIncludedGroups.some(group => group.every(term => searchText.includes(term)));
+                    return !isExcluded && isIncluded;
+                })
+                .map(feature => feature.properties.id)
             : [];
+        const matchingFeatures = query ? getFeatures().filter(feature => matchingIds.includes(feature.properties.id)) : [];
         const filter = matchingIds.length > 0 ? ["in", ["get", "id"], ["literal", matchingIds]] : ["==", ["get", "id"], -1];
 
         if (map.getLayer("gpx-search-highlight")) map.setFilter("gpx-search-highlight", filter);
-        count.textContent = query ? `${matchingIds.length}개` : "";
+        setSearchResults?.(matchingFeatures);
+        search.classList.toggle("on", matchingIds.length > 0);
     };
 
     input.addEventListener("input", updateSearch);
