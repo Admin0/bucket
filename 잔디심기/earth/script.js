@@ -110,6 +110,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
                 pace,
                 elevation_pace,
                 distance,
+                isOfficial: record.course !== undefined,
                 searchText: [...Object.entries(record).filter(([key]) => key !== "geometry").map(([, value]) => value), path].filter(value => value != null).join(" ").toLocaleLowerCase(),
                 id: featureIdCounter, path: path, certified: record.certi != null && record.certi.length > 0,
             },
@@ -236,7 +237,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
                 source: "gpx-lines-source",
                 layout: lineLayout,
                 filter: highlightFilter,
-                paint: { "line-gradient": ["interpolate", ["linear"], ["line-progress"], 0, "#f57f17", 1, "#ff1744"], "line-width": ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 4, 13, 2], "line-opacity": 0.95 }
+                paint: { "line-gradient": ["interpolate", ["linear"], ["line-progress"], 0, "#f57f17", 1, "#ff1744"], "line-width": ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 5, 13, 3], "line-opacity": 0.95 }
             }
         ];
 

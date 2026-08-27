@@ -31,7 +31,7 @@ export const initializeTooltips = function (map) {
         target.removeAttribute("data-generic-tooltip");
 
         if (tooltip.classList.contains("generic")) {
-            tooltip.classList.remove("on", "generic", "fixedTop");
+            tooltip.classList.remove("on", "generic", "fixedTop", "searched");
             tooltip.style.top = "";
             tooltip.style.left = "";
         }
@@ -90,7 +90,7 @@ export const initializeTooltips = function (map) {
                 }
             });
         }
-        tooltipEl.classList.remove("on");
+        tooltipEl.classList.remove("on", "searched");
         map.getCanvas().style.cursor = "";
     }
 
@@ -131,6 +131,13 @@ export const initializeTooltips = function (map) {
             tooltipEl.style.top = `${e.point.y - 40}px`;
         }
     }
+
+    map.on("route-search-enter", (e) => {
+        tooltipEl.classList.add("searched");
+        showFeatureTooltip(e.feature, { point: e.point });
+    });
+
+    map.on("route-search-leave", clearHighlightAndTooltip);
 
     map.on("mousemove", (e) => {
         const features = map.queryRenderedFeatures(e.point, { layers: layersToQuery });
@@ -199,7 +206,7 @@ export const initializeTooltips = function (map) {
 };
 
 
-export const settingsTerraium = function(map, currentStyle, useFreeService) {
+export const settingsTerraium = function (map, currentStyle, useFreeService) {
     const terrariumBtn = document.getElementById("terrarium-btn");
     let isTerrariumOn = false;
     terrariumBtn.addEventListener("click", () => {
@@ -229,7 +236,7 @@ export const settingsTerraium = function(map, currentStyle, useFreeService) {
     });
 }
 
-export const settingsRouteDesign = function(map) {
+export const settingsRouteDesign = function (map) {
     const lineWidthSlider = document.getElementById('line-width-slider');
     lineWidthSlider.addEventListener('input', (e) => {
         const newWidth = parseFloat(e.target.value);
@@ -245,7 +252,7 @@ export const settingsRouteDesign = function(map) {
     });
 }
 
-export const settingsRouteSearch = function(map, getFeatures, setSearchResults) {
+export const settingsRouteSearch = function (map, getFeatures, setSearchResults) {
     const search = document.getElementById("route-search");
     const input = document.getElementById("route-search-input");
     if (!search || !input) return;

@@ -237,34 +237,50 @@ export const gpx = (() => {
             listElement.appendChild(heading);
         }
 
+        function rating(val, type) {
+            // Implementation for rating function
+            let stars = "";
+            for (let i = 0; i < 5; i++) {
+                if (i <= (type === "trail" ? Number(val) / 250 - 1 : Number(val) / 5 - 1)) {
+                    stars += '<span class="material-symbols icon on"> star </span>';
+                }
+                else {
+                    stars += '<span class="material-symbols icon"> star </span>';
+                }
+            }
+            return stars;
+        }
+
         state.searchResults.forEach((feature) => {
             const prop = feature.properties;
             const li = document.createElement("li");
             li.className = "search-result";
             li.innerHTML = `
-            <span class="course">${prop.type}</span>
-            <span class="date"><span class="main">${prop.date}</span></span>
-            <span class="title">${prop.title || "이름 없는 경로"}</span>
-            <span class="isOfficial">${prop.isOfficial ? "공식" : ""}</span>
+            <div>
+                <span class="title">${prop.title}</span>
+                <span class="date"><span class="main">${prop.date}</span></span>
+                ${prop.isOfficial ? '<span class="material-symbols official"> crown </span>' : ''}
+            </div>
             <span class="distance">
-                <span class="${prop.type === "trail" ? "main" : "replace"} material-symbols-outlined icon distance">altitude</span> 
-                <span class="${prop.type === "trail" ? "main" : "replace"}">${Number(prop.elevation).toFixed(0)}<span class="unit"> m</span></span>
-                <span class="${prop.type === "trail" ? "replace" : "main"} material-symbols-outlined icon distance">conversion_path</span>
-                <span class="${prop.type === "trail" ? "replace" : "main"}">${Number(prop.distance).toFixed(2)}<span class="unit"> km</span></span> 
-            </span>
-            <span class="record"><span class="material-symbols-outlined icon record"> timer </span>${prop.record}</span>
-            <span class="pace">
-                <span class="material-symbols-outlined icon pace"> speed </span>
-                <span class="${prop.type === "trail" ? "replace" : "main"}">${Number(prop.pace / 60).toFixed(0)}'${Number(prop.pace % 60).toFixed(0).toString().padStart(2, "0")}''<span class="unit">/km</span></span>
-                <span class="${prop.type === "trail" ? "main" : "replace"}">${Number(prop.elevation_pace / 60).toFixed(0)}'${Number(prop.elevation_pace % 60).toFixed(0).toString().padStart(2, "0")}''<span class="unit">/60 m↑</span></span>
-                </span>
+                ${prop.type === "trail"
+                    ? `${rating(prop.elevation, prop.type)} ${Number(prop.elevation).toFixed(0)}<span class="unit"> m</span>`
+                    : `${rating(prop.distance, prop.type)} ${Number(prop.distance).toFixed(1)}<span class="unit"> km</span>`}
+            </span >
+            <span class="comment">${prop.comment || ""}</span>
             `;
             li.addEventListener("click", () => {
                 const bounds = new maplibregl.LngLatBounds();
                 feature.geometry.coordinates.forEach((point) => bounds.extend(point));
                 state.map.fitBounds(bounds, { padding: 160, maxZoom: 15 });
             });
-            // console.log("Search Result:", feature);
+            li.addEventListener("mouseenter", () => {
+                const point = state.map.project(feature.geometry.coordinates[0]);
+                state.map.fire("route-search-enter", { feature, point });
+            });
+            li.addEventListener("mouseleave", () => {
+                state.map.fire("route-search-leave");
+            });
+            console.log("Search Result:", feature);
             listElement.appendChild(li);
         });
 
@@ -296,16 +312,16 @@ export const gpx = (() => {
                 activityTitle = "러닝";
             }
 
-            const displayName = track.title ? `${track.title} ${activityTitle} (${track.name})` : `${track.name} ${activityTitle}`;
+            const displayName = track.title ? `${track.title} ${activityTitle} (${track.name})` : `${track.name} ${activityTitle} `;
 
-            li.innerHTML = `<div class="track-name">${displayName}</div>
-            <div class="track-meta">
-                <span class="material-symbols-outlined"> event </span> ${track.date || "N/A"}
-                <span class="material-symbols-outlined"> conversion_path </span> ${track.distance.toFixed(2)} km
-                <span class="material-symbols-outlined"> floor </span> ${track.elevation} m
-                <span class="material-symbols-outlined"> timer </span> ${formatDuration(track.duration)}
-                <span class="material-symbols-outlined"> avg_pace </span> ${pace}/km
-            </div>`;
+            li.innerHTML = `<div class="track-name"> ${displayName}</div>
+        <div class="track-meta">
+            <span class="material-symbols-outlined"> event </span> ${track.date || "N/A"}
+            <span class="material-symbols-outlined"> conversion_path </span> ${track.distance.toFixed(2)} km
+            <span class="material-symbols-outlined"> floor </span> ${track.elevation} m
+            <span class="material-symbols-outlined"> timer </span> ${formatDuration(track.duration)}
+            <span class="material-symbols-outlined"> avg_pace </span> ${pace}/km
+        </div>`;
             li.addEventListener("click", (e) => {
                 handleTrackSelection(track.id, e.shiftKey, e.metaKey || e.ctrlKey);
             });
@@ -314,14 +330,14 @@ export const gpx = (() => {
     }
 
     function addTrackLayer(track) {
-        const sourceId = `gpx-source-${track.id}`;
-        const layerId = `gpx-layer-${track.id}`;
+        const sourceId = `gpx - source - ${track.id} `;
+        const layerId = `gpx - layer - ${track.id} `;
         if (state.map.getSource(sourceId)) return;
 
         state.map.addSource(sourceId, { type: "geojson", lineMetrics: true, data: { type: "Feature", geometry: { type: "LineString", coordinates: track.points } } });
         state.map
             .addLayer({
-                id: `${layerId}-border`,
+                id: `${layerId} -border`,
                 type: "line",
                 source: sourceId,
                 layout: { "line-join": "round", "line-cap": "round" },
@@ -339,9 +355,9 @@ export const gpx = (() => {
     function focusOnSelectedTracks() {
         state.droppedTracks.forEach((track) => {
             state.map
-                .setPaintProperty(`gpx-layer-${track.id}`, "line-gradient", ["interpolate", ["linear"], ["line-progress"], 0, "#f57f17", 1, "#f44a01"])
-                .setPaintProperty(`gpx-layer-${track.id}`, "line-width", 3)
-                .setPaintProperty(`gpx-layer-${track.id}-border`, "line-width", 0);
+                .setPaintProperty(`gpx - layer - ${track.id} `, "line-gradient", ["interpolate", ["linear"], ["line-progress"], 0, "#f57f17", 1, "#f44a01"])
+                .setPaintProperty(`gpx - layer - ${track.id} `, "line-width", 3)
+                .setPaintProperty(`gpx - layer - ${track.id} -border`, "line-width", 0);
         });
 
         const selectedTracks = state.droppedTracks.filter((t) => state.selectedTrackIds.includes(t.id));
@@ -354,9 +370,9 @@ export const gpx = (() => {
         const bounds = new maplibregl.LngLatBounds();
         selectedTracks.forEach((track) => {
             state.map
-                .setPaintProperty(`gpx-layer-${track.id}`, "line-gradient", ["interpolate", ["linear"], ["line-progress"], 0, "#f57f17", 0.5, "#f44a01", 1, "#ff1744"])
-                .setPaintProperty(`gpx-layer-${track.id}`, "line-width", 6)
-                .setPaintProperty(`gpx-layer-${track.id}-border`, "line-width", 10);
+                .setPaintProperty(`gpx - layer - ${track.id} `, "line-gradient", ["interpolate", ["linear"], ["line-progress"], 0, "#f57f17", 0.5, "#f44a01", 1, "#ff1744"])
+                .setPaintProperty(`gpx - layer - ${track.id} `, "line-width", 6)
+                .setPaintProperty(`gpx - layer - ${track.id} -border`, "line-width", 10);
             track.points.forEach((point) => bounds.extend(point));
         });
 
