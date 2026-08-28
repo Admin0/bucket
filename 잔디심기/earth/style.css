@@ -185,7 +185,7 @@ body.alt #gpx-list-container li.search-result .pace .main {
 
     /* searched */
     #tooltip.searched {
-        left: calc(360px + 4em) !important;
+        left: calc(360px + 5em) !important;
         transform: translate(0, calc(-100% - 3em));
     }
 

@@ -274,6 +274,9 @@ export const gpx = (() => {
                 const bounds = new maplibregl.LngLatBounds();
                 feature.geometry.coordinates.forEach((point) => bounds.extend(point));
                 state.map.fitBounds(bounds, { padding: 160, maxZoom: 15 });
+
+                document.getElementById("gpx-list-container")?.classList.remove("on");
+                document.getElementById("route-search")?.classList.remove("on");
             });
             li.addEventListener("mouseenter", () => {
                 const point = state.map.project(feature.geometry.coordinates[0]);
@@ -329,6 +332,14 @@ export const gpx = (() => {
             });
             listElement.appendChild(li);
         });
+    }
+
+    function toggleListView() {
+        const listContainer = document.getElementById("gpx-list-container");
+        const routeSearch = document.getElementById("route-search");
+        const isOn = listContainer?.classList.contains("on");
+        listContainer?.classList.toggle("on", !isOn);
+        routeSearch?.classList.toggle("on", !isOn);
     }
 
     function addTrackLayer(track) {
@@ -622,18 +633,7 @@ export const gpx = (() => {
 
         document.getElementById("export-button")?.addEventListener("click", handleExport);
 
-        document.getElementById("gpx-list-view-toggle")?.addEventListener("click", () => {
-            const listContainer = document.getElementById("gpx-list-container");
-            const routeSearch = document.getElementById("route-search");
-            const isOn = listContainer?.classList.contains("on");
-            listContainer?.classList.toggle("on", !isOn);
-            routeSearch?.classList.toggle("on", !isOn);
-        });
-
-        document.getElementById("gpx-list-container")?.addEventListener("click", () => {
-            document.getElementById("gpx-list-container")?.classList.remove("on");
-            // document.getElementById("route-search")?.classList.remove("on");
-        });
+        document.getElementById("gpx-list-view-toggle")?.addEventListener("touchend", toggleListView);
 
         document.addEventListener("keydown", (e) => {
             const activeElement = document.activeElement;

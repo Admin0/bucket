@@ -12,11 +12,19 @@
     border-radius: 2em;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.22);
     z-index: 11;
+    transition: box-shadow 0.25s;
 }
 
 #route-search.on {
-    border-radius: 2em 2em 0 0;
-    /* box-shadow: none; */
+    border: 1px solid #ddd;
+    box-shadow: none;
+}
+
+@media screen and (min-width: 600px) {
+    body:has(#gpx-list-container .search-result) #route-search {
+        border: 1px solid #ddd;
+        box-shadow: none;
+    }
 }
 
 #route-search label {
@@ -129,23 +137,20 @@
  * ======================================== */
 #gpx-list-container {
     position: fixed;
-    top: 5em;
-    left: 1em;
-    width: min(calc(360px + 2em), calc(100vw - 2em));
-    /* 너비 확장 */
-    max-height: calc(100vh - 6em);
-    /* 높이 제한 */
+    top: 0;
+    left: 0;
+    width: min(calc(360px + 4em), calc(100vw - 1em));
+    height: calc(100vh - 6em);
     background-color: rgba(255, 255, 255);
     backdrop-filter: blur(5px);
-    border-radius: 0 0 2em 2em;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    z-index: 30;
+    z-index: 10;
     display: none;
     /* 초기에는 숨김 */
     flex-direction: column;
     /* Flexbox 레이아웃 */
     overflow: hidden;
-    padding-bottom: .5em;
+    padding: 6em 0 0;
+    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.22);
 }
 
 #gpx-list-container:not(:has(.search-result)) {
@@ -156,7 +161,7 @@
 
 #gpx-list-container ul {
     list-style-type: none;
-    padding: 0;
+    padding: 0 0 1em;
     margin: 0;
     overflow-y: auto;
     /* 목록 스크롤 */
@@ -357,6 +362,7 @@
     border-radius: 2em;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.22);
     color: var(--color--workout-walk);
+    transition: bottom 0.25s;
 }
 
 #gpx-list-view-toggle .label:before {
@@ -383,6 +389,10 @@ body:has(#gpx-list-container.on) #gpx-list-view-toggle .icon:before {
 
 @media screen and (max-width: 600px) {
 
+    #route-search {
+        border: 1px solid #fff;
+    }
+
     #gpx-list-container {
         transition: top 0.25s;
     }
@@ -391,19 +401,9 @@ body:has(#gpx-list-container.on) #gpx-list-view-toggle .icon:before {
         font-size: 2em;
     }
 
-    #route-search {
-        border: 1px solid #ddd;
-        border-radius: 2em !important;
-        box-shadow: none;
-    }
-
     #gpx-list-container {
         width: calc(100vw - 1em);
-        left: 0;
         padding: 6em .5em 0em;
-        top: 0;
-        border-radius: 0;
-        z-index: 10;
     }
 
     body:has(#tooltip.searched.on) #gpx-list-view-toggle {

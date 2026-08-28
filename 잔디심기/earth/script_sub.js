@@ -274,13 +274,22 @@ export const settingsRouteSearch = function (map, getFeatures, setSearchResults)
     function setSearchRouteColors(ids = []) {
         const routeColors = window.routeColors || {};
         const normal = routeColors.normal || { base: "#00b264", searchEnd: "#f44a01" };
-        const certified = routeColors.certified || { base: "#FAAB0C", searchEnd: "#f57f17" };
+        const certified = routeColors.certified || { base: "#FAAB0C", searchEnd: "#f44a01" };
         const matchingIds = ["literal", ids];
-        const normalColor = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], normal.searchEnd, normal.base] : normal.base;
-        const certifiedColor = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], certified.searchEnd, certified.base] : certified.base;
+        const normalColor = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], "#f44a01", normal.base] : normal.base;
+        const certifiedColor = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], "#f44a01", certified.base] : certified.base;
+        const searchSortKey = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], 1, 0] : 0;
 
-        if (map.getLayer("gpx-line-base")) map.setPaintProperty("gpx-line-base", "line-color", normalColor);
-        if (map.getLayer("gpx-line-base-certi")) map.setPaintProperty("gpx-line-base-certi", "line-color", certifiedColor);
+        if (map.getLayer("gpx-line-base")) {
+            map.setPaintProperty("gpx-line-base", "line-color", normalColor);
+            map.setPaintProperty('gpx-line-base', 'line-opacity', ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.5]);
+            map.setLayoutProperty("gpx-line-base", "line-sort-key", searchSortKey);
+        }
+        if (map.getLayer("gpx-line-base-certi")) {
+            map.setPaintProperty("gpx-line-base-certi", "line-color", certifiedColor);
+            map.setPaintProperty('gpx-line-base-certi', 'line-opacity', ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.5]);
+            map.setLayoutProperty("gpx-line-base-certi", "line-sort-key", searchSortKey);
+        }
     }
 
     const updateSearch = () => {
@@ -328,7 +337,7 @@ export const settingsRouteSearch = function (map, getFeatures, setSearchResults)
                 })
                 .map(feature => feature.properties.id)
             : [];
-            searchedFeatureIds = new Set(matchingIds);
+        searchedFeatureIds = new Set(matchingIds);
         const matchingFeatures = query ? getFeatures().filter(feature => matchingIds.includes(feature.properties.id)) : [];
 
         setSearchRouteColors(matchingIds);

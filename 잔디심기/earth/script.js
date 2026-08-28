@@ -144,8 +144,8 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
 
         const layerinsertBefore = useFreeService ? "label-address-housenumber" : "Country border";
         const lineLayout = { "line-join": "round", "line-cap": "round" };
-        const normalColors = { start: "#00ff80", end: "#004D40", searchStart: "#f57f17", searchEnd: "#f44a01", border: "rgba(255, 255, 255, 1)", base: "#00b264" };
-        const certiColors = { start: "#ffd700", end: "#f57f17", searchStart: "#f57f17", searchEnd: "#f44a01", border: "rgba(255, 255, 255, 1)", base: "#FAAB0C" };
+        const normalColors = { start: "#00ff80", end: "#004D40", searchStart: "#f57f17", searchEnd: "#ff1744", border: "rgba(255, 255, 255, 1)", base: "#00b264" };
+        const certiColors = { start: "#ffd700", end: "#f57f17", searchStart: "#f57f17", searchEnd: "#ff1744", border: "rgba(255, 255, 255, 1)", base: "#FAAB0C" };
         window.routeColors = { normal: normalColors, certified: certiColors };
         const highlightFilter = ["==", ["get", "id"], -1];
 
@@ -245,7 +245,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
             cont = document.getElementById("progress-container"),
             pct = t > 0 ? (p / t) * 100 : 0;
         bar.style.width = `${pct}%`;
-        counter.textContent = `${Math.round(pct)}%`;
+        // counter.textContent = `${Math.round(pct)}%`;
         if (p >= t && t > 0) setTimeout(() => (cont.style.opacity = "0"), 1500);
     }
 
