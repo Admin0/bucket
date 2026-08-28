@@ -228,7 +228,9 @@ export const gpx = (() => {
     function updateList() {
         if (!listElement) return;
         listElement.innerHTML = "";
-        listContainer.style.display = state.droppedTracks.length > 0 || state.searchResults.length > 0 ? "flex" : "none";
+        const hasListContent = state.droppedTracks.length > 0 || state.searchResults.length > 0;
+        listContainer.classList.toggle("on", hasListContent);
+        listContainer.style.display = hasListContent ? "flex" : "none";
 
         if (state.searchResults.length > 0) {
             const heading = document.createElement("li");
@@ -280,7 +282,7 @@ export const gpx = (() => {
             li.addEventListener("mouseleave", () => {
                 state.map.fire("route-search-leave");
             });
-            console.log("Search Result:", feature);
+            // console.log("Search Result:", feature);
             listElement.appendChild(li);
         });
 
@@ -619,6 +621,19 @@ export const gpx = (() => {
         });
 
         document.getElementById("export-button")?.addEventListener("click", handleExport);
+
+        document.getElementById("gpx-list-view-toggle")?.addEventListener("click", () => {
+            const listContainer = document.getElementById("gpx-list-container");
+            const routeSearch = document.getElementById("route-search");
+            const isOn = listContainer?.classList.contains("on");
+            listContainer?.classList.toggle("on", !isOn);
+            routeSearch?.classList.toggle("on", !isOn);
+        });
+
+        document.getElementById("gpx-list-container")?.addEventListener("click", () => {
+            document.getElementById("gpx-list-container")?.classList.remove("on");
+            // document.getElementById("route-search")?.classList.remove("on");
+        });
 
         document.addEventListener("keydown", (e) => {
             const activeElement = document.activeElement;

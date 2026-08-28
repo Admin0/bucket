@@ -17,12 +17,26 @@
         <div id="progress-bar"></div>
         <div id="gpx-counter">0%</div>
     </div>
+
     <div id="map"></div>
-    <div id="route-search" class="maplibregl-ctrl">
+
+    <div id="route-search" class="">
         <label for="route-search-input" class="material-symbols-outlined" title="검색">search</label>
         <input id="route-search-input" type="search" placeholder="경로 검색" autocomplete="off">
         <button id="gpx-upload-btn" class="item material-symbols" title="GPX 업로드">upload</button>
     </div>
+
+    <div id="gpx-list-view-toggle"><span class="icon material-symbols"></span><span class="label"></span></div>
+    
+    <div id="gpx-list-container">
+        <ul></ul>
+        <div id="export-controls">
+            <button id="export-button">내보내기</button>
+        </div>
+        <div id="export-output"></div>
+    </div>
+    <div id="tooltip"></div>
+
     <div id="controls" class="maplibregl-ctrl maplibregl-ctrl-group">
         <button id="terrarium-btn" class="material-symbols-outlined" title="지형">landscape</button>
         <button id="route-btn" class="material-symbols-outlined" title="경로" onclick="document.querySelector('#route-detail').classList.toggle('on'); this.classList.toggle('active')">route</button>
@@ -33,15 +47,6 @@
             </div>
         </div>
     </div>
-
-    <div id="gpx-list-container">
-        <ul></ul>
-        <div id="export-controls">
-            <button id="export-button">내보내기</button>
-        </div>
-        <div id="export-output"></div>
-    </div>
-    <div id="tooltip"></div>
 
     <!-- <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js" defer></script> -->
     <script src="https://unpkg.com/maplibre-contour@0.1.0/dist/index.min.js" defer></script>

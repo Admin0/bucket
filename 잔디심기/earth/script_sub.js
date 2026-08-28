@@ -1,6 +1,7 @@
 import { createTooltip } from '../script_tooltip.js';
 
 let tooltipsInitialized = false; // Local state for this module
+let searchedFeatureIds = new Set();
 
 export const initializeTooltips = function (map) {
     if (tooltipsInitialized) return; // 중복 초기화 방지
@@ -81,6 +82,20 @@ export const initializeTooltips = function (map) {
     const normalColors = { start: "#00ff80", end: "#005c45" };
     const certiColors = { start: "#ffd700", end: "#f57f17" };
 
+    function getHoverGradient(feature) {
+        const colors = window.routeColors?.[feature.properties.certified ? "certified" : "normal"] || (feature.properties.certified ? certiColors : normalColors);
+        const isSearched = searchedFeatureIds.has(feature.properties.id);
+        return ["interpolate", ["linear"], ["line-progress"], 0, isSearched ? colors.searchStart || colors.start : colors.start, 1, isSearched ? colors.searchEnd || colors.end : colors.end];
+    }
+
+    function getPointStrokeColor(feature) {
+        const colors = window.routeColors?.[feature.properties.certified ? "certified" : "normal"] || (feature.properties.certified ? certiColors : normalColors);
+        const isSearched = searchedFeatureIds.has(feature.properties.id);
+        const startColor = isSearched ? colors.searchStart || colors.start : colors.start;
+        const endColor = isSearched ? colors.searchEnd || colors.end : colors.end;
+        return ["case", ["==", ["get", "point_type"], "start"], startColor, endColor];
+    }
+
     function clearHighlightAndTooltip() {
         if (hoveredFeatureId !== null) {
             hoveredFeatureId = null;
@@ -90,12 +105,13 @@ export const initializeTooltips = function (map) {
                 }
             });
         }
-        tooltipEl.classList.remove("on", "searched");
+        tooltipEl.classList.remove("on");
+        tooltipEl.classList.remove("searched");
         map.getCanvas().style.cursor = "";
     }
 
     function dismissTooltip() {
-        tooltipEl.classList.remove("on", "generic", "fixedTop");
+        tooltipEl.removeAttribute('class');
         tooltipEl.style.top = "";
         tooltipEl.style.left = "";
     }
@@ -108,16 +124,14 @@ export const initializeTooltips = function (map) {
         const newHoveredId = feature.properties.id;
         if (hoveredFeatureId !== newHoveredId) {
             hoveredFeatureId = newHoveredId;
-            const isCertified = feature.properties.certified;
             const filter = ["==", ["get", "id"], hoveredFeatureId];
             highlightLayers.forEach((layerId) => map.setFilter(layerId, filter));
-            const gradient = isCertified
-                ? ["interpolate", ["linear"], ["line-progress"], 0, certiColors.start, 1, certiColors.end]
-                : ["interpolate", ["linear"], ["line-progress"], 0, normalColors.start, 1, normalColors.end];
-            map.setPaintProperty("gpx-highlight-main", "line-gradient", gradient);
+            map.setPaintProperty("gpx-highlight-main", "line-gradient", getHoverGradient(feature));
+            map.setPaintProperty("gpx-highlight-points", "circle-stroke-color", getPointStrokeColor(feature));
         }
 
         map.getCanvas().style.cursor = "pointer";
+        tooltipEl.removeAttribute('class');
         tooltipEl.classList.add("on");
 
         // createTooltip에 전달하기 전에 distance를 숫자로 변환합니다.
@@ -133,8 +147,8 @@ export const initializeTooltips = function (map) {
     }
 
     map.on("route-search-enter", (e) => {
-        tooltipEl.classList.add("searched");
         showFeatureTooltip(e.feature, { point: e.point });
+        tooltipEl.classList.add("searched");
     });
 
     map.on("route-search-leave", clearHighlightAndTooltip);
@@ -257,6 +271,18 @@ export const settingsRouteSearch = function (map, getFeatures, setSearchResults)
     const input = document.getElementById("route-search-input");
     if (!search || !input) return;
 
+    function setSearchRouteColors(ids = []) {
+        const routeColors = window.routeColors || {};
+        const normal = routeColors.normal || { base: "#00b264", searchEnd: "#f44a01" };
+        const certified = routeColors.certified || { base: "#FAAB0C", searchEnd: "#f57f17" };
+        const matchingIds = ["literal", ids];
+        const normalColor = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], normal.searchEnd, normal.base] : normal.base;
+        const certifiedColor = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], certified.searchEnd, certified.base] : certified.base;
+
+        if (map.getLayer("gpx-line-base")) map.setPaintProperty("gpx-line-base", "line-color", normalColor);
+        if (map.getLayer("gpx-line-base-certi")) map.setPaintProperty("gpx-line-base-certi", "line-color", certifiedColor);
+    }
+
     const updateSearch = () => {
         const query = input.value.trim().toLocaleLowerCase();
         const tokens = query
@@ -302,12 +328,13 @@ export const settingsRouteSearch = function (map, getFeatures, setSearchResults)
                 })
                 .map(feature => feature.properties.id)
             : [];
+            searchedFeatureIds = new Set(matchingIds);
         const matchingFeatures = query ? getFeatures().filter(feature => matchingIds.includes(feature.properties.id)) : [];
-        const filter = matchingIds.length > 0 ? ["in", ["get", "id"], ["literal", matchingIds]] : ["==", ["get", "id"], -1];
 
-        if (map.getLayer("gpx-search-highlight")) map.setFilter("gpx-search-highlight", filter);
+        setSearchRouteColors(matchingIds);
         setSearchResults?.(matchingFeatures);
         search.classList.toggle("on", matchingIds.length > 0);
+        document.getElementById("gpx-list-view-toggle").classList.toggle("on", matchingIds.length > 0);;
     };
 
     input.addEventListener("input", updateSearch);

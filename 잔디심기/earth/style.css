@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Material+Symbols:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 @import url("../style_tooltip.css");
 @import url("../style_color.css");
+@import url("style_search.css");
 
 body {
     margin: 0;
@@ -107,354 +108,11 @@ map::selection,
     align-items: center;
 }
 
-/* --- 검색 관련 --- */
-#route-search {
-    position: absolute;
-    top: 1em;
-    left: 1em;
-    display: flex;
-    align-items: center;
-    width: min(360px, calc(100vw - 4em));
-    padding: .5em 1em;
-    gap: 8px;
-    /* transform: translateX(-50%); */
-    background: rgba(255, 255, 255);
-    border-radius: 2em;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.22);
-    z-index: 11;
-}
-
-#route-search.on {
-    border-radius: 2em 2em 0 0;
-    /* box-shadow: none; */
-}
-
-#route-search label {
-    color: #555;
-    cursor: text;
-}
-
-#route-search-input {
-    min-width: 0;
-    flex: 1;
-    border: 0;
-    outline: 0;
-    background: transparent;
-    color: #222;
-    font: inherit;
-}
-
-#route-search-count {
-    /* color: #d52d5d;
-    font-size: 12px;
-    white-space: nowrap; */
-}
-
-#route-search #gpx-upload-btn {
-    border-radius: 50%;
-    width: fit-content;
-    padding: 0.5em;
-    border: none;
-    cursor: pointer;
-    background: transparent;
-}
-
-#route-search #gpx-upload-btn:hover {
-    background: var(--color--theme);
-}
-
 body:not(.alt) #gpx-list-container li.search-result .distance .replace,
 body.alt #gpx-list-container li.search-result .distance .main,
 body:not(.alt) #gpx-list-container li.search-result .pace .replace,
 body.alt #gpx-list-container li.search-result .pace .main {
     display: none;
-}
-
-#gpx-list-container li.search-result {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    /* width: calc(100% - 3em); */
-    /* padding: 1.5em; */
-    /* border-radius: 1em; */
-    /* background: var(--color--track); */
-    transition: 0.25s, transform 0.05s;
-    font-size: 0.85em;
-    line-height: 1;
-}
-
-#gpx-list-container li.search-result .course {
-    display: inline-block;
-    width: fit-content;
-    font-size: 22px;
-    color: #aaa;
-}
-
-#gpx-list-container li.search-result .date {
-    color: #aaa;
-    float: right;
-}
-
-#gpx-list-container li.search-result .title {
-    display: inline-block;
-    font-weight: 500;
-    font-size: 1.125em;
-    max-width: calc(100% - 6.5em);
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-#gpx-list-container li.search-result .distance .icon {
-    font-size: 20px;
-    color: silver;
-    margin: 0 0 0 -.125em;
-}
-
-#gpx-list-container li.search-result .distance .icon.on {
-    color: gold;
-}
-
-#gpx-list-container li.search-result .official {
-    background-color: var(--color--gold);
-    color: var(--color--gold-dark);
-    border-radius: 50%;
-    font-size: 0.9em;
-    padding: 0.25em;
-    font-variation-settings: "FILL" 1;
-    margin-left: .25em;
-}
-
-#gpx-list-container li.search-result .icon {
-    margin-right: 0.25em;
-    font-size: 20px;
-}
-
-#gpx-list-container li.search-result .comment {
-    color: #555;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-
-/* --- GPX/TCX 드롭 관련 스타일 --- */
-#gpx-list-container {
-    position: fixed;
-    top: 5em;
-    left: 1em;
-    width: min(calc(360px + 2em), calc(100vw - 2em));
-    /* 너비 확장 */
-    max-height: calc(100vh - 6em);
-    /* 높이 제한 */
-    background-color: rgba(255, 255, 255);
-    backdrop-filter: blur(5px);
-    border-radius: 0 0 2em 2em;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    z-index: 11;
-    display: none;
-    /* 초기에는 숨김 */
-    flex-direction: column;
-    /* Flexbox 레이아웃 */
-    overflow: hidden;
-    padding-bottom: .5em;
-}
-
-#gpx-list-container:not(:has(.search-result)) {
-    margin-top: 1.5em;
-    border-radius: 1em;
-    overflow: hidden;
-}
-
-#gpx-list-container ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    overflow-y: auto;
-    /* 목록 스크롤 */
-    flex-grow: 1;
-}
-
-#gpx-list-container li {
-    padding: 10px 15px;
-    cursor: pointer;
-    border-bottom: 1px solid #eee;
-    transition: background-color 0.2s;
-}
-
-#gpx-list-container li:last-child {
-    border-bottom: none;
-}
-
-#gpx-list-container li:hover {
-    background-color: #f0f0f0;
-}
-
-#gpx-list-container li.selected {
-    background-color: #d0eaff;
-}
-
-#gpx-list-container li.list-heading {
-    border-top: 1px solid #eee;
-    color: #d52d5d;
-    cursor: default;
-    font-size: 12px;
-    font-weight: bold;
-    position: sticky;
-    top: 0;
-    background-color: rgba(255, 255, 255);
-    z-index: 1;
-}
-
-#gpx-list-container li.list-heading:hover {
-    background-color: transparent;
-}
-
-#gpx-list-container li.uploaded-heading {
-    border-top: 1px solid #ddd;
-    padding-top: 12px;
-}
-
-.track-name {
-    font-weight: bold;
-    /* font-size: 15px; */
-    margin-bottom: .25em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.track-meta {
-    font-size: .9em;
-    display: flex;
-    justify-content: space-between;
-    opacity: 0.7;
-    white-space: nowrap;
-}
-
-.track-meta .material-symbols,
-.track-meta .material-symbols-outlined {
-    margin-right: .25em;
-}
-
-.track-meta .material-symbols:not(:first-child),
-.track-meta .material-symbols-outlined:not(:first-child) {
-    margin-left: .45em;
-    padding-left: .25em;
-    border-left: 1px solid #ccc;
-}
-
-.meta-separator {
-    margin: 0 6px;
-    color: #ccc;
-}
-
-/* 내보내기 버튼 및 출력 영역 */
-#export-controls {
-    display: none;
-    padding: 10px;
-    border-top: 1px solid #ddd;
-}
-
-#export-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-#gpx-list-container:has([data-track-id]) #export-controls {
-    display: block;
-}
-
-#export-output {
-    padding: 0 15px 15px;
-    max-height: 40vh;
-    overflow-y: auto;
-    background: #f8f9fa;
-    display: none;
-    /* 초기 숨김 */
-}
-
-#export-output h3 {
-    margin-top: 15px;
-    margin-bottom: 5px;
-    font-size: 14px;
-}
-
-#export-output pre {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 10px;
-    white-space: pre-wrap;
-    word-break: break-all;
-}
-
-/* --- Export & Copy Feedback Styles --- */
-.code-block-container {
-    position: relative;
-    /* 자식 요소인 피드백 메시지의 위치 기준이 됨 */
-    margin-bottom: 1rem;
-}
-
-.code-block {
-    background-color: #f0f0f0;
-    padding: 15px;
-    border-radius: 5px;
-    cursor: copy;
-    /* 마우스를 올리면 복사 가능함을 표시 */
-    transition: background-color 0.2s;
-    word-break: break-all;
-    white-space: pre-wrap;
-}
-
-.code-block:hover {
-    background-color: #e0e0e0;
-}
-
-.copy-feedback {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: bold;
-    z-index: 10;
-    pointer-events: none;
-    /* 메시지가 클릭 이벤트를 방해하지 않도록 함 */
-    animation: feedback-animation 1.5s ease-out forwards;
-}
-
-@keyframes feedback-animation {
-    0% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.8);
-    }
-
-    20% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
-
-    80% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
-
-    100% {
-        opacity: 0;
-        transform: translate(-50%, -20px) scale(0.9);
-    }
 }
 
 /* ========================================
@@ -465,7 +123,6 @@ body.alt #gpx-list-container li.search-result .pace .main {
     bottom: 190px;
     right: 10px;
     /* Adjusted to not overlap with maplibre controls */
-    z-index: 21;
 }
 
 #terrarium-btn {
@@ -517,11 +174,24 @@ body.alt #gpx-list-container li.search-result .pace .main {
 
 
 /* searched */
-#tooltip.searched {
+/* #tooltip.searched {
     top: inherit !important;
     bottom: 3em;
     left: 50% !important;
     transform: translateX(-50%);
+} */
+
+@media screen and (min-width: 1920px) {
+
+    /* searched */
+    #tooltip.searched {
+        left: calc(360px + 4em) !important;
+        transform: translate(0, calc(-100% - 3em));
+    }
+
+    #tooltip.searched.fixedTop {
+        transform: translate(0, 0);
+    }
 }
 
 @media screen and (max-width: 1920px) {
@@ -538,19 +208,4 @@ body.alt #gpx-list-container li.search-result .pace .main {
  * mobile
  * ======================================== */
 
-@media screen and (max-width: 600px) {
-
-    #gpx-list-container {
-        max-height: 30vh;
-    }
-
-    #map.drag-over:before {
-        font-size: 2em;
-    }
-
-    .track-meta {
-        white-space: nowrap;
-        overflow: scroll hidden;
-    }
-
-}
+@media screen and (max-width: 600px) {}

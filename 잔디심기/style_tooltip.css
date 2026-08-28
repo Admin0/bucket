@@ -197,8 +197,6 @@ body:not(.alt) #tooltip .replace {
 
 /* fixed edge */
 #tooltip.fixedTop {
-    /* position: fixed; */
-    /* background-color: gold; */
     top: 1em;
     transform: translate(-50%, 0);
 }

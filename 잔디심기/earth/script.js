@@ -46,13 +46,13 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
         minZoom: 3
     })
         .addControl(new maplibregl.NavigationControl({ visualizePitch: true, showZoom: true, showCompass: true }), 'bottom-right')
-        .addControl(new maplibregl.GeolocateControl({ positionOptions: { enableHighAccuracy: true }, trackUserLocation: true, showUserHeading: true }),'bottom-right');
+        .addControl(new maplibregl.GeolocateControl({ positionOptions: { enableHighAccuracy: true }, trackUserLocation: true, showUserHeading: true }), 'bottom-right');
 
     // --- Global State ---
     let allLineFeatures = [],
         allPointFeatures = [];
     let featureIdCounter = 0;
-    let updateRouteSearch = () => {};
+    let updateRouteSearch = () => { };
 
     // --- Utility Functions ---
     function decodeCoordinates(encoded) {
@@ -144,8 +144,9 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
 
         const layerinsertBefore = useFreeService ? "label-address-housenumber" : "Country border";
         const lineLayout = { "line-join": "round", "line-cap": "round" };
-        const normalColors = { start: "#00ff80", end: "#004D40", border: "rgba(255, 255, 255, 1)", base: "#00b264" };
-        const certiColors = { start: "#ffd700", end: "#f57f17", border: "rgba(255, 255, 255, 1)", base: "#FAAB0C" };
+        const normalColors = { start: "#00ff80", end: "#004D40", searchStart: "#f57f17", searchEnd: "#f44a01", border: "rgba(255, 255, 255, 1)", base: "#00b264" };
+        const certiColors = { start: "#ffd700", end: "#f57f17", searchStart: "#f57f17", searchEnd: "#f44a01", border: "rgba(255, 255, 255, 1)", base: "#FAAB0C" };
+        window.routeColors = { normal: normalColors, certified: certiColors };
         const highlightFilter = ["==", ["get", "id"], -1];
 
         const layers = [
@@ -230,14 +231,6 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
                     ],
                     "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 9, 2, 16, 5]
                 }
-            },
-            {
-                id: "gpx-search-highlight",
-                type: "line",
-                source: "gpx-lines-source",
-                layout: lineLayout,
-                filter: highlightFilter,
-                paint: { "line-gradient": ["interpolate", ["linear"], ["line-progress"], 0, "#f57f17", 1, "#ff1744"], "line-width": ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 5, 13, 3], "line-opacity": 0.95 }
             }
         ];
 
@@ -375,7 +368,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
                 processedCount += gpxRecordsToFetch.length - processedCount + featuresFromSheet.length;
                 updateProgress(processedCount, totalRecords);
             };
-    
+
             for (const { record, shortPath } of gpxRecordsToFetch) {
                 const fullPath = `../records/${record.date.substring(0, 4)}/${shortPath}.gpx`;
                 fetchPromises.push(fetch(fullPath)
