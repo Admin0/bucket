@@ -138,9 +138,10 @@
 #gpx-list-container {
     position: fixed;
     top: 0;
+    bottom: 0;
     left: 0;
     width: min(calc(360px + 4em), calc(100vw - 1em));
-    height: calc(100vh - 6em);
+   /*  height: calc(100vh - 6em); */
     background-color: rgba(255, 255, 255);
     backdrop-filter: blur(5px);
     z-index: 10;
