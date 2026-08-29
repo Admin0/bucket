@@ -153,12 +153,6 @@
     box-shadow: 5px 0 10px rgba(0, 0, 0, 0.22);
 }
 
-#gpx-list-container:not(:has(.search-result)) {
-    margin-top: 1.5em;
-    border-radius: 1em;
-    overflow: hidden;
-}
-
 #gpx-list-container ul {
     list-style-type: none;
     padding: 0 0 1em;
@@ -406,7 +400,7 @@ body:has(#gpx-list-container.on) #gpx-list-view-toggle .icon:before {
         padding: 6em .5em 0em;
     }
 
-    body:has(#tooltip.searched.on) #gpx-list-view-toggle {
+    body:has(#tooltip.on) #gpx-list-view-toggle {
         bottom: 10.5em;
     }
 
