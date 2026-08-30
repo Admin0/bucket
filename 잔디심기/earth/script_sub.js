@@ -77,6 +77,7 @@ export const initializeTooltips = function (map) {
 
     const tooltipEl = document.getElementById("tooltip");
     let hoveredFeatureId = null;
+    let hideTimer = null;
     const highlightLayers = ["gpx-highlight-border", "gpx-highlight-main", "gpx-highlight-points-border", "gpx-highlight-points"];
     const layersToQuery = ["gpx-line-base", "gpx-line-base-certi"];
     const normalColors = { start: "#00ff80", end: "#005c45" };
@@ -96,6 +97,17 @@ export const initializeTooltips = function (map) {
         return ["case", ["==", ["get", "point_type"], "start"], startColor, endColor];
     }
 
+    function beginHideTooltip() {
+        clearTimeout(hideTimer);
+        tooltipEl.classList.remove("on");
+        tooltipEl.classList.add("is-hiding");
+        hideTimer = setTimeout(() => {
+            tooltipEl.classList.remove("is-hiding", "searched", "fixedTop");
+            tooltipEl.style.left = "";
+            tooltipEl.style.top = "";
+        }, 200);
+    }
+
     function clearHighlightAndTooltip() {
         if (hoveredFeatureId !== null) {
             hoveredFeatureId = null;
@@ -105,22 +117,16 @@ export const initializeTooltips = function (map) {
                 }
             });
         }
-        tooltipEl.classList.remove("on");
-        tooltipEl.classList.remove("searched");
+        beginHideTooltip();
         map.getCanvas().style.cursor = "";
     }
 
-    function dismissTooltip() {
-        tooltipEl.removeAttribute('class');
-        tooltipEl.style.top = "";
-        tooltipEl.style.left = "";
-    }
-
     ["#route-search", "#gpx-list-container"].forEach((selector) => {
-        document.querySelector(selector)?.addEventListener("mouseenter", dismissTooltip);
+        document.querySelector(selector)?.addEventListener("mouseenter", beginHideTooltip);
     });
 
     function showFeatureTooltip(feature, e) {
+        clearTimeout(hideTimer);
         const newHoveredId = feature.properties.id;
         if (hoveredFeatureId !== newHoveredId) {
             hoveredFeatureId = newHoveredId;
@@ -131,7 +137,7 @@ export const initializeTooltips = function (map) {
         }
 
         map.getCanvas().style.cursor = "pointer";
-        tooltipEl.removeAttribute('class');
+        tooltipEl.classList.remove("is-hiding");
         tooltipEl.classList.add("on");
 
         // createTooltip에 전달하기 전에 distance를 숫자로 변환합니다.
@@ -276,18 +282,20 @@ export const settingsRouteSearch = function (map, getFeatures, setSearchResults)
         const normal = routeColors.normal || { base: "#00b264", searchEnd: "#f44a01" };
         const certified = routeColors.certified || { base: "#FAAB0C", searchEnd: "#f44a01" };
         const matchingIds = ["literal", ids];
-        const normalColor = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], "#f44a01", normal.base] : normal.base;
-        const certifiedColor = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], "#f44a01", certified.base] : certified.base;
+        const normalColor = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], "#d94a00", normal.base] : normal.base;
+        const certifiedColor = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], "#d97000", certified.base] : certified.base;
+        const normalOpacity = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], 0.9, ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.5]] : ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.5];
+        const certifiedOpacity = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], 0.9, ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.5]] : ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.5];
         const searchSortKey = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], 1, 0] : 0;
 
         if (map.getLayer("gpx-line-base")) {
             map.setPaintProperty("gpx-line-base", "line-color", normalColor);
-            map.setPaintProperty('gpx-line-base', 'line-opacity', ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.5]);
+            map.setPaintProperty('gpx-line-base', 'line-opacity', normalOpacity);
             map.setLayoutProperty("gpx-line-base", "line-sort-key", searchSortKey);
         }
         if (map.getLayer("gpx-line-base-certi")) {
             map.setPaintProperty("gpx-line-base-certi", "line-color", certifiedColor);
-            map.setPaintProperty('gpx-line-base-certi', 'line-opacity', ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.5]);
+            map.setPaintProperty('gpx-line-base-certi', 'line-opacity', certifiedOpacity);
             map.setLayoutProperty("gpx-line-base-certi", "line-sort-key", searchSortKey);
         }
     }
@@ -342,8 +350,6 @@ export const settingsRouteSearch = function (map, getFeatures, setSearchResults)
 
         setSearchRouteColors(matchingIds);
         setSearchResults?.(matchingFeatures);
-        search.classList.toggle("on", matchingIds.length > 0);
-        document.getElementById("gpx-list-view-toggle").classList.toggle("on", matchingIds.length > 0);;
     };
 
     input.addEventListener("input", updateSearch);

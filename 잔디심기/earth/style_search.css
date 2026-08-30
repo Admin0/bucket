@@ -21,7 +21,9 @@
 }
 
 @media screen and (min-width: 600px) {
-    body:has(#gpx-list-container .search-result) #route-search {
+
+    body:has(#gpx-list-container .search-result) #route-search,
+    body:has(li[data-track-id]) #route-search {
         border: 1px solid #ddd;
         box-shadow: none;
     }
@@ -100,13 +102,24 @@
 }
 
 #gpx-list-container li.search-result .distance .icon {
+    display: inline-block;
     font-size: 20px;
     color: silver;
     margin: 0 0 0 -.125em;
+    font-variation-settings: "FILL" 1;
+    line-height: 1;
 }
 
 #gpx-list-container li.search-result .distance .icon.on {
     color: gold;
+}
+
+#gpx-list-container li.search-result .distance .icon.half {
+    color: transparent;
+    background: linear-gradient(90deg, gold 0 50%, silver 50% 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 #gpx-list-container li.search-result .official {
@@ -141,7 +154,7 @@
     bottom: 0;
     left: 0;
     width: min(calc(360px + 4em), calc(100vw - 1em));
-   /*  height: calc(100vh - 6em); */
+    /*  height: calc(100vh - 6em); */
     background-color: rgba(255, 255, 255);
     backdrop-filter: blur(5px);
     z-index: 10;
@@ -164,7 +177,7 @@
 }
 
 #gpx-list-container li {
-    padding: 10px 15px;
+    padding: 1em 1.5em;
     cursor: pointer;
     border-bottom: 1px solid #eee;
     transition: background-color 0.2s;
@@ -401,6 +414,11 @@ body:has(#gpx-list-container.on) #gpx-list-view-toggle .icon:before {
         padding: 6em .5em 0em;
     }
 
+    body:has(#gpx-list-container .search-result) #gpx-list-view-toggle,
+    body:has(li[data-track-id]) #gpx-list-view-toggle {
+        display: block;
+    }
+
     body:has(#tooltip.on) #gpx-list-view-toggle {
         bottom: 10.5em;
     }
@@ -409,13 +427,13 @@ body:has(#gpx-list-container.on) #gpx-list-view-toggle .icon:before {
         top: 100%;
     }
 
+    #gpx-list-container li {
+        padding: 1em 1em;
+    }
+
     .track-meta {
         white-space: nowrap;
         overflow: scroll hidden;
-    }
-
-    #gpx-list-view-toggle.on {
-        display: block;
     }
 
 }

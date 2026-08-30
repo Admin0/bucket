@@ -204,14 +204,22 @@ export const gpx = (() => {
     }
 
     // --- UI & Map Interaction ---
+    function getTrackMapIds(trackId) {
+        const cleanTrackId = String(trackId).trim();
+        const layerId = `gpx-layer-${cleanTrackId}`;
+        return {
+            sourceId: `gpx-source-${cleanTrackId}`,
+            layerId,
+            borderLayerId: `${layerId}-border`
+        };
+    }
+
     function deleteSelectedTracks() {
         if (state.selectedTrackIds.length === 0) return;
         state.selectedTrackIds.forEach((trackId) => {
-            const layerId = `gpx-layer-${trackId}`;
-            const sourceId = `gpx-source-${trackId}`;
-            if (state.map.getLayer(layerId)) {
-                state.map.removeLayer(layerId).removeLayer(`${layerId}-border`);
-            }
+            const { layerId, borderLayerId, sourceId } = getTrackMapIds(trackId);
+            if (state.map.getLayer(borderLayerId)) state.map.removeLayer(borderLayerId);
+            if (state.map.getLayer(layerId)) state.map.removeLayer(layerId);
             if (state.map.getSource(sourceId)) state.map.removeSource(sourceId);
         });
         state.droppedTracks = state.droppedTracks.filter((track) => !state.selectedTrackIds.includes(track.id));
@@ -240,15 +248,19 @@ export const gpx = (() => {
         }
 
         function rating(val, type) {
-            // Implementation for rating function
+            const numericValue = Number(val) || 0;
+            const totalStars = 5;
+            const stepValue = type === "trail" ? 375 : 5;
+            const normalized = Math.min(Math.max(numericValue / stepValue, 0), totalStars);
+            const activeHalfStars = Math.round(normalized * 2);
+
             let stars = "";
-            for (let i = 0; i < 5; i++) {
-                if (i <= (type === "trail" ? Number(val) / 250 - 1 : Number(val) / 5 - 1)) {
-                    stars += '<span class="material-symbols icon on"> star </span>';
-                }
-                else {
-                    stars += '<span class="material-symbols icon"> star </span>';
-                }
+            for (let i = 0; i < totalStars; i++) {
+                const remaining = activeHalfStars - i * 2;
+                let starState = "off";
+                if (remaining >= 2) starState = "on";
+                else if (remaining === 1) starState = "half";
+                stars += `<span class="material-symbols icon ${starState}"> star </span>`;
             }
             return stars;
         }
@@ -343,14 +355,13 @@ export const gpx = (() => {
     }
 
     function addTrackLayer(track) {
-        const sourceId = `gpx - source - ${track.id} `;
-        const layerId = `gpx - layer - ${track.id} `;
+        const { sourceId, layerId, borderLayerId } = getTrackMapIds(track.id);
         if (state.map.getSource(sourceId)) return;
 
         state.map.addSource(sourceId, { type: "geojson", lineMetrics: true, data: { type: "Feature", geometry: { type: "LineString", coordinates: track.points } } });
         state.map
             .addLayer({
-                id: `${layerId} -border`,
+                id: borderLayerId,
                 type: "line",
                 source: sourceId,
                 layout: { "line-join": "round", "line-cap": "round" },
@@ -367,10 +378,12 @@ export const gpx = (() => {
 
     function focusOnSelectedTracks() {
         state.droppedTracks.forEach((track) => {
+            const { layerId, borderLayerId } = getTrackMapIds(track.id);
+            if (!state.map.getLayer(layerId)) return;
             state.map
-                .setPaintProperty(`gpx - layer - ${track.id} `, "line-gradient", ["interpolate", ["linear"], ["line-progress"], 0, "#f57f17", 1, "#f44a01"])
-                .setPaintProperty(`gpx - layer - ${track.id} `, "line-width", 3)
-                .setPaintProperty(`gpx - layer - ${track.id} -border`, "line-width", 0);
+                .setPaintProperty(layerId, "line-gradient", ["interpolate", ["linear"], ["line-progress"], 0, "#f57f17", 1, "#f44a01"])
+                .setPaintProperty(layerId, "line-width", 3)
+                .setPaintProperty(borderLayerId, "line-width", 0);
         });
 
         const selectedTracks = state.droppedTracks.filter((t) => state.selectedTrackIds.includes(t.id));
@@ -382,10 +395,12 @@ export const gpx = (() => {
 
         const bounds = new maplibregl.LngLatBounds();
         selectedTracks.forEach((track) => {
+            const { layerId, borderLayerId } = getTrackMapIds(track.id);
+            if (!state.map.getLayer(layerId)) return;
             state.map
-                .setPaintProperty(`gpx - layer - ${track.id} `, "line-gradient", ["interpolate", ["linear"], ["line-progress"], 0, "#f57f17", 0.5, "#f44a01", 1, "#ff1744"])
-                .setPaintProperty(`gpx - layer - ${track.id} `, "line-width", 6)
-                .setPaintProperty(`gpx - layer - ${track.id} -border`, "line-width", 10);
+                .setPaintProperty(layerId, "line-gradient", ["interpolate", ["linear"], ["line-progress"], 0, "#f57f17", 0.5, "#f44a01", 1, "#ff1744"])
+                .setPaintProperty(layerId, "line-width", 6)
+                .setPaintProperty(borderLayerId, "line-width", 10);
             track.points.forEach((point) => bounds.extend(point));
         });
 
