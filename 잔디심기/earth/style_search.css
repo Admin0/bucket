@@ -66,32 +66,20 @@
 /* ========================================
  * search result list
  * ======================================== */
-#gpx-list-container li.search-result {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    /* width: calc(100% - 3em); */
-    /* padding: 1.5em; */
-    /* border-radius: 1em; */
-    /* background: var(--color--track); */
-    transition: 0.25s, transform 0.05s;
-    font-size: 0.85em;
-    line-height: 1;
-}
 
-#gpx-list-container li.search-result .course {
+#gpx-list-container li .course {
     display: inline-block;
     width: fit-content;
     font-size: 22px;
     color: #aaa;
 }
 
-#gpx-list-container li.search-result .date {
+#gpx-list-container li .date {
     color: #aaa;
     float: right;
 }
 
-#gpx-list-container li.search-result .title {
+#gpx-list-container li .title {
     display: inline-block;
     font-weight: 500;
     font-size: 1.125em;
@@ -137,7 +125,7 @@
     font-size: 20px;
 }
 
-#gpx-list-container li.search-result .comment {
+#gpx-list-container .comment {
     color: #555;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -167,6 +155,11 @@
     box-shadow: 5px 0 10px rgba(0, 0, 0, 0.22);
 }
 
+#gpx-list-container:has([data-track-id]),
+#gpx-list-container:has(.search-result) {
+    display: flex;
+}
+
 #gpx-list-container ul {
     list-style-type: none;
     padding: 0 0 1em;
@@ -181,6 +174,11 @@
     cursor: pointer;
     border-bottom: 1px solid #eee;
     transition: background-color 0.2s;
+    font-size: 0.85em;
+    line-height: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
 #gpx-list-container li:last-child {
@@ -239,32 +237,23 @@
     display: block;
 }
 
-.track-name {
-    font-weight: bold;
-    /* font-size: 15px; */
-    margin-bottom: .25em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
 .track-meta {
-    font-size: .9em;
     display: flex;
     justify-content: space-between;
-    opacity: 0.7;
     white-space: nowrap;
+    align-items: center;
 }
 
 .track-meta .material-symbols,
 .track-meta .material-symbols-outlined {
     margin-right: .25em;
+    font-size: 20px;
 }
 
 .track-meta .material-symbols:not(:first-child),
 .track-meta .material-symbols-outlined:not(:first-child) {
-    margin-left: .45em;
-    padding-left: .25em;
+    margin-left: .5em;
+    padding-left: .5em;
     border-left: 1px solid #ccc;
 }
 

@@ -236,9 +236,51 @@ export const gpx = (() => {
     function updateList() {
         if (!listElement) return;
         listElement.innerHTML = "";
-        const hasListContent = state.droppedTracks.length > 0 || state.searchResults.length > 0;
-        listContainer.classList.toggle("on", hasListContent);
-        listContainer.style.display = hasListContent ? "flex" : "none";
+
+        if (state.droppedTracks.length > 0 && state.searchResults.length > 0) {
+            const heading = document.createElement("li");
+            heading.className = "list-heading uploaded-heading";
+            heading.textContent = "업로드한 GPX";
+            listElement.appendChild(heading);
+        }
+
+        state.droppedTracks.forEach((track) => {
+            const li = document.createElement("li");
+            li.dataset.trackId = track.id;
+            li.draggable = true;
+            li.addEventListener("dragstart", handleDragStart);
+
+            if (state.selectedTrackIds.includes(track.id)) {
+                li.classList.add("selected");
+            }
+            const pace = formatPace(track.duration, track.distance);
+
+            let activityTitle = "걷기";
+            const paceInSecondsPerKm = track.distance > 0 ? track.duration / track.distance : 0;
+
+            if (track.elevation >= 250) {
+                activityTitle = "등산";
+            } else if (paceInSecondsPerKm > 0 && paceInSecondsPerKm <= 480) {
+                // 8 min/km
+                activityTitle = "러닝";
+            }
+
+            const displayName = track.title ? `${track.title} ${activityTitle} ` : `${activityTitle} `;
+
+            li.innerHTML = `
+            <div class="track-name"> <span class="title">${displayName}</span> <span class="date">${track.date}</span> </div>
+            <div class="track-meta">
+                <span class="material-symbols-outlined"> conversion_path </span> ${track.distance.toFixed(2)} <span class="unit"> km</span>
+                <span class="material-symbols-outlined"> floor </span> ${track.elevation} <span class="unit"> m</span>
+                <span class="material-symbols-outlined"> timer </span> ${formatDuration(track.duration)}
+                <span class="material-symbols-outlined"> avg_pace </span> ${pace}<span class="unit">/km</span>
+            </div>
+            <span class="comment">${track.name || ""}</span>`;
+            li.addEventListener("click", (e) => {
+                handleTrackSelection(track.id, e.shiftKey, e.metaKey || e.ctrlKey);
+            });
+            listElement.appendChild(li);
+        });
 
         if (state.searchResults.length > 0) {
             const heading = document.createElement("li");
@@ -300,50 +342,6 @@ export const gpx = (() => {
             // console.log("Search Result:", feature);
             listElement.appendChild(li);
         });
-
-        if (state.droppedTracks.length > 0 && state.searchResults.length > 0) {
-            const heading = document.createElement("li");
-            heading.className = "list-heading uploaded-heading";
-            heading.textContent = "업로드한 GPX";
-            listElement.appendChild(heading);
-        }
-
-        state.droppedTracks.forEach((track) => {
-            const li = document.createElement("li");
-            li.dataset.trackId = track.id;
-            li.draggable = true;
-            li.addEventListener("dragstart", handleDragStart);
-
-            if (state.selectedTrackIds.includes(track.id)) {
-                li.classList.add("selected");
-            }
-            const pace = formatPace(track.duration, track.distance);
-
-            let activityTitle = "걷기";
-            const paceInSecondsPerKm = track.distance > 0 ? track.duration / track.distance : 0;
-
-            if (track.elevation >= 250) {
-                activityTitle = "등산";
-            } else if (paceInSecondsPerKm > 0 && paceInSecondsPerKm <= 480) {
-                // 8 min/km
-                activityTitle = "러닝";
-            }
-
-            const displayName = track.title ? `${track.title} ${activityTitle} (${track.name})` : `${track.name} ${activityTitle} `;
-
-            li.innerHTML = `<div class="track-name"> ${displayName}</div>
-        <div class="track-meta">
-            <span class="material-symbols-outlined"> event </span> ${track.date || "N/A"}
-            <span class="material-symbols-outlined"> conversion_path </span> ${track.distance.toFixed(2)} km
-            <span class="material-symbols-outlined"> floor </span> ${track.elevation} m
-            <span class="material-symbols-outlined"> timer </span> ${formatDuration(track.duration)}
-            <span class="material-symbols-outlined"> avg_pace </span> ${pace}/km
-        </div>`;
-            li.addEventListener("click", (e) => {
-                handleTrackSelection(track.id, e.shiftKey, e.metaKey || e.ctrlKey);
-            });
-            listElement.appendChild(li);
-        });
     }
 
     function toggleListView() {
@@ -382,7 +380,7 @@ export const gpx = (() => {
             if (!state.map.getLayer(layerId)) return;
             state.map
                 .setPaintProperty(layerId, "line-gradient", ["interpolate", ["linear"], ["line-progress"], 0, "#f57f17", 1, "#f44a01"])
-                .setPaintProperty(layerId, "line-width", 3)
+                .setPaintProperty(layerId, "line-width", ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 4, 13, 1.5])
                 .setPaintProperty(borderLayerId, "line-width", 0);
         });
 
@@ -399,8 +397,8 @@ export const gpx = (() => {
             if (!state.map.getLayer(layerId)) return;
             state.map
                 .setPaintProperty(layerId, "line-gradient", ["interpolate", ["linear"], ["line-progress"], 0, "#f57f17", 0.5, "#f44a01", 1, "#ff1744"])
-                .setPaintProperty(layerId, "line-width", 6)
-                .setPaintProperty(borderLayerId, "line-width", 10);
+                .setPaintProperty(layerId, "line-width", ["interpolate", ["linear"], ["zoom"], 9, 3, 16, 5])
+                .setPaintProperty(borderLayerId, "line-width", ["interpolate", ["linear"], ["zoom"], 5, 6, 12, 8]);
             track.points.forEach((point) => bounds.extend(point));
         });
 

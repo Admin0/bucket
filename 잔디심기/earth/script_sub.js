@@ -84,13 +84,13 @@ export const initializeTooltips = function (map) {
     const certiColors = { start: "#ffd700", end: "#f57f17" };
 
     function getHoverGradient(feature) {
-        const colors = window.routeColors?.[feature.properties.certified ? "certified" : "normal"] || (feature.properties.certified ? certiColors : normalColors);
+        const colors = map.routeColors?.[feature.properties.certified ? "certified" : "normal"] || (feature.properties.certified ? certiColors : normalColors);
         const isSearched = searchedFeatureIds.has(feature.properties.id);
         return ["interpolate", ["linear"], ["line-progress"], 0, isSearched ? colors.searchStart || colors.start : colors.start, 1, isSearched ? colors.searchEnd || colors.end : colors.end];
     }
 
     function getPointStrokeColor(feature) {
-        const colors = window.routeColors?.[feature.properties.certified ? "certified" : "normal"] || (feature.properties.certified ? certiColors : normalColors);
+        const colors = map.routeColors?.[feature.properties.certified ? "certified" : "normal"] || (feature.properties.certified ? certiColors : normalColors);
         const isSearched = searchedFeatureIds.has(feature.properties.id);
         const startColor = isSearched ? colors.searchStart || colors.start : colors.start;
         const endColor = isSearched ? colors.searchEnd || colors.end : colors.end;
@@ -278,25 +278,36 @@ export const settingsRouteSearch = function (map, getFeatures, setSearchResults)
     if (!search || !input) return;
 
     function setSearchRouteColors(ids = []) {
-        const routeColors = window.routeColors || {};
-        const normal = routeColors.normal || { base: "#00b264", searchEnd: "#f44a01" };
-        const certified = routeColors.certified || { base: "#FAAB0C", searchEnd: "#f44a01" };
         const matchingIds = ["literal", ids];
-        const normalColor = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], "#f57f17", normal.base] : normal.base;
-        const certifiedColor = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], "#f57f17", certified.base] : certified.base;
-        const normalOpacity = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], 0.9, ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.25]] : ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.25];
-        const certifiedOpacity = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], 0.9, ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.33]] : ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.33];
-        const searchSortKey = ids.length > 0 ? ["case", ["in", ["get", "id"], matchingIds], 1, 0] : 0;
+        const normalOpacity = [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            7,
+            ["case", ["in", ["get", "id"], matchingIds], 0.9, 0.75],
+            10,
+            ["case", ["in", ["get", "id"], matchingIds], 0.7, 0.25]
+        ];
+
+        const certifiedOpacity = [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            7,
+            ["case", ["in", ["get", "id"], matchingIds], 0.9, 0.75],
+            10,
+            ["case", ["in", ["get", "id"], matchingIds], 0.75, 0.33]
+        ];
 
         if (map.getLayer("gpx-line-base")) {
-            map.setPaintProperty("gpx-line-base", "line-color", normalColor);
+            map.setPaintProperty("gpx-line-base", "line-color", ["case", ["in", ["get", "id"], matchingIds], "#ff1744", map.routeColors.normal.base]);
             map.setPaintProperty('gpx-line-base', 'line-opacity', normalOpacity);
-            map.setLayoutProperty("gpx-line-base", "line-sort-key", searchSortKey);
+            map.setLayoutProperty("gpx-line-base", "line-sort-key", ["case", ["in", ["get", "id"], matchingIds], 1, 0]);
         }
         if (map.getLayer("gpx-line-base-certi")) {
-            map.setPaintProperty("gpx-line-base-certi", "line-color", certifiedColor);
+            map.setPaintProperty("gpx-line-base-certi", "line-color", ["case", ["in", ["get", "id"], matchingIds], "#ff1744", map.routeColors.certified.base]);
             map.setPaintProperty('gpx-line-base-certi', 'line-opacity', certifiedOpacity);
-            map.setLayoutProperty("gpx-line-base-certi", "line-sort-key", searchSortKey);
+            map.setLayoutProperty("gpx-line-base-certi", "line-sort-key", ["case", ["in", ["get", "id"], matchingIds], 1, 0]);
         }
     }
 

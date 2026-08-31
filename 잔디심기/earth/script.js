@@ -146,7 +146,11 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
         const lineLayout = { "line-join": "round", "line-cap": "round" };
         const normalColors = { start: "#00ff80", end: "#004D40", searchStart: "#f57f17", searchEnd: "#ff1744", border: "rgba(255, 255, 255, 1)", base: "#00b264" };
         const certiColors = { start: "#ffd700", end: "#f57f17", searchStart: "#f57f17", searchEnd: "#ff1744", border: "rgba(255, 255, 255, 1)", base: "#FAAB0C" };
-        window.routeColors = { normal: normalColors, certified: certiColors };
+
+        map.routeWidth = ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 4, 13, 1.5];
+        map.routeOpacity = { normal: ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.25], certified: ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.33] };
+        map.routeColors = { normal: normalColors, certified: certiColors };
+        
         const highlightFilter = ["==", ["get", "id"], -1];
 
         const layers = [
@@ -176,8 +180,8 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
                 filter: ["!", ["==", ["get", "certified"], true]],
                 paint: {
                     "line-color": normalColors.base,
-                    "line-width": ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 4, 13, 2],
-                    "line-opacity": ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.25]
+                    "line-width": map.routeWidth,
+                    "line-opacity": map.routeOpacity.normal
                 }
             },
             {
@@ -188,8 +192,8 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
                 filter: ["==", ["get", "certified"], true],
                 paint: {
                     "line-color": certiColors.base,
-                    "line-width": ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 4, 13, 2],
-                    "line-opacity": ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.33]
+                    "line-width": map.routeWidth,
+                    "line-opacity": map.routeOpacity.certified
                 }
             },
             {
