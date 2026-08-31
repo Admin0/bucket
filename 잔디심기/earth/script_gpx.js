@@ -350,6 +350,7 @@ export const gpx = (() => {
         const isOn = listContainer?.classList.contains("on");
         listContainer?.classList.toggle("on", !isOn);
         routeSearch?.classList.toggle("on", !isOn);
+        document.getElementById("tooltip")?.classList.remove("on");
     }
 
     function addTrackLayer(track) {

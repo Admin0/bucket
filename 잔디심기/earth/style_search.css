@@ -20,13 +20,10 @@
     box-shadow: none;
 }
 
-@media screen and (min-width: 600px) {
-
-    body:has(#gpx-list-container .search-result) #route-search,
-    body:has(li[data-track-id]) #route-search {
-        border: 1px solid #ddd;
-        box-shadow: none;
-    }
+body:has(#gpx-list-container.on .search-result) #route-search,
+body:has(#gpx-list-container.on li[data-track-id]) #route-search {
+    border: 1px solid #ddd;
+    box-shadow: none;
 }
 
 #route-search label {
@@ -385,10 +382,6 @@ body:has(#gpx-list-container.on) #gpx-list-view-toggle .icon:before {
  * ======================================== */
 
 @media screen and (max-width: 600px) {
-
-    #route-search {
-        border: 1px solid #fff;
-    }
 
     #gpx-list-container {
         transition: top 0.25s;

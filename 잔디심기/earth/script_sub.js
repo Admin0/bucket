@@ -5,8 +5,8 @@ let searchedFeatureIds = new Set();
 
 export const initializeTooltips = function (map) {
     if (tooltipsInitialized) return; // 중복 초기화 방지
-    const tooltip = document.getElementById("tooltip");
-    if (!tooltip) return;
+    const tooltipEl = document.getElementById("tooltip");
+    if (!tooltipEl) return;
 
     // 1. 일반 'title' 속성 툴팁 처리
     document.body.addEventListener("mouseover", (e) => {
@@ -16,8 +16,8 @@ export const initializeTooltips = function (map) {
             target.dataset.genericTooltip = target.title;
             target.removeAttribute("title");
 
-            tooltip.innerHTML = `<div class="tooltip-comment">${target.dataset.genericTooltip}</div>`;
-            tooltip.classList.add("on", "generic");
+            tooltipEl.innerHTML = `<div class="tooltip-comment">${target.dataset.genericTooltip}</div>`;
+            tooltipEl.classList.add("on", "generic");
         }
     }, { passive: true });
 
@@ -31,10 +31,10 @@ export const initializeTooltips = function (map) {
         target.title = target.dataset.genericTooltip;
         target.removeAttribute("data-generic-tooltip");
 
-        if (tooltip.classList.contains("generic")) {
-            tooltip.classList.remove("on", "generic", "fixedTop", "searched");
-            tooltip.style.top = "";
-            tooltip.style.left = "";
+        if (tooltipEl.classList.contains("generic")) {
+            tooltipEl.classList.remove("on", "generic", "fixedTop", "searched");
+            tooltipEl.style.top = "";
+            tooltipEl.style.left = "";
         }
     }, { passive: true });
 
@@ -44,12 +44,12 @@ export const initializeTooltips = function (map) {
     const OFFSET_Y = 15; // 마우스 커서 하단 여백
 
     document.addEventListener("mousemove", (e) => {
-        if (!tooltip.classList.contains("on")) return;
+        if (!tooltipEl.classList.contains("on")) return;
 
         if (!ticked) {
             window.requestAnimationFrame(() => {
                 // fixed 레이아웃이므로 clientX, clientY 사용
-                tooltip.style.left = `${e.clientX + OFFSET_X}px`;
+                tooltipEl.style.left = `${e.clientX + OFFSET_X}px`;
 
                 // 화면 상단 경계선 감지 (e.clientY 기준이므로 scrollY 계산이 필요 없음)
                 const shouldFixTop = tooltip.offsetHeight > (e.clientY - 48);
@@ -58,9 +58,9 @@ export const initializeTooltips = function (map) {
                     tooltip.classList.add("fixedTop");
                     tooltip.style.top = "";
                 } else {
-                    tooltip.classList.remove("fixedTop");
+                    tooltipEl.classList.remove("fixedTop");
                     // 마우스 커서 살짝 아래에 위치하도록 여백(OFFSET_Y) 추가
-                    tooltip.style.top = `${e.clientY + OFFSET_Y}px`;
+                    tooltipEl.style.top = `${e.clientY + OFFSET_Y}px`;
                 }
                 ticked = false;
             });
@@ -75,7 +75,6 @@ export const initializeTooltips = function (map) {
     // create tooltip
     // activate tooltip
 
-    const tooltipEl = document.getElementById("tooltip");
     let hoveredFeatureId = null;
     let hideTimer = null;
     const highlightLayers = ["gpx-highlight-border", "gpx-highlight-main", "gpx-highlight-points-border", "gpx-highlight-points"];
