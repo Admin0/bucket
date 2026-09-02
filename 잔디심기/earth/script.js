@@ -5,16 +5,18 @@ import { initializeTooltips, settingsTerraium, settingsRouteDesign, settingsRout
 // 전역 'hermes' 객체 초기화
 const hermes = { gpx, initializeTooltips, settingsTerraium, settingsRouteDesign, settingsRouteSearch };
 
-const style_light = VersaTilesStyle.graybeard({
-    baseUrl: "https://tiles.versatiles.org/",
-    language: "ko",
-    recolor: { blend: 0.2, blendColor: "#FFF" }
-});
-const style_dark = VersaTilesStyle.shadow({
-    baseUrl: "https://tiles.versatiles.org/",
-    language: "ko",
-    recolor: { blend: 0.2, blendColor: "#000" }
-});
+// const style_light = VersaTilesStyle.graybeard({
+//     baseUrl: "https://tiles.versatiles.org/",
+//     language: "ko",
+//     // recolor: { blend: 0.2, blendColor: "#FFF" }
+// });
+// const style_dark = VersaTilesStyle.shadow({
+//     baseUrl: "https://tiles.versatiles.org/",
+//     language: "ko",
+//     // recolor: { blend: 0.2, blendColor: "#000" }
+// });
+const style_light = 'https://tiles.openfreemap.org/styles/positron';
+const style_dark = 'https://tiles.openfreemap.org/styles/dark';
 const style_maptilerlight = "https://api.maptiler.com/maps/019d5607-c62e-736d-adde-04f8f879a22b/style.json?key=Bdy6sMAQwxQOz1O2ur6a";
 const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac59-ac40754b0df4/style.json?key=Bdy6sMAQwxQOz1O2ur6a";
 
@@ -35,6 +37,8 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
         console.warn("Could not check for custom MapTiler style, falling back to free service.", error);
         useFreeService = true;
     }
+
+    // useFreeService = true; // Force use of free service for now, as per your request.
 
     // All original code is now placed after the async check to ensure `useFreeService` is correctly set.
     const map = new maplibregl.Map({
@@ -142,7 +146,9 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
                 ]
             });
 
-        const layerinsertBefore = useFreeService ? "label-address-housenumber" : "Country border";
+        // const layerinsertBefore = useFreeService ? "label-address-housenumber" : "Country border";
+        const layerinsertBefore = useFreeService ? "place_other" : "Country border";
+        console.log("Layer insert before:", map.getStyle().layers);
         const lineLayout = { "line-join": "round", "line-cap": "round" };
         const normalColors = { start: "#00ff80", end: "#004D40", searchStart: "#f57f17", searchEnd: "#ff1744", border: "rgba(255, 255, 255, 1)", base: "#00b264" };
         const certiColors = { start: "#ffd700", end: "#f57f17", searchStart: "#f57f17", searchEnd: "#ff1744", border: "rgba(255, 255, 255, 1)", base: "#FAAB0C" };

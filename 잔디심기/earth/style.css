@@ -122,6 +122,20 @@ body.alt #gpx-list-container li.search-result .pace .main {
 /* ========================================
  * controls
  * ======================================== */
+[class~="maplibregl-ctrl"] {
+    background-color: var(--color--body-background);
+    color: var(--color--track);
+    border: 1px solid var(--color--track-border);
+}
+
+.maplibregl-ctrl button .maplibregl-ctrl-icon {
+    filter: invert(.75);
+}
+
+.maplibregl-ctrl-group button {
+    filter: invert(.5);
+}
+
 #controls {
     position: absolute;
     bottom: 190px;
@@ -170,7 +184,6 @@ body.alt #gpx-list-container li.search-result .pace .main {
     border-radius: .25em;
     left: calc(100% - 29px);
 }
-
 
 /* ========================================
  * tooltip custom

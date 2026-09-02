@@ -8,26 +8,21 @@
     padding: .5em 1em;
     gap: 8px;
     /* transform: translateX(-50%); */
-    background: rgba(255, 255, 255);
+    background: var(--color--track);
     border-radius: 2em;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.22);
     z-index: 11;
     transition: box-shadow 0.25s;
 }
 
-#route-search.on {
-    border: 1px solid #ddd;
-    box-shadow: none;
-}
-
-body:has(#gpx-list-container.on .search-result) #route-search,
+#route-search:not(:has(#route-search-input:placeholder-shown)),
 body:has(#gpx-list-container.on li[data-track-id]) #route-search {
-    border: 1px solid #ddd;
+    border: 1px solid var(--color--track-border);
     box-shadow: none;
 }
 
 #route-search label {
-    color: #555;
+    color: color-mix(in oklab, var(--color--track-text), transparent 25%); ;
     cursor: text;
 }
 
@@ -37,7 +32,7 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
     border: 0;
     outline: 0;
     background: transparent;
-    color: #222;
+    color: var(--color--track-text);
     font: inherit;
 }
 
@@ -48,6 +43,7 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
 }
 
 #route-search #gpx-upload-btn {
+    color: color-mix(in oklab, var(--color--track-text), transparent 25%); ;
     border-radius: 50%;
     width: fit-content;
     padding: 0.5em;
@@ -123,7 +119,7 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
 }
 
 #gpx-list-container .comment {
-    color: #555;
+    color: var(--color--track-text);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -140,7 +136,8 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
     left: 0;
     width: min(calc(360px + 4em), calc(100vw - 1em));
     /*  height: calc(100vh - 6em); */
-    background-color: rgba(255, 255, 255);
+    background-color: var(--color--track);
+    color: var(--color--track-text);
     backdrop-filter: blur(5px);
     z-index: 10;
     display: none;
@@ -152,8 +149,8 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
     box-shadow: 5px 0 10px rgba(0, 0, 0, 0.22);
 }
 
-#gpx-list-container:has([data-track-id]),
-#gpx-list-container:has(.search-result) {
+body:not(:has(#route-search-input:placeholder-shown)) #gpx-list-container,
+#gpx-list-container:has([data-track-id]) {
     display: flex;
 }
 
@@ -169,7 +166,7 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
 #gpx-list-container li {
     padding: 1em 1.5em;
     cursor: pointer;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--color--track-dark);
     transition: background-color 0.2s;
     font-size: 0.85em;
     line-height: 1;
@@ -187,18 +184,18 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
 }
 
 #gpx-list-container li.selected {
-    background-color: #d0eaff;
+    background-color: var(--color--indigo);
 }
 
 #gpx-list-container li.list-heading {
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--color--track-dark);
     color: #d52d5d;
     cursor: default;
     font-size: 12px;
     font-weight: bold;
     position: sticky;
     top: 0;
-    background-color: rgba(255, 255, 255);
+    background-color: var(--color--track);
     z-index: 1;
 }
 
@@ -207,7 +204,7 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
 }
 
 #gpx-list-container li.uploaded-heading {
-    border-top: 1px solid #ddd;
+    border-top: 1px solid var(--color--track-dark);
     padding-top: 12px;
 }
 
@@ -215,7 +212,7 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
 #export-controls {
     display: none;
     padding: 10px;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid var(--color--track-dark);
 }
 
 #export-button {
@@ -396,7 +393,7 @@ body:has(#gpx-list-container.on) #gpx-list-view-toggle .icon:before {
         padding: 6em .5em 0em;
     }
 
-    body:has(#gpx-list-container .search-result) #gpx-list-view-toggle,
+    body:has(#route-search:not(#route-search-input:placeholder-shown)) #gpx-list-view-toggle,
     body:has(li[data-track-id]) #gpx-list-view-toggle {
         display: block;
     }

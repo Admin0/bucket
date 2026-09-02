@@ -240,7 +240,7 @@ export const gpx = (() => {
         if (state.droppedTracks.length > 0 && state.searchResults.length > 0) {
             const heading = document.createElement("li");
             heading.className = "list-heading uploaded-heading";
-            heading.textContent = "업로드한 GPX";
+            heading.textContent = "업로드한 경로";
             listElement.appendChild(heading);
         }
 
@@ -433,7 +433,11 @@ export const gpx = (() => {
                 state.selectedTrackIds.push(trackId);
             }
         } else {
-            state.selectedTrackIds = [trackId];
+            if (currentIds.length === 1 && currentIds[0] === trackId) {
+                state.selectedTrackIds = [];
+            } else {
+                state.selectedTrackIds = [trackId];
+            }
         }
 
         state.lastSelectedTrackId = trackId;
