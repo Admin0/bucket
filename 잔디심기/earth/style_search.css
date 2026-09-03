@@ -4,7 +4,7 @@
     left: 1em;
     display: flex;
     align-items: center;
-    width: min(380px, calc(100vw - 6.5em));
+    width: min(380px, calc(100vw - 2.5em));
     padding: .25em;
     gap: .5em;
     background: var(--color--track);
@@ -14,7 +14,7 @@
     transition: box-shadow 0.25s;
 }
 
-#route-search:not(:has(#route-search-input:placeholder-shown)),
+body:has(#gpx-list-container.on) #route-search:not(:has(#route-search-input:placeholder-shown)),
 body:has(#gpx-list-container.on li[data-track-id]) #route-search {
     border: 1px solid var(--color--track-border);
     box-shadow: none;
@@ -425,6 +425,10 @@ body:has(#gpx-list-container.on) #gpx-list-view-toggle .icon:before {
 }
 
 @media screen and (max-width: 600px) {
+
+    #route-search {
+        width: calc(100vw - 2.5em);
+    }
 
     #gpx-list-container {
         transition: top 0.25s;
