@@ -18,10 +18,15 @@ html {
 
     --color--theme: #00b264;
     --color--theme-light: #69f0ae;
+
     --color--gpx-start: #00ff80;
     --color--gpx-middle: #00b264;
     --color--gpx-end: #004D40;
+
+    --color--gpx-search: #F98D00;
     --color--gpx-search: #fc5200;
+    --color--gpx-search-end: #ff1744
+
     --color--red: #f44336;
     --color--teal: #009688;
     --color--indigo: #3f51b5;

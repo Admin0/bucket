@@ -21,9 +21,18 @@
     <div id="map"></div>
 
     <div id="route-search" class="">
-        <label for="route-search-input" class="material-symbols-outlined" title="검색">search</label>
+        <label for="route-search-input" class="material-symbols" title="검색">search</label>
         <input id="route-search-input" type="search" placeholder="경로 검색" autocomplete="off">
         <button id="gpx-upload-btn" class="item material-symbols" title="GPX 업로드">upload</button>
+
+        <div id="route-search-filter" class="">
+            <span class="item" data-filter="run" title="러닝"><span class="material-symbols-outlined icon"> directions_run </span></span>
+            <span class="item" data-filter="trail" title="등산"><span class="material-symbols-outlined icon"> hiking </span></span>
+            <span class="item" data-filter="명산100 NOT 명산100+">명산100</span>
+            <span class="item" data-filter="walk" title="걷기"><span class="material-symbols-outlined icon"> directions_walk </span></span>
+            <span class="item" data-filter="@" title="단체 활동"><span class="material-symbols-outlined icon"> groups </span></span>
+        </div>
+
     </div>
 
     <div id="gpx-list-view-toggle"><span class="icon material-symbols"></span><span class="label"></span></div>
@@ -38,7 +47,7 @@
     <div id="tooltip"></div>
 
     <div id="controls" class="maplibregl-ctrl maplibregl-ctrl-group">
-        <button id="terrarium-btn" class="material-symbols-outlined" title="지형">landscape</button>
+        <button id="terrarium-btn" class="material-symbols-outlined" title="지형">deployed_code</button>
         <button id="route-btn" class="material-symbols-outlined" title="경로" onclick="document.querySelector('#route-detail').classList.toggle('on'); this.classList.toggle('active')">route</button>
         <div id="route-detail" class="">
             <div class="inner_wrap maplibregl-ctrl-group">

@@ -380,7 +380,7 @@ export const gpx = (() => {
             const { layerId, borderLayerId } = getTrackMapIds(track.id);
             if (!state.map.getLayer(layerId)) return;
             state.map
-                .setPaintProperty(layerId, "line-gradient", ["interpolate", ["linear"], ["line-progress"], 0, "#f57f17", 1, "#f44a01"])
+                .setPaintProperty(layerId, "line-color", "#fc5200")
                 .setPaintProperty(layerId, "line-width", ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 4, 13, 1.5])
                 .setPaintProperty(borderLayerId, "line-width", 0);
         });
@@ -397,7 +397,7 @@ export const gpx = (() => {
             const { layerId, borderLayerId } = getTrackMapIds(track.id);
             if (!state.map.getLayer(layerId)) return;
             state.map
-                .setPaintProperty(layerId, "line-gradient", ["interpolate", ["linear"], ["line-progress"], 0, "#f57f17", 0.5, "#f44a01", 1, "#ff1744"])
+                .setPaintProperty(layerId, "line-gradient", ["interpolate", ["linear"], ["line-progress"], 0, "#F98D00", 0.5, "#fc5200", 1, "#ff1744"])
                 .setPaintProperty(layerId, "line-width", ["interpolate", ["linear"], ["zoom"], 9, 3, 16, 5])
                 .setPaintProperty(borderLayerId, "line-width", ["interpolate", ["linear"], ["zoom"], 5, 6, 12, 8]);
             track.points.forEach((point) => bounds.extend(point));

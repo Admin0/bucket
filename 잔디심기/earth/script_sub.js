@@ -274,6 +274,7 @@ export const settingsRouteDesign = function (map) {
 export const settingsRouteSearch = function (map, getFeatures, setSearchResults) {
     const search = document.getElementById("route-search");
     const input = document.getElementById("route-search-input");
+    const filter = document.getElementById("route-search-filter");
     if (!search || !input) return;
 
     function setSearchRouteColors(ids = []) {
@@ -363,6 +364,13 @@ export const settingsRouteSearch = function (map, getFeatures, setSearchResults)
     };
 
     input.addEventListener("input", updateSearch);
+    filter?.addEventListener("click", (e) => {
+        const item = e.target.closest(".item[data-filter]");
+        if (!item) return;
+
+        input.value = item.dataset.filter;
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+    });
     updateSearch();
     return updateSearch;
 };

@@ -4,10 +4,9 @@
     left: 1em;
     display: flex;
     align-items: center;
-    width: min(360px, calc(100vw - 4em));
-    padding: .5em 1em;
-    gap: 8px;
-    /* transform: translateX(-50%); */
+    width: min(380px, calc(100vw - 6.5em));
+    padding: .25em;
+    gap: .5em;
     background: var(--color--track);
     border-radius: 2em;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.22);
@@ -22,8 +21,8 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
 }
 
 #route-search label {
-    color: color-mix(in oklab, var(--color--track-text), transparent 25%); ;
-    cursor: text;
+    color: color-mix(in oklab, var(--color--track-text), transparent 25%);
+    padding: 0.5em;
 }
 
 #route-search-input {
@@ -43,7 +42,7 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
 }
 
 #route-search #gpx-upload-btn {
-    color: color-mix(in oklab, var(--color--track-text), transparent 25%); ;
+    color: color-mix(in oklab, var(--color--track-text), transparent 25%);
     border-radius: 50%;
     width: fit-content;
     padding: 0.5em;
@@ -54,6 +53,37 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
 
 #route-search #gpx-upload-btn:hover {
     background: var(--color--theme);
+}
+
+#route-search-filter {
+    position: absolute;
+    top: .75em;
+    left: calc(100% + 2.5em);
+    width: fit-content;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 1.5em;
+    transition: 0.25s;
+    font-size: 0.75em;
+    color: color-mix(in oklab, var(--color--track-text), transparent 25%);
+}
+
+#route-search-filter .item {
+    align-items: center;
+    padding: .75em 1.5em;
+    border-radius: 2em;
+    background: var(--color--track);
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.22);
+}
+
+#route-search-filter .item:hover {
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.22);
+}
+
+#route-search-filter .icon {
+    font-size: 20px;
 }
 
 /* ========================================
@@ -145,7 +175,7 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
     flex-direction: column;
     /* Flexbox 레이아웃 */
     overflow: hidden;
-    padding: 6em 0 0;
+    padding: 5.5em 0 0;
     box-shadow: 5px 0 10px rgba(0, 0, 0, 0.22);
 }
 
@@ -180,11 +210,12 @@ body:not(:has(#route-search-input:placeholder-shown)) #gpx-list-container,
 }
 
 #gpx-list-container li:hover {
-    background-color: #f0f0f0;
+    background-color: color-mix(in oklab, var(--color--track-border), transparent 50%);
 }
 
 #gpx-list-container li.selected {
-    background-color: var(--color--indigo);
+    /* background-color: var(--color--indigo); */
+    background-color: color-mix(in oklab, var(--color--indigo), transparent 50%);
 }
 
 #gpx-list-container li.list-heading {
@@ -200,7 +231,7 @@ body:not(:has(#route-search-input:placeholder-shown)) #gpx-list-container,
 }
 
 #gpx-list-container li.list-heading:hover {
-    background-color: transparent;
+    background-color: var(--color--track);
 }
 
 #gpx-list-container li.uploaded-heading {
@@ -242,18 +273,19 @@ body:not(:has(#route-search-input:placeholder-shown)) #gpx-list-container,
 .track-meta .material-symbols-outlined {
     margin-right: .25em;
     font-size: 20px;
+    color: gold;
 }
 
 .track-meta .material-symbols:not(:first-child),
 .track-meta .material-symbols-outlined:not(:first-child) {
     margin-left: .5em;
     padding-left: .5em;
-    border-left: 1px solid #ccc;
+    border-left: 1px solid color-mix(in oklab, var(--color--track-text), transparent 85%);
 }
 
 .meta-separator {
     margin: 0 6px;
-    color: #ccc;
+    color: var(--color--track-dark);
 }
 
 #export-output {
@@ -378,6 +410,20 @@ body:has(#gpx-list-container.on) #gpx-list-view-toggle .icon:before {
  * mobile
  * ======================================== */
 
+@media screen and (max-width: 1440px) {
+    #route-search-filter {
+        display: none;
+        gap: 1em;
+        left: .25em;
+        top: 6em;
+    }
+
+    body:not(:has(#route-search-input:placeholder-shown)) #route-search-filter,
+    body:has(li[data-track-id]) #route-search-filter {
+        display: none;
+    }
+}
+
 @media screen and (max-width: 600px) {
 
     #gpx-list-container {
@@ -393,12 +439,12 @@ body:has(#gpx-list-container.on) #gpx-list-view-toggle .icon:before {
         padding: 6em .5em 0em;
     }
 
-    body:has(#route-search:not(#route-search-input:placeholder-shown)) #gpx-list-view-toggle,
+    body:not(:has(#route-search-input:placeholder-shown)) #gpx-list-view-toggle,
     body:has(li[data-track-id]) #gpx-list-view-toggle {
         display: block;
     }
 
-    body:has(#tooltip.on) #gpx-list-view-toggle {
+    body:has(#tooltip.on:not(.generic)) #gpx-list-view-toggle {
         bottom: 10.5em;
     }
 
@@ -415,4 +461,12 @@ body:has(#gpx-list-container.on) #gpx-list-view-toggle .icon:before {
         overflow: scroll hidden;
     }
 
+}
+
+@media (prefers-color-scheme: dark) {
+
+    #route-search,
+    #route-search-filter .item {
+        border: 1px solid #444;
+    }
 }
