@@ -38,7 +38,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
         useFreeService = true;
     }
 
-    useFreeService = true; // Force use of free service for now, as per your request.
+    // useFreeService = true; // Force use of free service for now, as per your request.
 
     // All original code is now placed after the async check to ensure `useFreeService` is correctly set.
     const map = new maplibregl.Map({
