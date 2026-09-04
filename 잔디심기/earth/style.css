@@ -143,12 +143,12 @@ body.alt #gpx-list-container li.search-result .pace .main {
     /* Adjusted to not overlap with maplibre controls */
 }
 
-#terrarium-btn {
-    /* background-color: white; */
+#controls [class^="material-symbols"] {
     padding: 5px;
     cursor: pointer;
     font-size: 20px;
-    font-variation-settings: "wght" 600;
+    font-variation-settings: "wght" 600, "FILL" 1;
+
 }
 
 #controls button.active {
@@ -164,8 +164,7 @@ body.alt #gpx-list-container li.search-result .pace .main {
 }
 
 #route-detail .inner_wrap {
-    background: #fff;
-    padding: .25em;
+    background: var(--color--track);
     border-radius: .25em;
 }
 
@@ -175,14 +174,11 @@ body.alt #gpx-list-container li.search-result .pace .main {
 
 .route-detail {
     white-space: nowrap;
+    display: flex;
 }
 
-#route-detail .item {
-    top: .5em;
-    position: relative;
-    background: #fff;
-    border-radius: .25em;
-    left: calc(100% - 29px);
+#route-detail input {
+    margin-left: .5em;
 }
 
 /* ========================================

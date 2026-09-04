@@ -9,6 +9,7 @@
     gap: .5em;
     background: var(--color--track);
     border-radius: 2em;
+    border: 1px solid transparent;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.22);
     z-index: 11;
     transition: box-shadow 0.25s;
@@ -57,25 +58,61 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
 
 #route-search-filter {
     position: absolute;
-    top: .75em;
+    top: 0;
     left: calc(100% + 2.5em);
     width: fit-content;
     white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 1.5em;
-    transition: 0.25s;
-    font-size: 0.75em;
+    font-size: 0.85em;
     color: color-mix(in oklab, var(--color--track-text), transparent 25%);
 }
 
+#route-search-filter ol,
+#route-search-filter ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    gap: 1.5em;
+}
+
+#route-search-filter ul {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+}
+
+#route-search-filter ol li:hover ul {
+    display: flex;
+}
+
 #route-search-filter .item {
+    width: 4em;
+    display: flex;
     align-items: center;
-    padding: .75em 1.5em;
+    padding: .5em;
     border-radius: 2em;
     background: var(--color--track);
     cursor: pointer;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.22);
+    transition: box-shadow 0.25s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#route-search-filter .item:has(.icon) {
+    justify-content: center;
+}
+
+#route-search-filter ol ul .item {
+    border-radius: 0;
+    border-top: 1px solid var(--color--track-border);
+}
+
+#route-search-filter ol ul .item:last-of-type {
+    border-radius: 0 0 1.25em 1.25em;
+}
+
+#route-search-filter ol li:hover span.item {
+    border-radius: 1.25em 1.25em 0 0;
 }
 
 #route-search-filter .item:hover {

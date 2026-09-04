@@ -38,7 +38,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
         useFreeService = true;
     }
 
-    // useFreeService = true; // Force use of free service for now, as per your request.
+    useFreeService = true; // Force use of free service for now, as per your request.
 
     // All original code is now placed after the async check to ensure `useFreeService` is correctly set.
     const map = new maplibregl.Map({
@@ -147,8 +147,8 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
             });
 
         // const layerinsertBefore = useFreeService ? "label-address-housenumber" : "Country border";
-        const layerinsertBefore = useFreeService ? "place_other" : "Country border";
-        console.log("Layer insert before:", map.getStyle().layers);
+        const layerinsertBefore = useFreeService ? "label_other" : "Country border";
+        // console.log("Layer insert before:", map.getStyle().layers);
         const lineLayout = { "line-join": "round", "line-cap": "round" };
         const normalColors = { start: "#00ff80", end: "#004D40", searchStart: "#F98D00", searchEnd: "#ff1744", border: "rgba(255, 255, 255, 1)", base: "#00b264" };
         const certiColors = { start: "#ffd700", end: "#F98D00", searchStart: "#F98D00", searchEnd: "#ff1744", border: "rgba(255, 255, 255, 1)", base: "#FAAB0C" };

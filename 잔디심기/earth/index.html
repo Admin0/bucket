@@ -26,11 +26,29 @@
         <button id="gpx-upload-btn" class="item material-symbols" title="GPX 업로드">upload</button>
 
         <div id="route-search-filter" class="">
-            <span class="item" data-filter="run" title="러닝"><span class="material-symbols-outlined icon"> directions_run </span></span>
-            <span class="item" data-filter="trail" title="등산"><span class="material-symbols-outlined icon"> hiking </span></span>
-            <span class="item" data-filter="명산100 NOT 명산100+">명산100</span>
-            <span class="item" data-filter="walk" title="걷기"><span class="material-symbols-outlined icon"> directions_walk </span></span>
-            <span class="item" data-filter="@" title="단체 활동"><span class="material-symbols-outlined icon"> groups </span></span>
+            <ol>
+                <li>
+                    <span class="item" data-filter="run" title="러닝"><span class="material-symbols icon"> directions_run </span></span>
+                    <ul>
+                        <li class="item" data-filter="walk" title="걷기"><span class="material-symbols icon"> directions_walk </span></li>
+                        <li class="item" data-filter="#여강길" title="">여강길</li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="item" data-filter="trail" title="등산/트레일러닝"><span class="material-symbols icon"> hiking </span></span>
+                    <ul>
+                        <li class="item" data-filter="명산100 NOT 명산100+" title="">명산100</li>
+                        <li class="item" data-filter="#영남알프스" title="">영남알프스</li>
+                        <li class="item" data-filter="#금북정맥" title="">금북정맥</li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="item" data-filter="NOT @" title="개인 활동"><span class="material-symbols icon"> emoji_people </span></span>
+                    <ul>
+                        <li class="item" data-filter="@" title="단체 활동"><span class="material-symbols icon"> groups </span></li>
+                    </ul>
+                </li>
+            </ol>
         </div>
 
     </div>
