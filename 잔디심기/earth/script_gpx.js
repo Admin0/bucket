@@ -377,7 +377,7 @@ export const gpx = (() => {
                 type: "line",
                 source: sourceId,
                 layout: { "line-join": "round", "line-cap": "round" },
-                paint: { "line-color": "#f44a01", "line-width": 3 }
+                paint: { "line-color": "#fc5200", "line-width": 3 }
             });
     }
 

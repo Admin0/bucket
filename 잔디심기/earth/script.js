@@ -197,7 +197,7 @@ class EarthControl {
             });
 
         // const layerinsertBefore = useFreeService ? "label-address-housenumber" : "Country border";
-        const layerinsertBefore = useFreeService ? "label_other" : "Country border";
+        const layerinsertBefore = useFreeService ? (currentStyle === "light" ? "label_other" : "place_other") : "Country border";
         // console.log("Layer insert before:", map.getStyle().layers);
         const lineLayout = { "line-join": "round", "line-cap": "round" };
         const normalColors = { start: "#00ff80", end: "#004D40", searchStart: "#F98D00", searchEnd: "#ff1744", border: "rgba(255, 255, 255, 1)", base: "#00b264" };
@@ -206,7 +206,7 @@ class EarthControl {
         map.routeWidth = ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 4, 13, 1.5];
         map.routeOpacity = { normal: ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.25], certified: ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.33] };
         map.routeColors = { normal: normalColors, certified: certiColors };
-        
+
         const highlightFilter = ["==", ["get", "id"], -1];
 
         const layers = [

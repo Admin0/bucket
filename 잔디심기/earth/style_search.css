@@ -87,7 +87,7 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
 #route-search-filter .item {
     display: flex;
     align-items: center;
-    padding: .5em;
+    padding: .5em .8em .5em .5em;
     border-radius: 2em;
     background: var(--color--track);
     cursor: pointer;
@@ -480,6 +480,10 @@ body:has(#gpx-list-container.on) #gpx-list-view-toggle .icon:before {
     #gpx-list-container {
         width: calc(100vw - 1em);
         padding: 6em .5em 0em;
+    }
+
+    #route-search:not(:hover) #route-search-filter {
+        display: none;
     }
 
     body:not(:has(#route-search-input:placeholder-shown)) #gpx-list-view-toggle,
