@@ -85,7 +85,6 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
 }
 
 #route-search-filter .item {
-    width: 4em;
     display: flex;
     align-items: center;
     padding: .5em;
@@ -96,10 +95,11 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
     transition: box-shadow 0.25s;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: width 0.25s;
 }
 
 #route-search-filter .item:has(.icon) {
-    justify-content: center;
+    /* justify-content: center; */
 }
 
 #route-search-filter ol ul .item {
@@ -117,10 +117,12 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
 
 #route-search-filter .item:hover {
     box-shadow: 0 10px 18px rgba(0, 0, 0, 0.22);
+    background-color: color-mix(in oklab, var(--color--track-border), var(--color--track) 50%);
 }
 
 #route-search-filter .icon {
     font-size: 20px;
+    margin-right: 0.25em;
 }
 
 /* ========================================
@@ -252,7 +254,8 @@ body:not(:has(#route-search-input:placeholder-shown)) #gpx-list-container,
 
 #gpx-list-container li.selected {
     /* background-color: var(--color--indigo); */
-    background-color: color-mix(in oklab, var(--color--indigo), transparent 50%);
+    /* background-color: color-mix(in oklab, var(--color--indigo), transparent 75%); */
+    background-color: color-mix(in oklab, var(--color--track-border), transparent 50%);
 }
 
 #gpx-list-container li.list-heading {
@@ -308,9 +311,9 @@ body:not(:has(#route-search-input:placeholder-shown)) #gpx-list-container,
 
 .track-meta .material-symbols,
 .track-meta .material-symbols-outlined {
-    margin-right: .25em;
     font-size: 20px;
-    color: gold;
+    color: var(--color--gold);
+    font-variation-settings: "Fill" 1;
 }
 
 .track-meta .material-symbols:not(:first-child),
@@ -449,10 +452,9 @@ body:has(#gpx-list-container.on) #gpx-list-view-toggle .icon:before {
 
 @media screen and (max-width: 1440px) {
     #route-search-filter {
-        display: none;
         gap: 1em;
-        left: .25em;
-        top: 6em;
+        left: 0;
+        top: 4.5em;
     }
 
     body:not(:has(#route-search-input:placeholder-shown)) #route-search-filter,

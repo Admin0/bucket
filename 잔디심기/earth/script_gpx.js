@@ -307,7 +307,13 @@ export const gpx = (() => {
             return stars;
         }
 
-        state.searchResults.forEach((feature) => {
+        const sortedSearchResults = [...state.searchResults].sort((a, b) => {
+            const dateA = Date.parse(a.properties?.date || "") || 0;
+            const dateB = Date.parse(b.properties?.date || "") || 0;
+            return dateB - dateA;
+        });
+
+        sortedSearchResults.forEach((feature) => {
             const prop = feature.properties;
             const li = document.createElement("li");
             li.className = "search-result";

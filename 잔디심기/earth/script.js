@@ -19,26 +19,75 @@ const style_light = 'https://tiles.openfreemap.org/styles/positron';
 const style_dark = 'https://tiles.openfreemap.org/styles/dark';
 const style_maptilerlight = "https://api.maptiler.com/maps/019d5607-c62e-736d-adde-04f8f879a22b/style.json?key=Bdy6sMAQwxQOz1O2ur6a";
 const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac59-ac40754b0df4/style.json?key=Bdy6sMAQwxQOz1O2ur6a";
+const freeServiceStorageKey = "earth.useFreeService";
+
+class EarthControl {
+    constructor(useFreeService) {
+        this.useFreeService = useFreeService;
+    }
+
+    onAdd(map) {
+        this.map = map;
+        this.container = document.createElement("div");
+        this.container.id = "controls";
+        this.container.className = "maplibregl-ctrl maplibregl-ctrl-group";
+        this.container.innerHTML = `
+            <button id="terrarium-btn" class="material-symbols-outlined" title="지형">deployed_code</button>
+            <button id="route-btn" class="material-symbols-outlined" title="경로">route</button>
+            <button id="free-service-btn" class="material-symbols-outlined" title="무료 지도 서비스 사용">public</button>
+            <div id="route-detail">
+                <div class="inner_wrap maplibregl-ctrl-group">
+                    <div class="route-detail" title="굵기"><input type="range" id="line-width-slider" min="1" max="4" value="2.5" step="0.5"><span class="material-symbols-outlined">line_weight</span></div>
+                    <div class="route-detail" title="투명도"><input type="range" id="line-opacity-slider" min="0.1" max="0.5" value="0.3" step="0.05"><span class="material-symbols-outlined">opacity</span></div>
+                </div>
+            </div>`;
+
+        this.container.querySelector("#route-btn").addEventListener("click", () => {
+            this.container.querySelector("#route-detail").classList.toggle("on");
+            this.container.querySelector("#route-btn").classList.toggle("active");
+        });
+
+        const freeServiceBtn = this.container.querySelector("#free-service-btn");
+        const updateFreeServiceButton = () => {
+            const enabled = this.useFreeService;
+            freeServiceBtn.classList.toggle("active", enabled);
+            freeServiceBtn.title = enabled ? "무료 지도 서비스 사용 중" : "MapTiler 지도 서비스 사용 중";
+        };
+        freeServiceBtn.addEventListener("click", () => {
+            this.useFreeService = !this.useFreeService;
+            localStorage.setItem(freeServiceStorageKey, String(this.useFreeService));
+            location.reload();
+        });
+        updateFreeServiceButton();
+
+        return this.container;
+    }
+
+    onRemove() {
+        this.container?.parentNode?.removeChild(this.container);
+        this.map = undefined;
+    }
+}
 
 // Self-executing async function to correctly set up the map style before initialization
 (async () => {
     let currentStyle = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    let useFreeService;
+    const savedFreeService = localStorage.getItem(freeServiceStorageKey);
+    let useFreeService = savedFreeService === null ? undefined : savedFreeService === "true";
 
-    const styleUrlToCheck = currentStyle === "light" ? style_maptilerlight : style_maptilerdark;
-
-    try {
-        const response = await fetch(styleUrlToCheck, { method: 'HEAD' });
-        useFreeService = !response.ok;
-        if (useFreeService) {
-            console.warn("Custom MapTiler style not found. Falling back to free service.");
+    if (useFreeService === undefined) {
+        const styleUrlToCheck = currentStyle === "light" ? style_maptilerlight : style_maptilerdark;
+        try {
+            const response = await fetch(styleUrlToCheck, { method: 'HEAD' });
+            useFreeService = !response.ok;
+            if (useFreeService) {
+                console.warn("Custom MapTiler style not found. Falling back to free service.");
+            }
+        } catch (error) {
+            console.warn("Could not check for custom MapTiler style, falling back to free service.", error);
+            useFreeService = true;
         }
-    } catch (error) {
-        console.warn("Could not check for custom MapTiler style, falling back to free service.", error);
-        useFreeService = true;
     }
-
-    // useFreeService = true; // Force use of free service for now, as per your request.
 
     // All original code is now placed after the async check to ensure `useFreeService` is correctly set.
     const map = new maplibregl.Map({
@@ -49,6 +98,7 @@ const style_maptilerdark = "https://api.maptiler.com/maps/019c17e7-c33a-70d9-ac5
         maxZoom: 20,
         minZoom: 3
     })
+        .addControl(new EarthControl(useFreeService), 'bottom-right')
         .addControl(new maplibregl.NavigationControl({ visualizePitch: true, showZoom: true, showCompass: true }), 'bottom-right')
         .addControl(new maplibregl.GeolocateControl({ positionOptions: { enableHighAccuracy: true }, trackUserLocation: true, showUserHeading: true }), 'bottom-right');
 

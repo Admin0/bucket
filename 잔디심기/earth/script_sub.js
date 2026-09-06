@@ -227,9 +227,12 @@ export const initializeTooltips = function (map) {
 
 export const settingsTerraium = function (map, currentStyle, useFreeService) {
     const terrariumBtn = document.getElementById("terrarium-btn");
-    let isTerrariumOn = false;
-    terrariumBtn.addEventListener("click", () => {
-        isTerrariumOn = !isTerrariumOn;
+    if (!terrariumBtn) return;
+
+    const storageKey = "earth.terrariumEnabled";
+    let isTerrariumOn = localStorage.getItem(storageKey) === "true";
+
+    const applyTerrarium = () => {
         terrariumBtn.classList.toggle("active", isTerrariumOn);
         if (useFreeService) {
             if (isTerrariumOn) {
@@ -252,7 +255,14 @@ export const settingsTerraium = function (map, currentStyle, useFreeService) {
                 map.setLayoutProperty("Hillshading", "visibility", "none");
             }
         }
+    };
+
+    terrariumBtn.addEventListener("click", () => {
+        isTerrariumOn = !isTerrariumOn;
+        localStorage.setItem(storageKey, String(isTerrariumOn));
+        applyTerrarium();
     });
+    applyTerrarium();
 }
 
 export const settingsRouteDesign = function (map) {
