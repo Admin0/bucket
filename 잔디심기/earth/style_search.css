@@ -1,5 +1,5 @@
 #route-search {
-    position: absolute;
+    position: relative;
     top: 1em;
     left: 1em;
     display: flex;
@@ -60,7 +60,7 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
     position: absolute;
     top: 0;
     left: calc(100% + 2.5em);
-    width: fit-content;
+    width: max-content;
     white-space: nowrap;
     font-size: 0.85em;
     color: color-mix(in oklab, var(--color--track-text), transparent 25%);
@@ -75,13 +75,21 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
 }
 
 #route-search-filter ul {
-    display: none;
-    flex-direction: column;
+    visibility: hidden;
+    opacity: 0;
+    display: grid;
+    grid-template-columns: 0fr;
+    grid-template-rows: 0fr;
     gap: 0;
+    transition: 0.25s;
+    white-space: nowrap;
 }
 
-#route-search-filter ol li:hover ul {
-    display: flex;
+#route-search-filter ol li:has(.item:hover) ul {
+    visibility: visible;
+    opacity: 1;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
 }
 
 #route-search-filter .item {
@@ -93,9 +101,9 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
     cursor: pointer;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.22);
     transition: box-shadow 0.25s;
-    overflow: hidden;
     text-overflow: ellipsis;
     transition: width 0.25s;
+    overflow: hidden;
 }
 
 #route-search-filter .item:has(.icon) {
@@ -111,7 +119,7 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
     border-radius: 0 0 1.25em 1.25em;
 }
 
-#route-search-filter ol li:hover span.item {
+#route-search-filter ol li:has(.item:hover) span.item {
     border-radius: 1.25em 1.25em 0 0;
 }
 

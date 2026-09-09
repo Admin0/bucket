@@ -386,6 +386,7 @@ export const gpx = (() => {
             const { layerId, borderLayerId } = getTrackMapIds(track.id);
             if (!state.map.getLayer(layerId)) return;
             state.map
+                .setPaintProperty(layerId, "line-gradient", null)
                 .setPaintProperty(layerId, "line-color", "#fc5200")
                 .setPaintProperty(layerId, "line-width", ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 4, 13, 1.5])
                 .setPaintProperty(borderLayerId, "line-width", 0);
@@ -586,8 +587,8 @@ export const gpx = (() => {
             state.droppedTracks.push(...validTracks);
             validTracks.forEach((track) => addTrackLayer(track));
 
-            state.selectedTrackIds = validTracks.map((t) => t.id);
-            state.lastSelectedTrackId = validTracks.length > 0 ? validTracks[validTracks.length - 1].id : null;
+            state.selectedTrackIds = validTracks.map((track) => track.id);
+            state.lastSelectedTrackId = validTracks[validTracks.length - 1].id;
             focusOnSelectedTracks();
 
             const geocodingPromises = validTracks.map((track) => {
