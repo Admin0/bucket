@@ -233,7 +233,7 @@ body:not(:has(#route-search-input:placeholder-shown)) #gpx-list-container,
 
 #gpx-list-container ul {
     list-style-type: none;
-    padding: 0 0 1em;
+    padding: 0;
     margin: 0;
     overflow-y: auto;
     /* 목록 스크롤 */
@@ -507,6 +507,10 @@ body:has(#gpx-list-container.on) #gpx-list-view-toggle .icon:before {
         top: 100%;
     }
 
+    #gpx-list-container ul {
+        padding-bottom: 4.5em;
+    }
+
     #gpx-list-container li {
         padding: 1em 1em;
     }
@@ -523,5 +527,10 @@ body:has(#gpx-list-container.on) #gpx-list-view-toggle .icon:before {
     #route-search,
     #route-search-filter .item {
         border: 1px solid #444;
+    }
+
+    #gpx-list-view-toggle {
+        background: var(--color--workout-walk);
+        color: var(--color--body-text);
     }
 }
