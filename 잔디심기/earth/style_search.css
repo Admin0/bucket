@@ -15,8 +15,14 @@
     transition: box-shadow 0.25s;
 }
 
-body:has(#gpx-list-container.on) #route-search:not(:has(#route-search-input:placeholder-shown)),
+/* body:has(#gpx-list-container.on) #route-search:not(:has(#route-search-input:placeholder-shown)),
 body:has(#gpx-list-container.on li[data-track-id]) #route-search {
+    border: 1px solid var(--color--track-border);
+    box-shadow: none;
+} */
+
+#route-search:not(:has(#route-search-input:placeholder-shown)),
+body:has(li[data-track-id]) #route-search {
     border: 1px solid var(--color--track-border);
     box-shadow: none;
 }
@@ -492,6 +498,11 @@ body:has(#gpx-list-container.on) #gpx-list-view-toggle .icon:before {
 
     #route-search:not(:hover) #route-search-filter {
         display: none;
+    }
+
+    #route-search:not(.on) {
+        border-color: transparent!important;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.22)!important;
     }
 
     body:not(:has(#route-search-input:placeholder-shown)) #gpx-list-view-toggle,
