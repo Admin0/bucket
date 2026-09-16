@@ -270,17 +270,18 @@ window.hermes.calendar = () => {
                                         iconsContent += `<foreignObject class="activity-icons" 
                                         x="${w - w_icon / 2}" y="${w - w_icon / 2}" width="${w_icon}" height="${w_icon}"><i class="${iconClass}">${iconName}</i></foreignObject>`;
                                     } else if (dayRecords.length > 1) {
-                                        const allSameType = dayRecords.every((rec) => rec.type === dayRecords[0].type);
+                                        const orderedDayRecords = [...dayRecords].sort((a, b) => (Number(a.over) || 0) - (Number(b.over) || 0));
+                                        const allSameType = orderedDayRecords.every((rec) => rec.type === orderedDayRecords[0].type);
 
                                         if (allSameType) {
-                                            const record = dayRecords[0];
-                                            const isAnyOfficial = dayRecords.some((rec) => rec.isOfficial);
+                                            const record = orderedDayRecords[0];
+                                            const isAnyOfficial = orderedDayRecords.some((rec) => rec.isOfficial);
 
                                             svgContent = `<circle class="${record.type}" cx="${w}" cy="${w}" r="${r}" />`;
 
                                             const iconName = isAnyOfficial ? "emoji_events" : record.type === "trail" ? "terrain" : record.type === "walk" ? "directions_walk" : "directions_run";
                                             const iconClass = isAnyOfficial ? "material-symbols official-race-icon" : "material-symbols-outlined";
-                                            const count = dayRecords.length;
+                                            const count = orderedDayRecords.length;
                                             const foWidth = w_icon + 15;
 
                                             let iconHtml = `<i class="${iconClass}">${iconName}</i><span class="activity-count">×${count}</span>`;
@@ -289,24 +290,23 @@ window.hermes.calendar = () => {
                                         } else {
                                             // 1. Enrich records with angle data and generate pie slices
                                             let currentStartAngle = -Math.PI / 2;
-                                            dayRecords.sort((a, b) => b.over || 0 - a.over || 0);
-                                            const enrichedRecords = dayRecords
+                                            const enrichedRecords = orderedDayRecords
                                                 .map((rec) => {
                                                     if (!rec.distance || rec.distance <= 0) return null;
 
                                                     const sliceRatio = rec.distance / dailyDistance;
                                                     const sliceAngle = sliceRatio * 2 * Math.PI;
-                                                    const endAngle = currentStartAngle - sliceAngle;
+                                                    const endAngle = currentStartAngle + sliceAngle;
 
                                                     const startX = w + r * Math.cos(currentStartAngle);
                                                     const startY = w + r * Math.sin(currentStartAngle);
                                                     const endX = w + r * Math.cos(endAngle);
                                                     const endY = w + r * Math.sin(endAngle);
                                                     const largeArcFlag = sliceAngle > Math.PI ? 1 : 0;
-                                                    const pathData = `M ${w},${w} L ${startX},${startY} A ${r},${r} 0 ${largeArcFlag} 0 ${endX},${endY} Z`;
+                                                    const pathData = `M ${w},${w} L ${startX},${startY} A ${r},${r} 0 ${largeArcFlag} 1 ${endX},${endY} Z`;
                                                     svgContent += `<path class="${rec.type}" d="${pathData}" stroke-linejoin="round"/>`;
 
-                                                    const midAngle = currentStartAngle - sliceAngle / 2;
+                                                    const midAngle = currentStartAngle + sliceAngle / 2;
 
                                                     const newRec = { ...rec, midAngle };
                                                     currentStartAngle = endAngle;
@@ -315,20 +315,29 @@ window.hermes.calendar = () => {
                                                 .filter(Boolean);
 
                                             // 2. Group enriched records
-                                            const groupedRecords = enrichedRecords.reduce((acc, record) => {
-                                                const key = record.type;
-                                                if (!acc[key]) {
-                                                    acc[key] = { records: [], midAngles: [], isOfficial: false };
+                                            const groupedRecords = enrichedRecords.reduce((groups, record) => {
+                                                const previousGroup = groups[groups.length - 1];
+                                                if (!previousGroup || previousGroup.type !== record.type) {
+                                                    groups.push({ type: record.type, records: [], midAngles: [], isOfficial: false });
                                                 }
-                                                acc[key].records.push(record);
-                                                acc[key].midAngles.push(record.midAngle);
-                                                if (record.isOfficial) acc[key].isOfficial = true;
-                                                return acc;
-                                            }, {});
+                                                const group = groups[groups.length - 1];
+                                                group.records.push(record);
+                                                group.midAngles.push(record.midAngle);
+                                                if (record.isOfficial) group.isOfficial = true;
+                                                return groups;
+                                            }, []);
+
+                                            if (groupedRecords.length > 1 && groupedRecords[0].type === groupedRecords[groupedRecords.length - 1].type) {
+                                                const firstGroup = groupedRecords[0];
+                                                const lastGroup = groupedRecords.pop();
+                                                firstGroup.records = [...lastGroup.records, ...firstGroup.records];
+                                                firstGroup.midAngles = [...lastGroup.midAngles, ...firstGroup.midAngles];
+                                                firstGroup.isOfficial ||= lastGroup.isOfficial;
+                                            }
 
                                             // 3. Generate Icons
-                                            for (const type in groupedRecords) {
-                                                const group = groupedRecords[type];
+                                            for (const group of groupedRecords) {
+                                                const type = group.type;
 
                                                 // Calculate average angle for the icon
                                                 let sumX = 0,
