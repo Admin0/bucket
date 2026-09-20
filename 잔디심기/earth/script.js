@@ -166,7 +166,7 @@ class EarthControl {
                 distance,
                 isOfficial: record.course !== undefined,
                 searchText: [...Object.entries(record).filter(([key]) => key !== "geometry").map(([, value]) => value), path].filter(value => value != null).join(" ").toLocaleLowerCase(),
-                id: featureIdCounter, path: path, certified: record.certi != null && record.certi.length > 0,
+                id: featureIdCounter, path: path,
             },
             geometry: { type: "LineString", coordinates }
         };
@@ -204,8 +204,8 @@ class EarthControl {
         const certiColors = { start: "#ffd700", end: "#F98D00", searchStart: "#F98D00", searchEnd: "#ff1744", border: "rgba(255, 255, 255, 1)", base: "#FAAB0C" };
 
         map.routeWidth = ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 4, 13, 1.5];
-        map.routeOpacity = { normal: ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.25], certified: ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.33] };
-        map.routeColors = { normal: normalColors, certified: certiColors };
+        map.routeOpacity = { normal: ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.25], isOfficial: ["interpolate", ["linear"], ["zoom"], 7, 0.75, 10, 0.33] };
+        map.routeColors = { normal: normalColors, isOfficial: certiColors };
 
         const highlightFilter = ["==", ["get", "id"], -1];
 
@@ -233,7 +233,7 @@ class EarthControl {
                 type: "line",
                 source: "gpx-lines-source",
                 layout: lineLayout,
-                filter: ["!", ["==", ["get", "certified"], true]],
+                filter: ["!", ["==", ["get", "isOfficial"], true]],
                 paint: {
                     "line-color": normalColors.base,
                     "line-width": map.routeWidth,
@@ -245,11 +245,11 @@ class EarthControl {
                 type: "line",
                 source: "gpx-lines-source",
                 layout: lineLayout,
-                filter: ["==", ["get", "certified"], true],
+                filter: ["==", ["get", "isOfficial"], true],
                 paint: {
                     "line-color": certiColors.base,
                     "line-width": map.routeWidth,
-                    "line-opacity": map.routeOpacity.certified
+                    "line-opacity": map.routeOpacity.isOfficial
                 }
             },
             {
@@ -258,7 +258,7 @@ class EarthControl {
                 source: "gpx-lines-source",
                 layout: lineLayout,
                 filter: highlightFilter,
-                paint: { "line-color": ["case", ["==", ["get", "certified"], true], certiColors.border, normalColors.border], "line-width": ["interpolate", ["linear"], ["zoom"], 5, 6, 12, 8] }
+                paint: { "line-color": ["case", ["==", ["get", "isOfficial"], true], certiColors.border, normalColors.border], "line-width": ["interpolate", ["linear"], ["zoom"], 5, 6, 12, 8] }
             },
             {
                 id: "gpx-highlight-points-border",
@@ -285,7 +285,7 @@ class EarthControl {
                     "circle-color": "#fff",
                     "circle-stroke-color": [
                         "case",
-                        ["==", ["get", "certified"], true],
+                        ["==", ["get", "isOfficial"], true],
                         ["case", ["==", ["get", "point_type"], "start"], certiColors.start, certiColors.end],
                         ["case", ["==", ["get", "point_type"], "start"], normalColors.start, normalColors.end]
                     ],

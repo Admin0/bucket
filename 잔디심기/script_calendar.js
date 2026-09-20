@@ -304,7 +304,8 @@ window.hermes.calendar = () => {
                                                     const endY = w + r * Math.sin(endAngle);
                                                     const largeArcFlag = sliceAngle > Math.PI ? 1 : 0;
                                                     const pathData = `M ${w},${w} L ${startX},${startY} A ${r},${r} 0 ${largeArcFlag} 1 ${endX},${endY} Z`;
-                                                    svgContent += `<path class="${rec.type}" d="${pathData}" stroke-linejoin="round"/>`;
+                                                    const pathClass = `${rec.type}${rec.isOfficial ? " official" : ""}`;
+                                                    svgContent += `<path class="${pathClass}" d="${pathData}" stroke-linejoin="round"/>`;
 
                                                     const midAngle = currentStartAngle + sliceAngle / 2;
 

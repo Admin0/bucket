@@ -229,7 +229,8 @@ td.on {
     cursor: pointer;
 }
 
-#calendar-grid .day-cell.official .activity-circle circle {
+#calendar-grid .day-cell.official .activity-circle circle,
+#calendar-grid .day-cell.official .activity-circle path.official {
     fill: gold;
     stroke: gold;
 }
