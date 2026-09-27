@@ -214,6 +214,11 @@ export const gpx = (() => {
         };
     }
 
+    function getFitBoundsPadding(maxPadding) {
+        const canvas = state.map.getCanvas();
+        return Math.min(maxPadding, Math.floor(Math.min(canvas.clientWidth, canvas.clientHeight) * 0.2));
+    }
+
     function deleteSelectedTracks() {
         if (state.selectedTrackIds.length === 0) return;
         state.selectedTrackIds.forEach((trackId) => {
@@ -333,7 +338,7 @@ export const gpx = (() => {
             li.addEventListener("click", () => {
                 const bounds = new maplibregl.LngLatBounds();
                 feature.geometry.coordinates.forEach((point) => bounds.extend(point));
-                state.map.fitBounds(bounds, { padding: 160, maxZoom: 15 });
+                state.map.fitBounds(bounds, { padding: getFitBoundsPadding(160), maxZoom: 15 });
 
                 document.getElementById("gpx-list-container")?.classList.remove("on");
                 document.getElementById("route-search")?.classList.remove("on");
@@ -411,7 +416,7 @@ export const gpx = (() => {
         });
 
         requestAnimationFrame(() => {
-            state.map.fitBounds(bounds, { padding: 256, maxZoom: 15 });
+            state.map.fitBounds(bounds, { padding: getFitBoundsPadding(256), maxZoom: 15 });
         });
         updateList();
     }

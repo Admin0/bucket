@@ -371,6 +371,8 @@ export const settingsRouteSearch = function (map, getFeatures, setSearchResults)
 
         setSearchRouteColors(matchingIds);
         setSearchResults?.(matchingFeatures);
+
+        // search.classList.toggle("on", query.length > 0);
     };
 
     input.addEventListener("input", updateSearch);
