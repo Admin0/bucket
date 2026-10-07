@@ -133,7 +133,7 @@
 }
 
 #stats-container .annual-stats .stat-grid {
-    grid-template-columns: repeat(auto-fit, minmax(400px, auto));
+    grid-template-columns: repeat(auto-fit, minmax(320px, auto));
 }
 .annual-summary {
 }

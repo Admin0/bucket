@@ -663,7 +663,16 @@ export const gpx = (() => {
 
         document.getElementById("export-button")?.addEventListener("click", handleExport);
 
-        document.getElementById("gpx-list-view-toggle")?.addEventListener("touchend", toggleListView);
+        const toggleBtn = document.getElementById("gpx-list-view-toggle");
+
+        if (toggleBtn) {
+            ["click", "touchend"].forEach((eventType) => {
+                toggleBtn.addEventListener(eventType, (e) => {
+                    e.preventDefault(); // touchend 후 발생하는 잔여 click 이벤트 방지
+                    toggleListView(e);
+                });
+            });
+        }
 
         document.addEventListener("keydown", (e) => {
             const activeElement = document.activeElement;
