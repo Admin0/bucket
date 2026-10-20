@@ -85,11 +85,26 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
     white-space: nowrap;
 }
 
+#route-search-filter ul .item {
+    transition: 0.25s;
+    margin-top: -.25em;
+    height: 0;
+    padding: 0;
+    border-width: 0;
+}
+
 #route-search-filter ol li:has(.item:hover) ul {
     visibility: visible;
     opacity: 1;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
+}
+
+#route-search-filter ol li:has(.item:hover) ul .item {
+    margin-top: 0;
+    height: 1.5em;
+    padding: .5em ;
+    border-width: 1px ;
 }
 
 #route-search-filter .item {
