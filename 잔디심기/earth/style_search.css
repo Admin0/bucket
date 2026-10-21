@@ -103,19 +103,17 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
 #route-search-filter ol li:has(.item:hover) ul .item {
     margin-top: 0;
     height: 1.5em;
-    padding: .5em ;
-    border-width: 1px ;
+    padding: .5em;
+    border-width: 1px;
 }
 
 #route-search-filter .item {
     display: flex;
     align-items: center;
     padding: .5em .8em .5em .5em;
-    border-radius: 2em;
     background: var(--color--track);
     cursor: pointer;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.22);
-    transition: box-shadow 0.25s;
+    /* transition: box-shadow 0.25s; */
     text-overflow: ellipsis;
     transition: width 0.25s;
     overflow: hidden;
@@ -125,17 +123,16 @@ body:has(#gpx-list-container.on li[data-track-id]) #route-search {
     /* justify-content: center; */
 }
 
+#route-search-filter ol>li {
+    border-radius: 1.25em;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.22);
+    overflow: hidden;
+    height: fit-content;
+}
+
 #route-search-filter ol ul .item {
     border-radius: 0;
     border-top: 1px solid var(--color--track-border);
-}
-
-#route-search-filter ol ul .item:last-of-type {
-    border-radius: 0 0 1.25em 1.25em;
-}
-
-#route-search-filter ol li:has(.item:hover) span.item {
-    border-radius: 1.25em 1.25em 0 0;
 }
 
 #route-search-filter .item:hover {
