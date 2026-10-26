@@ -147,6 +147,7 @@ export const gpx = (() => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(fileContent, "application/xml");
         let points = [],
+            segments = [],
             times = [],
             elevations = [];
         let pointSelector, latAttr, lonAttr, timeTag, eleTag;
@@ -163,30 +164,44 @@ export const gpx = (() => {
             timeTag = "Time";
             eleTag = "AltitudeMeters";
         }
-        const trackpoints = doc.querySelectorAll(pointSelector);
-        trackpoints.forEach((pt) => {
-            let lat, lon;
-            if (fileType === "gpx") {
-                lat = parseFloat(pt.getAttribute(latAttr));
-                lon = parseFloat(pt.getAttribute(lonAttr));
-            } else {
-                const latNode = pt.querySelector(latAttr);
-                const lonNode = pt.querySelector(lonAttr);
-                if (!latNode || !lonNode) return;
-                lat = parseFloat(latNode.textContent);
-                lon = parseFloat(lonNode.textContent);
-            }
-            points.push([lon, lat]);
-            const timeNode = pt.querySelector(timeTag);
-            if (timeNode) times.push(new Date(timeNode.textContent));
-            const eleNode = pt.querySelector(eleTag);
-            if (eleNode) elevations.push(parseFloat(eleNode.textContent));
+        const gpxSegments = [...doc.querySelectorAll("trkseg")];
+        const pointGroups = fileType === "gpx"
+            ? (gpxSegments.length > 0
+                ? gpxSegments.map((segment) => [...segment.querySelectorAll("trkpt")])
+                : [[...doc.querySelectorAll(pointSelector)]])
+            : [[...doc.querySelectorAll(pointSelector)]];
+
+        pointGroups.forEach((trackpoints) => {
+            const segmentPoints = [];
+            trackpoints.forEach((pt) => {
+                let lat, lon;
+                if (fileType === "gpx") {
+                    lat = parseFloat(pt.getAttribute(latAttr));
+                    lon = parseFloat(pt.getAttribute(lonAttr));
+                } else {
+                    const latNode = pt.querySelector(latAttr);
+                    const lonNode = pt.querySelector(lonAttr);
+                    if (!latNode || !lonNode) return;
+                    lat = parseFloat(latNode.textContent);
+                    lon = parseFloat(lonNode.textContent);
+                }
+                const coordinate = [lon, lat];
+                points.push(coordinate);
+                segmentPoints.push(coordinate);
+                const timeNode = pt.querySelector(timeTag);
+                if (timeNode) times.push(new Date(timeNode.textContent));
+                const eleNode = pt.querySelector(eleTag);
+                if (eleNode) elevations.push(parseFloat(eleNode.textContent));
+            });
+            if (segmentPoints.length > 0) segments.push(segmentPoints);
         });
         if (points.length === 0) return null;
         let distance = 0;
-        for (let i = 1; i < points.length; i++) {
-            distance += haversineDistance(points[i - 1], points[i]);
-        }
+        segments.forEach((segment) => {
+            for (let i = 1; i < segment.length; i++) {
+                distance += haversineDistance(segment[i - 1], segment[i]);
+            }
+        });
         let elevationGain = 0;
         if (elevations.length > 1) {
             const smoothingWindow = 25;
@@ -200,7 +215,7 @@ export const gpx = (() => {
         }
         const duration = times.length > 1 ? (times[times.length - 1] - times[0]) / 1000 : 0;
         const date = times.length > 0 ? new Date(times[0].getTime() - times[0].getTimezoneOffset() * 60000).toISOString().split("T")[0] : null;
-        return { points, distance: distance / 1000, elevation: Math.round(elevationGain), duration, date, title: null, name: fileName };
+        return { points, segments, distance: distance / 1000, elevation: Math.round(elevationGain), duration, date, title: null, name: fileName };
     }
 
     // --- UI & Map Interaction ---
@@ -368,7 +383,10 @@ export const gpx = (() => {
         const { sourceId, layerId, borderLayerId } = getTrackMapIds(track.id);
         if (state.map.getSource(sourceId)) return;
 
-        state.map.addSource(sourceId, { type: "geojson", lineMetrics: true, data: { type: "Feature", geometry: { type: "LineString", coordinates: track.points } } });
+        const geometry = track.segments.length > 1
+            ? { type: "MultiLineString", coordinates: track.segments }
+            : { type: "LineString", coordinates: track.points };
+        state.map.addSource(sourceId, { type: "geojson", lineMetrics: true, data: { type: "Feature", geometry } });
         state.map
             .addLayer({
                 id: borderLayerId,

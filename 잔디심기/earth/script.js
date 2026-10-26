@@ -102,6 +102,24 @@ class EarthControl {
         .addControl(new maplibregl.NavigationControl({ visualizePitch: true, showZoom: true, showCompass: true }), 'bottom-right')
         .addControl(new maplibregl.GeolocateControl({ positionOptions: { enableHighAccuracy: true }, trackUserLocation: true, showUserHeading: true }), 'bottom-right');
 
+    let freeStyleFallbackStarted = false;
+    map.on("error", ({ error }) => {
+        if (useFreeService || freeStyleFallbackStarted) return;
+
+        const errorMessage = error?.message || String(error);
+        const failedUrl = error?.url || error?.response?.url || "";
+        const isForbidden = error?.status === 403 || error?.response?.status === 403 || /\b403\b/.test(errorMessage);
+        const isMapTilerStyleError = failedUrl.includes("api.maptiler.com/maps/")
+            || errorMessage.includes("api.maptiler.com/maps/")
+            || map.getStyleUrl()?.includes("api.maptiler.com/maps/");
+
+        if (!isForbidden || !isMapTilerStyleError) return;
+
+        freeStyleFallbackStarted = true;
+        localStorage.setItem(freeServiceStorageKey, "true");
+        location.reload();
+    });
+
     // --- Global State ---
     let allLineFeatures = [],
         allPointFeatures = [];
@@ -216,8 +234,8 @@ class EarthControl {
                 type: "line",
                 source: "contour-source",
                 "source-layer": "contours",
-                layout: { "line-join": "round", visibility: "none" },
-                paint: { "line-opacity": 0.33, "line-width": ["match", ["get", "level"], 1, 1, 0.5], "line-color": currentStyle === "dark" ? "#fff" : "#000" }
+                layout: { "line-join": "round", visibility: useFreeService ? "visible" : "none" },
+                paint: { "line-opacity": 0.5, "line-width": ["match", ["get", "level"], 1, 1.5, 0.5], "line-color": "#777" }
             },
             {
                 id: "contour-labels",
@@ -225,8 +243,8 @@ class EarthControl {
                 source: "contour-source",
                 "source-layer": "contours",
                 filter: [">", ["get", "level"], 0],
-                layout: { "symbol-placement": "line", "text-size": 10, "text-field": ["concat", ["number-format", ["get", "ele"], {}], " m"], "text-font": ["Noto Sans Bold"], visibility: "none" },
-                paint: { "text-color": currentStyle === "dark" ? "#aaa" : "#333" }
+                layout: { "symbol-placement": "line", "text-size": 10, "text-field": ["concat", ["number-format", ["get", "ele"], {}], " m"], "text-font": ["Noto Sans Bold"], visibility: useFreeService ? "visible" : "none" },
+                paint: { "text-color": "#777" }
             },
             {
                 id: "gpx-line-base",

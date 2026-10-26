@@ -238,13 +238,9 @@ export const settingsTerraium = function (map, currentStyle, useFreeService) {
             if (isTerrariumOn) {
                 map.setTerrain({ source: "dem", exaggeration: 1.5 });
                 map.setLayoutProperty("hillshade-layer", "visibility", "visible");
-                map.setLayoutProperty("contour-lines", "visibility", "visible");
-                map.setLayoutProperty("contour-labels", "visibility", "visible");
             } else {
                 map.setTerrain(null);
                 map.setLayoutProperty("hillshade-layer", "visibility", "none");
-                map.setLayoutProperty("contour-lines", "visibility", "none");
-                map.setLayoutProperty("contour-labels", "visibility", "none");
             }
         } else {
             if (isTerrariumOn) {
