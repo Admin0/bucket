@@ -215,7 +215,7 @@ body.alt #gpx-list-container li.search-result .pace .main {
 
     #tooltip {
         top: inherit !important;
-        bottom: 3em;
+        bottom: 2em;
         left: 50% !important;
         transform: translateX(-50%);
     }

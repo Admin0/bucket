@@ -225,7 +225,10 @@ export const gpx = (() => {
         return {
             sourceId: `gpx-source-${cleanTrackId}`,
             layerId,
-            borderLayerId: `${layerId}-border`
+            borderLayerId: `${layerId}-border`,
+            pointsSourceId: `${layerId}-points-source`,
+            pointsBorderLayerId: `${layerId}-points-border`,
+            pointsLayerId: `${layerId}-points`
         };
     }
 
@@ -237,10 +240,13 @@ export const gpx = (() => {
     function deleteSelectedTracks() {
         if (state.selectedTrackIds.length === 0) return;
         state.selectedTrackIds.forEach((trackId) => {
-            const { layerId, borderLayerId, sourceId } = getTrackMapIds(trackId);
+            const { layerId, borderLayerId, sourceId, pointsLayerId, pointsBorderLayerId, pointsSourceId } = getTrackMapIds(trackId);
             if (state.map.getLayer(borderLayerId)) state.map.removeLayer(borderLayerId);
             if (state.map.getLayer(layerId)) state.map.removeLayer(layerId);
+            if (state.map.getLayer(pointsLayerId)) state.map.removeLayer(pointsLayerId);
+            if (state.map.getLayer(pointsBorderLayerId)) state.map.removeLayer(pointsBorderLayerId);
             if (state.map.getSource(sourceId)) state.map.removeSource(sourceId);
+            if (state.map.getSource(pointsSourceId)) state.map.removeSource(pointsSourceId);
         });
         state.droppedTracks = state.droppedTracks.filter((track) => !state.selectedTrackIds.includes(track.id));
         state.selectedTrackIds = [];
@@ -309,12 +315,11 @@ export const gpx = (() => {
             listElement.appendChild(heading);
         }
 
-        function rating(val, type) {
-            const numericValue = Number(val) || 0;
+        function rating(distance, elevation) {
             const totalStars = 5;
-            const stepValue = type === "trail" ? 375 : 5;
-            const normalized = Math.min(Math.max(numericValue / stepValue, 0), totalStars);
-            const activeHalfStars = Math.round(normalized * 2);
+            const distanceStars = Math.min(Math.max((Number(distance) || 0) / 5, 0), totalStars);
+            const elevationStars = Math.min(Math.max((Number(elevation) || 0) / 375, 0), totalStars);
+            const activeHalfStars = Math.round(Math.max(distanceStars, elevationStars) * 2);
 
             let stars = "";
             for (let i = 0; i < totalStars; i++) {
@@ -345,8 +350,8 @@ export const gpx = (() => {
             </div>
             <span class="distance">
                 ${prop.type === "trail"
-                    ? `${rating(prop.elevation, prop.type)} ${Number(prop.elevation).toFixed(0)}<span class="unit"> m</span>`
-                    : `${rating(prop.distance, prop.type)} ${Number(prop.distance).toFixed(1)}<span class="unit"> km</span>`}
+                    ? `${rating(prop.distance, prop.elevation)} ${Number(prop.elevation).toFixed(0)}<span class="unit"> m</span>`
+                    : `${rating(prop.distance, prop.elevation)} ${Number(prop.distance).toFixed(1)}<span class="unit"> km</span>`}
             </span >
             <span class="comment">${prop.comment || ""}</span>
             `;
@@ -380,39 +385,82 @@ export const gpx = (() => {
     }
 
     function addTrackLayer(track) {
-        const { sourceId, layerId, borderLayerId } = getTrackMapIds(track.id);
+        const { sourceId, layerId, borderLayerId, pointsSourceId, pointsBorderLayerId, pointsLayerId } = getTrackMapIds(track.id);
         if (state.map.getSource(sourceId)) return;
 
         const geometry = track.segments.length > 1
             ? { type: "MultiLineString", coordinates: track.segments }
             : { type: "LineString", coordinates: track.points };
+        const endpoints = track.segments.flatMap((segment) => {
+            if (segment.length === 0) return [];
+            return [
+                { type: "Feature", properties: { point_type: "start" }, geometry: { type: "Point", coordinates: segment[0] } },
+                { type: "Feature", properties: { point_type: "end" }, geometry: { type: "Point", coordinates: segment[segment.length - 1] } }
+            ];
+        });
         state.map.addSource(sourceId, { type: "geojson", lineMetrics: true, data: { type: "Feature", geometry } });
+        state.map.addSource(pointsSourceId, {
+            type: "geojson",
+            data: { type: "FeatureCollection", features: endpoints }
+        });
         state.map
             .addLayer({
                 id: borderLayerId,
                 type: "line",
                 source: sourceId,
                 layout: { "line-join": "round", "line-cap": "round" },
-                paint: { "line-color": "#ffffff", "line-width": 5 }
+                paint: {
+                    "line-color": "#ffffff",
+                    "line-width": 5,
+                }
+            })
+            .addLayer({
+                id: pointsBorderLayerId,
+                type: "circle",
+                source: pointsSourceId,
+                paint: {
+                    "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 6, 16, 10],
+                    "circle-color": "#fff",
+                    "circle-opacity": 0,
+                }
             })
             .addLayer({
                 id: layerId,
                 type: "line",
                 source: sourceId,
                 layout: { "line-join": "round", "line-cap": "round" },
-                paint: { "line-color": "#fc5200", "line-width": 3 }
+                paint: {
+                    "line-color": "#fc5200",
+                    "line-width": 3,
+                }
+            })
+            .addLayer({
+                id: pointsLayerId,
+                type: "circle",
+                source: pointsSourceId,
+                paint: {
+                    "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 2, 16, 3],
+                    "circle-color": "#fff",
+                    "circle-stroke-color": ["case", ["==", ["get", "point_type"], "start"], "#F98D00", "#ff1744"],
+                    "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 9, 2, 16, 5],
+                    "circle-opacity": 0,
+                    "circle-stroke-opacity": 0,
+                }
             });
     }
 
     function focusOnSelectedTracks() {
         state.droppedTracks.forEach((track) => {
-            const { layerId, borderLayerId } = getTrackMapIds(track.id);
+            const { layerId, borderLayerId, pointsLayerId, pointsBorderLayerId } = getTrackMapIds(track.id);
             if (!state.map.getLayer(layerId)) return;
             state.map
                 .setPaintProperty(layerId, "line-gradient", null)
                 .setPaintProperty(layerId, "line-color", "#fc5200")
-                .setPaintProperty(layerId, "line-width", ["interpolate", ["linear"], ["zoom"], 4, 10, 11, 4, 13, 1.5])
-                .setPaintProperty(borderLayerId, "line-width", 0);
+                .setPaintProperty(layerId, "line-width", ["interpolate", ["linear"], ["zoom"], 11, 4, 13, 1.5])
+                .setPaintProperty(borderLayerId, "line-width", 0)
+                .setPaintProperty(pointsBorderLayerId, "circle-opacity", 0)
+                .setPaintProperty(pointsLayerId, "circle-opacity", 0)
+                .setPaintProperty(pointsLayerId, "circle-stroke-opacity", 0);
         });
 
         const selectedTracks = state.droppedTracks.filter((t) => state.selectedTrackIds.includes(t.id));
@@ -424,12 +472,15 @@ export const gpx = (() => {
 
         const bounds = new maplibregl.LngLatBounds();
         selectedTracks.forEach((track) => {
-            const { layerId, borderLayerId } = getTrackMapIds(track.id);
+            const { layerId, borderLayerId, pointsLayerId, pointsBorderLayerId } = getTrackMapIds(track.id);
             if (!state.map.getLayer(layerId)) return;
             state.map
                 .setPaintProperty(layerId, "line-gradient", ["interpolate", ["linear"], ["line-progress"], 0, "#F98D00", 0.5, "#fc5200", 1, "#ff1744"])
                 .setPaintProperty(layerId, "line-width", ["interpolate", ["linear"], ["zoom"], 9, 3, 16, 5])
-                .setPaintProperty(borderLayerId, "line-width", ["interpolate", ["linear"], ["zoom"], 5, 6, 12, 8]);
+                .setPaintProperty(borderLayerId, "line-width", ["interpolate", ["linear"], ["zoom"], 5, 6, 12, 8])
+                .setPaintProperty(pointsBorderLayerId, "circle-opacity", 1)
+                .setPaintProperty(pointsLayerId, "circle-opacity", 1)
+                .setPaintProperty(pointsLayerId, "circle-stroke-opacity", 1);
             track.points.forEach((point) => bounds.extend(point));
         });
 

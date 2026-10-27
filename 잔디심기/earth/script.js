@@ -205,7 +205,7 @@ class EarthControl {
                 type: "vector",
                 tiles: [
                     demSource.contourProtocolUrl({
-                        thresholds: { 11: [100, 500], 12: [50, 200], 14: [20, 100], 15: [10, 50] },
+                        thresholds: { 9: [200, 600], 12: [50, 200], 14: [20, 100], 15: [10, 50] },
                         contourLayer: "contours",
                         elevationKey: "ele",
                         levelKey: "level"
@@ -234,7 +234,7 @@ class EarthControl {
                 source: "contour-source",
                 "source-layer": "contours",
                 layout: { "line-join": "round", visibility: useFreeService ? "visible" : "none" },
-                paint: { "line-opacity": 0.5, "line-width": ["match", ["get", "level"], 1, 1.5, 0.5], "line-color": "#777" }
+                paint: { "line-opacity": 0.25, "line-width": ["match", ["get", "level"], 1, 2, 1], "line-color": "#777" }
             },
             {
                 id: "contour-labels",
