@@ -205,11 +205,10 @@ class EarthControl {
                 type: "vector",
                 tiles: [
                     demSource.contourProtocolUrl({
-                        thresholds: { 11: [200, 1000], 12: [100, 500], 14: [50, 200], 15: [20, 100] },
+                        thresholds: { 11: [100, 500], 12: [50, 200], 14: [20, 100], 15: [10, 50] },
                         contourLayer: "contours",
                         elevationKey: "ele",
-                        levelKey: "level",
-                        maxzoom: 12
+                        levelKey: "level"
                     })
                 ]
             });
