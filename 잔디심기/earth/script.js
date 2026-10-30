@@ -205,7 +205,7 @@ class EarthControl {
                 type: "vector",
                 tiles: [
                     demSource.contourProtocolUrl({
-                        thresholds: { 9: [200, 600], 12: [50, 200], 14: [20, 100], 15: [10, 50] },
+                        thresholds: { 10: [200, 800], 11: [100, 400], 12: [50, 200], 13: [25, 100], 14: [10, 50] },
                         contourLayer: "contours",
                         elevationKey: "ele",
                         levelKey: "level"
@@ -234,7 +234,7 @@ class EarthControl {
                 source: "contour-source",
                 "source-layer": "contours",
                 layout: { "line-join": "round", visibility: useFreeService ? "visible" : "none" },
-                paint: { "line-opacity": 0.25, "line-width": ["match", ["get", "level"], 1, 2, 1], "line-color": "#777" }
+                paint: { "line-opacity": 0.25, "line-width": ["match", ["get", "level"], 1, 1.5, 0.5], "line-color": "#777" }
             },
             {
                 id: "contour-labels",
@@ -395,21 +395,15 @@ class EarthControl {
 
         const totalRecords = hermes_records.length;
         let processedCount = 0;
-        const gpxRecordsToFetch = [];
 
         const featuresFromSheet = [];
 
         for (const record of hermes_records) {
             const suffix = record.over || record.type;
             const shortPath = `${record.date}${suffix ? `_${suffix}` : ""}`.trim();
-
-            if (record.geometry && record.geometry.length > 10) {
-                const coordinates = decodeCoordinates(record.geometry);
-                if (coordinates.length > 0) {
-                    featuresFromSheet.push(createFeature(record, coordinates, shortPath));
-                }
-            } else if (!record.comment?.includes("gpx 파일 누락") && !record.comment?.includes("위치 기록 누락")) {
-                gpxRecordsToFetch.push({ record, shortPath });
+            const coordinates = decodeCoordinates(record.geometry);
+            if (coordinates.length > 0) {
+                featuresFromSheet.push(createFeature(record, coordinates, shortPath));
             }
         }
 
@@ -418,42 +412,6 @@ class EarthControl {
             updateMapSources();
             processedCount += featuresFromSheet.length;
             updateProgress(processedCount, totalRecords);
-        }
-
-        if (gpxRecordsToFetch.length > 0) {
-            const gpxWorker = new Worker("/잔디심기/earth/gpx-worker.js");
-            const fetchPromises = [];
-
-            gpxWorker.onmessage = ({ data }) => {
-                if (data.encodedCoordinates) {
-                    const coordinates = decodeCoordinates(data.encodedCoordinates);
-                    if (coordinates.length > 0) {
-                        const record = gpxRecordsToFetch.find(r => `../records/${r.record.date.substring(0, 4)}/${r.shortPath}.gpx` === data.path)?.record;
-                        if (record) {
-                            const newFeature = createFeature(record, coordinates, data.shortPath);
-                            processNewFeatures([newFeature]);
-                            updateMapSources();
-                        }
-                    }
-                }
-                processedCount++;
-                updateProgress(processedCount, totalRecords);
-            };
-            gpxWorker.onerror = (error) => {
-                console.error("GPX Worker error:", error);
-                // 오류가 발생해도 모든 레코드를 처리한 것으로 간주하여 진행률을 업데이트합니다.
-                processedCount += gpxRecordsToFetch.length - processedCount + featuresFromSheet.length;
-                updateProgress(processedCount, totalRecords);
-            };
-
-            for (const { record, shortPath } of gpxRecordsToFetch) {
-                const fullPath = `../records/${record.date.substring(0, 4)}/${shortPath}.gpx`;
-                fetchPromises.push(fetch(fullPath)
-                    .then(r => r.ok ? r.text() : Promise.reject(new Error(r.statusText)))
-                    .then(gpxText => gpxWorker.postMessage({ gpxText, path: fullPath, shortPath: shortPath }))
-                    .catch(() => { processedCount++; updateProgress(processedCount, totalRecords); }));
-            }
-            await Promise.all(fetchPromises).then(() => { gpxWorker.terminate(); });
         }
 
         updateProgress(totalRecords, totalRecords);
@@ -494,4 +452,6 @@ class EarthControl {
         hermes.key();
 
     });
+
+    // map.on("zoom", () => console.log(map.getZoom().toFixed(1)));
 })();
