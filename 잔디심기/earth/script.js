@@ -90,9 +90,12 @@ class EarthControl {
     }
 
     // All original code is now placed after the async check to ensure `useFreeService` is correctly set.
+    const initialStyleUrl = useFreeService
+        ? (currentStyle === "light" ? style_light : style_dark)
+        : (currentStyle === "light" ? style_maptilerlight : style_maptilerdark);
     const map = new maplibregl.Map({
         container: "map",
-        style: useFreeService ? (currentStyle === "light" ? style_light : style_dark) : currentStyle === "light" ? style_maptilerlight : style_maptilerdark,
+        style: initialStyleUrl,
         center: [127.5, 36],
         zoom: 8,
         maxZoom: 20,
@@ -111,7 +114,7 @@ class EarthControl {
         const isForbidden = error?.status === 403 || error?.response?.status === 403 || /\b403\b/.test(errorMessage);
         const isMapTilerStyleError = failedUrl.includes("api.maptiler.com/maps/")
             || errorMessage.includes("api.maptiler.com/maps/")
-            || map.getStyleUrl()?.includes("api.maptiler.com/maps/");
+            || String(initialStyleUrl).includes("api.maptiler.com/maps/");
 
         if (!isForbidden || !isMapTilerStyleError) return;
 
