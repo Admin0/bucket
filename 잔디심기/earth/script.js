@@ -37,8 +37,8 @@ class EarthControl {
             <button id="free-service-btn" class="material-symbols-outlined" title="무료 지도 서비스 사용">public</button>
             <div id="route-detail">
                 <div class="inner_wrap maplibregl-ctrl-group">
-                    <div class="route-detail" title="굵기"><input type="range" id="line-width-slider" min="1" max="4" value="2.5" step="0.5"><span class="material-symbols-outlined">line_weight</span></div>
-                    <div class="route-detail" title="투명도"><input type="range" id="line-opacity-slider" min="0.1" max="0.5" value="0.3" step="0.05"><span class="material-symbols-outlined">opacity</span></div>
+                    <div class="route-detail" title="굵기"><input type="range" id="line-width-slider" min="0.2" max="1.8" value="1" step="0.2"><span class="material-symbols-outlined">line_weight</span></div>
+                    <div class="route-detail" title="투명도"><input type="range" id="line-opacity-slider" min="0.2" max="1.8" value="1" step="0.2"><span class="material-symbols-outlined">opacity</span></div>
                 </div>
             </div>`;
 

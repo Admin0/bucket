@@ -449,6 +449,24 @@ export const gpx = (() => {
             });
     }
 
+    function getUploadedRouteWidthScale() {
+        return state.map.routeWidthScale ?? 1;
+    }
+
+    function getUploadedRouteOpacityScale() {
+        return state.map.routeOpacityScale ?? 1;
+    }
+
+    function applyUploadedRouteDesign(track) {
+        const { layerId } = getTrackMapIds(track.id);
+        if (!state.map.getLayer(layerId)) return;
+        const widthScale = getUploadedRouteWidthScale();
+        const opacityScale = getUploadedRouteOpacityScale();
+        state.map
+            .setPaintProperty(layerId, "line-width", ["interpolate", ["linear"], ["zoom"], 11, 4 * widthScale, 13, 1.5 * widthScale])
+            .setPaintProperty(layerId, "line-opacity", opacityScale);
+    }
+
     function focusOnSelectedTracks() {
         state.droppedTracks.forEach((track) => {
             const { layerId, borderLayerId, pointsLayerId, pointsBorderLayerId } = getTrackMapIds(track.id);
@@ -456,11 +474,11 @@ export const gpx = (() => {
             state.map
                 .setPaintProperty(layerId, "line-gradient", null)
                 .setPaintProperty(layerId, "line-color", "#fc5200")
-                .setPaintProperty(layerId, "line-width", ["interpolate", ["linear"], ["zoom"], 11, 4, 13, 1.5])
                 .setPaintProperty(borderLayerId, "line-width", 0)
                 .setPaintProperty(pointsBorderLayerId, "circle-opacity", 0)
                 .setPaintProperty(pointsLayerId, "circle-opacity", 0)
                 .setPaintProperty(pointsLayerId, "circle-stroke-opacity", 0);
+            applyUploadedRouteDesign(track);
         });
 
         const selectedTracks = state.droppedTracks.filter((t) => state.selectedTrackIds.includes(t.id));
@@ -477,6 +495,7 @@ export const gpx = (() => {
             state.map
                 .setPaintProperty(layerId, "line-gradient", ["interpolate", ["linear"], ["line-progress"], 0, "#F98D00", 0.5, "#fc5200", 1, "#ff1744"])
                 .setPaintProperty(layerId, "line-width", ["interpolate", ["linear"], ["zoom"], 9, 3, 16, 5])
+                .setPaintProperty(layerId, "line-opacity", 1)
                 .setPaintProperty(borderLayerId, "line-width", ["interpolate", ["linear"], ["zoom"], 5, 6, 12, 8])
                 .setPaintProperty(pointsBorderLayerId, "circle-opacity", 1)
                 .setPaintProperty(pointsLayerId, "circle-opacity", 1)
@@ -718,6 +737,17 @@ export const gpx = (() => {
     function init(mapInstance) {
         if (!mapInstance) return console.error("Map instance not provided for gpx module initialization.");
         state.map = mapInstance;
+
+        state.map.on("route-width-change", () => {
+            state.droppedTracks.forEach((track) => {
+                if (!state.selectedTrackIds.includes(track.id)) applyUploadedRouteDesign(track);
+            });
+        });
+        state.map.on("route-opacity-change", () => {
+            state.droppedTracks.forEach((track) => {
+                if (!state.selectedTrackIds.includes(track.id)) applyUploadedRouteDesign(track);
+            });
+        });
 
         document.getElementById("gpx-upload-btn")?.addEventListener("click", () => {
             const fileInput = document.createElement("input");

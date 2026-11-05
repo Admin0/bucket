@@ -262,19 +262,57 @@ export const settingsTerraium = function (map, currentStyle, useFreeService) {
 }
 
 export const settingsRouteDesign = function (map) {
+    const defaultWidth = 1.0;
+    const defaultOpacity = 1.0;
+    const widthStorageKey = "earth.routeLineWidth";
+    const opacityStorageKey = "earth.routeLineOpacity";
     const lineWidthSlider = document.getElementById('line-width-slider');
+    const lineOpacitySlider = document.getElementById('line-opacity-slider');
+
+    const savedWidth = parseFloat(localStorage.getItem(widthStorageKey));
+    const savedOpacity = parseFloat(localStorage.getItem(opacityStorageKey));
+    if (Number.isFinite(savedWidth)) lineWidthSlider.value = String(savedWidth);
+    if (Number.isFinite(savedOpacity)) lineOpacitySlider.value = String(savedOpacity);
+
+    const applyRouteWidth = (width) => {
+        const scale = width / defaultWidth;
+        map.routeWidthScale = scale;
+        map.routeWidth = ["interpolate", ["linear"], ["zoom"], 4, 10 * scale, 11, 4 * scale, 13, 1.5 * scale];
+        if (map.getLayer('gpx-line-base')) map.setPaintProperty('gpx-line-base', 'line-width', map.routeWidth);
+        if (map.getLayer('gpx-line-base-certi')) map.setPaintProperty('gpx-line-base-certi', 'line-width', map.routeWidth);
+    };
+
+    const applyRouteOpacity = (opacity) => {
+        const scale = opacity / defaultOpacity;
+        const clamp = value => Math.min(1, Number((value * scale).toFixed(3)));
+        map.routeOpacityScale = scale;
+        map.routeOpacity = {
+            normal: ["interpolate", ["linear"], ["zoom"], 7, clamp(0.75), 10, clamp(0.25)],
+            isOfficial: ["interpolate", ["linear"], ["zoom"], 7, clamp(0.75), 10, clamp(0.33)]
+        };
+        if (map.getLayer('gpx-line-base')) map.setPaintProperty('gpx-line-base', 'line-opacity', map.routeOpacity.normal);
+        if (map.getLayer('gpx-line-base-certi')) map.setPaintProperty('gpx-line-base-certi', 'line-opacity', map.routeOpacity.isOfficial);
+    };
+
     lineWidthSlider.addEventListener('input', (e) => {
-        const newWidth = parseFloat(e.target.value);
-        map.setPaintProperty('gpx-line-base', 'line-width', newWidth);
-        map.setPaintProperty('gpx-line-base-certi', 'line-width', newWidth);
+        const width = Math.round(parseFloat(e.currentTarget.value) * 10) / 10;
+        localStorage.setItem(widthStorageKey, String(width));
+        applyRouteWidth(width);
+        map.fire("route-width-change", { scale: width / defaultWidth });
     });
 
-    const lineOpacitySlider = document.getElementById('line-opacity-slider');
     lineOpacitySlider.addEventListener('input', (e) => {
-        const newOpacity = parseFloat(e.target.value);
-        map.setPaintProperty('gpx-line-base', 'line-opacity', newOpacity);
-        map.setPaintProperty('gpx-line-base-certi', 'line-opacity', newOpacity);
+        const opacity = parseFloat(e.currentTarget.value);
+        localStorage.setItem(opacityStorageKey, String(opacity));
+        applyRouteOpacity(opacity);
+        map.fire("route-opacity-change", { scale: opacity / defaultOpacity });
+        document.getElementById('route-search-input')?.dispatchEvent(new Event('input', { bubbles: true }));
     });
+
+    applyRouteWidth(parseFloat(lineWidthSlider.value));
+    applyRouteOpacity(parseFloat(lineOpacitySlider.value));
+    map.fire("route-width-change", { scale: map.routeWidthScale });
+    map.fire("route-opacity-change", { scale: map.routeOpacityScale });
 }
 
 export const settingsRouteSearch = function (map, getFeatures, setSearchResults) {
@@ -285,14 +323,16 @@ export const settingsRouteSearch = function (map, getFeatures, setSearchResults)
 
     function setSearchRouteColors(ids = []) {
         const matchingIds = ["literal", ids];
+        const scale = map.routeOpacityScale ?? 1;
+        const clamp = value => Math.min(1, Number((value * scale).toFixed(3)));
         const normalOpacity = [
             "interpolate",
             ["linear"],
             ["zoom"],
             7,
-            ["case", ["in", ["get", "id"], matchingIds], 0.9, 0.75],
+            ["case", ["in", ["get", "id"], matchingIds], clamp(0.9), clamp(0.75)],
             10,
-            ["case", ["in", ["get", "id"], matchingIds], 0.7, 0.25]
+            ["case", ["in", ["get", "id"], matchingIds], clamp(0.75), clamp(0.25)]
         ];
 
         const isOfficialOpacity = [
@@ -300,9 +340,9 @@ export const settingsRouteSearch = function (map, getFeatures, setSearchResults)
             ["linear"],
             ["zoom"],
             7,
-            ["case", ["in", ["get", "id"], matchingIds], 0.9, 0.75],
+            ["case", ["in", ["get", "id"], matchingIds], clamp(0.9), clamp(0.75)],
             10,
-            ["case", ["in", ["get", "id"], matchingIds], 0.75, 0.33]
+            ["case", ["in", ["get", "id"], matchingIds], clamp(0.75), clamp(0.33)]
         ];
 
         if (map.getLayer("gpx-line-base")) {
