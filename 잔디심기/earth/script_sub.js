@@ -262,8 +262,6 @@ export const settingsTerraium = function (map, currentStyle, useFreeService) {
 }
 
 export const settingsRouteDesign = function (map) {
-    const defaultWidth = 1.0;
-    const defaultOpacity = 1.0;
     const widthStorageKey = "earth.routeLineWidth";
     const opacityStorageKey = "earth.routeLineOpacity";
     const lineWidthSlider = document.getElementById('line-width-slider');
@@ -275,7 +273,7 @@ export const settingsRouteDesign = function (map) {
     if (Number.isFinite(savedOpacity)) lineOpacitySlider.value = String(savedOpacity);
 
     const applyRouteWidth = (width) => {
-        const scale = width / defaultWidth;
+        const scale = width;
         map.routeWidthScale = scale;
         map.routeWidth = ["interpolate", ["linear"], ["zoom"], 4, 10 * scale, 11, 4 * scale, 13, 1.5 * scale];
         if (map.getLayer('gpx-line-base')) map.setPaintProperty('gpx-line-base', 'line-width', map.routeWidth);
@@ -283,7 +281,7 @@ export const settingsRouteDesign = function (map) {
     };
 
     const applyRouteOpacity = (opacity) => {
-        const scale = opacity / defaultOpacity;
+        const scale = opacity;
         const clamp = value => Math.min(1, Number((value * scale).toFixed(3)));
         map.routeOpacityScale = scale;
         map.routeOpacity = {
@@ -298,14 +296,14 @@ export const settingsRouteDesign = function (map) {
         const width = Math.round(parseFloat(e.currentTarget.value) * 10) / 10;
         localStorage.setItem(widthStorageKey, String(width));
         applyRouteWidth(width);
-        map.fire("route-width-change", { scale: width / defaultWidth });
+        map.fire("route-width-change", { scale });
     });
 
     lineOpacitySlider.addEventListener('input', (e) => {
         const opacity = parseFloat(e.currentTarget.value);
         localStorage.setItem(opacityStorageKey, String(opacity));
         applyRouteOpacity(opacity);
-        map.fire("route-opacity-change", { scale: opacity / defaultOpacity });
+        map.fire("route-opacity-change", { scale: opacity });
         document.getElementById('route-search-input')?.dispatchEvent(new Event('input', { bubbles: true }));
     });
 

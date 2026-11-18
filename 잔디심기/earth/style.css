@@ -132,11 +132,6 @@ body.alt #gpx-list-container li.search-result .pace .main {
     /* filter: invert(.75); */
 }
 
-.maplibregl-ctrl-group button {
-    filter: invert(.5);
-    color: #333;
-}
-
 #controls [class^="material-symbols"] {
     padding: 5px;
     cursor: pointer;
@@ -226,3 +221,21 @@ body.alt #gpx-list-container li.search-result .pace .main {
  * ======================================== */
 
 @media screen and (max-width: 600px) {}
+
+@media (prefers-color-scheme: dark) {
+    .maplibregl-ctrl-group button+button {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .maplibregl-ctrl-group button {
+        color: #a6a6a6;
+    }
+
+    .maplibregl-ctrl-group button .maplibregl-ctrl-icon {
+        filter: invert(.75);
+    }
+
+    .maplibregl-ctrl button.maplibregl-ctrl-geolocate.maplibregl-ctrl-geolocate-active .maplibregl-ctrl-icon {
+        filter: invert(0);
+    }
+}
