@@ -1,4 +1,4 @@
-import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.0.0/dist/maplibre-gl.mjs';
+import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.19.0/dist/maplibre-gl.mjs';
 import { gpx } from './script_gpx.js';
 import { initializeTooltips, settingsTerraium, settingsRouteDesign, settingsRouteSearch } from './script_sub.js';
 
@@ -245,7 +245,7 @@ class EarthControl {
                 source: "contour-source",
                 "source-layer": "contours",
                 filter: [">", ["get", "level"], 0],
-                layout: { "symbol-placement": "line", "text-size": 10, "text-field": ["concat", ["number-format", ["get", "ele"], {}], " m"], "text-font": ["Noto Sans Bold"], visibility: useFreeService ? "visible" : "none" },
+                layout: { "symbol-placement": "line", "symbol-spacing": 300, "text-size": 10, "text-field": ["concat", ["number-format", ["get", "ele"], {}], " m"], "text-font": ["Noto Sans Bold"], visibility: useFreeService ? "visible" : "none" },
                 paint: { "text-color": "#777" }
             },
             {
