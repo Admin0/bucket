@@ -99,7 +99,8 @@ class EarthControl {
         center: [127.5, 36],
         zoom: 8,
         maxZoom: 20,
-        minZoom: 3
+        minZoom: 3,
+        maxPitch: 85 
     })
         .addControl(new EarthControl(useFreeService), 'bottom-right')
         .addControl(new maplibregl.NavigationControl({ visualizePitch: true, showZoom: true, showCompass: true }), 'bottom-right')
