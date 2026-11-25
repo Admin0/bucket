@@ -100,7 +100,7 @@ class EarthControl {
         zoom: 8,
         maxZoom: 20,
         minZoom: 3,
-        maxPitch: 85 
+        maxPitch: 85
     })
         .addControl(new EarthControl(useFreeService), 'bottom-right')
         .addControl(new maplibregl.NavigationControl({ visualizePitch: true, showZoom: true, showCompass: true }), 'bottom-right')
@@ -201,6 +201,28 @@ class EarthControl {
         if (!map.getSource("gpx-lines-source")) map.addSource("gpx-lines-source", { type: "geojson", data: { type: "FeatureCollection", features: [] }, lineMetrics: true });
         if (!map.getSource("gpx-points-source")) map.addSource("gpx-points-source", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
 
+        const mountainLabelColor = "#689268";
+        const mountainHaloColor = currentStyle === "light" ? "#f2f3f0" : "#0c0c0c";
+        const mountainIconId = "mountain-peak-icon";
+        if (useFreeService && !map.hasImage(mountainIconId)) {
+            const canvas = document.createElement("canvas");
+            canvas.width = 30;
+            canvas.height = 30;
+            const context = canvas.getContext("2d");
+            if (!context) throw new Error("Could not create the mountain icon canvas.");
+
+            context.scale(2, 2);
+            const mountainPath = new Path2D("m7.5 2c-0.3 0-0.4 0.2-0.6 0.4l-5.8 9.5c-0.1 0.1-0.1 0.3-0.1 0.4 0 0.5 0.4 0.7 0.7 0.7h11.6c0.4 0 0.7-0.2 0.7-0.7 0-0.2 0-0.2-0.1-0.4l-5.7-9.5c-0.2-0.2-0.4-0.4-0.7-0.4zm0 1.5 3.3 5.5h-0.8l-1.5-1.5-1 1.5-1-1.5-1.5 1.5h-0.9z");
+            context.lineJoin = "round";
+            context.lineWidth = 3;
+            context.strokeStyle = mountainHaloColor;
+            context.stroke(mountainPath);
+            context.fillStyle = mountainLabelColor;
+            context.fill(mountainPath);
+
+            map.addImage(mountainIconId, context.getImageData(0, 0, canvas.width, canvas.height), { pixelRatio: 2 });
+        }
+
         const demSource = new mlcontour.DemSource({ url: "https://tiles.mapterhorn.com/{z}/{x}/{y}.webp", encoding: "terrarium", worker: true, cacheSize: 100, timeoutMs: 10_000 });
         demSource.setupMaplibre(maplibregl);
         if (!map.getSource("dem") && useFreeService) map.addSource("dem", { type: "raster-dem", encoding: "terrarium", tiles: [demSource.sharedDemProtocolUrl], tileSize: 256, maxzoom: 12 });
@@ -231,24 +253,25 @@ class EarthControl {
         const highlightFilter = ["==", ["get", "id"], -1];
 
         const layers = [
-            { id: "hillshade-layer", type: "hillshade", source: "dem", layout: { visibility: "none" }, paint: { "hillshade-exaggeration": 0.1 } },
-            {
+            ...(useFreeService ? [{
+                id: "hillshade-layer", type: "hillshade", source: "dem", layout: { visibility: "none" }, paint: { "hillshade-exaggeration": 0.1 }
+            }, {
                 id: "contour-lines",
                 type: "line",
                 source: "contour-source",
                 "source-layer": "contours",
                 layout: { "line-join": "round", visibility: useFreeService ? "visible" : "none" },
                 paint: { "line-opacity": 0.25, "line-width": ["match", ["get", "level"], 1, 1.5, 0.5], "line-color": "#777" }
-            },
-            {
+            }, {
                 id: "contour-labels",
                 type: "symbol",
                 source: "contour-source",
                 "source-layer": "contours",
                 filter: [">", ["get", "level"], 0],
-                layout: { "symbol-placement": "line", "symbol-spacing": 300, "text-size": 10, "text-field": ["concat", ["number-format", ["get", "ele"], {}], " m"], "text-font": ["Noto Sans Bold"], visibility: useFreeService ? "visible" : "none" },
+                layout: { "symbol-placement": "line", "symbol-spacing": 300, "text-size": 10, "text-field": ["concat", ["number-format", ["get", "ele"], {}], " m"], "text-font": ["Noto Sans Bold"] },
                 paint: { "text-color": "#777" }
-            },
+
+            }] : []),
             {
                 id: "gpx-line-base",
                 type: "line",
@@ -312,7 +335,49 @@ class EarthControl {
                     ],
                     "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 9, 2, 16, 5]
                 }
-            }
+            },
+            ...(useFreeService ? [{
+                id: "mountain-peak-labels",
+                type: "symbol",
+                source: "openmaptiles",
+                "source-layer": "mountain_peak",
+                minzoom: 9,
+                filter: [
+                    "all",
+                    ["any", ["has", "name:ko"], ["has", "name"], ["has", "name:latin"]],
+                    [
+                        "any",
+                        ["all",
+                            ["<=", ["zoom"], 13],
+                            [">=", ["to-number", ["coalesce", ["get", "ele"], 0]], 100],
+                            ["<=", ["to-number", ["coalesce", ["get", "rank"], 4]], 3]
+                        ],
+                        [">", ["zoom"], 13]
+                    ]
+                ],
+                layout: {
+                    "text-field": [
+                        "concat",
+                        ["coalesce", ["get", "name:ko"], ["get", "name"], ["get", "name:latin"]],
+                        ["case", ["has", "ele"], ["concat", "\n", ["to-string", ["get", "ele"]], " m"], ""]
+                    ],
+                    "text-font": ["Noto Sans Bold"],
+                    "text-size": 12,
+                    "text-max-width": 8,
+                    "text-padding": 2,
+                    "icon-image": "mountain-peak-icon",
+                    "icon-anchor": "bottom",
+                    "icon-allow-overlap": false,
+                    "icon-size": 1,
+                    "text-anchor": "top",
+                    "text-offset": [0, 0.4]
+                },
+                paint: {
+                    "text-color": mountainLabelColor,
+                    "text-halo-color": currentStyle === "light" ? "#f2f3f0" : "#0c0c0c",
+                    "text-halo-width": 1.5
+                }
+            }] : []),
         ];
 
         layers.forEach((layer) => {
